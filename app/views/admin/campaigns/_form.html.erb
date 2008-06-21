@@ -1,0 +1,16 @@
+<label for="campaign_name">Kampanjens namn</label>
+<%= f.text_field :name %>
+
+<label for"campaign_active"><%= f.check_box :active %> Kampanjen är aktiv</label>
+
+<fieldset>
+  <legend>DP-koder (LIST_CODE) för kampanjen som kommer med i DP-export</legend>
+  <label for="campaign_dp_global_parent_code">Världsföräldrar</label>
+  <%= f.text_field :dp_global_parent_code %>
+  
+  <label for="campaign_dp_buyer_code">Köpare</label>
+  <%= f.text_field :dp_buyer_code %>
+  
+  <label for="campaign_dp_donor_code">Givare</label>
+  <%= f.text_field :dp_donor_code %>
+</fieldset>

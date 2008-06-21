@@ -1,0 +1,42 @@
+<% @page_title = "Filarkiv" %>
+<% @page_class = "A" %>
+<div id="content_header">
+  <h1>Filer och dokument</h1>
+</div>
+<div id="content">
+  <div id="ca">
+    <h2 class="label">Beskriv de uppladdade filerna</h2>
+    <div class="inner">
+      <% form_for :asset, @assets, :url => update_multiple_admin_assets_path, :html => { :method => :put } do |f| %>
+        <ul class="incomplete_assets">
+        <% @assets.each do |asset| -%>
+          <li class="<%= cycle('even', 'odd') %>">
+            <div class="image">
+      				<% if asset.image? %>
+      					<%= image_tag display_image_path(:size => '200', :id => asset, :format => asset.extname), :id => "asset_#{asset.id}" %>
+              <% elsif asset.movie? and asset.thumbnail %>
+                <%= image_tag display_image_path(:size => '200', :id => asset.thumbnail, :format => asset.thumbnail.extname), :id => "asset_#{asset.id}", :class => 'movie' %>
+              <% else %>
+      					<span class="icon large <%= asset.extname %>"></span>
+      				<% end %>
+            </div>
+            <div class="file-form">
+          	  <label for="assets_#{asset.id}_title">Titel/Alt text</label>
+              <%= text_field_tag "assets[#{asset.id}][title]", asset.file_name %>
+            	<label for="assets_#{asset.id}_description">Beskrivning</label>
+            	<%= text_area_tag("assets[#{asset.id}][description]", '', options = {:class => 'descripition'}) %>
+              <label for="assets_#{asset.id}_author">Fotograf/copyright</label>
+              <%= text_field_tag "assets[#{asset.id}][author]" %>
+              <label for="assets_#{asset.id}_tag_names">Nyckelord <span class="info">Separera nyckelorden med ,-tecknet</span></label>
+              <%= text_area_tag "assets[#{asset.id}][tag_names]", {}, :rows => 2 %>
+            </div>
+          </li>
+    		<% end -%>
+    	  </ul>
+        <div class="confirm">
+          <input type="submit" value="Spara beskrivningar">
+        </div>
+    	<% end %>
+    </div>
+  </div>
+</div>

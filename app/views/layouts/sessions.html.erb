@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Porthos | Logga in</title>
+  <%= stylesheet_link_tag "porthos/clearing" %>
+  <%= stylesheet_link_tag "porthos/general" %>
+  <%= stylesheet_link_tag "porthos/globals" %>
+  <%= stylesheet_link_tag "porthos/sessions" %>
+</head>
+<body<%= body_attributes %>>
+<div id="wrapper">
+  <%= flash_messages %>
+  <div id="container">
+    <div id="content">
+      <%= yield %>
+    </div>
+  </div>
+</div>
+</body>
+</html>

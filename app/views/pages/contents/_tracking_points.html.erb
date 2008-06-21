@@ -1,0 +1,3 @@
+<% parent.tracking_points.each do |tracking_point| %>
+  <%= render :partial => "pages/contents/tracking_points/#{tracking_point.template}", :locals => {:parent => parent, :tracking_point => tracking_point, :registration => (registration || nil), :session => session } %>
+<% end %>

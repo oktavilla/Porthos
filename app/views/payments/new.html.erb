@@ -1,0 +1,58 @@
+<% @page_id = 'payments' %>
+<% @page_title = "Betalning med kreditkort via en säker anslutning" %>
+<div id="logo"><img src="/graphics/general/logo.gif" alt="UNICEF"></div>
+<% if not @payment.new_record? and @payment.valid? and @payment_response and not @payment_response.success? %>
+  <% if @payment.denied? %>
+    <p class="errorExplanation">Betalningen nekades tyvärr av din bank.</p>
+  <% elsif @payment.failed? -%>
+    <p class="errorExplanation">Tyvärr har vi problem i kommunikationen med din bank. <strong>Inga pengar har dragits från ditt konto.</strong> Problemet kan ha varit tillfälligt och du får gärna försöka igen.</p>
+  <% else -%>
+    <p class="errorExplanation">Tyvärr har vi problem i kommunikationen med din bank. <strong>Inga pengar har dragits från ditt konto.</strong> Problemet kan ha varit tillfälligt och du får gärna försöka igen.</p>
+  <% end -%>
+<% end %>
+<p id="amount">
+  <% if @payable.sale? -%>
+    Att betala:
+  <% else -%>
+    Du har valt att ge:
+  <% end -%>
+  <span class="amount"><%= number_to_currency @payment.amount %></span>
+</p>
+<% form_for :payment, :url => payments_path do |f| %>
+  <%= f.hidden_field :card_type %>
+  <%= flash_messages :payment_notice %>
+  <fieldset>
+    <legend>Kortdetaljer</legend>
+    <p>
+      Fyll i information om ditt kreditkort och klicka på
+      <% if @payable.sale? -%>
+      <strong>Slutför köp »</strong>
+      <% else -%>
+      <strong>Ge gåva nu »</strong>
+      <% end -%>
+      för att utföra transaktionen.
+    </p>
+    <label for="payment_first_name">Förnamn</label>
+    <%= f.text_field :first_name, :size => 40 %>
+    <label for="payment_first_name">Efternamn</label>
+    <%= f.text_field :last_name, :size => 40 %>
+    <label for="payment_card_number">Kortnummer</label>
+    <%= f.text_field :card_number, :size => 40 %>
+    <br />
+    <% today = Date.today -%>
+    <label for="payment_card_expiry_month">Kortet är giltigt till: </label>
+    <%= f.select :card_expiry_month, (1..12).to_a.collect { |month_number| [%(#{Date::MONTHNAMES[month_number]} (#{month_number})), month_number.to_s] }, :include_blank => "-- Månad" %>
+    <%= f.select :card_expiry_year, (today.year..today.year+5).to_a.collect { |year| [year.to_s, year.to_s] }, :include_blank => "-- År" %><br>
+    <label for="payment_card_number_cvc">CVC:</label>
+    <%= f.text_field :card_number_cvc, :maxlength => 4, :size => 8 %>
+    <p class="info">Den tresiffriga säkerhetskoden hittar du på baksidan av ditt kreditkort, oftast efter ditt kreditkortsnummer.</p>
+  </fieldset>
+  <p class="notice secure"><strong>Betalningen sker via en säker anslutning</strong></p>
+  <div class="submit">
+  <% if @payable.sale? -%>
+    <input type="image" src="/graphics/forms/submit/slutfor_kop.gif" name="submit" value="Slutför köp »">
+  <% else -%>
+    <input type="image" src="/graphics/forms/submit/ge_gavan_nu.gif" name="submit" value="Ge gåvan nu »">
+  <% end -%>
+  </div>
+<% end %>

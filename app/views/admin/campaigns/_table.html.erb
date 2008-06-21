@@ -1,0 +1,24 @@
+<table>
+  <tr>
+    <th>Kampanj</th>
+    <th>Klick</th>
+    <th>Avslut</th>
+    <th>Frekvens</th>
+  </tr>
+<% campaigns.each do |campaign| %>
+  <tr>
+    <td>
+      <%= link_to campaign.name, admin_campaign_path(campaign) %> 
+      <div class="settings">
+        <%= link_to "Redigera", edit_admin_campaign_path(campaign) %>
+        <%= button_to "Radera", admin_campaign_path(campaign), { :method => :delete, :class => "delete", :src => "/graphics/porthos/icons/trash.gif", :confirm => "Är du säker, detta går inte att ångra." } %>
+      </div>
+    </td>
+    <% total_clicks = campaign.measure_points.sum(:num_clicks) -%>
+    <% total_conversions = campaign.measure_points.sum(:conversions_count) -%>
+    <td><%= total_clicks %></td>
+    <td><%= total_conversions %></td>
+    <td><%= number_to_percentage((total_conversions.to_f / total_clicks.to_f)*100, :precision => 2) %></td>
+  </tr>
+<% end %>
+</table>

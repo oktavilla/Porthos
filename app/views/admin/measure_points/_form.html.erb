@@ -1,0 +1,16 @@
+<label for="measure_point_name">Beskriv mätpunkten</label>
+<%= f.text_field :name %>
+<p class="info">Vart är bannern/länken placerad? På en sajt eller ett nätverk/utskick?</p>
+
+<% if campaign %>
+  <%= f.hidden_field :campaign_id, :value => campaign.id %>
+<% else %>
+  <label for="measure_point_campaign_id">Kampanj</label>
+  <%= f.select :campaign_id, Campaign.find(:all).collect {|c| [c.name, c.id] } %>
+<% end %>
+<label for="measure_point_link_type">Typ: <%= f.select :link_type, MeasurePoint::LINK_TYPES.collect {|key, value| [l(:measure_point, :link_types, key), value]} %></label>
+
+<label for="measure_point_target">Målgrupp: <%= f.select :target, MeasurePoint::TARGETS.collect {|key, value| [l(:measure_point, :targets, key), value]} %></label>
+
+<label for="measure_point_cost">Kostnad: <%= f.text_field :cost %></label>
+<p class="info">Räkna ihop eventuella kostnader för annonsplats och produktion av banner.</p>

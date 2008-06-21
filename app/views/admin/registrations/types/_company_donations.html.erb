@@ -1,0 +1,89 @@
+<table>
+  <thead>
+    <tr>
+      <th colspan="2">Gåva</th>
+    </tr>
+  </thead>
+  <tr>
+    <th scope="row">Skapad</th>
+    <td><%= registration.created_at.strftime("%d %B %Y, %H:%M") %></td>
+  </tr>
+  
+  <tr>
+    <th scope="row">Belopp</th>
+    <td><%= number_to_currency(registration.total_sum) %></td>
+  <tr
+  
+  <tr>
+    <th scope="row">Projekt</th>
+    <td><%= registration.target_code %></td>
+  <tr
+  
+  <% if registration.ecard_image_id %>
+    <tr>
+      <th scope="row">Motiv</th>
+      <td>
+        <%= registration.ecard_image_id %><br>
+        <%= image_tag(display_image_path(:size => '120', :id => registration.ecard_image, :format => registration.ecard_image.extname)) %>
+      </td>
+    </tr>
+  <% end -%>
+  
+  <% if @registration.message %>
+    <tr>
+      <th scope="row">Hälsning</th>
+      <td><%= @registration.message %></td>
+    </tr>
+  <% end -%>
+  <% if @registration.company_logo %>
+    <tr>
+      <th scope="row">Logotyp</th>
+      <td><%= link_to registration.company_logo.full_name, download_asset_path(registration.company_logo.file_name, registration.company_logo.extname) %></td>
+    </tr>
+  <% end -%>
+</table>
+<table>
+  <thead>
+    <tr>
+      <th colspan="2">Företag</th>
+    </tr>
+  </thead>
+  <tr>
+    <th scope="row">Organisation</th>
+    <td><%= registration.organization %></td>
+  </tr>
+  
+  <tr>
+    <th scope="tow">Org.nr.</th>
+    <td><%= registration.organization_number %>
+  </tr>
+
+  <tr>
+    <th scope="row">Adress</th>
+    <td><%= registration.address %></td>
+  </tr>
+  <tr>
+    <th scope="row">Postadress</th>
+    <td><%= registration.post_code %> <%= registration.locality %></td>
+  </tr>
+  
+  <tr>
+    <th scope="row">Namn</th>
+    <td><%= registration.name %></td>
+  </tr>
+  
+  <tr>
+    <th scope="row">E-post</th>
+    <td><%= mail_to registration.email, registration.email %></td>
+  </tr>
+  
+  <tr>
+    <th scope="row">Telefon</th>
+    <td><%= registration.phone %></td>
+  </tr>
+  
+  <tr>
+    <th scope="row">Vill ha utskick</th>
+    <td><%= registration.contact_approval ? 'Ja' : 'Nej' %></td>
+  </tr>
+</table>

@@ -1,0 +1,206 @@
+/**** ASSETS */
+
+/**** ** ASSETS INDEX */
+
+body#assets ul.assets { 
+  margin: 10px;
+  width: 97%;}
+ 
+  body#assets ul.assets li{
+    position: relative;
+    padding: 10px 10px 0 10px;
+    margin-bottom: 5px;}
+  
+    body#assets ul.assets li.odd { background: #ededed;}
+    body#assets ul.assets li.even { background: #f7f7f7;}
+    
+  body#assets ul.assets .meta { 
+    display: block;
+    padding-left: 100px; 
+    padding-bottom: 10px;}
+    
+  body#assets ul.assets .short-title { display: none; }
+  body#assets ul.assets .title {
+    display: block;
+    font-size: 1.1em;
+    font-weight: bold; }
+  
+  body#assets ul.assets .description {
+    display: block;
+    margin-bottom: 10px; }
+    body#assets ul.assets .empty { 
+      color: #bbb;
+      font-style: italic; }
+    
+  body#assets ul.assets .tags { display: block; }
+    body#assets ul.assets .type { font-weight: bold; }
+    
+  body#assets ul.assets li img{ 
+    float: left; 
+    margin: 0 10px 10px 0;}
+    
+  body#assets ul.assets li .controls {
+    margin-top: 10px;
+    display: none;}
+    body#assets ul.assets li:hover .controls { display: block; }
+
+  /***** *** ASSETS OVERVIEW VIEW */
+  
+  body#assets ul.assets.overview li { 
+    position: relative;
+    margin-right: 5px;
+    float: left;
+    width: 80px; 
+    height: 124px;
+    overflow: hidden;
+    padding-bottom: 10px;}
+
+    body#assets ul.assets.overview li.odd,
+    body#assets ul.assets.overview li.even { background: transparent;}
+
+    body#assets ul.assets.overview li .short-title { 
+      display: block;
+      font-weight: normal;
+      font-size: .9em;
+      text-align: center; }
+
+    body#assets ul.assets.overview li img { 
+      height: 80px;
+      width: 80px;}
+
+    body#assets ul.assets.overview li .title,
+    body#assets ul.assets.overview li .description, 
+    body#assets ul.assets.overview .tags { display: none;}
+
+    body#assets ul.assets.overview li:hover { overflow: visible; }  
+    body#assets ul.assets.overview li:hover .meta {
+      padding: 10px;
+      width: 300px;
+      left: 90px;
+      background:#000;
+      color: #fff;
+      min-height:70px;
+      opacity:0.85;
+      position:absolute;
+      top:10px;
+      z-index:10000; }
+    body#assets ul.assets.overview li:hover .meta .title { text-align: left; font-weight: bold;}
+    body#assets ul.assets.overview li:hover .meta .title,
+    body#assets ul.assets.overview li:hover .meta .description,
+    body#assets ul.assets.overview li:hover .meta .created,
+    body#assets ul.assets.overview li:hover .tags { display: block;}
+
+    body#assets ul.assets.overview li:hover .controls { 
+      background: transparent;
+      position: absolute;
+      left: 345px;
+      z-index:10001;
+      width: 48px;}
+
+  form#view_options {
+    font-size: .8em;
+    width: 210px;
+    float: right;
+    margin-top: -20px; }
+    form#view_options select {
+      font-size: 1em;
+      font-weight: normal;
+      padding: 2px; 
+      width: 95px;}
+    form#view_options select#assets_per_page {width: 45px;}
+    form#view_options input[type=submit]{ display: none;}
+
+/**** ** ASSETS EDIT */
+
+body#assets.edit #ca form {margin-right:3px;}
+body#assets.edit #ca form .inner {padding:10px;}
+
+body#assets.edit .download { 
+  background: #fafafa;
+  border-top: 1px solid #ddd; }
+    
+body#assets.edit .download a {
+  display: block;
+  background: url(/graphics/porthos/icons/download.png) no-repeat scroll 24% 0.4em;
+  padding: .5em; }
+
+body#assets.edit #cb {text-align: center; padding-top: 1em;}
+
+body#assets.edit #cb img { margin: 0 2em 1em 2em;}
+
+body#assets .fileinfo ul { margin: 0 1em 1em 1em;}
+
+body#assets.edit .fileinfo li { 
+  text-align: left;
+  color: #333;}
+
+body#assets.edit .fileinfo li span {
+  color: #000;
+  width: 40%;
+  display: block;
+  float: left;
+  text-align: right;
+  font-weight: bold;
+  margin-right: 1em; }
+
+/**** ** ASSETS INCOMPLETE */
+
+body#assets.incomplete #ca form { margin: 10px;}
+
+body#assets.incomplete .incomplete_assets li {
+  padding: 10px;
+  clear: both;
+  display: block;
+  height: 320px; }
+  
+  body#assets.incomplete .incomplete_assets li.odd { background: #eee;}
+
+    body#assets.incomplete .incomplete_assets .image {
+      text-align: center;
+      float: left;
+      margin: 15px 20px 0 0;
+      width: 200px; }
+  
+    body#assets.incomplete .incomplete_assets .file-form {
+      display:block;
+      float: left;
+      width: 75%; }
+  
+body#assets.incomplete .confirm { clear: both;}
+
+/**** ** ASSETS ICONS */
+
+.icon {
+  background:transparent url(/graphics/porthos/icons/file_general_80.png) no-repeat;
+  height:80px;
+  width:63px; }
+
+  .icon.pdf {
+    background:transparent url(/graphics/porthos/icons/file_pdf_80.png) no-repeat;
+    width:76px; }
+  .icon.doc, .icon.txt, .icon.rtf {background:transparent url(/graphics/porthos/icons/file_doc_80.png) no-repeat; }
+  .icon.mp3, .icon.wav, .icon.wma { background:transparent url(/graphics/porthos/icons/file_sound_80.png) no-repeat; }
+  .icon.mov, .icon.avi, .icon.wmv { background:transparent url(/graphics/porthos/icons/file_video_80.png) no-repeat; }
+  .icon.zip { background:transparent url(/graphics/porthos/icons/file_zip_80.png) no-repeat; }
+
+  .icon.large {
+    background:transparent url(/graphics/porthos/icons/file_general.png) no-repeat;
+    display:block;
+    height:128px;
+    width:122px; }    
+  .icon.large.pdf { background:transparent url(/graphics/porthos/icons/file_pdf.png) no-repeat; }
+  .icon.large.doc, .icon.large.txt, .icon.large.rtf { background:transparent url(/graphics/porthos/icons/file_doc.png) no-repeat; }
+  .icon.large.mp3, .icon.large.wav, .icon.large.wma { background:transparent url(/graphics/porthos/icons/file_sound.png) no-repeat; }
+  .icon.large.mov, .icon.large.avi, .icon.large.wmv { background:transparent url(/graphics/porthos/icons/file_video.png) no-repeat; }
+  .icon.large.zip { background:transparent url(/graphics/porthos/icons/file_zip.png) no-repeat; }
+
+ul .icon {
+  float:left;
+  margin: 0 10px 10px 0; }
+  
+  
+/**** NAVIGATION FOR ASSETS */
+  body#assets #nav #n-assets a {
+    color:#fff;
+    font-weight:bold;
+    text-decoration:none; }

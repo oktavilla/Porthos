@@ -1,0 +1,21 @@
+<%= render :partial => 'layouts/top' %>
+  <ul id="main_nav">
+    <li id="n-nodes"<%= ' class="current"' if @page and not @page.is_a?(PageCollection) and not @page.child? %>><%= link_to "Innehållsstruktur", admin_nodes_path %></li>
+    <% PageCollection.find(:all).each do |page| -%>
+    <li id="n-<%= page.slug %>"<%= ' class="current"' if @page and ((@page == page) or (@page.child? and @page.parent_id == page.id)) %>><%= link_to page.title, admin_page_collection_path(page) %></li>
+    <% end -%>
+    <% if current_user.can_create?(ContentModule) -%>
+    <li id="n-modules"><%= link_to "Innehållsmoduler", admin_content_modules_path %></li -->
+    <% end -%>
+    <li id="n-forms"><%= link_to "Formulär", admin_registration_forms_path %></li>
+    <% if current_user.can_create?(PageLayout) -%>
+    <li id="n-page_layouts"><%= link_to "Layouter", admin_page_layouts_path %></li>
+    <% end -%>
+    <% if current_user.can_create?(PagePreset) -%>
+    <li id="n-presets"><%= link_to "Sidtyper", admin_page_presets_path %></li>
+    <% end -%>
+  </ul>
+</div>
+<div id="wrapper">
+  <%= yield %>
+<%= render :partial => 'layouts/bottom' %>

@@ -1,0 +1,21 @@
+<% @page_title = "Skapa ny användare" -%>
+<% @page_class = "A" -%>
+<div id="content_header">
+  <h1>Användare</h1>
+</div>
+
+<div id="container">
+  <div id="content">
+    <h2 class="label">Skapa ny användare</h2>
+    <div id="ca">
+      <div class="inner">
+      <% form_for :user, @user, :url => admin_users_path, :html => { :multipart => true } do |f| %>
+        <%= render :partial => "#{@role.name.downcase}_form", :locals => { :f => f } %>
+        <div class="confirm">
+          <%= f.submit "Spara användaren" %> eller <%= link_to "Avbryt", previous_view_path(admin_users_path) %>
+        </div>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>

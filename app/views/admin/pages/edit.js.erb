@@ -1,0 +1,13 @@
+<h1>Ändra uppgifter för sidan</h1>
+<div class="column1">
+  <% form_for :page, :url => admin_page_path(@page), :html => { :method => :put } do |f| %>
+    <%= hidden_field_tag 'return_to', params[:return_to] || request.request_uri %>
+    <div class="inner">
+      <%= error_messages_for :page %>
+      <%= render :partial => 'admin/pages/form.html.erb', :locals => { :f => f } %>
+    </div>
+    <div class="submit">
+      <%= f.submit "Spara", :class => 'commit button' %> eller <%= link_to "avbryt", admin_page_path(@page), :class => 'cancel' %>
+    </div>
+  <% end %>
+</div>

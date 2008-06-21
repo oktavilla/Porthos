@@ -1,0 +1,23 @@
+<div class="<%= node.access_status %>">
+  <% if node.children.any? %>
+    <% if trail.include?(node) -%>
+      <%= link_to "-", admin_nodes_path(:nodes => [node.parent_id]), :class => 'jax toggle_handle active' %>
+    <% else -%>
+      <%= link_to "+", admin_nodes_path(:nodes => [node.id]), :class => 'jax toggle_handle' %>
+    <% end -%>
+  <% end %>
+  <span class="name<%= " #{node.layout_class}" if node.layout_class %>"><%= node.name %></span>
+  <% if node.restricted? -%>
+  <span class="info restricted">lösenordsskyddad</span>
+  <% end -%>
+  <span class="tools">
+    <% if node.resource_class_name == 'PageCollection' -%>
+    <%= link_to "Lägg till / redigera sidor", admin_page_collection_path(node.resource_id), :class => 'edit' %>
+    <%= link_to "Redigera huvudsida", admin_page_path(node.resource_id), :class => 'edit' %>
+    <% else -%>
+    <%= link_to "Redigera", node_path(node), :class => 'edit' %>
+    <% end -%>
+    <%= link_to "Inställningar", edit_admin_node_path(node), :class => 'settings' %>
+    <%= button_to "Radera", admin_node_path(node), { :method => :delete, :class => "delete", :src => "/graphics/porthos/icons/16_delete.png", :confirm => "Är du säker, detta går inte att ångra." } %>
+  </span>
+</div>

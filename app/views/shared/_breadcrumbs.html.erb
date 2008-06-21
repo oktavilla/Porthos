@@ -1,0 +1,5 @@
+<div id="breadcrumbs">
+<% if breadcrumbs and breadcrumbs.any? -%>
+  Du är här: <%= breadcrumbs.collect { |node| node != breadcrumbs.last ? "<a href=\"#{node.first}\">#{node.last}</a>" : node.last }.join(" » ") %>
+<% end -%>
+</div>

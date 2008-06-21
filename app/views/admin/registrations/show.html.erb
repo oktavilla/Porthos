@@ -1,0 +1,15 @@
+<% @page_class = "AB registrations" -%>
+<h1><%= @type.constantize.localized_model_name %></h1>
+<div id="content">
+  <div id="c-b">
+    <%= render :partial => 'nav', :locals => { :current_type => @type } %>
+  </div>
+  <div id="c-a">
+    <span class="controls"><%= link_to "Tillbaka", previous_view_path(admin_registrations_by_type_path(@type)) %></span>
+    <% begin %>
+      <%= render :partial => "admin/registrations/types/#{@registration.class.to_s.tableize}", :locals => { :registration => @registration } %>
+    <% rescue %>
+      <%= render :partial => "admin/registrations/types/default", :locals => { :registration => @registration } %>
+    <% end %>
+  </div>
+</div>

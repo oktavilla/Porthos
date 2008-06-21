@@ -1,0 +1,61 @@
+<% form_for :registration, :url => registrations_path(:anchor => 'new_registration'), :html => { :id => 'new_registration', :class => 'water_drop_order' } do |f| %>
+  <%= error_messages_for :registration %>
+  <div style="display:none;">
+    <%= hidden_field_tag 'registration_type', 'WaterDropOrder' %>
+    <%= f.hidden_field :node_id, :value => @node.id %>
+    <%= f.hidden_field :registration_form_id, :value => content.resource.id %>
+  </div>
+  <fieldset>
+    <legend>Beställ droppar</legend>
+    <label for="registration_total_items">Antal droppar</label>
+    <% items = [] -%>
+    <% (25..1000).step(25) { |i| items << i } -%>
+    <%= f.select :total_items, items %>
+    <p class="info">(levereras i förpackningar om 25 st)</p>
+  </fieldset>
+  <fieldset>
+    <legend>Vi är en:</legend>
+    <label for="registration_organization_type_0" class="contains-input">
+      <%= f.radio_button :organization_type, "Klass" %> Klass
+    </label>
+    <label for="registration_organization_type_1" class="contains-input">
+      <%= f.radio_button :organization_type, "Scoutkår" %> Scoutkår
+    </label>
+    <label for="registration_organization_type_1" class="contains-input">
+      <%= f.radio_button :organization_type, "Idrottsförening" %> Idrottsförening
+    </label>
+    <label for="registration_organization_type_2" class="contains-input">
+      <%= f.radio_button :organization_type, "Annat" %> Annat
+    </label>
+    <label for="registration_organization">Skolans, scoutkårens ect namn</label>
+    <%= f.text_field :organization, :size => 40 %>
+    <label for="registration_department">Klass / motsvarande</label>
+    <%= f.text_field :department, :size => 40 %>
+    <label for="registration_number_of_persons">Antal deltagare</label>
+    <%= f.text_field :number_of_persons, :size => 8 %>
+    <p class="info">Skriv in hur många elever/motsvarande i klassen/föreningen.</p>
+    <label for="registration_address">Gatuadress</label>
+    <%= f.text_field :address, :size => 40 %><br>
+    <label for="registration_post_code">Postnummer</label>
+    <%= f.text_field :post_code, :size => 8 %><br>
+    <label for="registration_locality">Ort</label>
+    <%= f.text_field :locality, :size => 40 %>
+  </fieldset>
+  <fieldset>
+    <legend>Kontaktperson</legend>
+    <p>Kontaktpersonen måste vara en vuxen, dvs över 18 år.</p>
+    <label for="registration_first_name">Förnamn</label>
+    <%= f.text_field :first_name, :size => 40 %>
+    <label for="registration_last_name">Efternamn</label>
+    <%= f.text_field :last_name, :size => 40 %>
+    <label for="registration_phone">Telefonnummer dagtid</label>
+    <%= f.text_field :phone, :size => 40 %>
+    <label for="registration_email">E-post</label>
+    <%= f.text_field :email, :size => 40 %>
+    <label for="registration_contact_approval" class="contains-input"><%= f.check_box :contact_approval, :checked => true %> Jag vill få information från UNICEF via e–post. <span class="info">Används endast till UNICEFs egna utskick. Vi lämnar inte ut den till någon annan.</span></label>
+  </fieldset>
+  <p class="notice"><strong>OBS!</strong> Dropparna skickas ut med bud, så du måste se till att någon finns på plats och kan kvittera leveransen. Budfirman ringer alltid först och förvarnar.</p>
+  <div class="submit">
+    <input type="image" name="submit" src="/graphics/forms/submit/bestall_droppar.gif" value="Beställ droppar »">
+  </div>
+<% end %>

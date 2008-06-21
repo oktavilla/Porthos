@@ -1,0 +1,5 @@
+<ul class="sortable_tree">
+<% %w(WillInformationOrder GlobalParent CompanyDonation PrivateDonation VgDonation PrivateOrder CompanyOrder WaterDropOrder ChristmasCardsOrder NewsletterSubscription ActivityGroupMembership SampleProductOrder PageTip).each do |type| -%>
+  <li<%= ' class="current"' if current_type == type %>><%= link_to type.constantize.localized_model_name, admin_registrations_by_type_path(type) %></li>
+<% end -%>
+</ul>

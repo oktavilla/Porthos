@@ -1,0 +1,11 @@
+<% @page_class = "AB conversions" -%>
+<h1>Registreringar för mätpunkt ”<%= @measure_point.name %>”</h1>
+<div id="content">
+  <div id="c-b">
+  </div>
+  <div id="c-a">
+    <span class="controls"><%= link_to "Tillbaka till #{@measure_point.name}", admin_measure_point_path(@measure_point) %></span>
+    <%= render :partial => 'admin/registrations/table', :locals => { :registrations => @conversions.collect {|c| c.registration }.compact } %>
+    <%= will_paginate @conversions %>
+  </div>
+</div>

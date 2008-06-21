@@ -1,0 +1,19 @@
+<% @page_class = "AB conversions" -%>
+<h1>Felaktiga <%= @type.constantize.localized_model_name %></h1>
+<div id="content">
+  <div id="c-b">
+    <ul class="sortable_tree">
+      <% Registration.valid_registration_types.each do |type| -%>
+      <li<%= ' class="current"' if @type == type %>><%= link_to type.constantize.localized_model_name, admin_registrations_by_type_path(type) %></li>
+    <% end -%>
+    </ul>
+  </div>
+  <div id="c-a">
+  <% if @registrations.any? -%>
+    <%= render :partial => "table", :locals => { :registrations => @registrations } %>
+  <% else -%>
+    <p class="blank-slate">Det finns inga registreringar av den här typen</p>
+  <% end -%>
+    <%= will_paginate @registrations %>
+  </div>
+</div>

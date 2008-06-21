@@ -1,0 +1,41 @@
+# == Schema Information
+# Schema version: 76
+#
+# Table name: pages
+#
+#  id                      :integer(11)   not null, primary key
+#  title                   :string(255)   
+#  description             :text          
+#  page_layout_id          :integer(11)   
+#  layout_class            :string(255)   
+#  column_count            :integer(11)   
+#  published_on            :datetime      
+#  created_at              :datetime      
+#  updated_at              :datetime      
+#  slug                    :string(255)   
+#  type                    :string(255)   
+#  position                :integer(11)   
+#  parent_id               :integer(11)   
+#  parent_type             :string(255)   
+#  default_child_layout_id :integer(11)   
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+projects:
+  id: 1
+  title: Projects
+  description: Some of our projects
+  created_at: 2007-07-15 22:38:16
+  updated_at: 2007-07-15 22:38:16
+unicef:
+  id: 2
+  title: UNICEF Sweden
+  description: The UNICEF Swedens website
+  created_at: 2007-07-15 22:38:16
+  updated_at: 2007-07-15 22:38:16
+unicef:
+  id: 2
+  title: Karneval
+  description: Book shop for Karneval
+  created_at: 2007-07-15 22:38:16
+  updated_at: 2007-07-15 22:38:16

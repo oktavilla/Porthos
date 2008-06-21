@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  tag_id: 1
+  taggable_id: 2
+  taggable_type: Asset
+two:
+  id: 2
+  tag_id: 2
+  taggable_id: 1
+  taggable_type: Asset
+three:
+  id: 3
+  tag_id: 1
+  taggable_id: 1
+  taggable_type: Asset
+four:
+  id: 4
+  tag_id: 2
+  taggable_id: 3
+  taggable_type: Asset

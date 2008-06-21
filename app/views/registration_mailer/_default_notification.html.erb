@@ -1,0 +1,86 @@
+Ny registering
+
+Typ
+<%= registration.class.localized_model_name || registration.class.to_s %>
+
+Skapad
+<%= registration.created_at.strftime("%d %B %Y, %H:%M") %>
+
+Namn
+<%= registration.name %>
+
+Kundnummer
+<%= registration.customer_number %>
+
+E-post
+<%= mail_to registration.email, registration.email %>
+
+Adress
+<%= registration.address %>
+
+Postadress
+<%= registration.post_code %> <%= registration.locality %>
+
+Adress för leverans
+<%= registration.shipping_address %>
+
+Postadress för leverans
+<%= registration.shipping_post_code %> <%= registration.shipping_locality %>
+
+Organisation / org.nr.
+<%= registration.organization %><%= ", #{registration.organization_number}" unless registration.organization_number.blank? %>
+
+Telefon
+<%= registration.phone %>
+
+Mobil
+<%= registration.cell_phone %>
+
+Ålder
+<%= registration.age %>
+
+Skola / klass
+<%= registration.school %><%= ", #{registration.school_class}" unless registration.school_class.blank? %>
+<% unless registration.total_items.blank? -%>
+
+Antal beställda produkter / saker
+<%= registration.total_items %>
+
+<% end -%>
+Antal personer
+<%= registration.number_of_persons %>
+
+Meddelande
+<%= registration.message %>
+
+<% if registration.payment -%>
+Betalning
+
+Betalningssätt
+<%= registration.payment.billing_method %>
+
+Transaktions id
+<%= registration.payment.transaction_id %>
+
+Status
+<%= registration.payment.status %>
+
+Betalningssvar
+<%= registration.payment.response_message %>
+
+Summa
+<%= number_to_currency(registration.payment.amount) %>
+<% end -%>
+
+<% if registration.shipment_type -%>
+Leveransinfo  
+
+Leverans-id
+<%= registration.dispatch_id %> <%= registration.shipment_id %>
+
+Leveranstyp
+<%= registration.shipment_type %>
+
+Leveransstatus
+<%= registration.dispatch_status %>
+<% end %>

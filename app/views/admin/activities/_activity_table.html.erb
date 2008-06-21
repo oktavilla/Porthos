@@ -1,0 +1,48 @@
+<% first_period_string  = activity_date_for_period(first_period) -%>
+<% second_period_string = activity_date_for_period(second_period) -%>
+<table class="activities summary">
+  <colgroup>
+    <col class="whats"></col>
+    <col class="second_period"></col>
+    <col class="first_period"></col>
+    <col class="period_diff"></col>
+  </colgroup>
+  <caption>
+    <a href="#" class="edit" onclick="$('period_selector').toggle(); return false;">Ändra</a>
+    <span class="start_date"><%= second_period_string %></span> och <span class="end_date"><%= first_period_string %></span>
+    <form class="tiny" method="get" id="period_selector" style="display:none;">
+      <fieldset id="second_period">
+        <legend>Första perioden</legend>
+        <label for="second_period_start">Från <%= select_date second_period.first, :prefix => 'periods[second][]', :id => 'second_period_start', :order => [:day, :month, :year] %></label>
+        <label for="second_period_end">Till <%= select_date second_period.last, :prefix => 'periods[second][]', :id => 'second_period_end', :order => [:day, :month, :year] %></label>
+      </fieldset>
+      <fieldset id="first_period">
+        <legend>Andra perioden</legend>
+        <label for="first_period_start">Från <%= select_date first_period.first, :prefix => 'periods[first][]', :id => 'first_period_start', :order => [:day, :month, :year] %></label>
+        <label for="first_period_end">Till <%= select_date first_period.last, :prefix => 'periods[first][]', :id => 'first_period_end', :order => [:day, :month, :year] %></label>
+      </fieldset>
+      <div class="submit">
+        <input type="submit" value="Ändra period"> eller <a href="#" onclick="$('period_selector').hide(); return false;">avbryt</a>
+      </div>
+    </form>
+  </caption>
+  <thead>
+    <tr>
+      <th></th>
+      <th scope="col">
+        <span class="period"><%= second_period_string %></span>
+        <% if export_links %>
+          <%= link_to "Ladda ned som CSV", admin_export_registration_path(:format => 'csv', :period => [{:day => second_period.first.day, :month => second_period.first.month, :year => second_period.first.year}, {:day => second_period.last.day, :month => second_period.last.month, :year => second_period.last.year}], :type => @type.to_s) %>
+        <% end %>
+      </th>
+      <th scope="col" class="even">
+        <span class="period"><%= first_period_string %></span>
+        <% if export_links %>
+          <%= link_to "Ladda ned som CSV", admin_export_registration_path(:format => 'csv', :period => [{:day => first_period.first.day, :month => first_period.first.month, :year => first_period.first.year}, {:day => first_period.last.day, :month => first_period.last.month, :year => first_period.last.year}], :type => @type.to_s) %>
+        <% end %>
+      </th>
+      <th scope="col"><span class="period">Skillnad</span></th>
+    </tr>
+  </thead>
+  <%= body %>
+</table>

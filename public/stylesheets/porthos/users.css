@@ -1,0 +1,61 @@
+/**** USERS INDEX */
+
+body#users .index {}
+  
+  body#users .create { 
+    margin-left: 10px;
+    padding-left: 2em; }
+  
+  body#users #users_list {
+    background: #f00;
+    margin: 10px; }
+  
+  body#users #users_list li { 
+    position: relative;
+    min-height: 100px;
+    border: 1px solid #ddd;
+    margin: 0 0 10px 10px;
+    padding: 10px 10px 0 10px;
+    width: 30%;
+    float: left; }
+    
+    #users_list .vcard .photo {
+      float:left;
+      margin:0 10px 10px 0; }
+    
+    body#users #users_list .vcard span, body#users #users_list .vcard a {
+      display:block;
+      margin:0 0 0.3em;
+      padding-left:0.4em; }
+      
+       body#users #users_list .fn, body#users #users_list .vcard .type { font-weight: bold;}
+
+       body#users  #users_list .vcard span span span {
+         display:inline;
+         padding:0; }
+         
+         body#users  #users_list .vcard .controls {
+           padding-left: 10px;
+           margin-top: 10px;
+           display: none;}
+           body#users #users_list li:hover .controls { display: block; }
+           body#users #users_list .vcard span.controls a { padding: 10px 12px 0 10px; }
+           
+      
+   
+        
+/**** NEW / EDIT USER FORM */
+
+body#users .form_container {}
+  body#users .form_container { margin: 10px; }
+    body#users fieldset { width: 50%; }  
+    body#users #user-image, body#users #login {float: left;}
+    body#users #contact {float: right;}
+
+  body#users .confirm {clear: both;}
+  
+/**** NAVIGATION FOR USERS */
+  body#users #nav #n-users a {
+    color:#fff;
+    font-weight:bold;
+    text-decoration:none; }

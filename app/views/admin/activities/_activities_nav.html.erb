@@ -1,0 +1,51 @@
+<ul class="gl">
+  <li<%= ' class="current"' if type.nil? %>><%= link_to "Översikt", admin_activities_path %></li>
+  <li<%= ' class="current"' if not type.nil? and type == GlobalParent %>><%= link_to "Världsföräldrar", admin_registration_activity_path(:type => 'global_parents') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == NewsletterSubscription %>><%= link_to "E-postadresser", admin_registration_activity_path(:type => 'newsletter_subscriptions') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == PrivateOrder %>><%= link_to "Privatförsäljning", admin_registration_activity_path(:type => 'private_orders') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == CompanyOrder %>><%= link_to "Företagsförsäljning", admin_registration_activity_path(:type => 'company_orders') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == PrivateDonation %>><%= link_to "Privatgåvor", admin_registration_activity_path(:type => 'private_donations') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == CompanyDonation %>><%= link_to "Företagsgåvor", admin_registration_activity_path(:type => 'company_donations') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == ActivityGroupMembership %>><%= link_to "Anmälningar om att bli aktiv", admin_registration_activity_path(:type => 'activity_group_memberships') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == ChristmasCardsOrder %>><%= link_to "Julkortsbeställningar", admin_registration_activity_path(:type => 'christmas_cards_orders') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == PageTip %>><%= link_to "Tips om sidor", admin_registration_activity_path(:type => 'page_tips') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == SampleProductOrder %>><%= link_to "Provkorts beställningar", admin_registration_activity_path(:type => 'sample_product_orders') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == WaterDropOrder %>><%= link_to "Vattendroppe beställningar", admin_registration_activity_path(:type => 'water_drop_orders') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == WillInformationOrder %>><%= link_to "Arv & testamente", admin_registration_activity_path(:type => 'will_information_orders') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == GlobalParentGiveAway %>><%= link_to "Ge bort VF", admin_registration_activity_path(:type => 'global_parent_give_away') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == VgDonation %>><%= link_to "Symboliska gåvor", admin_registration_activity_path(:type => 'vg_donation') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == MemoriumGiftDonation %>><%= link_to "Minnesgåvor", admin_registration_activity_path(:type => 'memorium_gift_donation') %></li>
+  <li<%= ' class="current"' if not type.nil? and type == CongratulationGiftDonation %>><%= link_to "Gratulationsgåvor", admin_registration_activity_path(:type => 'congratulation_gift_donation') %></li>
+</ul>
+
+<h2 class="label">DP Exporter</h2>
+<ul id="exports">
+  <li>
+    <h3>Världsföräldrar</h3>
+    <% if Export.new_registrations_for(GlobalParent) > 0 %>
+      <%= link_to "Exportera nya (#{Export.new_registrations_for(GlobalParent)} st, DP-format)", formatted_admin_exports_path(:registration_type => 'GlobalParent', :format => 'dp'), :class => 'export' %>
+    <% end %>
+    <% if exports = Export.find_all_by_registration_type('GlobalParent', :limit => 15, :order => 'created_at DESC') and exports.any? %>
+    <a href="#" onclick="$('previous-global-parent-exports').toggle();return false;">Tidigare exporter</a>
+    <ul id="previous-global-parent-exports" style="display:none">
+      <% exports.each do |export| %>
+      <li><%= link_to "VF #{export.from.strftime("%Y-%m-%d")} till #{export.through.strftime("%Y-%m-%d")}", formatted_admin_export_path(:id => export.id, :format => 'dp'), :class => 'export' %></li>
+      <% end %>
+    </ul>
+    <% end %>
+  </li>
+  <li>
+    <h3>Gåvor (privata)</h3>
+    <% if Export.new_registrations_for(PrivateDonation) > 0 %>
+      <%= link_to "Exportera nya (#{Export.new_registrations_for(PrivateDonation)} st, DP-format)", formatted_admin_exports_path(:registration_type => 'PrivateDonation', :format => 'dp'), :class => 'export' %>
+    <% end %>
+    <% if exports = Export.find_all_by_registration_type('PrivateDonation', :limit => 15, :order => 'created_at DESC') and exports.any? %>
+    <a href="#" onclick="$('previous-private-donations-exports').toggle();return false;">Tidigare exporter</a>
+    <ul id="previous-private-donations-exports" style="display:none">
+      <% exports.each do |export| %>
+      <li><%= link_to "Donationer #{export.from.strftime("%Y-%m-%d")} till #{export.through.strftime("%Y-%m-%d")}", formatted_admin_export_path(:id => export.id, :format => 'dp'), :class => 'export' %></li>
+      <% end %>
+    </ul>
+    <% end %>
+  </li>  
+</ul>

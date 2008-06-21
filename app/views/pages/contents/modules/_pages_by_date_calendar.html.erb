@@ -1,0 +1,18 @@
+<div class="pages_by_date">
+  <h1>
+    <%= @node.name %>
+    <% if @from -%>
+    <%= @from.strftime("%B") if params[:month] %>
+    <%= @from.year %>
+    <% end -%>
+  </h1>
+  <% @pages.group_by { |p| p.published_on.beginning_of_day }.sort.each do |date, pages| %>
+    <% year, month, day = date.strftime("%Y"), date.strftime("%m"), date.strftime("%d") -%>
+    <h2 class="date"><%= date.day %> <%= date.strftime("%B") %> <%= year %></h2>
+    <% pages.each do |page| %>
+      <h3><a href="/<%= @node.slug %>/<%= year %>/<%= month %>/<%= day %>/<%= page.slug %>"><%= page.title %></a></h3>
+      <%= textilize(page.description) %>
+    <% end %>
+  <% end if @pages and @pages.any? %>
+  <%= will_paginate(@pages, :prev_label => "« Föregående", :next_label => "Nästa »") if @pages and @pages.any? %>
+</div>

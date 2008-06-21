@@ -1,0 +1,14 @@
+<%= f.hidden_field :parent_id, { :value => content.id } %>
+<%= f.hidden_field :resource_type, { :value => 'Teaser' } %>
+<% fields_for :teaser do |teaser| %>
+  <label for="content_<%= content.id %>_teaser_title">Rubrik</label>
+  <%= teaser.text_field :title, :id => "content_#{content.id}_teaser_title" %>
+  <label for="content_<%= content.id %>_teaser_body">Text</label>
+  <%= teaser.text_area :body, :id => "content_#{content.id}_teaser_body" %>
+  <label for="content_<%= content.id %>_display_type">Typ</label>
+  <%= teaser.select :display_type, Teaser::DISPLAY_TYPES %>
+  <label for="content_<%= content.id %>_css_class">CSS-klass</label>
+  <%= teaser.text_field :css_class %>
+  <label for="content_<%= content.id %>_file">Bild</label>
+  <%= teaser.file_field :file, :size => "15", :class => "file" %>
+<% end %>

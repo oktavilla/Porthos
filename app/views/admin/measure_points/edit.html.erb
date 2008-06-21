@@ -1,0 +1,13 @@
+<% @page_class = "A measure_point" -%>
+<h1>Ändra mätpunkt</h1>
+
+<div id="content">
+  <div id="c-a">
+    <% form_for :measure_point, @measure_point, admin_measure_point_path(@measure_point), :html => {:method => 'put'} do |f| %>
+      <%= render :partial => 'form', :locals => {:f => f, :campaign => @measure_point.campaign}  %>
+      <div class="submit">
+        <%= f.submit "Ändra mätpunkt" %> eller <%= link_to "Avbryt", previous_view_path(admin_campaigns_path) %>
+      </div>
+    <% end %>
+  </div>
+</div>

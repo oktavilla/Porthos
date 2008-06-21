@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="sv">
+<head>
+
+  <!-- produced by winstondesign.se -->
+
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title><%= "#{@page_title} | " unless @page_title.blank? %></title>
+  <%= stylesheet_link_merged :public, :title => "Screen" %>
+  <!--[if IE 7]>
+    <link href="/stylesheets/ie7.css" media="screen,projection" rel="Stylesheet" type="text/css">  
+  <![endif]-->
+  <!--[if lt IE 7]>
+    <link href="/stylesheets/ie.css" media="screen,projection" rel="Stylesheet" type="text/css">  
+    <meta name="MSSmartTagsPreventParsing" content="true">   
+    <meta http-equiv="imagetoolbar" content="false">
+  <![endif]-->
+</head>
+<body<%= public_body_attributes %>>
+<% if @preview and logged_in? -%>
+  <div id="preview">
+      <% begin %>
+        <%= render :partial => 'preview'  %>
+      <% rescue %>
+        <span>Förhandsgranskning</span> <%= link_to 'Tillbaka till admin &rarr;', '/admin', :class => 'edit' %>
+      <% end %>
+  </div>
+<% end -%>
+<div id="wrap">
+  <div id="header">
+    <% nested_list_of @root_nodes, {}, :id => 'nav' do |node| %>
+      <a href="/<%= node.slug %>"<%= ' class="current"' if @trail and @trail.include?(node) %>>
+        <span><%= node.name %></span>
+      </a>
+    <% end if @root_nodes and @root_nodes.any? %>
+  </div>
+  <%= yield %>
+  <div id="footer">
+    <div id="footer_info">
+      
+    </div>
+  </div>
+</div>
+<%= javascript_include_merged :public %>
+<%= javascript_include_tag 'debug' if RAILS_ENV == 'development' %>
+</body>
+</html>

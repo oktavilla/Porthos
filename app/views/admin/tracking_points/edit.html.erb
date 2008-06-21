@@ -1,0 +1,12 @@
+<% @page_class = 'A' -%>
+<h1>Spårningspunkt</h1>
+<div id="content">
+  <div id="c-a">
+    <% form_for :tracking_point, :url => admin_tracking_point_path(@tracking_point), :html => { :method => :put } do |f| %>
+      <%= render :partial => 'form', :locals => {:f => f, :parent => @tracking_point.parent } %>
+      <div class="submit">
+        <%= submit_tag 'Spara' %>
+      </div>
+    <% end -%>
+  </div>
+</div>

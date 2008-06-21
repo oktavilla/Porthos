@@ -1,0 +1,15 @@
+<script type="text/javascript">
+  window.location = '<%= @return_path %>';
+</script>
+<% @page_id = 'payments' -%>
+<% @page_title = "Tack, din betalning är nu genomförd. Du pekas vidare automatiskt." -%>
+<div id="logo"><img src="/graphics/general/logo.gif" alt="UNICEF"></div>
+<div id="payment_complete">
+  <% if @payable.sale? -%>
+  <h1>Tack för ditt köp!</h1>
+  <p><strong>Transaktionen är nu genomförd och den säkra anslutningen är inte längre nödvändig.</strong> Du pekas automatiskt vidare. Om inte, kan du <a href="<%= @return_path %>">klicka här för att gå vidare och se ditt kvitto »</a></p>
+  <% else -%>
+  <h1>Tack för din gåva!</h1>
+  <p><strong>Transaktionen är nu genomförd och den säkra anslutningen är inte längre nödvändig.</strong> Du pekas automatiskt vidare. Om inte, kan du <a href="<%= @return_path %>">klicka här för att gå vidare »</a></p>
+  <% end -%>
+</div>

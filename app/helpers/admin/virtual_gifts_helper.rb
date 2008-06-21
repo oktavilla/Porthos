@@ -1,0 +1,2 @@
+module Admin::VirtualGiftsHelper
+end

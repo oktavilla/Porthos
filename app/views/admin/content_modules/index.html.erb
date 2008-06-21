@@ -1,0 +1,36 @@
+<% @page_class = 'AB' -%>
+<div id="content_header">
+  <h1>Innehållsmoduler</h1>
+</div>
+<div id="container">
+  <div id="content">
+    <div id="cb">
+      <div class="inner">
+        <% form_for :content_module, :url => admin_content_modules_path, :html => { :class => 'tiny' } do |f| %>
+          <fieldset>
+            <legend>Installera en ny modul</legend>
+            <%= render :partial => 'form', :locals => { :f => f } %>
+          </fieldset>
+          <div class="confirm">
+            <%= submit_tag 'Installera' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div id="ca">
+      <div class="inner">
+        <% if @content_modules.any? -%>
+          <% nested_list_of @content_modules, {}, :class => 'gl' do |content_module| %>
+            <%= content_module.name %>
+            <span class="controls general">
+              <%= link_to "Ändra", edit_admin_content_module_path(content_module), :class => 'edit' %>
+              <%= link_to "Ta bort", admin_content_module_path(content_module), :method => :delete, :confirm => "Är du säker? Detta kommer att ta bort denna modul från alla sidor där den förekommer.", :class => 'delete' %>
+            </span>
+          <% end %>
+        <% else -%>
+          <span class="notice">Det finns inga installerade innehållsmoduler än</p>
+        <% end -%>
+      </div>
+    </div>
+  </div>
+</div>

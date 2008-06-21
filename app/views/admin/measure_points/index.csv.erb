@@ -1,0 +1,3 @@
+<% @measure_points.each do |measure_point| -%>
+"<%= measure_point.public_id %>","<%= measure_point.name %>","<%= measure_point.link_type_name %>","<%= measure_point.target_name %>","<%= measure_point.created_at %>","<%= (measure_point.conversions.any? and measure_point.conversions.first) ? measure_point.conversions.first.created_at : '' %>"
+<% end -%>

@@ -1,0 +1,7 @@
+<% if resource.shared? %>
+<%= resource.body %>
+<% else %>
+<div class="textfield">
+  <%= resource.body %>
+</div>
+<% end %>

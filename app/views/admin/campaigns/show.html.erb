@@ -1,0 +1,142 @@
+<% @page_class = "AB campaigns" -%>
+<h1>Kampanj ”<%= @campaign.name %>”
+  <span class="controls"><%= link_to "Ändra", edit_admin_campaign_path(@campaign) %></span>
+</h1>
+<div id="content">
+  <div id="c-b">
+  </div>
+  <div di="c-a">
+    <% unless @campaign.active? %>
+      <p>Kampanjen är arkiverad, men tar forfarande upp klick och avslut</p>
+    <% end %>
+  <% if @campaign.measure_points.count != 0 -%>
+    <div class="overview clicks">
+      <h2>Klick</h2>
+      <p>
+        <span class="value"><%= @campaign.clicks %></span>
+        <span class="description">har klickat på någon utav länkarna i den här kampanjen.</span>
+      </p>
+    </div>
+    <div class="overview conversions">
+      <h2>Avslut</h2>
+      <p>
+        <span class="value"><%= @campaign.total_conversions %></span>
+        <span class="description">det ger en frekvens på <%= number_to_percentage((@campaign.total_conversions.to_f / @campaign.clicks.to_f)*100, :precision => 2) %>.</span>
+      </p>
+    </div>
+    <div class="overview income">
+      <h2>Intäkter</h2>
+      <p>
+        <span class="value"><%= number_to_currency(@campaign.income.to_f) %></span>
+        <% if @campaign.cost.cents > 0 -%>
+        <span class="description">Det ger en ROI på <%= number_to_percentage(@campaign.roi, :precision => 2) %>.</span>
+        <% end -%>
+      </p>
+    </div>
+    <h2>Mätpunkter</h2>
+    <table class="activities">
+      <% total_gp = @campaign.conversions.by_type('GlobalParent').count -%>
+      <% unless total_gp == 0 %>
+      <tr class="totals">
+        <th scope="colgroup">Världsföräldrar</th>
+        <td><%= total_gp %></td>
+      </tr>
+      <% end -%>
+      <% paying_gp = @campaign.conversions.by_type('GlobalParent').count(:conditions => ['amount > 0']) -%>
+      <% unless paying_gp == 0 -%>
+      <tr>
+        <th scope="row">Betalat</th>
+        <td><%= paying_gp %> st / <%= number_to_percentage((paying_gp.to_f / total_gp.to_f) * 100, :precision => 2) %></td>
+      </tr>
+      <tr>
+        <th scope="row">Ca intänkt 12 mån</th>
+        <td><%= number_to_currency(Money.new(((@campaign.conversions.by_type('GlobalParent').average(:amount) * paying_gp)*12)).to_f) %></td>
+      </tr>
+      <% end -%>
+      <% total_private_sales = @campaign.conversions.by_type('PrivateOrder').count %>
+      <% unless total_private_sales == 0 -%>
+      <tr class="totals">
+        <% total_amount_private_sales = @campaign.income('PrivateOrder').to_f %>
+        <th scope="colgroup">Privatförsäljning</th>
+        <td><%= number_to_currency(total_amount_private_sales) %></td>
+      </tr>
+      <tr>
+        <th scope="row">Köp</th>
+        <td><%= total_private_sales %> st</td>
+      </tr>
+      <tr>
+        <th scope="row">Genomsnitt</th>
+        <td><%= number_to_currency(total_amount_private_sales / total_private_sales) %> / köp</td>
+      </tr>
+      <% end -%>
+      <% total_private_donations = @campaign.conversions.by_type('PrivateDonation').count %>
+      <% unless total_private_donations == 0 -%>
+      <tr class="totals">
+        <% total_amount_private_donations = @campaign.income('PrivateDonation').to_f %>
+        <th scope="colgroup">Privatgåvor</th>
+        <td><%= number_to_currency(total_amount_private_donations) %></td>
+      </tr>
+      <tr>
+        <th scope="row">Gåvor</tg>
+        <td><%= total_private_donations %> st</td>
+      </tr>
+      <tr>
+        <th scope="row">Genomsnitt</th>
+        <td>≈ <%= number_to_currency(total_amount_private_donations / total_private_donations) %></td>
+      </tr>
+      <% end %>
+    </table>
+    <span class="controls">  
+      <%= link_to 'Skapa ny mätpunkt', new_admin_measure_point_path, :onclick => "$('new-measure-point').toggle();return false;" %>
+    </span>    
+    <% form_for :measure_point, :url => admin_measure_points_path, :html => { :method => :post, :id => 'new-measure-point', :style => "display:none", :class => 'tiny' } do |f| %>
+      <%= render :partial => 'admin/measure_points/form', :locals => {:f => f, :campaign => @campaign}  %>
+      <div class="submit">
+        <%= f.submit "Skapa mätpunkt" %> eller <%= link_to "Avbryt", previous_view_path(admin_campaigns_path), :onclick => "$('new-measure-point').toggle();return false;" %>
+      </div>
+    <% end %>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Namn</th>
+        <th>Klick</th>
+        <th>Avslut</th>
+        <th>Frekvens</th>
+      </tr>
+    <% @campaign.measure_points.each do |point| -%>
+      <tr>
+        <td><%= point.public_id.upcase %></td>
+        <td>
+          <span class="type"><%= point.link_type_name %></span> <%= link_to point.name, admin_measure_point_path(point) %> <%= link_to "Detaljer", admin_measure_point_path(point), :onclick => "$('more-info-#{point.id}').toggle();return false;" %>
+          <div class="settings">
+            <%= link_to "Ändra", edit_admin_measure_point_path(point) %>
+          </div>
+          <div id="more-info-<%= point.id %>" style="display:none">
+            <p><span class="description">Målgrup:</span> <%= point.target_name %></p>
+            <p><strong>Avslut:</strong></p>
+            <ul>
+              <% point.conversions.count(:group => 'registration_type').each do |result| %>
+              <li><%= result.first.constantize.localized_model_name %> - <%= result.last %> st</li>
+              <% end %>
+            </ul>
+            <p><span class="description">Kostnad:</span> <%= point.cost %> kr</p>
+            <p><span class="description">Adress till mätpunkten:</span><br><a href="http://www.unicef.se/ad/<%= point.public_id %>">http://www.unicef.se/ad/<%= point.public_id %></a></p>
+          </div>
+        </td>
+        <td><%= point.num_clicks %></td>
+        <td><%= point.conversions_count %></td>
+        <td><%= number_to_percentage(((point.conversions_count.to_f / point.num_clicks.to_f)*100), :precision => 2) if point.num_clicks > 0%></td>
+      </tr>
+    <% end -%>
+    </table>
+  <% else -%>
+    <p class="blank-slate">Det finns inga mätpunkter inlagda för den här kampanjen. <%= link_to "Lägg till den första »", new_admin_measure_point_path, :onclick => "$('new-measure-point').toggle(); return false;" %></p>
+    <% form_for :measure_point, :url => admin_measure_points_path, :html => { :method => :post, :id => 'new-measure-point', :style => "display:none", :class => 'tiny' } do |f| %>
+      <%= render :partial => 'admin/measure_points/form', :locals => {:f => f, :campaign => @campaign}  %>
+      <div class="submit">
+        <%= f.submit "Skapa mätpunkt" %> eller <%= link_to "Avbryt", previous_view_path(admin_campaigns_path), :onclick => "$('new-measure-point').toggle();return false;" %>
+      </div>
+    <% end %>
+  <% end -%>    
+  </div>
+</div>

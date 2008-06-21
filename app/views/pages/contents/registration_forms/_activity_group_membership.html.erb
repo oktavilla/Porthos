@@ -1,0 +1,35 @@
+<% form_for :registration, :url => registrations_path(:anchor => 'new_registration'), :html => { :id => 'new_registration', :class => 'donation' } do |f| %>
+  <%= error_messages_for :registration %>
+  <div style="display:none;">
+    <%= hidden_field_tag 'registration_type', 'ActivityGroupMembership' %>
+    <%= f.hidden_field :node_id, :value => @node.id %>
+    <%= f.hidden_field :registration_form_id, :value => content.resource.id %>
+  </div>
+  <fieldset>
+    <legend>Gå med i en lokal UNICEF-grupp</legend>
+    <label for="registration_activity_group_id">Jag vill gå med i</label>
+    <%= f.select :activity_group_id, ActivityGroup.find(:all, :order => 'name').collect { |g| [g.name, g.id] }, :include_blank => 'Välj ort' %>
+    <label for="registration_new_group" class="contains-input">
+      <%= f.check_box :new_group %>
+      Min ort finns inte med i listan men jag vill starta en UNICEF-grupp på min ort. Kontakta mig</label>
+    </label>
+    <label for="registration_first_name">Förnamn</label>
+    <%= f.text_field :first_name, :size => 40 %>
+    <label for="registration_last_name">Efternamn</label>
+    <%= f.text_field :last_name, :size => 40 %>
+    <label for="registration_address">Gatuadress</label>
+    <%= f.text_field :address, :size => 40 %><br>
+    <label for="registration_post_code">Postnummer</label>
+    <%= f.text_field :post_code, :size => 8 %><br>
+    <label for="registration_locality">Ort</label>
+    <%= f.text_field :locality, :size => 40 %>
+    <label for="registration_phone">Telefon dagtid</label>
+    <%= f.text_field :phone, :size => 40 %>
+    <label for="registration_email">E-postadress</label>
+    <%= f.text_field :email, :size => 40 %>
+    <label for="registration_contact_approval" class="contains-input"><%= f.check_box :contact_approval, { :value => 1, :checked => 'checked' } %> Jag vill få information från UNICEF via e–post. <span class="info">Används endast till UNICEFs egna utskick. Vi lämnar inte ut den till någon annan.</span></label>
+  </fieldset>
+  <div class="submit">
+    <input type="image" name="submit" src="/graphics/forms/submit/bli_aktiv_inom_unicef.gif" value="Bli aktiv inom UNICEF »">
+  </div>
+<% end %>

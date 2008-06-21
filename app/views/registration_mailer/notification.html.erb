@@ -1,0 +1,5 @@
+<% begin %>
+<%= render :partial => "/registration_mailer/#{@registration.registration_form.template}_notification", :locals => {:registration => @registration} %>
+<% rescue %>
+<%= render :partial => "/registration_mailer/default_notification", :locals => {:registration => @registration} %>
+<% end %>

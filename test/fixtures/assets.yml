@@ -1,0 +1,56 @@
+# == Schema Information
+# Schema version: 76
+#
+# Table name: assets
+#
+#  id          :integer(11)   not null, primary key
+#  type        :string(255)   
+#  title       :string(255)   
+#  file_name   :string(255)   
+#  mime_type   :string(255)   
+#  extname     :string(255)   
+#  width       :integer(11)   
+#  height      :integer(11)   
+#  size        :integer(11)   
+#  created_at  :datetime      
+#  updated_at  :datetime      
+#  author      :text          
+#  description :text          
+#  created_by  :integer(11)   
+#  incomplete  :integer(11)   default(0)
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+alien:
+  id: 1
+  type: ImageAsset
+  created_at: 2007-04-18 21:03:18
+  title: MyString
+  mime_type: MyString
+  extname: MyString
+  width: 1
+  height: 1
+  file_name: MyString
+  size: 1
+two:
+  id: 2
+  type: ImageAsset
+  created_at: 2007-04-18 21:03:18
+  title: MyString2
+  mime_type: MyString
+  extname: MyString
+  width: 1
+  height: 1
+  file_name: MyString2
+  size: 1
+three:
+  id: 3
+  type: ImageAsset
+  created_at: 2007-04-18 21:03:18
+  title: MyStringThree
+  mime_type: MyString
+  extname: MyString
+  width: 1
+  height: 1
+  file_name: MyStringThree
+  size: 1

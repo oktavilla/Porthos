@@ -1,0 +1,14 @@
+<% form_for :content, :url => admin_page_contents_path(:page_id => @page) do |f| %>
+  <h1>Lägg till formulär</h1>
+  <div class="column1">
+    <div class="inner form">
+      <%= f.hidden_field :column_position %>
+      <%= f.hidden_field :resource_type %>
+      <label for="content_resource_id">Välj formulär:</label>
+      <%= f.select :resource_id, RegistrationForm.find(:all, :order => 'name ASC').collect { |t| [t.name, t.id] } %>
+    </div>
+  </div>
+  <div class="submit absolute">
+    <%= submit_tag 'Lägg till' %> eller <%= link_to "avbryt", previous_view_path(admin_page_path(@page)), :class => 'cancel' %>
+  </div>
+<% end %>

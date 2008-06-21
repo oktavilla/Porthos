@@ -1,0 +1,28 @@
+<% @page_class = "AB navigation" -%>
+<% @page_id = "contents" -%>
+<% @page_title = "Innehållsstruktur" -%>
+<div id="content_header">
+  <h1>Placera sidan i innehållsstrukturen</h1>
+</div>
+<div id="container">
+  <div id="content">
+    <div id="cb">
+      <div class="inner">
+      </div>
+    </div>
+    <div id="ca">
+      <div class="inner">
+        <%= error_messages_for :node %>
+        <% form_for :node, :url => admin_node_path(@node), :html => { :method => :put } do |f| %>
+          <%= hidden_field_tag :place, 1 %>
+          <%= render :partial => 'nodes_tree', :locals => { :nodes => @nodes, :open_nodes => @nodes, :trail => @nodes, :place => true} %>
+          <div class="submit">
+            <%= submit_tag 'Spara placering', :name => 'place' %> eller <%= link_to "Avbryt", admin_node_path(@node), :method => :delete %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<%= javascript_include_merged :admin %>
+<%= javascript_include_merged :nodes %>

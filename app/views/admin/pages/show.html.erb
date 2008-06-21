@@ -1,0 +1,84 @@
+<% @page_class = "A content" -%>
+<div id="content_header">
+  <h1><%= @page.title %></h1>
+  <span class="controls">
+    <% unless @page.is_a? PageCollection %>
+      <%= link_to 'Förhandsgranska', page_path(:id => @page.id, :preview => 1), :class => 'preview' %>
+    <% end %>
+    <%= link_to "Redigera", edit_admin_page_path(:id => @page, :return_to => request.request_uri), :class => 'edit_page' %>
+  </span>
+</div>
+<div id="container">
+  <div id="content">
+    <div id="ca">
+      <% unless @page.active? -%>
+      <p class="notice">
+        Denna sida är inte aktiverad och kommer inte att synas på siten. <%= link_to "Aktivera sidan »", toggle_admin_page_path(@page), :method => :put %>
+      </p>
+      <% end -%>
+      <div id="page_<%= @page.id %>" class="page_layout <%= @page.layout_class %>">
+      <% (1..@page.column_count).each do |column| -%>
+        <div id="column_<%= column %>" class="column">
+          <div class="inner">
+            <span class="sort_contents controls">
+              <a class="add" href="#">Lägg till innehåll</a>
+            <% if @page.contents.any? -%>
+              <%= link_to("Sortera innehåll", sort_admin_page_contents_path(@page), :class => 'sort fr') %>
+              <%= display_indicator :id => 'page_contents_indicator' %>
+            <% end -%>
+            </span>
+            <div class="sub_controls" style="display:none;">
+              <ul>
+                <li>
+                  <a class="text Textfield new_content" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'Textfield', :column_position => column }) %>">Text</a>
+                </li>
+                <li>
+                  <a class="form RegistrationForm new_content" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'RegistrationForm', :column_position => column }) %>">Formulär</a>
+                </li>
+                <li class="cl">
+                  <a class="image ContentImage" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'ContentImage', :column_position => column }) %>">Bild</a>
+                </li>
+                <li>
+                  <a class="shared_content new_content" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'Textfield', :column_position => column }, :resource => { :shared => 1 }) %>">Delat innehåll</a>
+                </li>
+                <li class="cl">
+                  <a class="teasers Teaser new_content" href="<%= new_admin_page_content_path(:page_id => @page, :collection => true, :content => { :resource_type => 'Teaser', :column_position => column }) %>">Puffar</a>
+                </li>
+                <li>
+                  <a class="module ContentModule new_content" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'ContentModule', :column_position => column }) %>">Modul</a>
+                </li>
+                <li>
+                  <a class="movie ContentMovie" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'ContentMovie', :column_position => column }) %>">Film</a>
+                </li>
+              </ul>
+            </div>
+            <ul class="contents sortable" id="contents_in_column_<%= column %>">
+            <% @page.contents.find_all { |content| content.column_position == column }.each do |content| -%>
+              <li class="<%= "#{content.resource_type} content " unless content.collection? %> sortable <%= content.resource_type.underscore %>_wrapper<%= " shared" if content.shared? %><%= content.active? ? ' active' : ' inactive' %>" id="content_<%= content.id %>">
+              <span class="draghandle"></span>
+              <span class="inactive_proxy"></span>
+              <% unless content.collection? -%>
+                <span class="type"></span>
+                <span class="controls">
+                  <%= link_to("Ändra", edit_admin_page_content_path(@page, content), :class => (!content.collection? ? 'edit' : 'edit')) if not content.shared? and not content.module? %>
+                  <%= link_to content.active? ? 'Dölj' : 'Visa', toggle_admin_page_content_path(@page, content), :method => :put, :class => 'visibility' %>
+                  <%= link_to "Ta bort", admin_page_content_path(@page, content), :method => :delete, :confirm => "Är du säker? Detta går inte att ångra.", :class => 'delete' %>
+                </span>
+                <%= render :partial => content.resource_template, :locals => { :resource => content.resource, :page => @page, :content => content } %>
+              <% else %>
+                <%= render :partial => content.collection_template, :locals => { :page => @page, :content => content } %>
+              <% end %>
+              </li>
+            <% end -%>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<%= javascript_include_merged :admin %>
+<%= javascript_include_merged :editor %>
+<%= javascript_include_merged :pages %>
+<%= javascript_include_extensions %>

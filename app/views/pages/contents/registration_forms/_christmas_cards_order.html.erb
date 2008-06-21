@@ -1,0 +1,42 @@
+<% form_for :registration, :url => registrations_path(:anchor => 'new_registration'), :html => { :id => 'new_registration', :class => 'christmas_cards_order' } do |f| %>
+  <%= error_messages_for :registration %>
+  <div style="display:none;">
+    <%= hidden_field_tag 'registration_type', 'ChristmasCardsOrder' %>
+    <%= f.hidden_field :node_id, :value => @node.id %>
+    <%= f.hidden_field :registration_form_id, :value => content.resource.id %>
+  </div>
+  <fieldset>
+    <legend>Beställ julkort för klassen att sälja</legend>
+    <label for="registration_department">Klass</label>
+    <%= f.text_field :school_class, :size => 40 %>
+    <label for="registration_number_of_persons">Antal elever</label>
+    <%= f.text_field :number_of_persons, :size => 8 %>
+    <p class="info">Ni får varsin namnskylt att ha er när ni säljer.</p>
+    <label for="registration_total_items">Antal förpackningar</label>
+    <%= f.text_field :total_items, :size => 8 %>
+    <p class="info">Klassen får behålla 20 kronor för varje förpackning som ni säljer för 95 kronor.</p>
+    <label for="registration_organization">Skola</label>
+    <%= f.text_field :school, :size => 40 %>
+    <label for="registration_address">Gatuadress</label>
+    <%= f.text_field :address, :size => 40 %><br>
+    <label for="registration_post_code">Postnummer</label>
+    <%= f.text_field :post_code, :size => 8 %><br>
+    <label for="registration_locality">Ort</label>
+    <%= f.text_field :locality, :size => 40 %>
+  </fieldset>
+  <fieldset>
+    <legend>Kontaktperson</legend>
+    <label for="registration_first_name">Förnamn</label>
+    <%= f.text_field :first_name, :size => 40 %>
+    <label for="registration_last_name">Efternamn</label>
+    <%= f.text_field :last_name, :size => 40 %>
+    <label for="registration_phone">Telefonnummer dagtid</label>
+    <%= f.text_field :phone, :size => 40 %>
+    <label for="registration_email">E-post</label>
+    <%= f.text_field :email, :size => 40 %>
+    <label for="registration_contact_approval" class="contains-input"><%= f.check_box :contact_approval, :checked => true %> Jag vill få information från UNICEF via e–post. <span class="info">Används endast till UNICEFs egna utskick. Vi lämnar inte ut den till någon annan.</span></label>
+  </fieldset>
+  <div class="submit">
+    <input type="image" name="submit" src="/graphics/forms/submit/skicka_bestallning.gif" value="Skicka beställning »">
+  </div>
+<% end %>

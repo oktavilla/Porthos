@@ -1,0 +1,26 @@
+<% @page_class = "AB campaigns" -%>
+<h1>Kampanjer</h1>
+<div id="content">
+  <div id="c-b">
+  </div>
+  <div di="c-a">
+    <span class="controls">  
+      <%= link_to 'Skapa ny kampanj', new_admin_campaign_path, :onclick => "$('new-campaign').toggle();return false;" %>
+      <%= link_to 'Exportera alla mätpunkter', formatted_admin_measure_points_path(:format => 'csv') %>
+    </span>
+    
+    <% form_for :campaign, @campaign, :url => admin_campaigns_path, :html => { :method => :post, :id => 'new-campaign', :style => "display:none", :class => 'tiny' } do |f| %>
+      <%= render :partial => 'form', :locals => {:f => f}  %>
+      <div class="submit">
+        <%= f.submit "Skapa kampanj" %> eller <%= link_to "Avbryt", previous_view_path(admin_campaigns_path), :onclick => "$('new-campaign').toggle();return false;" %>
+      </div>
+    <% end %>
+    
+    <%= render :partial => 'table', :locals => {:campaigns => Campaign.active} %>
+    
+    <% if Campaign.archived.count != 0  %>
+      <h2>Arkiverade kampanjer</h2>
+      <%= render :partial => 'table', :locals => {:campaigns => Campaign.archived}  %>
+    <% end %>
+  </div>
+</div>

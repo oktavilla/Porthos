@@ -1,0 +1,21 @@
+<% @page_class = 'A' -%>
+<div id="content_header">
+  <h1>Formulär</h1>
+</div>
+<div id="container">
+  <div id="content">
+    <div id="ca">
+      <h2 class="label">Nytt formulär</h1>
+      <div class="inner">
+        <% form_for :registration_form, :url => admin_registration_forms_path do |f| %>
+          <%= render :partial => 'form', :locals => {:f => f} %>
+          <div class="confirm">
+            <input type="submit" value="Lägg till formuläret">
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_merged :admin %>

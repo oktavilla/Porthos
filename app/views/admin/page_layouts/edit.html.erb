@@ -1,0 +1,41 @@
+<% @page_class = "A content" -%>
+<div id="content_header">
+  <h1>Ändra layouten ”<%= @page_layout.name %>”</h1>
+</div>
+<div id="container">
+  <div id="content">
+    <div id="ca">
+      <div class="inner">
+        <% form_for :page_layout, :url => admin_page_layout_path(@page_layout), :html => { :method => :put } do |f| %>
+        <%= error_messages_for :page_layout %>
+          <fieldset>
+            <legend>Attribut</legend>
+            <label for="page_layout_name">Namn</label>
+            <%= f.text_field :name %>
+            <label for="page_layout_name">Stilmalls-klass</label>
+            <%= f.text_field :css_id %>
+            <label for="page_columns">Antal kolumner</label>
+            <%= f.text_field :columns %>
+          </fieldset>
+          <fieldset>
+            <legend>Förvalt innehåll</legend>
+          <% if Textfield.count(:conditions => ["shared = ?", true]) == 0 and ContentModule.count == 0 -%>
+          	<p class="blank-slate">Det finns inget delat innehåll inlagt än</p>
+          <% else -%>
+    	      <% (1..@page_layout.columns).each do |column| %>
+    	      <div class="column" id="column_<%= column %>">
+    	        <label for="page_layout_column_<%= column %>_default_contents">Kolumn <%= column %></label>
+    	        <%= f.select(:contents, @default_textfields.collect { |t| [t.title, t.id] }, { :selected => @page_layout.default_contents.in_column(column, :conditions => ["resource_type = ?", 'Textfield']).collect { |c| c.resource.id } }, :multiple => true, :name => "page_layout[contents][#{column}][Textfield][]",     :id => "page_layout_column_#{column}_default_contents") if Textfield.count(:conditions => ["shared = ?", true]) != 0 %>
+    	        <%= f.select(:contents, @default_modules.collect    { |m| [m.name, m.id] },  { :selected => @page_layout.default_contents.in_column(column, :conditions => ["resource_type = ?", 'ContentModule']).collect { |c| c.resource.id } }, :multiple => true, :name => "page_layout[contents][#{column}][ContentModule][]", :id => "page_layout_column_#{column}_default_contents") if ContentModule.count != 0 %>
+    	      </div>
+    	      <% end %>
+          <% end -%>
+          </fieldset>
+          <div class="confirm">
+            <%= submit_tag 'Spara', :class => 'button' %> eller <%= link_to "avbryt", previous_view_path(admin_page_layouts_path) %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

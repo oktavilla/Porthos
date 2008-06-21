@@ -1,0 +1,25 @@
+<% @page_class = @page.layout_class -%>
+<% @page_title = @page.title -%>
+<% @page_id = 'pages-show' -%>
+<% if @breadcrumbs and @breadcrumbs.any? -%>
+  <%= render :partial => 'shared/breadcrumbs', :locals => { :breadcrumbs => @breadcrumbs } %>
+<% end %>
+  <div id="c_w"><div class="c_w2">
+    <div id="content">
+    <% (1..@page.column_count).each do |column| %>
+      <div id="c_<%= column %>" class="column">
+      <% @page.contents.active.find_all { |content| content.column_position == column }.each do |content| -%>
+        <% if content.collection? -%>
+          <%= render(:partial => "/pages/contents/#{content.resource_type.underscore.pluralize}/collection.html.erb", :locals => { :page => @page, :content => content }) %>
+        <% elsif content.module? -%>
+          <%= render(:partial => "/pages/contents/modules/#{content.resource.template}.html.erb", :locals => { :page => @page, :content => content }) %>
+        <% elsif content.form? -%>
+          <%= render(:partial => "/pages/contents/registration_forms/#{content.resource.template}.html.erb", :locals => { :page => @page, :content => content, :resource => content.resource }) %>
+        <% else %>
+          <%= render(:partial => "/pages/contents/#{content.resource_type.underscore}.html.erb", :locals => { :resource => content.resource, :page => @page, :content => content }) %>
+        <% end %>
+      <% end -%>
+      </div>
+    <% end %>
+    </div>
+  </div></div>

@@ -1,0 +1,20 @@
+#top_wrapper:after,
+#nav:after,
+#main_nav:after,
+#wrapper:after,
+#content:after,
+#assets ul.assets:after,
+#assets ul.assets li:after,
+.controls:after,
+.page_layout:after,
+.graphic:after,
+.sub_controls:after,
+.action_dialog_container ul.assets:after,
+.action_dialog_container .dialog_content:after,
+.action_dialog_container .dialog_content form:after,
+form:after {
+  content:".";
+  display:block;
+  height:0;
+  clear:both;
+  visibility:hidden; }

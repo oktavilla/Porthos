@@ -1,0 +1,38 @@
+<% form_for :registration, :url => registrations_path(:anchor => 'new_registration'), :html => { :id => 'new_registration', :class => 'global_parent' } do |f| %>
+  <%= error_messages_for :registration %>
+  <div style="display:none;">
+    <%= hidden_field_tag 'registration_type', 'GlobalParent' %>
+    <%= f.hidden_field :node_id, :value => @node.id %>
+    <%= f.hidden_field :registration_form_id, :value => content.resource.id %>
+  </div>
+  <h2 class="step1">Ja, jag blir <strong>Världsförälder</strong> och <strong>vill varje månad ge</strong> ...</h2>
+  <fieldset id="registration_amount_wrap" class="no-legend">
+    <legend>Ja, jag blir Världsförälder och vill varje månad ge ...</legend>
+    <ul id="amounts">
+      <li><label for="registration_total_sum_100"><%= f.radio_button :total_sum, 100, :id => 'registration_total_sum_100', :checked => (!@registration or @registration.total_sum.cents == 10000) ? 'checked' : '' %> 100 kr/mån</label></li>
+      <li><label for="registration_total_sum_150"><%= f.radio_button :total_sum, 150, :id => 'registration_total_sum_150', :checked => (@registration and @registration.total_sum.cents == 15000) ? 'checked' : '' %> 150 kr/mån</label></li>
+      <li><label for="registration_total_sum_200"><%= f.radio_button :total_sum, 200, :id => 'registration_total_sum_200',:checked => (@registration and @registration.total_sum.cents == 20000) ? 'checked' : '' %> 200 kr/mån</label></li>
+    </ul>
+  </fieldset>
+  <p class="notice">När du anmält dig får du en autogiroblankett hemsänd inom en vecka. Du kan när som helst upphöra med ditt givande.</p>
+  <h2 class="step2">Mina kontaktuppgifter</h2>
+  <fieldset id="personal" class="no-legend">
+    <legend>Mina kontaktuppgifter</legend>
+    <label for="registration_first_name">Förnamn</label>
+    <%= f.text_field :first_name, :size => 40 %>
+    <label for="registration_last_name">Efternamn</label>
+    <%= f.text_field :last_name, :size => 40 %>
+    <label for="registration_address">Gatuadress</label>
+    <%= f.text_field :address, :size => 40 %><br>
+    <label for="registration_post_code">Postnummer</label>
+    <%= f.text_field :post_code, :size => 8 %><br>
+    <label for="registration_locality">Ort</label>
+    <%= f.text_field :locality, :size => 40 %>
+    <label for="registration_email">E-postadress</label>
+    <%= f.text_field :email, :size => 40 %>
+    <label for="registration_contact_approval" class="contains-input"><%= f.check_box :contact_approval, { :value => 1, :checked => (!@registration || @registration.contact_approval?) } %> Jag vill få information från UNICEF via e–post. <span class="info">Används endast till UNICEFs egna utskick. Vi lämnar inte ut den till någon annan.</span></label>
+  </fieldset>
+  <div class="submit">
+    <input type="image" name="submit" src="/graphics/forms/submit/bli_varldsforalder.gif" value="Bli Världsförälder »">
+  </div>
+<% end %>

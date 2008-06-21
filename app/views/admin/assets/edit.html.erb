@@ -1,0 +1,52 @@
+<% @page_title = "Filarkiv" %>
+<% @page_class = "AB" %>
+<div id="content_header">
+  <h1>Filer och dokument</h1>
+</div>
+<div id="container">
+  <div id="content">
+    <h2 class="label">Uppdatera filen ”<%= @asset.title %>”</h2>
+    <div id="cb">
+      <div class="inner"> 
+        <% if @asset.image? %>
+          <%= image_tag display_image_path(:size => 'h170', :id => @asset, :format => @asset.extname), :id => "asset_#{@asset.id}" %>
+        <% elsif @asset.movie? %>
+          <%= flash_mediaplayer_tag(@asset, { :width => '250', :height => '240' }) %>
+        <% elsif @asset.sound? %>
+          <%= flash_mediaplayer_tag(@asset, { :width => '250', :height => '20' }) %>
+        <% else %>
+          <span class="icon large <%= @asset.extname %>"></span>
+        <% end %>
+        <div class="fileinfo">
+          <ul>
+            <li><span>Uppladdad</span> <%= @asset.created_at.strftime("%Y-%m-%d %H:%M") %></li>
+            <li><span>Filnamn</span> <%= "#{@asset.file_name}.#{@asset.extname}" %></li>
+            <li><span>Format</span> <%= @asset.extname.upcase %>-fil</li>
+            <li><span>Storlek</span> <%= number_to_human_size(@asset.size) %></li>
+          </ul>
+          <p class="download"><%= link_to "Ladda ned orginal", download_asset_path(@asset.file_name, @asset.extname) %>
+        </div>
+      </div>
+    </div>
+    <div id="ca">     
+      <div class="inner"> 
+        <% form_for :asset, @asset, :url => admin_asset_url(@asset), :html => { :method => :put } do |f| %>
+          <div class="inner">
+          <label for="asset_title">Titel/Alt text</label>
+          <%= f.text_field "title", :size => 50 %>
+          <label for="asset_description">Beskrivning</label>
+          <%= f.text_area "description", :class => 'descripition', :rows => 6 %>
+          <label for="asset_copyright">Fotograf/copyright</label>
+          <%= f.text_field "author", :size => 50 %>
+          <label for="asset_tags">Nyckelord <span class="info">Separera flera nyckelord med komma</span></label>
+          <%= f.text_area :tag_names, :value => @asset.tag_names, :id => 'asset_tags', :rows => 2 %>
+          <div class="confirm">
+            <%= submit_tag 'Spara ändringar' %> eller <%= link_to "avbryt", previous_view_path(admin_assets_path) %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<%= javascript_include_merged :admin %>
+<%= javascript_include_merged :assets %>

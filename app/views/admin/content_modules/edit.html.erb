@@ -1,0 +1,19 @@
+<% @page_class = 'A' -%>
+<div id="content_header">
+  <h1>Innehållsmoduler</h1>
+</div>
+<div id="container">
+  <div id="content">
+    <div id="ca">
+      <% form_for :content_module, @content_module, :url => admin_content_module_path(@content_module), :html => { :class => 'tiny', :method => :put } do |f| %>
+        <fieldset>
+          <legend>Ändra innehållsmodulen ”<%= @content_module.name %>”</legend>
+          <%= render :partial => 'form', :locals => { :f => f } %>
+        </fieldset>
+        <div class="confirm">
+          <%= submit_tag 'Spara', :class => 'button' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

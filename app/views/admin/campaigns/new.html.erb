@@ -1,0 +1,13 @@
+<% @page_class = "A campaigns" -%>
+<h1>Ny kampanj</h1>
+
+<div id="content">
+  <div id="c-a">
+    <% form_for(@campaign) do |f| %>
+      <%= render :partial => 'form', :locals => {:f => f}  %>
+      <div class="submit">
+        <%= f.submit "Skapa kampanj" %> eller <%= link_to "Avbryt", previous_view_path(admin_campaigns_path) %>
+      </div>
+    <% end %>
+  </div>
+</div>

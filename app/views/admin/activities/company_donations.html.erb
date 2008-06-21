@@ -1,0 +1,48 @@
+<% @page_class = 'AxB' -%>
+<div id="content_header">
+  <%= link_to "« Tillbaka till översikt", admin_activities_path, :class => 'back' %>
+  <h1>Företagsgåvor</h1>
+</div>
+<div id="container">
+  <div id="content">
+    <div id="ca">
+      <div class="inner">
+        <%= render :partial => 'activities_nav', :locals => {:type => @type} %>
+      </div>
+    </div>
+    <div id="cb">
+      <div class="inner">
+        <% activity_table(@first_period, @second_period) do %>
+          <tbody>
+            <tr class="totals">
+              <th scope="colgroup"><%= link_to "Företagsgåvor", admin_registration_activity_path(:type => 'company_donations') %></th>
+              <% sum_first_period, sum_second_period = CompanyDonation.total_sum(:period => @first_period), CompanyDonation.total_sum(:period => @second_period) -%>
+              <% diff = sum_first_period - sum_second_period -%>
+              <td><%= number_to_currency sum_second_period.to_f %></td>
+              <td><%= number_to_currency sum_first_period.to_f %></td>
+              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f %></td>
+            </tr>
+            <tr>
+              <th scope="row">Gåvor</th>
+              <% num_first_period, num_second_period = CompanyDonation.with_period(@first_period).count, CompanyDonation.with_period(@second_period).count -%>
+              <% diff = num_first_period - num_second_period %>
+              <td><%= num_second_period %> st</td>
+              <td><%= num_first_period %> st</td>
+              <td><%= '+' if diff > 0 %><%= diff %> st</td>
+            </tr>
+            <tr>
+              <th scope="row">Genomsnitt</th>
+              <% average_sum_first_period, average_sum_second_period = CompanyDonation.average_sum(:period => @first_period), CompanyDonation.average_sum(:period => @second_period) -%>
+              <% diff = average_sum_first_period - average_sum_second_period %>
+              <td><%= number_to_currency average_sum_second_period.to_f, :precision => 2 %></td>
+              <td><%= number_to_currency average_sum_first_period.to_f, :precision => 2 %></td>
+              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f, :precision => 2 %></td>
+            </tr>
+          </tbody>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_merged :admin %>

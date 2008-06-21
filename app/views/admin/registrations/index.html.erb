@@ -1,0 +1,15 @@
+<% @page_class = "AB conversions" -%>
+<h1><%= @type.constantize.localized_model_name %></h1>
+<div id="content">
+  <div id="c-b">
+    <%= render :partial => 'nav', :locals => { :current_type => @type } %>
+  </div>
+  <div id="c-a">
+  <% if @registrations.any? -%>
+    <%= render :partial => "table", :locals => { :registrations => @registrations } %>
+  <% else -%>
+    <p class="blank-slate">Det finns inga registreringar av den här typen</p>
+  <% end -%>
+    <%= will_paginate @registrations %>
+  </div>
+</div>

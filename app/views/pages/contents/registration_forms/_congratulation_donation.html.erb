@@ -1,0 +1,96 @@
+<% form_for :registration, :url => registrations_path(:anchor => 'new_registration'), :html => { :id => 'new_registration', :class => 'donation' } do |f| %>
+  <%= error_messages_for :registration %>
+  <div style="display:none;">
+    <%= hidden_field_tag 'registration_type', 'CongratulationGiftDonation' %>
+    <%= f.hidden_field :target_code, :value => resource.target_code %>
+    <%= f.hidden_field :node_id, :value => @node.id %>
+    <%= f.hidden_field :registration_form_id, :value => content.resource.id %>
+  </div>
+  <h2 class="step1">Gratulationskort</h2>
+  <fieldset id="card" class="no-legend">
+    <legend>Gratulationskort</legend>
+    
+    <label for="registration_receiver_name"><span class="required">*</span> Födelsdagsbarnet</label>
+    <%= f.text_field :receiver_name, :size => 40 %>
+    
+    <label for="registration_receive_date">Födelsedag (datum)</label>
+    <%= f.text_field :receive_date, :size => 40 %>
+  
+    <label for="registration_giver_name"><span class="required">*</span> Avsändare</label>
+    <%= f.text_field :giver_name, :size => 40 %>
+  
+    <label for="registration_message"><span class="required">*</span> Meddelande som du vill att vi skriver på kortet</label>
+    <%= f.text_area :message, :rows => 6 %>
+  </fieldset>
+  <fieldset id="gift">
+    <legend>Gåva</legend>
+    <label for="registration_total_sum_other"><span class="required">*</span> Gåvobelopp</label>
+    <%= f.text_field :total_sum_user_defined, :size => 6 %> kr
+  </fieldset>
+  <fieldset if="send_to">
+    <legend>Vart kortet ska skickas</legend>  
+    <label for="order_shipping_organisation"><span class="required">*</span> Namn</label>
+    <%= f.text_field :shipping_organisation, :size => 40 %><br>
+    <label for="order_shipping_address"><span class="required">*</span> Adress</label>
+    <%= f.text_field :shipping_address, :size => 40 %><br>
+    <label for="order_shipping_post_code"><span class="required">*</span> Postnummer</label>
+    <%= f.text_field :shipping_post_code, :size => 8 %><br>
+    <label for="order_shipping_locality"><span class="required">*</span> Ort</label>
+    <%= f.text_field :shipping_locality, :size => 40 %>
+  </fieldset>
+  <h2 class="step2">Mina kontaktuppgifter</h2>
+  <fieldset id="personal" class="no-legend">
+    <legend>Mina kontaktuppgifter</legend>
+    <label for="registration_first_name"><span class="required">*</span> Förnamn</label>
+    <%= f.text_field :first_name, :size => 40 %>
+    <label for="registration_last_name"><span class="required">*</span> Efternamn</label>
+    <%= f.text_field :last_name, :size => 40 %>
+    <label for="registration_email"><span class="required">*</span> E-postadress</label>
+    <%= f.text_field :email, :size => 40 %>
+    <label for="registration_contact_approval" class="contains-input"><%= f.check_box :contact_approval, { :value => 1, :checked => 'checked' } %> Jag vill få information från UNICEF via e–post. <span class="info">Används endast till UNICEFs egna utskick. Vi lämnar inte ut den till någon annan.</span></label>
+    <label for="registration_address">Gatuadress</label>
+    <%= f.text_field :address, :size => 40 %><br>
+    <label for="registration_post_code">Postnummer</label>
+    <%= f.text_field :post_code, :size => 8 %><br>
+    <label for="registration_locality">Ort</label>
+    <%= f.text_field :locality, :size => 40 %>
+  </fieldset>
+  <h2 class="step4">Jag vill betala med ...</h2>
+  <fieldset id="registration_payment_method_creditcard" class="payment_methods">
+    <legend>Kreditkort</legend>
+    <ul>
+      <% Payment.payment_methods.find_all { |method| Payment.creditcard_methods.include?(method[:method]) }.each do |method| -%>
+      <li class="<%= "#{method[:id]} #{cycle(' first','',' last')}" %>">
+        <label for="registration_<%= method[:id] %>">
+          <span class="info">
+            <input type="radio" name="registration[payment_type]" id="registration_<%= method[:id] %>" value="<%= method[:id] %>"<%= ' checked="checked"' if @registration and method[:method] == @registration.payment_type %>>
+            <%= method[:name] %>
+          </span>
+          <%= image_tag ("/graphics/forms/payment/logo-#{method[:id]}.gif", :alt => method[:name]) %>
+        </label>
+      </li>
+      <% end -%>
+    </ul>
+  </fieldset>
+  <fieldset id="registration_payment_method_internetbank" class="payment_methods">
+    <legend>Internetbank</legend>
+    <ul>
+      <% Payment.payment_methods.find_all { |method| Payment.direct_payment_methods.include?(method[:method]) }.each do |method| -%>
+      <li class="<%= "#{method[:id]} #{cycle(' first','','',' last')}" %>">
+        <label for="registration_<%= method[:id] %>">
+          <span class="info">
+            <input type="radio" name="registration[payment_type]" id="registration_<%= method[:id] %>" value="<%= method[:id] %>"<%= ' checked="checked"' if @registration and method[:method] == @registration.payment_type %>>
+            <%= method[:name] %>
+          </span>
+          <%= image_tag ("/graphics/forms/payment/logo-#{method[:id]}.gif", :alt => method[:name]) %>
+        </label>
+      </li>
+      <% end -%>
+    </ul>
+  </fieldset>
+  <p class="secure notice" id="creditcard_notice">När du går vidare kommer du till <strong>en säker betalsida</strong> för kreditkort, där du utför överföringen av din gåva.</p>
+  <p class="secure notice" id="direct_payment_notice">När du går vidare kommer du till din internetbank, via <strong>en säker anslutning</strong>.</p>
+  <div class="submit">
+    <input type="image" name="submit" src="/graphics/forms/submit/fortsatt_till_betalning.gif" value="Fortsätt till betalning »">
+  </div>
+<% end %>

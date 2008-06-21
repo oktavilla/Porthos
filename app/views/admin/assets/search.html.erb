@@ -1,0 +1,62 @@
+<% @page_title = "Filarkiv" %>
+<% @page_class = "A" %>
+<div id="content_header">
+  <h1>Sök filer och dokument</h1>
+</div>
+<div id="container">
+  <span class="controls">
+    <% form_for :asset, :url => search_admin_assets_path, :html => { :method => :get } do |f| %>
+      <input type="text" value="Sök filer och dokument" name="query" class="search query"> <input type="submit" value="Sök">
+    <% end %>
+  </span>
+  <div id="content">
+    <div id="ca">
+      <span class="notice info">
+        <% if @assets.any? %>
+          <%= @search.total_entries %> filer hittades med sökningen ”<span class="query"><%= @query %></span>”.
+          <%= link_to "Tillbaka", admin_assets_path, :class => 'back' %>
+        <% else %>
+          Inga filer hittades på din sökning. <%= link_to "Tillbaka till senaste filer", admin_assets_path, :class => 'back' %>
+        <% end %>
+      </span>
+      <div class="inner">
+        <% if @assets.any? %>
+        <ul class="assets">
+          <% @assets.each do |asset| %>
+         		<li class="<%= cycle 'even', 'odd' %>">
+              <% unless asset.nil? -%>
+              <span class="asset">
+        				<% if asset.image? %>
+        					<%= image_tag display_image_path(:size => 'c87x87', :id => asset, :format => asset.extname), :id => "asset_#{asset.id}" %>
+                <% else %>
+        					<span class="icon <%= asset.extname %>"></span>
+        				<% end %>
+                <div class="meta">
+                  <span class="title"><%= asset.title %></span>
+                  <span class="description<%= ' empty' if asset.description.blank? %>"><%= asset.description.blank? ? "(Beskrivning saknas)" : asset.description %></span>
+                  <% unless asset.tag_names.blank? %>
+          					<span class="tags">
+          					  <span class="type">Nyckelord:</span> 
+          					  <span class="value"><%= asset.tags.collect { |tag| @current_tags.include?(tag.name) ? link_to(tag.name, admin_assets_path(:tags => [tag.name])) : link_to(tag.name, admin_assets_path(:tags => [tag.name])) }.join(', ') -%></span>
+          					</span>
+          				<% end %>
+          				<span class="created">
+          				  <span class="type">Uppladdad:</span> 
+          				  <span class="value"><%= asset.created_at.strftime("%Y-%m-%d %H:%I") %></span>
+          				</span>
+          			</div>
+              </span>
+              <span class="controls general"><%= link_to "Ändra", edit_admin_asset_path(asset), :class => 'edit' %><%= link_to "Ta bort", admin_asset_path(asset), :class => 'delete', :confirm => "Är du säker?", :method => :delete %></span>
+              <% end -%>
+            </li>
+          <% end %>
+        </ul>
+        <%= will_paginate @search, :prev_label => "« Föregående", :next_label => "Nästa »" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_merged :admin %>
+<%= javascript_include_merged :assets %>

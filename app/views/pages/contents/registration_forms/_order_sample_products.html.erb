@@ -1,0 +1,57 @@
+<% form_for :registration, :url => registrations_path(:anchor => 'new_registration'), :html => { :id => 'new_registration', :class => 'sample_card_order' } do |f| %>
+  <%= error_messages_for :registration %>
+  <div style="display:none;">
+    <%= hidden_field_tag 'registration_type', 'SampleProductOrder' %>
+    <%= f.hidden_field :node_id, :value => @node.id if @node %>
+    <%= f.hidden_field :registration_form_id, :value => content.resource.id %>
+  </div>
+  <h2 class="step1">Välj 5 provkort</h2>
+  <div class="product_collection">
+  <ul class="sample-products">
+    <% resource.product_category.products.each do |product| %>
+      <div class="product <%= cycle("odd","even") %>">
+        <div class="details">
+          <span class="primary-image">
+          <% if product.images.primary -%>
+            <%= link_to image_tag(display_image_path(:size => 'c140x140', :id => product.images.primary, :format => product.images.primary.extname), :alt => product.name), shop_product_path(resource.product_category.shop.slug, resource.product_category.slug, product.article_number) %>
+          <% else -%>
+            <%= link_to image_tag("/graphics/shops/product-image-missing.gif", :width => 140, :height => "140", :alt => "Bild saknas för #{product.name}"), shop_product_path(resource.product_category.shop.slug, resource.product_category.slug, product.article_number) %>
+          <% end %>
+          </span>
+          <h3><%= link_to product.name, shop_product_path(resource.product_category.shop.slug, resource.product_category.slug, product.article_number) %></h3>
+          <p><%= product.short_description %></p>
+        </div>
+        <div class="add-to-cart">
+          <label for="registration_selected_products_<%= product.article_number %>" class="contains-input"><%= check_box_tag "registration[selected_products][#{product.article_number}]", nil, nil, :class => 'add_product', :id => "registration_selected_products_#{product.article_number}" %> Beställ som exempel</label>
+        </div>
+      </div>
+    <% end %>
+  </ul>
+  </div>
+  <h2 class="step2">Fyll i dina uppgifter</h2>
+  <fieldset>
+    <legend>Leveransadress</legend>
+    <label for="registration_organization">Företag</label>
+    <%= f.text_field :organization, :size => 40 %>
+    <label for="registration_shipping_address">Address</label>
+    <%= f.text_field :shipping_address, :size => 40 %><br>
+    <label for="registration_shipping_post_code">Postnummer</label>
+    <%= f.text_field :shipping_post_code, :size => 8 %><br>
+    <label for="registration_shipping_locality">Ort</label>
+    <%= f.text_field :shipping_locality, :size => 40 %>
+  </fieldset>
+  <fieldset>
+    <legend>Kontaktperson</legend>
+    <label for="registration_first_name">Förnamn</label>
+    <%= f.text_field :first_name, :size => 40 %>
+    <label for="registration_last_name">Efternamn</label>
+    <%= f.text_field :last_name, :size => 40 %>
+    <label for="registration_phone">Telefon</label>
+    <%= f.text_field :phone, :size => 40 %>
+    <label for="registration_email">E-post</label>
+    <%= f.text_field :email, :size => 40 %>
+  </fieldset>
+  <div class="submit">
+    <input type="image" name="submit" src="/graphics/forms/submit/skicka_bestallning.gif" value="Skicka beställning »">
+  </div>
+<% end %>

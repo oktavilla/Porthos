@@ -1,0 +1,66 @@
+<table>
+  <tr>
+    <th scope="row">Skapad</th>
+    <td><%= registration.created_at.strftime("%d %B %Y, %H:%M") %></td>
+  </tr>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="2">Mottagare</th>
+    </tr>
+  </thead>
+  <tr>
+    <th scope="tow">Namn</th>
+    <td><%= registration.recipient.first_name %> <%= registration.recipient.last_name %></td>
+  </tr>
+
+  <tr>
+    <th scope="row">Adress</th>
+    <td><%= registration.recipient.address %></td>
+  </tr>
+  
+  <tr>
+    <th scope="row">Postadress</th>
+    <td><%= registration.recipient.post_code %> <%= registration.recipient.locality %></td>
+  </tr>
+  
+  <tr>
+    <th scope="row">Period</th>
+    <td><%= registration.recipient.period %></td>
+  </tr>
+  
+</table>
+<table>
+  <thead>
+    <tr>
+      <th colspan="2">Givare</th>
+    </tr>
+  </thead>
+
+  <tr>
+    <th scope="row">Namn</th>
+    <td><%= registration.name %></td>
+  </tr>
+
+  <tr>
+    <th scope="row">Adress</th>
+    <td><%= registration.address %></td>
+  </tr>
+  
+  <tr>
+    <th scope="row">Postadress</th>
+    <td><%= registration.post_code %> <%= registration.locality %></td>
+  </tr>
+  
+  <tr>
+    <th scope="row">E-post</th>
+    <td><%= mail_to registration.email, registration.email %></td>
+  </tr>
+  
+  <tr>
+    <th scope="row">Vill ha utskick</th>
+    <td><%= registration.contact_approval ? 'Ja' : 'Nej' %></td>
+  </tr>
+</table>

@@ -1,0 +1,9 @@
+<% unless content.shared? -%>
+<div class="textfield">
+  <div class="textfield_content">
+    <%= resource.body %>
+  </div>
+</div>
+<% else -%>
+  <%= resource.title %> <span class="notice">Delat innehåll</span>
+<% end -%>

@@ -1,0 +1,36 @@
+<% @page_class = "AB content" -%>
+<div id="content_header">
+  <h1>Alla layouter</h1>
+</div>
+<div id="container">
+  <div id="content">
+    <div id="cb">
+      <div class="inner">
+        <% form_for :page_layout, :url => admin_page_layouts_path do |f| %>
+          <fieldset>
+            <legend>Lägg till en ny layout</legend>
+            <label for="page_layout_name">Namn</label>
+            <%= f.text_field :name %>
+            <label for="page_layout_name">Klass</label>
+            <%= f.text_field :css_id %>
+            <label for="page_columns">Kolumner</label>
+            <%= f.text_field :columns %>
+          </fieldset>
+          <div class="confirm">
+            <%= submit_tag 'Spara' %> 
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div id="ca">
+      <div class="inner">
+        <% nested_list_of @page_layouts, {}, :class => 'gl' do |page_layout| %>
+          <%= page_layout.name %> 
+          <span class="controls general">
+            <%= link_to "Ändra", edit_admin_page_layout_path(page_layout), :class => 'edit' %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

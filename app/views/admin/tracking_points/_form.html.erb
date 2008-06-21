@@ -1,0 +1,11 @@
+<%= f.hidden_field :parent_type, :value => parent.class %>
+<%= f.hidden_field :parent_id, :value => parent.id %>
+
+<label for="content_module_name">Namn</label>
+<%= f.text_field :name %>
+<label for="content_module_template">Modul</label>
+<%= f.select :template, TrackingPoint.find_available_templates.collect {|template| [template.humanize, template]} %>
+<label for="content_event">Event / tag id</label>
+<%= f.text_field :event %>
+<label for="content_event">Checksum</label>
+<%= f.text_field :checksum %>

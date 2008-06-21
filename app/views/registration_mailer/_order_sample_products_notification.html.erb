@@ -1,0 +1,14 @@
+Ny order av provkort
+
+Företag: <%= @registration.organization %>
+Adress: <%= @registration.shipping_address %>
+Postadress: <%= @registration.shipping_post_code %> <%= @registration.shipping_locality %>
+
+Namn: <%= @registration.first_name %> <%= @registration.last_name %>
+Telefon: <%= @registration.phone %>
+E-mail: <%= @registration.email %>
+
+Beställda kort:
+<% @registration.sample_product_order_items.each do |card| -%>
+<%= card.article_number %>
+<% end -%>

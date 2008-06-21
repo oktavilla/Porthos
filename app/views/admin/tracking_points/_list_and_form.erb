@@ -1,0 +1,21 @@
+<div id="tracking-points" style="display:none">
+  <h2>Spårningspunkter</h2>
+  <span class="controls"><%= link_to "Lägg till ny spårningspunkt", new_admin_tracking_point_path, :onclick => "$('tracking-point-form').toggle();return false;"%></span>
+  <% form_for :tracking_point, :url => admin_tracking_points_path, :html => { :style => 'display: none', :class => 'tiny', :id => 'tracking-point-form' } do |f| %>
+    <%= hidden_field_tag :return_to, request.request_uri %>
+    <fieldset>
+      <legend>Lägg till spårningspunkt</legend>
+      <%= render :partial => 'admin/tracking_points/form', :locals => {:f => f, :parent => parent} %>
+    </fieldset>
+    <div class="submit">
+      <%= submit_tag 'Spara' %> eller <%= link_to "Avbryt", :onclick => "$('tracking-point-form').hide();return false;" %>
+    </div>
+  <% end -%>  
+  <% if parent.tracking_points.any? %>  
+    <ul>
+      <% parent.tracking_points.each do |point| %>
+        <li><%= link_to "#{point.name} - #{point.template.humanize}", edit_admin_tracking_point_path(point.id) %><div class="settings"><%= button_to "Radera", admin_tracking_point_path(point), { :method => :delete, :class => "delete", :src => "/graphics/porthos/icons/trash.gif", :confirm => "Är du säker, detta går inte att ångra." } %></div></lu>
+      <% end %>
+    </ul>
+  <% end -%>
+</div>

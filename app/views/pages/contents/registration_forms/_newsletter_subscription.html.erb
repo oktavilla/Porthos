@@ -1,0 +1,17 @@
+<% form_for :registration, :url => registrations_path(:anchor => 'new_registration'), :html => { :id => 'new_registration' } do |f| %>
+  <%= error_messages_for :registration %>
+  <div style="display:none;">
+    <%= hidden_field_tag 'registration_type', 'NewsletterSubscription' %>
+    <%= f.hidden_field :node_id, :value => @node.id %>
+    <%= f.hidden_field :registration_form_id, :value => content.resource.id %>
+  </div>
+  <fieldset>
+    <legend>Håll koll på barnen!</legend>
+    <p>Ett sätt att påverka barnens framtid är att lära sig mer om deras situation.</p>
+    <label for="registration_name">Ditt namn</label>
+    <%= f.text_field :name, :size => 32 %>
+    <label for="registration_email">Din e-postadress</label>
+    <%= f.text_field :email, :size => 32 %>
+    <input type="image" name="submit" src="/graphics/forms/submit/prenumerera.gif" class="submit" value="Prenumerera »">
+  </fieldset>
+<% end %>

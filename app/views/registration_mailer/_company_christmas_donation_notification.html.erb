@@ -1,0 +1,47 @@
+Företagsjulgåva
+
+Belopp
+<%= @registration.total_sum %> kr
+
+Projekt
+<%= @registration.target_code %>
+<% if @registration.ecard_image_id %>
+Motiv
+<%= @registration.ecard_image_id %>
+<% end -%>
+<% if @registration.message %>
+Hälsning
+<%= @registration.message %>
+<% end -%>
+<% if @registration.company_logo %>
+Logotyp
+http://www.unicef.se/assets/<%= @registration.company_logo.full_name %>
+<% end -%>
+
+Företag
+<%= @registration.organization %>
+
+Organisationsnummer
+<%= @registration.organization_number %>
+
+Fakturaadress
+<%= @registration.address %>
+
+Postnummer
+<%= @registration.post_code %>
+
+Ort
+<%= @registration.locality %>
+
+
+Namn
+<%= @registration.name %>
+
+Telefon
+<%= @registration.phone %>
+
+E-mail
+<%= @registration.email %>
+
+Vill ha utskick
+<%= @registration.contact_approval ? 'Ja' : 'Nej' %>

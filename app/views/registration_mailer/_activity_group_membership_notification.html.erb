@@ -1,0 +1,21 @@
+Ny anmälan om att gå med i en UNICEF-grupp
+
+<% if registration.activity_group -%>
+Anmälan gäller UNICEF-gruppen i: <%= registration.activity_group.name %>.
+<% else -%>
+Personen vill starta en ny grupp på sin ort.
+<% end -%>
+
+Skapad: <%= registration.created_at.strftime("%d %B %Y, %H:%M") %>
+
+Kontaktuppgifter
+<%= registration.name %>
+<%= registration.email %>
+
+<%= registration.address %>
+<%= registration.post_code %> <%= registration.locality %>
+
+Telefon: <%= registration.phone %>
+Mobil:   <%= registration.cell_phone %>
+
+Vill ha utskick: <%= @registration.contact_approval? ? 'Ja' : 'Nej' %>

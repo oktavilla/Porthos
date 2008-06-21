@@ -1,0 +1,28 @@
+<% form_for :registration, :url => registrations_path(:anchor => 'new_registration'), :html => { :id => 'new_registration' } do |f| %>
+  <%= error_messages_for :registration %>
+  <div style="display:none;">
+    <%= hidden_field_tag 'registration_type', 'WillInformationOrder' %>
+    <%= f.hidden_field :node_id, :value => @node.id %>
+    <%= f.hidden_field :registration_form_id, :value => content.resource.id %>
+  </div>
+  <fieldset>
+    <legend>Skicka efter informationsmaterial om arv och testamente</legend>
+    <label for="registration_first_name">Förnamn</label>
+    <%= f.text_field :first_name, :size => 40 %>
+    <label for="registration_last_name">Efternamn</label>
+    <%= f.text_field :last_name, :size => 40 %>
+    <label for="registration_address">Gatuadress</label>
+    <%= f.text_field :address, :size => 40 %>
+    <label for="registration_post_code">Postnummer</label>
+    <%= f.text_field :post_code, :size => 8 %><br>
+    <label for="registration_locality">Ort</label>
+    <%= f.text_field :locality, :size => 40 %><br>
+    <label for="registration_email">E-post</label>
+    <%= f.text_field :email, :size => 40 %>
+    <label for="registration_contact_approval" class="contains-input"><%= f.check_box :contact_approval, :checked => true %> Jag vill få information från UNICEF via e–post. <span class="info">Används endast till UNICEFs egna utskick. Vi lämnar inte ut den till någon annan.</span></label>
+  </fieldset>
+  <p class="notice">OBS! Ditt svar behandlas konfidentiellt och du förbinder dig givetvis inte på något sätt att nämna UNICEF i ditt testamente.</p>
+  <div class="submit">
+    <input type="image" name="submit" src="/graphics/forms/submit/skicka.gif" value="Skicka »">
+  </div>
+<% end %>

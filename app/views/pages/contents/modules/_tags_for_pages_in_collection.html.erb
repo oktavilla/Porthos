@@ -1,0 +1,10 @@
+<% page = (@page.child? ? @page.parent : @page) -%>
+<div class="tags">
+  <ul>
+  <% page.pages.tags.each do |tag| %>
+    <li<%= ' class="current"' if params[:tags] and params[:tags].include?(tag.name) %>>
+    <a href="/<%= @node.slug %>?tags[]=<%= tag.name %>"><%= tag.name %></a>
+    </li>
+  <% end %> 
+  </ul>
+</div>

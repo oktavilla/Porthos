@@ -1,0 +1,16 @@
+<table>
+  <tr>
+    <th>Datum</th>
+    <th>Namn/företag</th>
+    <th>E-post</th>
+    <th>Typ</th>
+  </tr>
+  <% registrations.each do |registration| -%>
+  <tr>
+    <td><%= registration.created_at.strftime("%d %B %Y") %></td>
+    <td><%= registration.name %> <%= link_to "Visa detaljer", admin_registration_path(registration.class, registration) %></td>
+    <td><%= mail_to registration.email, registration.email %></td>
+    <td><%= registration.class.localized_model_name %></td>
+  </tr>
+  <% end -%>
+</table>

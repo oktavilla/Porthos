@@ -1,0 +1,12 @@
+<% @page_class = 'A' %>
+<h1>Redigera text på sidan ”<%= @page.title %>”</h1>
+<div id="content">
+  <div id="c-a">
+    <% form_for :textfield, @content.resource, :url => admin_page_content_path(@page, @content), :html => { :method => :put } do |f| %>
+      <%= render :partial => 'admin/contents/textfields/form', :locals => { :page => @page, :content => @content, :f => f } %>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript">
+  Porthos.Editor.Initialize();
+</script>

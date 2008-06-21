@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>UNICEF Sverige<%= " | #{@page_title}" if @page_title %></title>
+  <%= stylesheet_link_tag "admin" %>
+  <%= stylesheet_link_tag "wymeditor" %>
+  <%= javascript_include_tag 'prototype' %>
+  <%= javascript_include_tag 'effects' %>
+  <%= javascript_include_tag 'controls' %>
+  <%= javascript_include_tag 'dragdrop' %>
+  <%= javascript_include_tag 'lowpro' %>
+  <%= javascript_include_tag 'routes' %>
+  <%= javascript_include_tag 'lib' %>
+  <%= javascript_include_tag 'application' %>
+</head>
+<body<%= body_attributes %>>
+<div id="wrap">
+  <p id="user-nav"><strong>UNICEF.se</strong> <a href="#">Visa sajten »</a> <span id="login"><%= link_to "Mitt konto", edit_admin_user_path(current_user) %> | <%= link_to "Logga ut", logout_path %></span></p>
+  <ul id="nav">
+    <!--<li id="n-dashboard"><a href="#">Översikt</a></li>-->
+    <li id="n-content"><%= link_to "Innehåll", admin_nodes_path %></li>
+    <li id="n-assets"><%= link_to "Filarkiv", admin_assets_path %></li>
+    <li id="n-activity"><%= link_to "Aktivitet", admin_activities_path %></li>
+    <li id="n-shops"><%= link_to "Butik", admin_shops_path %></li>
+    <li id="n-virtual_gifts"><%= link_to "VirtualGifts", admin_vg_categories_path %></li>
+    <li id="n-users"><%= link_to "Användare", admin_users_path %></li>
+  </ul>

@@ -1,0 +1,113 @@
+<table>
+  <tr>
+    <th scope="row">Typ</th>
+    <td><%= registration.class.localized_model_name || registration.class.to_s %></td>
+  </tr>
+  <tr>
+    <th scope="row">Skapad</th>
+    <td><%= registration.created_at.strftime("%d %B %Y, %H:%M") %></td>
+  </tr>
+  <tr>
+    <th scope="row">Namn</th>
+    <td><%= registration.name %></td>
+  </tr>
+  <tr>
+    <th scope="row">Kundnummer</th>
+    <td><%= registration.customer_number %></td>
+  </tr>
+  <tr>
+    <th scope="row">E-post</th>
+    <td><%= mail_to registration.email, registration.email %></td>
+  </tr>
+  <tr>
+    <th scope="row">Adress</th>
+    <td><%= registration.address %></td>
+  </tr>
+  <tr>
+    <th scope="row">Postadress</th>
+    <td><%= registration.post_code %> <%= registration.locality %></td>
+  </tr>
+  <tr>
+    <th scope="row">Adress för leverans</th>
+    <td><%= registration.shipping_address %></td>
+  </tr>
+  <tr>
+    <th scope="row">Postadress för leverans</th>
+    <td><%= registration.shipping_post_code %> <%= registration.shipping_locality %></td>
+  </tr>
+  <tr>
+    <th scope="row">Organisation / org.nr.</th>
+    <td><%= registration.organization %><%= ", #{registration.organization_number}" unless registration.organization_number.blank? %></td>
+  </tr>
+  <tr>
+    <th scope="row">Telefon</th>
+    <td><%= registration.phone %></td>
+  </tr>
+  <tr>
+    <th scope="row">Mobil</th>
+    <td><%= registration.cell_phone %></td>
+  </tr>
+  <tr>
+    <th scope="row">Ålder</th>
+    <td><%= registration.age %></td>
+  </tr>
+  <tr>
+    <th scope="row">Skola / klass</th>
+    <td><%= registration.school %><%= ", #{registration.school_class}" unless registration.school_class.blank? %></td>
+  </tr>
+  <tr>
+    <th scope="row">Antal beställda produkter / saker</th>
+    <td><%= registration.total_items %></td>
+  </tr>
+  <tr>
+    <th scope="row">Antal personer</th>
+    <td><%= registration.number_of_persons %></td>
+  </tr>
+  <tr>
+    <th scope="row">Meddelande</th>
+    <td><%= registration.message %></td>
+  </tr>
+</table>
+<% if registration.payment %>
+  <h2>Betalning</h2>
+  <table id="payment">
+    <tr>
+      <th scope="row">Betalningssätt</th>
+      <td><%= registration.payment.billing_method %></td>
+    </tr>
+    <tr>
+      <th scope="row">Transaktions id</th>
+      <td><%= registration.payment.transaction_id %></td>
+    </tr>
+    <tr>
+      <th scope="row">Status</th>
+      <td><%= registration.payment.status %></td>
+    </tr>
+    <tr>
+      <th scope="row">Betalningssvar</th>
+      <td><%= registration.payment.response_message %></td>
+    </tr>
+    <tr>
+      <th scope="row">Summa</th>
+      <td><%= number_to_currency(registration.payment.amount) %></td>
+    <tr>
+  </table>
+<% end %>
+
+<% if registration.shipment_type %>
+  <h2>Leveransinfo</h2>
+  <table id="shipping">
+    <tr>
+      <th scope="row">Leverans-id</th>
+      <td><%= registration.dispatch_id %> <%= registration.shipment_id %></td>
+    </tr>
+    <tr>
+      <th scope="row">Leveranstyp</th>
+      <td><%= registration.shipment_type %></td>
+    </tr>
+    <tr>
+      <th scope="row">Leveransstatus</th>
+      <td><%= registration.dispatch_status %></td>
+    <tr>
+  </table>
+<% end %>

@@ -1,0 +1,72 @@
+<h1>Ändra <%= @content.resource.title %></h1>
+  <div class="column column1">
+    <div class="inner">
+      <% form_for :teaser, @content.resource, :url => admin_page_content_path(@page, @content), :html => {:multipart => true ,:method => :put}  do |f| %>
+        <label for="content_<%= @content.id %>_teaser_title">Rubrik</label>
+        <%= f.text_field :title, :id => "content_#{@content.id}_teaser_title" %>
+        <label for="content_<%= @content.id %>_teaser_body">Text</label>
+        <%= f.text_area :body, :id => "content_#{@content.id}_teaser_body", :class => "wymeditor" %>
+        <label for="content_<%= @content.id %>_teaser_images_display_type" class="contains-input">
+          <%= f.check_box :images_display_type %> Visa bilder som bildspel
+        </label>
+        <div style="width:45%" class="graphic">
+          <h2>Storlek</h2>
+          <label for="teaser_display_type_2"<%= ' class="checked"' if Teaser::DISPLAY_TYPES[:big] == @content.resource.display_type %>>
+            <%= f.radio_button :display_type, Teaser::DISPLAY_TYPES[:big] %>
+            <img src="/graphics/porthos/icons/50_teaser_big.gif">
+            Stor
+          </label>
+          <label for="teaser_display_type_1"<%= ' class="checked"' if Teaser::DISPLAY_TYPES[:medium] == @content.resource.display_type %>>
+            <%= f.radio_button :display_type, Teaser::DISPLAY_TYPES[:medium] %>
+            <img src="/graphics/porthos/icons/50_teaser_medium.gif">
+            Mellan
+          </label>
+          <label for="teaser_display_type_0"<%= ' class="checked"' if Teaser::DISPLAY_TYPES[:small] == @content.resource.display_type %>>
+            <%= f.radio_button :display_type, Teaser::DISPLAY_TYPES[:small] %>
+            <img src="/graphics/porthos/icons/50_teaser_small.gif">
+            Liten
+          </label>
+        </div>
+
+        <div style="padding-bottom:65px;width:55%" class="graphic color">
+          <h2>Färg</h2>
+          <% Teaser::CSS_CLASSES.each do |name, klass| -%>
+            <label for="teaser_color_<%= !klass.blank? ? klass : 'none' %>"<%= ' class="checked"' if klass == @content.resource.css_class %>>
+              <%= f.radio_button :css_class, klass, :id => "teaser_color_#{(!klass.blank? ? klass : 'none' )}" %>
+              <span class="teaser_color"><span class="<%= klass %>"></span></span>
+            </label>
+          <% end -%>
+        </div>
+        <div class="submit absolute">
+          <%= submit_tag 'Spara', :class => 'commit' %> eller <%= link_to "avbryt", previous_view_path(admin_page_path(@page)), :class => 'cancel' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="column column2 asset_usages">
+    <div class="inner">
+      <h2 class="label">Bilder</h2>
+      <% form_for :asset_usage, :url => admin_asset_usages_path, :html => { :class => 'tiny', :class => 'new_asset_usage', :style => "display:none", :multipart => true } do |f| %>
+        <%= f.hidden_field :parent_id,   :value => @content.resource_id %>
+        <%= f.hidden_field :parent_type, :value => @content.resource_type %>
+        <%= f.hidden_field :asset_id %>
+        <label for="asset_usage_file">Välj en bild</label>
+        <%= f.file_field :file %>
+        <div class="submit">
+          <input type="submit" value="Lägg till bilden">
+        </div>
+      <% end -%>
+      <ul class="gl">
+        <li>
+          <ul class="assets" id="teaser_<%= @content.resource.id %>_asset_usages">
+          <% @content.resource.asset_usages.each do |usage| %>
+            <li id="asset_usage_<%= usage.id %>" class="asset_usage">
+              <%= image_tag(display_image_path(:size => 'c80x80', :id => usage.asset, :format => usage.asset.extname), :class => 'asset') %>
+              <%= button_to "Radera", admin_asset_usage_path(:id => usage.id, :return_to => admin_page_path(@content.page_id)), { :method => :delete, :class => "delete", :src => "/graphics/porthos/icons/16_delete.png", :confirm => "Är du säker, detta går inte att ångra." } %>
+            </li>
+          <% end %>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>

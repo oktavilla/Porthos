@@ -1,0 +1,89 @@
+<% current_vg_cart = session[:vg_cart_id] ? VgCart.find(session[:vg_cart_id]) : false %>
+<% form_for :registration, :url => registrations_path(:anchor => 'new_registration'), :html => { :id => 'new_registration', :class => 'donation' } do |f| %>
+  <%= error_messages_for :registration %>
+  <div style="display:none;">
+    <%= hidden_field_tag 'registration_type', 'VgDonation' %>
+    <%= f.hidden_field :target_code, :value => resource.target_code %>
+    <%= f.hidden_field :node_id, :value => @node.id %>
+    <%= f.hidden_field :registration_form_id, :value => content.resource.id %>
+    <%= f.hidden_field :cart_id, :value => current_vg_cart.id %>
+    <%= f.hidden_field :total_sum, :value => number_to_currency(current_vg_cart.total_sum, :unit => '').gsub('.','') %>
+  </div>
+  <h2 class="step1">Se över dina gåvor</h2>
+  <div id="vg_cart_large">
+    <% if not current_vg_cart or not current_vg_cart.vg_cart_items.any? -%>
+    <p class="notice">Du har inte valt några symboliska gåvor ännu, <%= link_to "välj gåvor »", vg_categories_path %></p>
+    <% else -%>
+      <% current_vg_cart.vg_cart_items.each do |item| -%>
+        <div class="vg_cart_item">
+          <a href="<%= virtual_gift_path(item.virtual_gift.vg_categorizations.find(:first).vg_category, item.virtual_gift) %>">
+            <img src="<%= display_image_path(:size => 'c152x104', :id => item.image, :format => item.image.extname) %>" width="152" height="104" alt="<%= item.name %>">
+          </a>
+          <span class="name"><%= item.name %></span>
+          <strong><%= item.quantity %> st</strong> à <strong><%= number_to_currency item.price %></strong>
+          <%= link_to "Köp en till »", vg_cart_items_path(:virtual_gift_id => item.virtual_gift.id, :return_to => '/stod-oss/kop-symboliska-gavor/betala'), :class => 'add_to_cart', :method => :post %>
+          <%= link_to "Ta bort »", vg_cart_item_path(:id => item.id, :virtual_gift_id => item.virtual_gift.id, :return_to => '/stod-oss/kop-symboliska-gavor/betala'), :class => 'add_to_cart', :method => :delete %>
+        </div>
+      <% end -%>
+      <p class="add_more"><%= link_to "Lägg till fler gåvor »", vg_categories_path %></p>
+      <p class="notice total_sum">
+        Du ger totalt <span class="sum"><%= number_to_currency current_vg_cart.total_sum %></span>
+      </p>
+    <% end -%>
+  </div>
+  <h2 class="step2">Mina kontaktuppgifter</h2>
+  <fieldset id="personal" class="no-legend">
+    <legend>Mina kontaktuppgifter</legend>
+    <label for="registration_first_name">Förnamn</label>
+    <%= f.text_field :first_name, :size => 40 %>
+    <label for="registration_last_name">Efternamn</label>
+    <%= f.text_field :last_name, :size => 40 %>
+    <label for="registration_email">E-postadress</label>
+    <%= f.text_field :email, :size => 40 %>
+    <label for="registration_contact_approval" class="contains-input"><%= f.check_box :contact_approval, { :value => 1, :checked => 'checked' } %> Jag vill få information från UNICEF via e–post. <span class="info">Används endast till UNICEFs egna utskick. Vi lämnar inte ut den till någon annan.</span></label>
+    <label for="registration_address">Gatuadress</label>
+    <%= f.text_field :address, :size => 40 %><br>
+    <label for="registration_post_code">Postnummer</label>
+    <%= f.text_field :post_code, :size => 8 %><br>
+    <label for="registration_locality">Ort</label>
+    <%= f.text_field :locality, :size => 40 %>
+  </fieldset>
+  <h2 class="step3">Jag vill betala med ...</h2>
+  <fieldset id="registration_payment_method_creditcard" class="payment_methods">
+    <legend>Kreditkort</legend>
+    <ul>
+      <% Payment.payment_methods.find_all { |method| Payment.creditcard_methods.include?(method[:method]) }.each do |method| -%>
+      <li class="<%= "#{method[:id]} #{cycle(' first','',' last')}" %>">
+        <label for="registration_<%= method[:id] %>">
+          <span class="info">
+            <input type="radio" name="registration[payment_type]" id="registration_<%= method[:id] %>" value="<%= method[:id] %>"<%= ' checked="checked"' if @registration and method[:method] == @registration.payment_type %>>
+            <%= method[:name] %>
+          </span>
+          <%= image_tag ("/graphics/forms/payment/logo-#{method[:id]}.gif") %>
+        </label>
+      </li>
+      <% end -%>
+    </ul>
+  </fieldset>
+  <fieldset id="registration_payment_method_internetbank" class="payment_methods">
+    <legend>Internetbank</legend>
+    <ul>
+      <% Payment.payment_methods.find_all { |method| Payment.direct_payment_methods.include?(method[:method]) }.each do |method| -%>
+      <li class="<%= "#{method[:id]} #{cycle(' first','','',' last')}" %>">
+        <label for="registration_<%= method[:id] %>">
+          <span class="info">
+            <input type="radio" name="registration[payment_type]" id="registration_<%= method[:id] %>" value="<%= method[:id] %>"<%= ' checked="checked"' if @registration and method[:method] == @registration.payment_type %>>
+            <%= method[:name] %>
+          </span>
+          <%= image_tag ("/graphics/forms/payment/logo-#{method[:id]}.gif") %>
+        </label>
+      </li>
+      <% end -%>
+    </ul>
+  </fieldset>
+  <p class="secure notice" id="creditcard_notice">När du går vidare kommer du till <strong>en säker betalsida</strong> för kreditkort, där du utför överföringen av din gåva.</p>
+  <p class="secure notice" id="direct_payment_notice">När du går vidare kommer du till din internetbank, via <strong>en säker anslutning</strong>.</p>
+  <div class="submit">
+    <input type="image" name="submit" src="/graphics/forms/submit/fortsatt_till_betalning.gif" value="Fortsätt till betalning »">
+  </div>
+<% end %>

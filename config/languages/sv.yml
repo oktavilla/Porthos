@@ -1,0 +1,302 @@
+about:
+  language: Swedish
+  author: Winston Design Ek.f.
+  date: 2007-09-08
+
+active_record_messages:
+  inclusion: saknas i listan
+  exclusion: är upptagen
+  invalid: är inte giltig
+  confirmation: stämmer inte överens bekräftelsen
+  accepted: måste accepteras
+  empty: måste fyllas i
+  blank: kan inte vara tomt
+  too_long: är för långt (max %d tecken)
+  too_short: är för kort (minst %d tecken)
+  wrong_length: stämmer inte (ska vara %d tecken)
+  taken: är upptaget
+  not_a_number: är inte en siffra
+
+dates:
+  monthnames: [januari, februari, mars, april, maj, juni, juli, augusti, september, oktober, november, december]
+  daynames: [söndag, måndag, tisdag, onsdag, torsdag, fredag, lördag]
+  abbr_monthnames: [jan, feb, mar, apr, maj, jun, jul, aug, sep, okt, nov, dec]
+  abbr_daynames: [sön, mån, tis, ons, tor, fre, lör]
+  date_formats:
+    short: '%e %b'
+    long: '%e %B %Y'
+  time_formats:
+    short: '%d %b %H:%M'
+    long: '%B %d,%Y %H:%M:%S'
+    db: '%Y-%m-%d %H:%M:%S'
+  default_formats:
+    datetime: '%Y-%m-%d %H:%M:%S'
+    date: '%Y-%m-%d'
+    time: '%H:%M::%S'
+numbers:
+  separator: '.'
+  delimiter: ','
+  precision: 3
+
+arrays:
+  to_sentence:
+    connector: och
+    skip_last_comma: false
+
+countries:
+    Germany: Germany
+
+helpers:
+  error_messages_for:
+    heading:
+      1: '1 fel hittades'
+      n: '%d fel hittades i formuläret'
+    description: 'Följade fält behöver rättas till:'
+  number_to_currency:
+    precision: 0
+    unit: ' kr'
+    delimiter: '.'
+    separator: ','
+    order: [main, separator, fraction, unit]
+  date_select:
+    order: [:year, :month, :day]
+    
+# Add your the model translations as descriped in the
+# localized_models_by_lang_file feature to the model section.
+# 
+# Example:
+# 
+# models:
+#   my_model:
+#     name: Localized model name
+#     attributes:
+#       name: Localized name
+#       description: Localized description
+models:
+  page_tip:
+    name: Tips om sida
+  activity_group_membership:
+    name: Lokalgruppsanmälan
+  newsletter_subscription:
+    name: Nyhetsbrevsanmälan
+  christmas_cards_order:
+    name: Julkortsbeställning
+  water_drop_order:
+    name: Vattendroppe
+  will_information_order:
+    name: Arv och testamente
+  global_parent:
+    name: Världsförälder
+  donation:
+    name: Gåva
+  private_donation:
+    name: Privatgåva
+  company_donation:
+    name: Företagsgåva
+  vg_donation:
+    name: Symbolisk gåva
+  private_order:
+    name: Privatköp
+  company_order:
+    name: Företagsköp
+  order:
+    name: Butiksbeställning
+  global_parent_give_away:
+    name: Ge bort Världsförälder
+  registration:
+    name: Registrering
+    attributes: 
+      first_name: Förnamn
+      last_name: Efternamn  
+      customer_number: Kundnummer
+      age: Ålder
+      email: E-post           
+      phone: Telefon
+      cell_phone: Mobil
+      organization_type: Organisationstyp
+      organization: Organisation
+      department: Avdelning
+      organization_number: Organisationsnummer
+      address: Address
+      post_code: Postnummer     
+      locality: Ort
+      country: Land
+      shipping_first_name: Förnamn för leverans
+      shipping_last_name: Efternamn för leverans
+      shipping_address: Leveransadress
+      shipping_post_code: Postnummer för leverans
+      shipping_locality: Leveransort
+      shipping_country: Leveransland
+      payment_type: Betalningssätt
+      amount: Summa
+      total_sum: Belopp
+      birth_date: Födelsedatum
+      recipient_first_name: Mottagarens förnamn
+      recipient_last_name: Mottagarens efternamn
+      recipient_address: Mottagarens gatuadress
+      recipient_post_code: Mottagarens postnummer
+      recipient_locality: Mottagarens ort
+      recipient_period: Perioden
+      number_of_persons: Antal personer
+      receiver_name: Namn
+      receive_date: Datum
+      giver_name: Avsändare
+  payment:
+    name: Betalning
+    attributes:
+      first_name: Förnamn
+      last_name: Efternamn
+      card_number: Kortnummer
+      card_expiry_month: Giltighetstid (månad)
+      card_expiry_year: Giltighetstid (år)
+      card_number_cvc: CVC
+      billing_method: Betalningssätt
+  print_setting:
+    name: Tilltrycksinställning
+    attributes:
+      predef_greeting: Hälsning
+      greeting_text: Hälsning
+      greeting_color: Färg
+      greeting_font: Typsnitt
+      logo_file_name: Logotyp-fil
+      logo_color: Logotyp-färg
+      signature_file_name: Fil med signaturer
+      delivery_date: Leveransdatum
+      comments: Meddelande
+      signature_file: Signatur-fil
+      logo_file: Logotype-fil
+  asset:
+    name: Fil
+    attributes:
+      file: Vald fil
+      title: Titel 
+      file_name: Filnamn
+      author: Copyright
+      description: Beskrivning
+  content_module:
+    name: Innehållsmodul
+    attributes:
+      name: Namn
+      template: Modul
+  node:
+    name: Navigations-node
+    attributes:
+      name: Namn
+      status: Status
+  order_item:
+    name: Produkt
+    attributes:
+      name: Namn
+      article_number: Artikelnummer
+      price: Pris
+      quantity: Antal
+  page:
+    name: Sida
+    attributes:
+      title: Namn
+      description: Beskrivning   
+      page_layout_id: Layout
+      published_on: Publiceringsdatum
+      parent_id: Sidtyp     
+  page_layout:
+    name: Layout
+    attributes:
+      name: Namn
+      css_id: Klass
+      columns: Kolumner
+  product:
+    name: Produkt
+    attributes:
+      name: Namn
+      short_description: Kort beskrivning
+      long_description: Utökad beskrivning
+      article_number: Artikel #
+      hidden: Synlighet
+      price: Pris
+      vat: Moms
+      quantity: Lagersaldo
+      printable: Tilltryck
+  product_category:
+    name: Produktkategori
+    attributes:
+      name: Namn
+      shop_id: Butik
+  shop:
+    name: Butik
+    attributes:
+      name: Namn
+      shop_vat: Visa moms
+      closed: Stängd
+      message: Meddelande till besökare när butiken är stängd
+      contact_phone: Kontaktnummer
+      contact_email: Kontaktadress
+      allow_printable: Tillåt tilltryck
+  teaser:
+    name: Teaser
+    attributes:
+      title: Rubrik
+      body: Text
+  user:
+    name: Användare
+    attributes:
+      first_name: Förnamn
+      last_name: Efternamn
+      login: Användarnamn
+      email: E-post
+      phone: Telefon
+      cellphone: Mobil
+      password: Lösenord
+      password_confirmation: Lösenordsbekräftelse
+  sample_product_order:
+    name: Provkortsbeställning
+    attributes:
+      selected_products: valda produkter
+# You can use the app section freely to localize you application with the
+# localized_application feature. The entries defined here are accesable by the
+# global method "l". See the RDoc for details.
+app:
+  general:
+    logged_in: Du är inlogagd
+    logged_out: Du är utloggad
+    login_failed: Användarnamnet och lösenordet stämde inte överens
+    password_has_been_sent: Ett nytt lösenord har skapats och skickats till din e-postadress 
+    unable_to_find_user: Det gick inte att hitta någon användare med den e-postadressen
+    flash_is_needed: Du behöver flash för att se den här delen av sidan
+  cart_item:
+    exceeds_available_products: överstiger antalet tillgängliga produkter
+    require_positive_number: måste vara ett tal större än noll
+    not_enough_products: inte tillräckligt många produkter
+  global_parent:
+    not_less_than_100: får inte vara mindre än 100 kr
+  image_asset:
+    unknown_format: gick inte att läsa filtypen
+    must_be_rgb: måste vara en bild i RGB-format
+  carts:
+    unknown_product: kunde inte hitta produkten
+  print_settings:
+    print_settings: Inställningar för tryck
+    saved: Tilltrycks inställningarna är sparade
+    save_error: Det uppstod ett fel när inställningarna skulle sparas
+    not_allowed_filetype: har fel filtyp, ladda upp en TIFF-fil eller en EPS-fil istället
+  admin_assets:
+    saved: Filerna sparades
+  admin_nodes:
+    deleted: och alla sidor under den är borttagna
+  admin_general:
+    saved: sparades
+    deleted: raderades
+    logged_in: Du är inloggad
+    logged_out: Du är nu utloggad och lugnt surfa vidare
+    login_failed: Användarnamnet och lösenordet stämde inte överens
+  admin_pages:
+    unable_to_find: Kunde inte hitta sidtypen
+    saved: Dina ändringar är sparade
+  measure_point:
+    link_types: 
+      text_link: Text-länk
+      banner_flash: Banner (flash)
+      banner_gif: Banner (gif)
+    targets:
+      global_parents: Världsföräldrar
+      private_donations: Privatgivare
+      private_buys: Privata beställare i butiken

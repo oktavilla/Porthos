@@ -1,0 +1,32 @@
+Ge bort världsförälder
+
+Mottagare
+
+Namn
+<%= @registration.recipient.first_name %> <%= @registration.recipient.last_name %>
+
+Adress
+<%= @registration.recipient.address %>
+
+Postadress
+<%= @registration.recipient.post_code %> <%= @registration.recipient.locality %>
+
+Period
+<%= @registration.recipient.period %>
+
+Givare
+
+Namn
+<%= @registration.name %>
+
+Adress
+<%= @registration.address %>
+
+Postadress
+<%= @registration.post_code %> <%= @registration.locality %>
+
+E-post
+<%= @registration.email %>
+
+Vill ha utskick
+<%= @registration.contact_approval ? 'Ja' : 'Nej' %>

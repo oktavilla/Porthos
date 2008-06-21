@@ -1,0 +1,23 @@
+<% @page_title = "Sidtyper" %>
+<% @page_class = "A page_presets" -%>
+<div id="content_header">
+  <h1>Sidtyper</h1>
+</div>
+<div id="container">
+  <div id="content">
+    <div id="ca">
+      <span class="controls">
+        <%= link_to "Skapa ny sidtyp", new_admin_page_preset_path, :class => 'create' %>
+      </span>
+      <div class="inner">
+      <% nested_list_of @page_presets, {}, :class => 'gl' do |page_preset| %>
+        <%= page_preset.name %>
+        <span class="controls general">
+          <%= link_to "Ändra", edit_admin_page_preset_path(page_preset), :class => 'edit' %>
+          <%= link_to "Radera", admin_page_preset_path(page_preset), :method => :delete, :class => "delete", :confirm => "Är du säker, detta går inte att ångra." %>
+        </span>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>
