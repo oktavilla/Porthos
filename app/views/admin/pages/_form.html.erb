@@ -14,7 +14,7 @@
 <label for="page_presets">Välj vilken sorts sida</label>
 <div class="graphic">
 <% PagePreset.find(:all).each do |preset| -%>
-  <label for="<%= "page_preset_#{preset.id}" %>"<%= ' class="checked"' if @page and @page.preset_id.to_i == preset.id %>>
+  <label for="<%= "page_preset_#{preset.id}" %>"<%= ' class="checked"' if @page and (@page.page_layout_id.to_i == preset.page_layout_id and @page.parent_id == preset.page_collection_id) %>>
     <%= radio_button_tag 'page[preset_id]', preset.id, false, :id => "page_preset_#{preset.id}" %> 
     <%= image_tag preset.graphic.public_name, :width => 80, :height => 80, :class => "preset_graphic" if preset.graphic %>
     <%= preset.name %>
@@ -36,5 +36,9 @@
   <label for="page_tag_names">Nyckelord <span class="info">(olika nyckelord separeras med ett kommatecknen)</label>
   <%= f.text_area :tag_names, :rows => 2 %>
 </div>
+
+<label for="page_restricted" class="contains-input">
+  <%= f.check_box :restricted %> Kräv inloggning
+</label>
 
 <% end -%>

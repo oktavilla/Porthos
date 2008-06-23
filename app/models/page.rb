@@ -36,6 +36,7 @@ class Page < ActiveRecord::Base
 
   has_finder :active,   :conditions => "active = 1"
   has_finder :inactive, :conditions => "active = 0"
+  has_finder :include_restricted, lambda {|restricted| { :conditions => ['restricted = ? or restricted = 0', restricted]} }
 
   before_validation_on_create :set_default_layout, :set_layout_and_parent, :set_inactive
 

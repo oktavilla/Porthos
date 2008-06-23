@@ -1,5 +1,5 @@
 <% archive_holder = @page.child? ? @page.parent : @page -%>
-<% pages = archive_holder.pages.active.published.find(:all, :limit => 5) -%>
+<% pages = archive_holder.pages.active.include_restricted(logged_in?).published.find(:all, :limit => 5) -%>
 <% if pages.any? -%>
 <h2>Senaste <%= archive_holder.title.downcase %></h2>
 <ul>

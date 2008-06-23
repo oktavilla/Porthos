@@ -30,7 +30,7 @@ class Admin::AssetsController < ApplicationController
       @query = params[:query] 
       @page = params[:page] || 1
       per_page = params[:per_page] ? params[:per_page].to_i : 45
-      @search = Ultrasphinx::Search.new(:query => "#{@query}", :class_names => ['Asset'], :page => @page, :per_page => per_page)
+      @search = Ultrasphinx::Search.new(:query => "#{@query}", :class_names => ['Asset','ImageAsset','MovieAsset'], :page => @page, :per_page => per_page)
       @search.run
       @assets = @search.results
       respond_to do |format|

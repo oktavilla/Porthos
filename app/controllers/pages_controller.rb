@@ -9,7 +9,9 @@ class PagesController < ApplicationController
     @page = if params[:id]
       (current_user != :false and current_user.admin?) ? Page.find(params[:id]) : Page.active.published.find(params[:id])
     elsif params[:page_slug]
-      (page = Page.active.find_by_slug("#{params[:page_slug]}") and (page.parent.calendar? or page.published?)) ? page : (raise ActiveRecord::RecordNotFound)
+      page = Page.active.find_by_slug("#{params[:page_slug]}")
+      login_required if page.restricted and not logged_in?
+      (page and (page.parent.calendar? or page.published?)) ? page : (raise ActiveRecord::RecordNotFound)
     else 
       raise ActiveRecord::RecordNotFound
     end
@@ -17,14 +19,13 @@ class PagesController < ApplicationController
       unless params[:tags]
         from, to = Time.delta(params[:year] || Time.now.year, params[:month], params[:day])
         unless @page.calendar?
-          @pages = @page.pages.active.published.published_within(from, to).paginate(:page => params[:page], :per_page => 10)
+          @pages = @page.pages.active.published.include_restricted(logged_in?).published_within(from, to).paginate(:page => params[:page], :per_page => 10)
         else
           to += 1.month
-          @pages = @page.pages.active.published_within(from, to).paginate(:page => params[:page], :per_page => 10)
+          @pages = @page.pages.active.include_restricted(logged_in?).published_within(from, to).paginate(:page => params[:page], :per_page => 10)
         end
-          
       else
-        @pages = @page.pages.active.published.find_tagged_with({ :tags => params[:tags].join(','), :order => 'created_at DESC' }).paginate(:page => params[:page], :per_page => 10)
+        @pages = @page.pages.active.include_restricted(logged_in?).published.find_tagged_with({ :tags => params[:tags].join(','), :order => 'created_at DESC' }).paginate(:page => params[:page], :per_page => 10)
       end
     end
     # pre cache content resources
