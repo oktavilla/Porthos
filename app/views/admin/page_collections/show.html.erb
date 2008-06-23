@@ -17,6 +17,9 @@
           <h2>
             <%= page.title %>
             <span class="date"><%= page.published_on.strftime("%d %b %Y") %></span>
+            <% if page.restricted? %>
+              <span class="info restricted">Kräver inloggning</span>
+            <% end %>
           </h2>
           <% unless page.description.blank? -%>
           <%= page.description %>
@@ -72,4 +75,4 @@
 <%= javascript_include_tag 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools' %>
 <%= javascript_include_tag 'porthos/wymeditor/plugins/tidy/jquery.wymeditor.tidy' %>
 <%= javascript_include_tag 'porthos/editor' %>
-<%= javascript_include_merged :page_collections %>
+<%= javascript_include_merged :page_collections -%>

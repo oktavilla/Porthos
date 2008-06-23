@@ -264,3 +264,7 @@ li.content .controls {
       font-weight:normal; }
   #page_collections .dates a { text-transform:capitalize; }
   #page_collections .dates a.current { color:#000; }
+
+  #page_collections .restricted { 
+    color:#888;
+    font-size: .5em; }
