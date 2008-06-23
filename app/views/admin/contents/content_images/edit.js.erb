@@ -4,9 +4,9 @@
   <div class="inner">
     <%= f.hidden_field :image_asset_id, :value => @content.resource.asset.id %>
     <label for="content_image_title">Alt. text</label>
-    <%= f.text_field :title, :value => @content.resource.asset.title %>
+    <%= f.text_field :title, :value => @content.resource.title %>
     <label for="content_image_caption">Bildtext</label>
-    <%= f.text_area :caption, :value => @content.resource.asset.description, :cols => 30, :rows => 5 %>    
+    <%= f.text_area :caption, :value => @content.resource.caption, :cols => 30, :rows => 5 %>    
     <label for="content_image_title">Copyright / Fotograf</label>
     <%= f.text_field :copyright, :value => @content.resource.copyright %>
     <label for="content_image_format">Format</label>
