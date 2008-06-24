@@ -77,6 +77,7 @@ namespace :porthos do
       system('svn export http://repo.pragprog.com/svn/Public/plugins/annotate_models vendor/plugins/annotate_models')
       system('svn export http://labnotes.org/svn/public/ruby/rails_plugins/assert_select vendor/plugins/assert_select')
       system('svn export svn://rubyforge.org/var/svn/fauna/ultrasphinx/trunk vendor/plugins/ultrasphinx')
+      system('svn export  http://ruby-imagespec.googlecode.com/svn/trunk/ vendor/plugins/imagespec')
       printf "\n\n Also install will_paginate gem (sudo gem install will_paginate)\n"
     end
     
