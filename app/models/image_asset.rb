@@ -40,6 +40,7 @@ class ImageAsset < Asset
     
   def resize(options = {})
     return false unless image = magick_instance
+
     options = {
       :size => nil,
       :quality => 100,
@@ -93,7 +94,11 @@ class ImageAsset < Asset
         image.scale( _width.to_i, _height.to_i )
       end
     end
-    image.write("#{save_path}/#{self.full_name}") { self.quality = options[:quality] }
+    # Set rgb so we can atleast see the images in the browser even tho colors may (will) get scewed
+    image.colorspace = Magick::RGBColorspace if image.colorspace != Magick::RGBColorspace
+    image.write("#{save_path}/#{self.full_name}") do
+      self.quality    = options[:quality]
+    end
     logger.info "Stored new version of #{self.full_name} with width: #{image.columns}, height: #{image.rows}, scale factor: #{scale_factor} and quality: #{options[:quality]}"
     FileUtils.chmod_R(0755, "#{save_path}/")
     image                                                                                                                                                                                                
@@ -124,7 +129,6 @@ protected
   def validate_on_create  
     image = magick_instance(@file.path)
     return errors.add(:file, l(:image_asset, :unknown_format)) unless image
-    errors.add(:file, l(:image_asset, :must_be_rgb)) unless image.colorspace == Magick::RGBColorspace
   end
 
   # before create
