@@ -211,4 +211,15 @@ module ApplicationHelper
     path = File.join(RAILS_ROOT, 'public/javascripts', "#{js_file}.js")
     javascript_include_tag(js_file) if File.exists?(path)
   end
+  
+  def flash_tag_for_asset(asset, options = {})
+    options = { :max_width => 800 }.merge(options.symbolize_keys)
+    width, height = if asset.width > options[:max_width]
+      scale_factor = (options[:max_width].to_f  / asset.width.to_f)
+      [(asset.width*scale_factor).to_i, (asset.height*scale_factor).to_i]
+    else
+      [asset.width, asset.height]
+    end
+    tag("embed", { :width => width, :height => height, :quality => "high", :src => "/swf/#{asset.full_name}", :type => "application/x-shockwave-flash" })
+  end
 end
