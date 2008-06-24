@@ -35,7 +35,7 @@ protected
 
   def create_thumbnail
     unless thumbnail
-      thumbnail_name = "{file_name}_thumbnail.jpg"
+      thumbnail_name = "#{file_name}_thumbnail.jpg"
       system("ffmpeg -i #{@original_path_with_ext} -vframes 1 -ss 8 -f image2 -an /tmp/#{thumbnail_name}")
       if File.exists? "/tmp/#{thumbnail_name}"
         self.thumbnail = ImageAsset.create({:file => new_tempfile("/tmp/#{thumbnail_name}"), :private => true})

@@ -39,6 +39,7 @@ class Asset < ActiveRecord::Base
   IMAGE_FORMATS = [:jpg, :png, :gif]
   MOVIE_FORMATS = [:flv, :mov, :qt, :mpg, :avi]
   SOUND_FORMATS = [:mp3]
+  FLASH_FORMATS = [:swf]
 
   validates_presence_of :file, :on => :create
 
@@ -70,6 +71,10 @@ class Asset < ActiveRecord::Base
   def sound?
     SOUND_FORMATS.include?(extname.to_sym) rescue false
   end
+  
+  def flash?
+    FLASH_FORMATS.include?(extname.to_sym) rescue false
+  end
 
   def require_thumbnail?
     require_thumbnail == true
@@ -88,6 +93,8 @@ class Asset < ActiveRecord::Base
         klass = MovieAsset 
       elsif SOUND_FORMATS.include?(extname.to_sym)
         klass = SoundAsset
+      elsif FLASH_FORMATS.include?(extname.to_sym)
+        klass = FlashAsset
       else
         klass = Asset
       end

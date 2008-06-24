@@ -77,7 +77,7 @@
                 <div class="image">
                   <% if asset.image? %>
                     <%= image_tag display_image_path(:size => 'c87x87', :id => asset, :format => asset.extname), :id => "asset_#{asset.id}" %>
-                  <% elsif asset.movie? and asset.thumbnail %>
+                  <% elsif asset.respond_to?(:thumbnail) and not asset.thumbnail.blank? %>
                     <%= image_tag display_image_path(:size => 'c87x87', :id => asset.thumbnail, :format => asset.thumbnail.extname), :id => "asset_#{asset.id}" %>
                   <% else %>
                     <span class="icon <%= asset.extname %>"></span>
