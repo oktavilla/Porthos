@@ -22,7 +22,7 @@ class PagesController < ApplicationController
           @pages = @page.pages.active.published.include_restricted(logged_in?).published_within(from, to).paginate(:page => params[:page], :per_page => 10)
         else
           to += 1.month
-          @pages = @page.pages.active.include_restricted(logged_in?).published_within(from, to).paginate(:page => params[:page], :per_page => 10)
+          @pages = @page.pages.active.include_restricted(logged_in?).published_within(from, to).paginate(:page => params[:page], :per_page => 10, :order => 'published_on ASC')
         end
       else
         @pages = @page.pages.active.include_restricted(logged_in?).published.find_tagged_with({ :tags => params[:tags].join(','), :order => 'created_at DESC' }).paginate(:page => params[:page], :per_page => 10)
