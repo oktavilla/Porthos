@@ -44,14 +44,20 @@ module ApplicationHelper
         end
       end
       options[:node_cycle_values].push({ :name => options[:node_cycle_name] })
-      content_tag('li', rendered_item, {
-        :id => "#{item.class.to_s.underscore}_#{item.id}",
+      node_container_options = {
         :class => [
           awesome_cycle(options[:node_cycle_values].shift, options[:node_cycle_values]),
           options[:node_class],
           status_class
         ].join(" ")
-      })
+      }
+      if options[:node_id].nil?
+        node_container_options[:id] = "#{item.class.to_s.underscore}_#{item.id}"
+      elsif not options[:node_id].blank?
+        node_container_options[:id] = "#{options[:node_id]}_#{item.id}"
+      end
+      
+      content_tag('li', rendered_item, node_container_options)
     end.join("\n")
     
     list = content_tag('ul', ret, html_options)
