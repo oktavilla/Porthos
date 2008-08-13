@@ -37,7 +37,7 @@ class Asset < ActiveRecord::Base
 
   SAVE_DIR = "#{RAILS_ROOT}/assets"
   IMAGE_FORMATS = [:jpg, :png, :gif]
-  MOVIE_FORMATS = [:flv, :mov, :qt, :mpg, :avi]
+  MOVIE_FORMATS = [:flv, :mov, :qt, :mpg, :avi, :mp4]
   SOUND_FORMATS = [:mp3]
   FLASH_FORMATS = [:swf]
 
