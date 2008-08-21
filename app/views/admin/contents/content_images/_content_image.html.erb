@@ -1,6 +1,8 @@
 <% if content.resource %>
 <div class="content_image <%= content.resource.style %><%= ' downloadable' if content.resource.downloadable? %>">
-  <%= image_tag display_image_path(:size => 'c100x100', :id => content.resource.asset, :format => content.resource.asset.extname, :alt => content.resource.title) %>
+  <% if content.resource.asset %>
+    <%= image_tag display_image_path(:size => 'c100x100', :id => content.resource.asset, :format => content.resource.asset.extname, :alt => content.resource.title) %>
+  <% end %>
   <strong>Format:</strong>
   <%= content.resource.style_properties[:name] %><br>
   <strong>Alt. text:</strong>
