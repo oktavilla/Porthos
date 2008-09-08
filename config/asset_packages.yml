@@ -29,9 +29,9 @@ javascripts:
   - porthos/action_dialog
   - porthos/nodes
 - assets:
-  - porthos/assets
   - porthos/swfobject
   - porthos/mediaplayer
+  - porthos/assets
 stylesheets: 
 - admin:
   - porthos/clearing

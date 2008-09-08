@@ -315,10 +315,41 @@ Porthos.Assets.IndexView = Class.create({
   }
 });
 
-Event.onReady(function() {
-  var body = $(document.getElementsByTagName('body')[0]);
-  if (body.id == 'assets' && body.hasClassName('index') ){
-    var view = new Porthos.Assets.IndexView();
+Porthos.Assets.EditView = Class.create({
+  initialize: function() {
+    if($$('.mediaplayer').length > 0){
+      var thumbnail_button = $button('Spara ny försättsbild');
+      $$('.fileinfo')[0].appendChild(thumbnail_button);
+      thumbnail_button.observe('click', function(event){
+        var edit_form = $$('#ca form')[0];
+        edit_form.appendChild($input({'type':'hidden', 'name':'asset[thumbnail_position]', 'value':Porthos.Assets.EditView.thumbnail_position}));
+        edit_form.submit();
+        event.stop();
+      });
+    }
   }
 });
 
+Event.onReady(function() {
+  var body = $(document.getElementsByTagName('body')[0]);
+  if (body.id == 'assets' ){
+    if(body.hasClassName('index')){
+      var view = new Porthos.Assets.IndexView();
+    }else if(body.hasClassName('edit')){
+      var view = new Porthos.Assets.EditView();
+    }
+  }
+});
+
+var player;
+function playerReady(obj) {
+	var id = obj['id'];
+	var version = obj['version'];
+	var client = obj['client'];
+	player = document.getElementById(id);
+	player.addModelListener("TIME", "player_stopped");
+};
+
+function player_stopped(time){
+  Porthos.Assets.EditView.thumbnail_position = time.position;
+}

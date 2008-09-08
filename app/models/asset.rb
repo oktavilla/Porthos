@@ -137,6 +137,9 @@ protected
   # after destroy
   def cleanup
     if File.exists? path and File.unlink path
+      Dir["#{RAILS_ROOT}/public/images/*/*"].each do |file| 
+        File.unlink(file) if File.basename(file) == full_name
+      end
       logger.info "Deleted asset: #{path}"
     else
       logger.warn "Unable to delete asset #{path}"
