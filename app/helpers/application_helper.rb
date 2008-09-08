@@ -166,12 +166,8 @@ module ApplicationHelper
   end 
   
   def flash_mediaplayer_tag(asset, options = {})
-    unless asset.thumbnail.blank?
-      options.merge!(:file => display_movie_path(asset, asset.extname), 
-                    :image => (display_image_path(:size => asset.thumbnail.width, :id => asset.thumbnail, :format => asset.thumbnail.extname) if asset.movie? ))
-    else
-      options.merge!(:file => display_movie_path(asset, asset.extname))
-    end
+    options.merge!(:file => display_movie_path(asset, asset.extname), 
+                    :image => (display_image_path(:size => asset.thumbnail.width, :id => asset.thumbnail, :format => asset.thumbnail.extname) if (asset.movie? and asset.thumbnail))
     content = content_tag('a', l(:general, :flash_is_needed), { :href => 'http://www.macromedia.com/go/getflashplayer'})
     content << options.collect { |option, value| content_tag('span', value, {:class => option}) }.join
     content_tag('div', content, { :class => 'mediaplayer', :id => "asset-#{asset.id}" })
