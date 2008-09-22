@@ -6,7 +6,7 @@
     <% form_for :campaign, @campaign, :url => admin_campaign_path(@campaign), :html => {:method => 'put'} do |f| %>
     <%= render :partial => 'form', :locals => {:f => f}  %>
     <div class="submit">
-      <%= f.submit "Skapa kampanj" %> eller <%= link_to "Avbryt", previous_view_path(admin_campaigns_path), :onclick => "$('new-campaign').toggle();return false;" %>
+      <%= f.submit "Spara kampanj" %> eller <%= link_to "Avbryt", previous_view_path(admin_campaigns_path), :onclick => "$('new-campaign').toggle();return false;" %>
     </div>
     <% end %>
   </div>
