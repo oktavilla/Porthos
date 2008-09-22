@@ -29,11 +29,12 @@ class Campaign < ActiveRecord::Base
   def income(registration_type = false)
     if conversions.detect { |conversion| conversion.registration } != nil
       query = "SELECT 
-        sum(amount) AS sum_amount 
+        sum(payments.amount) AS sum_amount 
         FROM conversions 
-        INNER JOIN measure_points ON conversions.measure_point_id = measure_points.id 
-        LEFT JOIN registrations ON conversions.registration_id = registrations.id
-        WHERE ((measure_points.campaign_id = #{self.id})) AND (registrations.payment_status = 'Completed')"
+        INNER JOIN measure_points ON conversions.measure_point_id = measure_points.id "
+      query << "LEFT JOIN registrations ON conversions.registration_id = registrations.id " unless registration_type.blank?
+      query <<  "LEFT JOIN payments ON conversions.registration_id = payments.payable_id
+        WHERE measure_points.campaign_id = #{self.id} AND (payments.status = 'Completed' OR payments.billing_method = 'invoice')"
       query << " AND registration_type = '#{registration_type}'" unless registration_type.blank?
       amount = Campaign.find_by_sql(query)[0]['sum_amount'].to_i
     else 
