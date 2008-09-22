@@ -18,7 +18,7 @@
     <% total_conversions = campaign.measure_points.sum(:conversions_count) -%>
     <td><%= total_clicks %></td>
     <td><%= total_conversions %></td>
-    <td><%= number_to_percentage((total_conversions.to_f / total_clicks.to_f)*100, :precision => 2) %></td>
+    <td><%= number_to_percentage((total_conversions.to_f / total_clicks.to_f)*100, :precision => 2) if total_clicks.to_i > 0 %></td>
   </tr>
 <% end %>
 </table>

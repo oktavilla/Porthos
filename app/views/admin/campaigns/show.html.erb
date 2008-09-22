@@ -17,6 +17,7 @@
         <span class="description">har klickat på någon utav länkarna i den här kampanjen.</span>
       </p>
     </div>
+    <% if @campaign.clicks.to_f > 0 %>
     <div class="overview conversions">
       <h2>Avslut</h2>
       <p>
@@ -24,6 +25,7 @@
         <span class="description">det ger en frekvens på <%= number_to_percentage((@campaign.total_conversions.to_f / @campaign.clicks.to_f)*100, :precision => 2) %>.</span>
       </p>
     </div>
+    <% end %>
     <div class="overview income">
       <h2>Intäkter</h2>
       <p>
