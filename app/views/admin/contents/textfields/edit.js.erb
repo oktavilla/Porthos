@@ -1,7 +1,15 @@
 <h1>Redigera text på sidan ”<%= @page.title %>”</h1>
 <%= error_messages_for :textfield %>
 <% form_for :textfield, @content.resource, :url => admin_page_content_path(@page, @content), :html => { :method => :put } do |f| %>
+  <% unless @content.resource.shared? %>
   <%= render :partial => '/admin/contents/textfields/form.html.erb', :locals => { :page => @page, :content => @content, :f => f } %>
+  <% else %>
+  <div class="shared">
+    <%= f.text_field :title, :class => 'text' %>
+    <%= f.text_area :body, :class => 'html' %>
+    <p class="info"><strong>OBS</strong> detta innehåll kan finnas på flera sidor och kommer att ändras på samtliga ställen när du sparar.</p>
+  </div>
+  <% end %>
   <div class="submit">
     <%= submit_tag 'Spara', :class => 'commit button' %> eller
     <%= link_to "Avbryt", previous_view_path(admin_page_path(@page)), :class => 'cancel' %>

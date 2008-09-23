@@ -133,11 +133,11 @@
       font-size: .8em; }
       .action_dialog_container .pagination a { padding: 0.4em 0.55em; }
 
-		.action_dialog_container #assets h1 {margin-bottom: 10px;}
+    .action_dialog_container #assets h1 {margin-bottom: 10px;}
       .action_dialog_container #assets h1 .controls {padding: 0;}
-	    	.action_dialog_container .search_assets input {padding: 2px;}
-	    	.action_dialog_container .search_assets .query {width: 70%;}
-  	  	.action_dialog_container .search_assets input[type="submit"] {font-size: .6em;}
+        .action_dialog_container .search_assets input {padding: 2px;}
+        .action_dialog_container .search_assets .query {width: 70%;}
+        .action_dialog_container .search_assets input[type="submit"] {font-size: .6em;}
     
     .action_dialog_container .column form {
       display:block;
@@ -160,6 +160,14 @@
         .action_dialog_container .graphic.size {width:30%;}
         .action_dialog_container .graphic.color {width:70%;}
           .action_dialog_container .graphic.color label {padding:10px;}
+
+/* Shared textfields */
+
+.action_dialog_container form .shared {
+  margin:10px; }
+  .action_dialog_container form .shared #textfield_title { margin-bottom:15px; }
+  .action_dialog_container form .shared textarea { padding:7px 10px; }
+  .action_dialog_container form .shared p.info { margin:5px; }
 
  /* WYMEDITOR Link dialog */   
 body.wym_dialog {background:#fdfdfd;}

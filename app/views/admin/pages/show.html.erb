@@ -57,7 +57,7 @@
               <% unless content.collection? -%>
                 <span class="type"></span>
                 <span class="controls">
-                  <%= link_to("Ändra", edit_admin_page_content_path(@page, content), :class => (!content.collection? ? 'edit' : 'edit')) if not content.shared? and not content.module? %>
+                  <%= link_to("Ändra", edit_admin_page_content_path(@page, content), :class => (!content.collection? ? 'edit' : 'edit')) if not content.module? %>
                   <%= link_to content.active? ? 'Dölj' : 'Visa', toggle_admin_page_content_path(@page, content), :method => :put, :class => 'visibility' %>
                   <%= link_to "Ta bort", admin_page_content_path(@page, content), :method => :delete, :confirm => "Är du säker? Detta går inte att ångra.", :class => 'delete' %>
                 </span>
