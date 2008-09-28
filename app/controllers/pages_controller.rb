@@ -11,7 +11,7 @@ class PagesController < ApplicationController
     elsif params[:page_slug]
       page = Page.active.find_by_slug("#{params[:page_slug]}") || (raise ActiveRecord::RecordNotFound)
       login_required if page.restricted and not logged_in?
-      (page and not page.parent_type.blank? and page.parent.calendar? or page.published?)) ? page : (raise ActiveRecord::RecordNotFound)
+      (page and (page.parent and page.parent.calendar?) or page.published?)) ? page : (raise ActiveRecord::RecordNotFound)
     else 
       raise ActiveRecord::RecordNotFound
     end
