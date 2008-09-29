@@ -69,7 +69,7 @@ class Node < ActiveRecord::Base
       end
     end
   end
-  
+
   class << self
     def for_page(page)
       returning(self.new) do |node|
@@ -78,17 +78,17 @@ class Node < ActiveRecord::Base
         node.action     = 'show'
         node.resource   = page
         node.resource_class_name = page.class.to_s
-        node.parent_id = Node.root if node.parent_id.blank?
+        node.parent = Node.root if node.parent_id.blank?
       end
     end
   end
-  
+
 private
 
   # before save
   def generate_slug
     old_slug  = slug
-    unless parent_id.blank?
+    if parent
       self.slug = !parent.parent_id.blank? ? "#{parent.slug}/#{name.to_url}" : name.to_url
     end
     @redraw_route = old_slug != slug
