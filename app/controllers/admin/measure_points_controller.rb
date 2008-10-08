@@ -64,7 +64,7 @@ class Admin::MeasurePointsController < ApplicationController
     respond_to do |format|
       if @measure_point.update_attributes(params[:measure_point])
         flash[:notice] = 'MeasurePoint was successfully updated.'
-        format.html { redirect_to @measure_point.campaign }
+        format.html { redirect_to admin_campaign_path(@measure_point.campaign) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
