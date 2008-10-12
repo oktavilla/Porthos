@@ -101,6 +101,13 @@ class Asset < ActiveRecord::Base
       klass.new(attrs)
     end
     
+    def new_tempfile(content_path)
+      tempfile = ActionController::UploadedTempfile.new('temp')       
+      tempfile.write IO.readlines(content_path) if File.exists?(content_path)
+      tempfile.original_path = content_path
+      tempfile.flush
+      tempfile
+    end
   end
 
   def to_param
@@ -149,13 +156,5 @@ protected
   def make_unique_filename(string)
     chars = ("a".."z").to_a + ("1".."9").to_a 
     self.file_name = string + '_' + Digest::SHA1.hexdigest(string + Array.new(8, '').collect{chars[rand(chars.size)]}.join + Time.now.to_s)[14..20]
-  end
-
-  def new_tempfile(content_path)
-    tempfile = ActionController::UploadedTempfile.new('temp')       
-    tempfile.write IO.readlines(content_path) if File.exists?(content_path)
-    tempfile.original_path = content_path
-    tempfile.flush
-    tempfile
   end
 end

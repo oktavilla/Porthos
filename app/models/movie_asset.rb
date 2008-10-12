@@ -29,7 +29,7 @@ protected
   
   def convert_to_flv
     self.extname = 'flv'
-    @file = new_tempfile "/tmp/#{self.file_name}.flv"
+    @file = Asset.new_tempfile "/tmp/#{self.file_name}.flv"
     system "(ffmpeg -v 0 -i #{@original_path_with_ext} -ar 22050 -ab 64 -b 1500kbps -y #{path}; rm #{@original_path_with_ext}; flvtool2 -U #{path})&"
   end
   
@@ -42,7 +42,7 @@ protected
     thumbnail_name = "#{file_name}_thumbnail.jpg"
     system("ffmpeg -i #{@original_path_with_ext||path} -vframes 1 -ss #{options[:position]} -f image2 -an /tmp/#{thumbnail_name}")
     if File.exists? "/tmp/#{thumbnail_name}"
-      self.thumbnail = ImageAsset.create({:file => new_tempfile("/tmp/#{thumbnail_name}"), :private => true})
+      self.thumbnail = ImageAsset.create({:file => Asset.new_tempfile("/tmp/#{thumbnail_name}"), :private => true})
       File.unlink "/tmp/#{thumbnail_name}"
     end
   end
