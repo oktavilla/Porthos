@@ -1,5 +1,5 @@
 class PagePreset < ActiveRecord::Base
-  belongs_to :graphic
+  belongs_to :graphic, :foreign_key => 'graphic_id', :class_name => 'PorthosGraphic'
   belongs_to :page_layout
   belongs_to :page_collection
   
@@ -24,7 +24,7 @@ class PagePreset < ActiveRecord::Base
 protected
   def save_graphic
     unless graphic_file.blank?
-      self.graphic_id = Graphic.create(:file => graphic_file).id
+      self.graphic_id = PorthosGraphic.create(:file => graphic_file).id
     end  
   end
 end

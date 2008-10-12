@@ -1,7 +1,7 @@
 require 'digest/sha1'
 require 'mime/types'
 
-class Graphic < ActiveRecord::Base
+class PorthosGraphic < ActiveRecord::Base
   PUBLIC_PATH = "uploaded_graphics"
   SAVE_DIR    = File.join(RAILS_ROOT, 'public/images', PUBLIC_PATH)
   IMAGE_FORMATS = [:jpg, :png, :gif]
