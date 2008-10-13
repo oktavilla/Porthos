@@ -22,7 +22,7 @@
 
 require 'RMagick'
 class ImageAsset < Asset
-  belongs_to :parent, :foreign_key => 'parent_id', :class_name => 'MovieAsset'
+  belongs_to :parent, :foreign_key => 'parent_id', :class_name => 'Asset'
   
   def landscape?
     width > height

@@ -26,6 +26,8 @@ class Asset < ActiveRecord::Base
   belongs_to :created_by, :class_name => 'User', :foreign_key => "created_by"
   has_many   :usages, :class_name => 'AssetUsage'
   
+  has_one :child, :class_name => 'Asset', :foreign_key => 'parent_id', :dependent => :destroy
+  
   has_finder :public, :conditions => {:private => false}
   
   is_indexed :fields => ['type', 'title', 'extname', 'author', 'description'], :concatenate => [{
