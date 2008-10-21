@@ -140,6 +140,7 @@ protected
     else
       File.open(path, 'wb') { |disk_file| disk_file.write(@file.read) }
     end
+    File.chmod 0644, path # -rw-r--r--
     logger.info "Stored asset: #{path}"
   end
 
