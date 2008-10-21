@@ -24,6 +24,7 @@ module Porthos
         end
 
         login_required if @trail.detect { |node| node.restricted? } and not logged_in?
+        raise ActiveRecord::RecordNotFound if @trail.detect { |node| node.inactive? }
 
         @breadcrumbs = @trail.collect { |node| ["/#{node.slug}", node.name] }
 

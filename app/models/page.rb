@@ -49,10 +49,18 @@ class Page < ActiveRecord::Base
 
   acts_as_taggable
   
-  is_indexed :fields => ['title', 'description', 'slug', 'type'], :concatenate => [{
-    :class_name => 'Textfield', :field => 'body', :as => 'body', 
-    :association_sql => "LEFT OUTER JOIN contents ON (pages.id = contents.page_id) LEFT OUTER JOIN textfields ON (textfields.id = contents.resource_id AND contents.resource_type = 'Textfield')"
-  }]
+  is_indexed({
+    :fields => ['title', 'description', 'slug', 'type'],
+    :concatenate => [{
+      :class_name => 'Textfield', :field => 'body', :as => 'body', 
+      :association_sql => "LEFT OUTER JOIN contents ON (pages.id = contents.page_id AND contents.active = 1) LEFT OUTER JOIN textfields ON (textfields.id = contents.resource_id AND contents.resource_type = 'Textfield')"
+    }],
+    :include => [{
+      :association_name => 'node', :field => 'status', :as => 'node_status', 
+      :association_sql => "LEFT OUTER JOIN nodes AS node ON (pages.id = node.resource_id AND node.resource_type = 'Page')"
+    }], :conditions => "pages.active = 1 AND node.status != -1"
+  })
+  
   
   attr_accessor :preset_id
   
