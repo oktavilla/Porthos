@@ -5,7 +5,7 @@ class MeasurePointsController < ApplicationController
       measure_point.increment!(:num_clicks)
       session[:measure_point] = measure_point.id
     end
-    if params[:target] and params[:target] =~ /^\/([a-z0-9\/\-]+)$/i
+    if params[:target] and params[:target] =~ /^\/([a-z0-9\/\-\?\=]+)$/i
       redirect_to params[:target]
     else
       redirect_to '/'
