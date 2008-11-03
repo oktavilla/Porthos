@@ -136,7 +136,7 @@ protected
   def write_to_disk
     Dir.mkdir(SAVE_DIR) unless File.exists?(SAVE_DIR)
     if @file.is_a? Tempfile
-      FileUtils.copy(@file.local_path, path)
+      FileUtils.move(@file.local_path, path)
     else
       File.open(path, 'wb') { |disk_file| disk_file.write(@file.read) }
     end

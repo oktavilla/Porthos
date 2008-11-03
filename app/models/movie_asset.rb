@@ -63,6 +63,6 @@ protected
   
   def write_to_disk
     Dir.mkdir(SAVE_DIR) unless File.exists?(SAVE_DIR)
-    FileUtils.copy(@original_path_with_ext, path)
+    FileUtils.move(@original_path_with_ext, path)
   end
 end
