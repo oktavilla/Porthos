@@ -1,7 +1,7 @@
 $(document).ready(function() {
   if($('.wym_dialog_link')){
     $.ajax({
-      url: Routes.formatted_admin_nodes('js'),
+      url: Routing.formatted_admin_nodes_path('js'),
       success: function(result){
         $('#navigation').html('<ul id="nodes">'+result+"</ul>");
         setup_nodes('navigation');
@@ -12,7 +12,7 @@ $(document).ready(function() {
         $('#toggle_navigation').trigger('click');
         this.className = 'current';
         $.ajax({
-          url: Routes.formatted_admin_assets('js'),
+          url: Routing.formatted_admin_assets_path('js'),
           success: function(result){
             $('#assets').html(result);
             setup_assets();
@@ -41,9 +41,9 @@ $(document).ready(function() {
 function setup_assets() {
   $(".assets li").click(function() {
     var id = $(this).attr('id').replace(/([A-z]|\_|\-)*/i, '');
-    $.getJSON(Routes.formatted_admin_asset(id, 'js'),
+    $.getJSON(Routing.formatted_admin_asset_path(id, 'js'),
       function(asset) {
-        $('input.wym_href:first').val(Routes.download_asset(asset.file_name, asset.extname));
+        $('input.wym_href:first').val(Routing.download_asset_path(asset.file_name, asset.extname));
         $('input.wym_title:first').val(asset.title);
       }
     );
@@ -116,7 +116,7 @@ function setup_nodes(parent_id){
   
   $('#nodes li > div').click(function() {
     var node_id = $(this).parent('li.node').attr('id').replace(/([A-z]|\_|\-)*/i, '');
-    $.getJSON(Routes.formatted_admin_node(node_id, 'js'),
+    $.getJSON(Routing.formatted_admin_node_path(node_id, 'js'),
       function(data) {
         $('input.wym_href:first').val('/'+data.slug); 
       }

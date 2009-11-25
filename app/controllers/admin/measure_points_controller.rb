@@ -1,7 +1,7 @@
 class Admin::MeasurePointsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'old_activities'
+  layout 'activities'
   
   # GET /measure_points
   # GET /measure_points.xml
@@ -28,6 +28,7 @@ class Admin::MeasurePointsController < ApplicationController
   # GET /measure_points/new.xml
   def new
     @measure_point = MeasurePoint.new
+    @campaign = Campaign.find(params[:campaign_id]) if params[:campaign_id]
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @measure_point }
@@ -43,7 +44,8 @@ class Admin::MeasurePointsController < ApplicationController
   # POST /measure_points.xml
   def create
     @measure_point = MeasurePoint.new(params[:measure_point])
-
+    @measure_point.user = current_user
+    
     respond_to do |format|
       if @measure_point.save
         flash[:notice] = 'MeasurePoint was successfully created.'

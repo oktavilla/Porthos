@@ -1,0 +1,46 @@
+<table class="comments">
+  <tr>
+    <th>Ref ID# / Sida / Datum</th>
+    <th>Skriven av / IP</th>
+    <th>Kommentar</th>
+    <th>Spam / Radera</th>
+  </tr>
+  <% comments.each do |comment| -%>
+  <tr class="<%= cycle('odd','even') %>" id="comment_<%= comment.id %>">
+    <td class="details">
+      <span class="reference<%= " is_spam" if comment.spam? %>"><%= comment.id %></span>
+      <span class="commentable">
+      <% if comment.commentable.is_a?(Page) %>
+        <%= link_to comment.commentable.title, comments_admin_page_path(comment.commentable, :anchor => "comment_#{comment.id}")  %>
+      <% elsif comment.commentable %>
+        <%= comment.commentable.title %>
+      <% end %>
+      </span>
+      <span class="created_at"><%= comment.created_at.day  %> <%= comment.created_at.strftime("%b %Y %H:%M") %></span>
+    </td>
+    <td class="author">
+      <span class="name"><%= comment.name %></span>
+      <% unless comment.email.blank? %>
+        <span class="email"><%= mail_to comment.email, comment.email %></span>
+      <% end %>
+      <% unless comment.url.blank? %>
+        <span class="url"><%= link_to truncate(comment.url, 30), comment.url %></span>
+      <% end %>
+      <span class="ip_address"><%= comment.ip_address %></span>
+    </td>
+    <td>
+      <%= simple_format(html_escape(comment.body)) %>
+    </td>
+    <td class="spam">
+      <% if comment.spam? %>
+        <span class="is_spam">Spam</span>
+        <%= link_to "Avmarkera som spam", report_as_ham_admin_comment_path(:id => comment, :return_to => return_to), :method => :put %>
+      <% else %>
+        <%= link_to "Markera som spam", report_as_spam_admin_comment_path(:id => comment, :return_to => return_to), :method => :put %>
+        
+      <% end %>
+      <%= link_to "Radera", admin_comment_path(comment.id, :return_to => return_to), :method => 'delete', :confirm => 'Är du säker på att du vill radera kommentaren?', :class => 'delete'  %>
+    </td>
+  </tr>
+  <% end -%>
+</table>

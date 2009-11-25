@@ -80,7 +80,212 @@ Porthos.Assets.Asset = Class.create({
   }
 });
 
+Porthos.Assets.Asset.file_types = $A([
+  'jpg',
+  'jpeg',
+  'png',
+  'gif',
+  'tif',
+  'tiff',
+  'mov',
+  'qt',
+  'mp4',
+  'mpg',
+  'avi',
+  'flv',
+  'mp3',
+  'doc',
+  'pdf',
+  'psd',
+  'eps',
+  'ai',
+  'zip',
+  'swf'
+]);
+
 Porthos.Assets.Uploader = Class.create({
+  initialize: function(form, options) {
+    if (typeof SWFUpload == "undefined") { return; }
+    if (!(this.form = $(form))) { return; }
+
+    this.queue = $A();
+    this.bytes_transfered = 0;
+    
+    var placeholder =  $span({'id' : 'select_files'});
+    this.browse_link = $a({ 'id' : 'add_assets_to_queue', 'href' : '#' }, 'Välj filer att ladda upp');
+    this.browse_link.observe('click', this.selectFiles.bindAsEventListener(this));
+    Element.insert(this.form.parentNode, {
+      'top' : $div({
+        'id' : 'init_file_dialogue'
+      }, $h2({}, placeholder, this.browse_link), $p({'class' : 'allowed_formats'}, "Du kan ladda upp: bilder (jpg, png, gif, tif), filmer (fla, swf, mov, mp4, mpg, avi), ljud (mp3, wav) samt andra dokument (doc, zip, pdf, eps)."))
+    });
+    
+    this.options = Object.extend({
+      upload_url                   : this.form.action,
+      flash_url                    : "/javascripts/porthos/swfupload/swfupload.swf",
+      post_params                  : {
+        "format" : "js"
+      },
+      use_query_string             : false,
+      debug                        : false,
+      file_post_name               : "asset[file]",
+      file_types                   : Porthos.Assets.Asset.file_types.collect(function(type) { return '*.' + type }).join(';'),
+      file_queued_handler          : this.addAsset.bind(this),
+      file_dialog_complete_handler : this.dialogComplete.bind(this),
+      upload_start_handler         : this.upload.bind(this),
+      upload_progress_handler      : this.fileProgress.bind(this),
+      upload_success_handler       : this.uploadComplete.bind(this),
+      queue_complete_handler       : this.queueComplete.bind(this),
+      button_placeholder_id        : "select_files",
+      button_width                 : 230,
+      button_height                : 28,
+      button_window_mode           : SWFUpload.WINDOW_MODE.TRANSPARENT,
+      button_cursor                : SWFUpload.CURSOR.HAND
+    }, options || {});
+        
+    this.swfu = new SWFUpload(this.options);
+    $('submit_container').hide();
+    this.form.select('input[type=file]').invoke('hide');
+    this.form.select('input[type=submit]').invoke('observe', 'click', this.submit.bindAsEventListener(this));
+  },
+  
+  countTotalBytes: function() {
+    this.bytes_queued = this.queue.inject(0, function(sum, file) {
+      return sum + file.size;
+    });
+    return this.bytes_queued;
+  },
+  
+  selectFiles: function(event) {
+    this.swfu.selectFiles();
+    event.stop();
+  },
+  
+  submit: function(event) {
+    this.swfu.startUpload();
+    $('submit_container').hide();
+    $('add_assets_to_queue').update('Uploading ...');
+    event.stop();
+  },
+  
+  addAsset: function(file) {
+    if (this.queue.size() == 0 && !this.queue_element) {
+      this.setup();
+    }
+    this.queue.push(file);
+    remove_link = $a({ 'href' : '#', 'class' : 'remove' }, $span({}, 'Remove'));
+    remove_link.observe('click', function(event) {
+      this.removeAsset(file);
+      event.stop();
+    }.bind(this));
+    Element.insert(this.queue_element, {
+      'bottom' : $li({
+        'id' : 'file_queue_' + file.id
+      }, $span({
+        'class' : 'name'
+      }, file.name), $span({
+        'class' : 'size'
+      }, Math.formatBytes(file.size)), $span({
+        'class' : 'progress'
+      }, remove_link))
+    });
+  },
+  
+  removeAsset: function(file) {
+    $('file_queue_' + file.id).remove();
+    this.removeFromInternalQueue(file);
+    this.updateStatus();
+    this.swfu.cancelUpload(file.id);
+    if (this.queue.size() == 0) {
+      this.tearDown();
+    }
+  },
+  
+  upload: function(file) {
+    $('file_queue_'+file.id).addClassName('uploading');
+  },
+  
+  fileProgress: function(file, bytes_loaded, bytes_total) {
+    var percentage = Math.ceil((bytes_loaded / bytes_total) * 100);
+    $('file_queue_' + file.id).select('span.progress').first().update(percentage + '%');
+  },
+  
+  updateTotalProgress: function(file) {
+    this.bytes_transfered += file.size;
+    var percentage = Math.ceil((this.bytes_transfered / this.bytes_queued) * 100);
+    $('total_progress').update(percentage + '%');
+  },
+  
+  dialogComplete: function() {
+    if (this.queue.size() > 0) {
+      this.updateStatus();
+    }
+  },
+  
+  uploadComplete: function(file, response) {
+    $('file_queue_' + file.id).addClassName('complete').removeClassName('uploading');
+    $('file_queue_' + file.id).select('span.progress').first().update('100%');
+    this.removeFromInternalQueue(file);
+    this.updateTotalProgress(file);
+    return true;
+  },
+  
+  queueComplete: function(num_files_uploaded) {
+    $('add_assets_to_queue').update('Alla filer är uppladdade!').addClassName('upload_complete');
+    view_new_assets_link = $a({ 'href' : Routing.incomplete_admin_assets_path() }, 'Beskriv och sätt nyckelord på filerna')
+    Element.insert(this.form, {
+      'before' : $p({
+        'class' : 'next_steps'
+      }, view_new_assets_link, ' eller ', $a({ 'href' : Routing.new_admin_asset_path() }, 'ladda upp fler'))
+    });
+  },
+  
+  updateStatus: function() {
+    $('total_size').update(Math.formatBytes(this.countTotalBytes()));
+  },
+  
+  setup: function() {
+    this.queue_container = $div();
+    this.queue_element = $ul({ 'class' : 'files' });
+    Element.insert(this.queue_container, {
+      'top' : this.queue_element
+    });
+    this.browse_link.old_text = this.browse_link.innerHTML;
+    this.browse_link.update('Lägg till fler filer');
+    var totals = $div({
+      'class' : 'totals'
+    }, $span({
+      'id' : 'total_size',
+      'class' : 'size total'
+    }), $span({
+      'id'    : 'total_progress',
+      'class' : 'progress total'
+    }));
+    Element.insert(this.form, { 'top' : this.queue_container });
+    Element.insert(this.queue_element, {
+      'after' : totals
+    });
+    $('submit_container').show();
+  },
+  
+  tearDown: function() {
+    this.queue = $A();
+    Element.remove(this.queue_container);
+    this.queue_container = null;
+    this.queue_element = null;
+    this.browse_link.update(this.browse_link.old_text);
+    $('submit_container').hide();
+  },
+  
+  removeFromInternalQueue: function(file) {
+    this.queue = this.queue.reject(function(queued_file) {
+      return queued_file.id == file.id;
+    });
+  }
+});
+
+
+Porthos.Assets.IframeUploader = Class.create({
   initialize: function(form, options) {
     if (!(this.form = $(form))) { return; }
     this.form.action += '.js';
@@ -88,7 +293,7 @@ Porthos.Assets.Uploader = Class.create({
       timer: 0.5
     }, options || {});
     this.onLoading  = options.onLoading || Prototype.emptyFunction;
-    this.onComplete = function(element, value) {
+    this.onComplete = function(element, value) {
       (options.onComplete || Prototype.emptyFunction).apply(this, arguments);
       this.resetElement();
     };
@@ -114,6 +319,7 @@ Porthos.Assets.Uploader = Class.create({
     new Porthos.IframeObserver(this.target, this.options.timer, this.onComplete);
   }
 });
+
 
 Porthos.Assets.Picker = Class.create({
   // Extend the callback per instance
@@ -148,7 +354,7 @@ Porthos.Assets.Picker = Class.create({
         this.observeAssets('show');
         this.observeSearchBox('show');
         Porthos.SearchField.find(Porthos.Dialog('assets').get('show'));
-        new Porthos.Assets.Uploader('upload_asset_form', {
+        new Porthos.Assets.IframeUploader('upload_asset_form', {
           timer: 0.2,
           onLoading:function() {
             Porthos.Dialog().setWaitState();
@@ -271,10 +477,10 @@ Porthos.Assets.IndexView = Class.create({
   initialize: function() {
     if($('view_options')) {
       this.assets_list = $$('ul.assets').first();
-      this.setUpUploadObserver($$('#add_files ul li').first());
       this.setUpPerPageObserver();
       this.setUpViewSelectObserver();
     }
+    new Porthos.TagAutoCompletion($('search_query'));
   },
   
   setUpPerPageObserver : function (){
@@ -298,56 +504,53 @@ Porthos.Assets.IndexView = Class.create({
         this.assets_list.removeClassName('overview');
       }
     }.bind(this));
-  },
-  
-  setUpUploadObserver : function(el) {
-    el.childElements('input').invoke('observe', 'change', function(event) {
-      if (event.element().value && $$('#add_files .file').last().value != '') { this.createNewField(); }
-      event.stop();
-    }.bind(this));
-  },
-  
-  createNewField : function() {
-    var new_id = parseInt(Porthos.extractId($('add_files').select('ul li label').last().innerHTML))+1;
-    var new_row = $('add_files').select('ul').first().appendChild( $li({'id' : 'file_'+new_id}, $label({'class': 'mini'}, 'Fil '+new_id), $input({'type':'file', 'class':'file', 'size': 15, 'id' : 'file_'+new_id, 'name' : 'files[]' }) ) );
-    new Effect.Highlight(new_row);
-    this.setUpUploadObserver(new_row);
   }
 });
 
 Porthos.Assets.EditView = Class.create({
   initialize: function() {
-    if($$('.mediaplayer').length > 0){
+    if($$('.MovieAsset').length > 0 && $(document.getElementsByTagName('body')[0]).hasClassName('edit')){
       var thumbnail_button = $button('Spara ny försättsbild');
-      $$('.fileinfo')[0].appendChild(thumbnail_button);
+      $$('.asset')[0].appendChild(thumbnail_button);
       thumbnail_button.observe('click', function(event){
-        var edit_form = $$('#ca form')[0];
+        var edit_form = $$('#c_2 form')[0];
         edit_form.appendChild($input({'type':'hidden', 'name':'asset[thumbnail_position]', 'value':Porthos.Assets.EditView.thumbnail_position}));
         edit_form.submit();
         event.stop();
       });
     }
+    $$('input.asset_tags').each(function(element) {
+      new Porthos.TagAutoCompletion(element);
+    });
+  }
+});
+
+Porthos.Assets.NewView = Class.create({
+  initialize: function() {
+    new Porthos.Assets.Uploader('upload', { debug: false });
   }
 });
 
 Event.onReady(function() {
   var body = $(document.getElementsByTagName('body')[0]);
   if (body.id == 'assets' ){
-    if(body.hasClassName('index')){
+    if (body.hasClassName('index')){
       var view = new Porthos.Assets.IndexView();
-    }else if(body.hasClassName('edit')){
+    } else if (body.hasClassName('edit') || body.hasClassName('incomplete')){
       var view = new Porthos.Assets.EditView();
+    } else if (body.hasClassName('new')){
+      var view = new Porthos.Assets.NewView();
     }
   }
 });
 
 var player;
 function playerReady(obj) {
-	var id = obj['id'];
-	var version = obj['version'];
-	var client = obj['client'];
-	player = document.getElementById(id);
-	player.addModelListener("TIME", "player_stopped");
+  var id = obj.id;
+  var version = obj['version'];
+  var client = obj['client'];
+  player = document.getElementById(id);
+  player.addModelListener("TIME", "player_stopped");
 };
 
 function player_stopped(time){

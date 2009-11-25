@@ -16,8 +16,9 @@ class Conversion < ActiveRecord::Base
   belongs_to :measure_point, :counter_cache => true
   belongs_to :registration,  :polymorphic => true
   
-  has_finder :by_type, lambda { |type| { :conditions => ["registration_type = ?", type] } }
-  
+  named_scope :by_type, lambda { |type| { :conditions => ["registration_type = ?", type] } }
+  named_scope :confirmed, :conditions => 'status = 1', :joins => 'LEFT JOIN registrations ON registrations.id = conversions.registration_id'
+
   composed_of :amount, :class_name => "Money", :mapping => %w(amount cents) do |amount|
     amount.to_money
   end

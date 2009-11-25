@@ -5,7 +5,7 @@
       <label for="content_resource_id">Välj modul:</label>
       <%= f.hidden_field :column_position %>
       <%= f.hidden_field :resource_type %>
-      <%= f.select :resource_id, ContentModule.find(:all, :order => 'name ASC', :conditions => ["available_in_page_type = ?", @page.class.to_s]).collect { |t| [t.name, t.id] } %>
+      <%= f.select :resource_id, ContentModule.find(:all, :order => 'name ASC').collect { |t| [t.name, t.id] } %>
     </div>
   </div>
   <div class="submit absolute">

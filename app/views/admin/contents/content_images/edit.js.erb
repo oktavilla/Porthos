@@ -9,8 +9,10 @@
     <%= f.text_area :caption, :value => @content.resource.caption, :cols => 30, :rows => 5 %>    
     <label for="content_image_title">Copyright / Fotograf</label>
     <%= f.text_field :copyright, :value => @content.resource.copyright %>
+    <% if @content.parent_id.blank? -%>
     <label for="content_image_format">Format</label>
     <%= f.select :style, ContentImage.styles.collect { |s, klass| [s[:name], s[:class]] } %>
+    <% end -%>
     <label for="content_image_downloadable"><%= f.check_box :downloadable %> Länka till orginal</label>
   </div>
   </div>

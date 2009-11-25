@@ -12,7 +12,7 @@
         <% if content.collection? -%>
           <%= render(:partial => "/pages/contents/#{content.resource_type.underscore.pluralize}/collection.html.erb", :locals => { :page => @page, :content => content }) %>
         <% elsif content.module? -%>
-          <%= render(:partial => "/pages/contents/modules/#{content.resource.template}.html.erb", :locals => { :page => @page, :content => content }) %>
+          <%= render(:partial => "/pages/contents/modules/#{content.resource.template}/content.html.erb", :locals => { :page => @page, :content => content }) %>
         <% elsif content.form? -%>
           <%= render(:partial => "/pages/contents/registration_forms/#{content.resource.template}.html.erb", :locals => { :page => @page, :content => content, :resource => content.resource }) %>
         <% else %>

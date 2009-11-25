@@ -1,5 +1,7 @@
 body#activities .inner {padding: 10px;}
 
+#activities #period_selector select {width:auto;}
+
 body#activities {}
   #activities .gl {}
     #activities .gl li { padding: 6px 10px 6px 15px;} 
@@ -63,6 +65,8 @@ body#activities {}
       text-align: left;
       font-weight:normal;
       padding:.4em 10px .4em 15px; }
+    table.activities th.sub { padding-left: 25px; }
+    table.activities th.sub_level_2 { padding-left: 35px; }
     table.activities tbody td {
       width:9em;
       text-align:right;
@@ -73,6 +77,9 @@ body#activities {}
       border-top: 1px solid #000;
       font-weight:bold;
       font-size:1.5em; }
+    table.activities .extra_stats td {
+      text-align:left;
+      padding-left:15px; }
     table.activities tbody a {text-decoration:none;}
       table.activities tbody a:hover {text-decoration:underline;}
 
@@ -89,6 +96,20 @@ body#activities {}
         font-size: 0.9em;
         background:transparent url(/graphics/porthos/icons/16_export.png) 6px 5px no-repeat; }
         body#activities ul#exports li ul li {padding-left: 15px;}
+
+.export_info { 
+  background: #eee;
+  border-top: 1px solid #ddd;
+  margin-top: 15px;
+  padding: 10px;
+  font-size: .9em;}.export_info { 
+    background: #eee;
+    border-top: 1px solid #ddd;
+    margin-top: 15px;
+    padding: 10px;
+    font-size: .9em;}
+
+  
 
 /**** NAVIGATION FOR ACTIVITY */
   body#activities #nav #n-activity a,

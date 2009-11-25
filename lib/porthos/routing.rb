@@ -69,8 +69,10 @@ module Porthos
         }
 
         if node["parent_id"]
-          @routing.add_named_route("node_#{node['id']}", node["slug"], route_mappings)
-          @routing.add_named_route("formatted_node_#{node['id']}", "#{node["slug"]}.:format", route_mappings)
+          if node['controller'] == 'pages'
+            @routing.add_named_route("node_#{node['id']}", node["slug"], route_mappings)
+            @routing.add_named_route("formatted_node_#{node['id']}", "#{node["slug"]}.:format", route_mappings)
+          end
           if node["resource_class_name"] == "PageCollection"
             @routing.add_named_route("node_#{node['id']}_year", "#{node["slug"]}/:year", route_mappings.merge({
               :requirements       => { :year => /[0-9]{4}/ }

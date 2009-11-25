@@ -16,10 +16,22 @@ class Admin::UsersController < ApplicationController
   end
   
   def public
+    page = params[:page] || 1
+    per_page = params[:per_page] || 30
     @role = Role.find_or_create_by_name('Public')
-    @users = @role.users.find(:all, :order => "last_name, first_name")
+    @users = @role.users.paginate({:page => page, :per_page => per_page, :order => "last_name, first_name"})
     respond_to do |format|
       format.html { }
+    end
+  end
+  
+  def search
+    @query = params[:query]
+    @page  = params[:page] || 1
+    @search = Ultrasphinx::Search.new(:query => "#{@query}", :class_names => ['User'], :page => @page)
+    @search.run
+    respond_to do |format|
+      format.html
     end
   end
   
@@ -37,8 +49,8 @@ class Admin::UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     @role = Role.find_or_create_by_name(params[:role])
-    @user.save!
     @user.roles << @role
+    @user.save!
     flash[:notice] = "#{@user.login} #{l(:admin_general, :saved)}"
     respond_to do |format|
       format.html { redirect_to params[:return_to] || admin_users_path }

@@ -14,6 +14,13 @@ class Admin::PagesController < ApplicationController
       []
     end
   end
+  
+  def comments
+    @page = Page.find(params[:id])
+    respond_to do |format|
+      format.html
+    end
+  end
 
   def new
     @page = Page.new(params[:page])

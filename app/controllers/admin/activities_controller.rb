@@ -11,7 +11,7 @@ class Admin::ActivitiesController < ApplicationController
   def show
     @type = params[:type] ? params[:type].classify.constantize : false
     respond_to do |format|
-      format.html { render :template => "admin/activities/#{params[:type]}" rescue render :template => "admin/activities/default" }
+      format.html 
     end
   end
 
@@ -24,8 +24,8 @@ protected
       @second_period = [Time.mktime(second_period.first[:year], second_period.first[:month], second_period.first[:day], 00, 00), Time.mktime(second_period.last[:year], second_period.last[:month], second_period.last[:day], 23, 59)]
     else
       now = Time.now
-      @first_period  = [now.at_beginning_of_month, now.at_midnight-1.second]
-      @second_period = [now.last_year.at_beginning_of_month, now.last_year.at_midnight-1.second]
+      @first_period  = [now.at_beginning_of_month, now.at_end_of_month]
+      @second_period = [now.last_year.at_beginning_of_month, now.last_year.at_end_of_month]
     end
   end
 end

@@ -16,6 +16,28 @@ class Admin::AssetUsagesController < ApplicationController
       end
     end
   end
+
+  def edit
+    @asset_usage = AssetUsage.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def update
+    @asset_usage = AssetUsage.find(params[:id])
+    respond_to do |format|
+      if @asset_usage.update_attributes(params[:asset_usage])
+        format.html { redirect_to params[:return_to] || eval("admin_#{@asset_usage.parent_type.tableize}_path") }
+        format.js   { render :nothing => true }
+      else
+        format.html { render :action => 'edit' }
+        format.js   { render :action => 'edit', :layout => false }
+      end
+    end
+    
+  end
   
   def destroy
     @asset_usage = AssetUsage.find(params[:id])

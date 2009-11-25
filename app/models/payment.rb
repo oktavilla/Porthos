@@ -53,6 +53,14 @@ class Payment < ActiveRecord::Base
     status == 'Failed'
   end
   
+  def pending?
+    status == 'Pending'
+  end
+  
+  def in_progress?
+    (!transaction_id.blank? && !denied? && !failed?) || pending?
+  end
+  
   def creditcard
     @creditcard ||= ActiveMerchant::Billing::CreditCard.new({
       :type               => card_type,
@@ -70,7 +78,7 @@ class Payment < ActiveRecord::Base
   end
   
   def billing_type
-    @billing_type ||= self.class.payment_methods.find { |m| m if m[:id] == billing_method }[:method] rescue false
+    @billing_type ||= Payment.billing_type_for_payment_method(billing_method)
   end
   
   def creditcard_payment?
@@ -103,6 +111,8 @@ class Payment < ActiveRecord::Base
 
   def authorize
     
+    update_attribute(:status, 'Pending')
+    
     payment_options = { 
       :billing_method => billing_type,
       :address        => (payable.shipping_address.blank?  ? payable.address  : payable.shipping_address), 
@@ -121,6 +131,7 @@ class Payment < ActiveRecord::Base
     self.transaction_id   = @authorize_response.authorization
     self.result_code      = @authorize_response.params['result_code']
     self.status           = @authorize_response.success? ? 'Approved' : 'Denied'
+    save
     @authorize_response
   end
   
@@ -170,6 +181,10 @@ class Payment < ActiveRecord::Base
         { :name => 'Swedbank',            :method => 'direct.fsb',  :id => 'swedbank' },
       ]
     end
+    
+    def billing_type_for_payment_method(payment_method)
+      Payment.payment_methods.find { |m| m if m[:id] == payment_method }[:method] rescue false
+    end
   end
 
 protected  
@@ -192,8 +207,7 @@ protected
     payable.update_attributes({
       :payment_status           => status,
       :payment_response_message => response_message,
-      :payment_transaction_id   => transaction_id,
-      :payment_type             => billing_type
+      :payment_transaction_id   => transaction_id
     })
   end
   

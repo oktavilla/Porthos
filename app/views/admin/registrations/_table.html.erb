@@ -1,16 +1,45 @@
-<table>
+<table class="registrations">
   <tr>
-    <th>Datum</th>
-    <th>Namn/företag</th>
-    <th>E-post</th>
-    <th>Typ</th>
+    <th>Ref# / Datum</th>
+    <th>Kontaktuppgifter</th>
+    <th>Detaljer</th>
   </tr>
   <% registrations.each do |registration| -%>
-  <tr>
-    <td><%= registration.created_at.strftime("%d %B %Y") %></td>
-    <td><%= registration.name %> <%= link_to "Visa detaljer", admin_registration_path(registration.class, registration) %></td>
-    <td><%= mail_to registration.email, registration.email %></td>
-    <td><%= registration.class.localized_model_name %></td>
+  <tr class="<%= cycle('odd','even') %>">
+    <td class="details">
+      <span class="status <%= registration.humanized_status[:class] %>"><%= link_to registration.id, formatted_admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></span>
+      <span class="created_at">
+        <% t = registration.created_at %>
+        <%= t.day  %>
+        <%= t.strftime("%b %Y %H:%M") %>
+      </span>
+      <span class="type">
+        <%= registration.class.localized_model_name %>
+      </span>
+    </td>
+    <td class="personal">
+      <%= render :partial => "vcard", :locals => { :registration => registration } %>
+    </td>
+    <td class="payment">
+    <% if registration.total_sum? %>
+      <span class="status <%= registration.invoice_payment? ? 'invoice' : registration.humanized_payment_status %>">
+        <%= number_to_currency(registration.total_sum) %>
+      </span>
+      <span class="payment">
+      <% if (registration.is_a?(CompanyVgDonation) or registration.is_a?(CompanyDonation)) and registration.invoice_payment? %>
+        <span class="payment_type"><%= link_to "Faktura", invoice_admin_registration_path(registration) %></span>
+      <% else -%>
+        <span class="payment_type"><%= registration.payment_type %></span>
+      <% end %>
+      <% if !registration.payment_transaction_id.blank? && registration.payment_transaction_id.to_i != 0 -%>
+        <span class="payment_transaction_id">(<%= registration.payment_transaction_id %>)</span>
+      <% end -%>
+      </span>
+    <% end -%>
+    <% if registration.conversion and registration.conversion.measure_point -%>
+      <span class="measure_point"><span class="type">Mätpunkt:</span> <%= link_to registration.conversion.measure_point.public_id.upcase, admin_campaign_path(:id => registration.conversion.measure_point.campaign_id, :anchor => "measure_point_#{registration.conversion.measure_point.id}") %></span>
+    <% end -%>
+    </td>
   </tr>
   <% end -%>
 </table>

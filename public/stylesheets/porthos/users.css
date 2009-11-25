@@ -1,14 +1,13 @@
 /**** USERS INDEX */
 
 body#users .index {}
-  
+
+  body#users .export,
   body#users .create { 
     margin-left: 10px;
     padding-left: 2em; }
   
-  body#users #users_list {
-    background: #f00;
-    margin: 10px; }
+  body#users #users_list { margin: 10px; }
   
   body#users #users_list li { 
     position: relative;
@@ -48,9 +47,7 @@ body#users .index {}
 
 body#users .form_container {}
   body#users .form_container { margin: 10px; }
-    body#users fieldset { width: 50%; }  
-    body#users #user-image, body#users #login {float: left;}
-    body#users #contact {float: right;}
+    body#users .col {float: left; width: 50%;}
 
   body#users .confirm {clear: both;}
   

@@ -13,7 +13,8 @@
         <label for="content_image_caption">Bildtext</label>
         <%= resource.text_area :caption, :value => @content.resource.asset.description, :cols => 30, :rows => 5 %>    
         <label for="content_image_title">Copyright / Fotograf</label>
-        <%= resource.text_field :copyright, :value => @content.resource.copyright %>
+        <%= resource.text_field :copyright, :value => @content.resource.asset.author %>
+        <% if not @content.parent_id.blank? or params[:collection].to_i != 1 %>
         <label for="content_image_format">Format</label>
         <%= resource.select :style, ContentImage.styles.collect { |s, klass| [s[:name], s[:class]] } %>
         <label for="content_image_downloadable"><%= resource.check_box :downloadable %> Länka till orginal</label>

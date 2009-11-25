@@ -60,35 +60,43 @@
 class Registration < ActiveRecord::Base
 
   def sale?; false; end
+  def needs_confirmation?; false; end
 
-  has_finder :with_period, lambda { |period| { :conditions => ["created_at BETWEEN ? AND ?", period.first, period.last] } }
-  has_finder :with_payment, :conditions => "payment_status = 'Complete'"
-  has_finder :with_opt_in,  :conditions => "contact_approval = 1"
-  has_finder :orders,       :conditions => "type = 'PrivateOrder' or type = 'CompanyOrder'"
+  class_inheritable_accessor :public_filters
+  self.public_filters = [
+    :confirmed,
+    :pending,
+    :failed,
+    :spam,
+    :fraud
+  ]
 
-  has_finder :global_parents, :conditions => "type = 'GlobalParent'"
-  has_finder :donations,      :conditions => "type = 'PrivateDonation' or type = 'CompanyDonation'"
+  named_scope :with_payment,  :conditions => "payment_status = 'Complete'"
+  named_scope :with_opt_in,   :conditions => "contact_approval = 1"
 
-  has_finder :of_the_type, lambda { |class_type| { :conditions => ["type = ?", class_type.classify] } }
+  named_scope :pending,       :conditions => "status = 0 and payment_status != 'Redirected'"
+  named_scope :confirmed,     :conditions => 'status = 1'
+  named_scope :spam,          :conditions => 'status = 2'
+  named_scope :failed,        :conditions => 'status = 3'
+  named_scope :fraud,         :conditions => 'fraud = 1'
 
-  has_finder :invalid_orders,   :conditions => ["(payment_type != ? AND payment_transaction_id IS NULL) OR (dispatch_id IS NULL AND (payment_status IS NULL OR payment_status != ?))", 'invoice', 'Denied']
+  named_scope :confirmed_or_pending, :conditions => '(status = 1 or status = 0)'
 
+  named_scope :with_period, lambda { |period| { :conditions => ["created_at BETWEEN ? AND ?", period.first, period.last] } }
+  named_scope :of_the_type, lambda { |class_type| { :conditions => ["type = ?", class_type.classify] } }
+
+  has_many :comments, :class_name => 'RegistrationComment'
+  has_many :related_registrations, :class_name => 'Registration', :finder_sql => 'SELECT * FROM registrations WHERE registrations.session_id = "#{session_id}" AND id != "#{id}"'
   has_one :payment, :as => :payable
   has_one :conversion
   belongs_to :node
   belongs_to :registration_form
-    
-  before_validation_on_create :generate_public_id
-  validates_presence_of :payment_type, :if => Proc.new { |r| r.payable? }
-
-  # for strd limitations
-  validates_length_of :address, :maximum => 40, :allow_nil => true
-  validates_length_of :shipping_address, :maximum => 40, :allow_nil => true
-  validates_length_of :email, :maximum => 127, :allow_nil => true
-  validates_length_of :phone, :maximum => 20, :allow_nil => true
-  validates_length_of :first_name, :maximum => 20, :allow_nil => true
-  validates_length_of :last_name, :maximum => 20, :allow_nil => true
+  belongs_to :user
   
+  attr_accessor :trigger  
+  validates_length_of :trigger, :is => 0, :allow_nil => true
+  
+  before_validation_on_create :generate_public_id, :set_current_user
   
   delegate :send_email_response?, :replyable_email?, :reply_to_email, :email_subject, :email_body, :parsed_email_body, :contact_person, :notification_person, :to => :registration_form
 
@@ -108,9 +116,30 @@ class Registration < ActiveRecord::Base
     donation.to_money rescue 0.to_money
   end
   
-  is_indexed :fields => ['type', 'first_name', 'last_name', 'customer_number', 'email', 'organization', 'address', 
+  is_indexed :fields => ['id', 'type', 'first_name', 'last_name', 'customer_number', 'email', 'organization', 'address', 
                          'locality', 'shipping_first_name', 'shipping_last_name','shipping_organisation', 'shipping_address', 
-                         'shipping_locality', 'public_id', 'message', 'school', 'payment_transaction_id', 'dispatch_id']
+                         'shipping_locality', 'public_id', 'message', 'school', 'payment_transaction_id', 'dispatch_id'],
+                         :concatenate => [{:association_name => 'conversion', :field => 'measure_point_id', :as => 'campaign_measure_point_id'}]
+                         
+  
+  HUMANIZED_STATUSES = {
+    0 => {
+      :name  => 'Avvaktande',
+      :class => 'pending'
+    },
+    1 => {
+      :name  => 'Avklarad',
+      :class => 'completed'
+    },
+    2 => {
+      :name  => 'Dublett/Spam',
+      :class => 'deleted'
+    },
+    3 => {
+      :name  => 'Misslyckad',
+      :class => 'failed'
+    }
+  }
   
   def name
     "#{first_name} #{last_name}"
@@ -127,11 +156,31 @@ class Registration < ActiveRecord::Base
     name
   end
   
+  def created_at_formatted_date
+    created_at.strftime("%Y-%m-%d")
+  end
+
+  def created_at_formatted_time
+    created_at.strftime("%H:%M")
+  end
+  
+  def conversion_point_public_id
+    ((conversion and conversion.measure_point) ? conversion.measure_point.public_id : '')
+  end
+  
+  def total_sum_formatted
+    total_sum.cents/100
+  end
+  
   def to_url
     self.class.to_s.underscore
   end
 
   def payable?
+    false
+  end
+  
+  def paid?
     false
   end
 
@@ -156,27 +205,14 @@ class Registration < ActiveRecord::Base
   def build_debitech_purchase
     [purchase_type, purchase_name, 1, total_sum.cents].join(':')+":"
   end
-  
-  # Default fields for cvs export, overwrite this in submodels if needed
-  def cvs_fields
-    [
-      created_at.strftime("%Y-%m-%d %H:%M"),
-      first_name,
-      last_name,
-      address,
-      post_code,
-      locality,
-      email,
-      contact_approval.to_s,
-      total_sum.cents/100,
-      ((conversion and conversion.measure_point) ? conversion.measure_point.public_id : ''),
-      id
-    ]
-  end
 
   # Use cvs fields and convert to latin1 comma seperated string
   def to_cvs_s
-    cvs_fields.collect { |value| "\"#{ value.to_s.to_latin1 }\""}.join(',')
+    self.class.cvs_fields.collect { |value| "\"#{ self.send(value.to_sym).to_s.to_latin1 }\""}.join(',')
+  end
+  
+  def humanized_status
+    HUMANIZED_STATUSES[self.status]
   end
 
   class << self
@@ -188,39 +224,25 @@ class Registration < ActiveRecord::Base
     
     def valid_registration_types
       [
-        'WillInformationOrder',
-        'GlobalParent',
-        'Donation',
-        'PrivateDonation',
-        'CompanyDonation',
-        'Order',
-        'WaterDropOrder',
-        'ChristmasCardsOrder',
         'NewsletterSubscription',
-        'ActivityGroupMembership',
-        'SampleProductOrder',
-        'PageTip',
-        'GlobalParentGiveAway',
-        'VgDonation',
-        'MemoriumGiftDonation',
-        'CongratulationGiftDonation'
+        'PageTip'
       ]
     end
 
     def average_sum(options = {})
       sql = "select sum(total_sum) / count(*) from registrations where type = '#{self.to_s}'"
-      sql += " and created_at between '#{options[:period].first.to_s(:db)}' and '#{options[:period].last.to_s(:db)}'" if options[:period]
+      sql += " and created_at between '#{options[:period].first.to_s(:db)}' and '#{options[:period].last.to_s(:db)}' and status = 1" if options[:period]
       Money.new(connection.select_value(sql).to_f.round)
     end
 
     def total_sum(options = {})
       sql = "select sum(total_sum) from registrations where type = '#{self.to_s}'"
-      sql += " and created_at between '#{options[:period].first.to_s(:db)}' and '#{options[:period].last.to_s(:db)}'" if options[:period]
+      sql += " and created_at between '#{options[:period].first.to_s(:db)}' and '#{options[:period].last.to_s(:db)}' and status = 1" if options[:period]
       Money.new(connection.select_value(sql).to_f.round)
     end
 
     def export(period)
-      period.blank? ? find(:all) : with_period(period).find(:all)
+      period.blank? ? confirmed.find(:all) : with_period(period).confirmed.find(:all)
     end
     
     def export_count(last_export = false)
@@ -230,6 +252,24 @@ class Registration < ActiveRecord::Base
     def find_for_export(from, through)
       find(:all, :conditions => "registrations.created_at > '#{from.to_s(:db)}' AND registrations.created_at <= '#{through.to_s(:db)}'", :order => 'registrations.created_at')
     end
+    
+    # Default fields for cvs export, overwrite this in submodels if needed
+    def cvs_fields
+      [
+        :created_at_formatted_date,
+        :created_at_formatted_time,
+        :first_name,
+        :last_name,
+        :address,
+        :post_code,
+        :locality,
+        :email,
+        :contact_approval,
+        :total_sum_formatted,
+        :conversion_point_public_id,
+        :id
+      ]
+    end
   end
 
 protected
@@ -237,6 +277,10 @@ protected
   def generate_public_id
     chars = ("a".."z").to_a + ("1".."9").to_a 
     self.public_id = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{Array.new(32, '').collect{chars[rand(chars.size)]}.join}--")
+  end
+
+  def set_current_user
+    self.user = User.current
   end
 
   def validate

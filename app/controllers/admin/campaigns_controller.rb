@@ -1,8 +1,8 @@
 class Admin::CampaignsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'old_activities'
-  
+  layout 'activities'
+
   # GET /campaigns
   # GET /campaigns.xml
   def index
@@ -12,6 +12,16 @@ class Admin::CampaignsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @campaigns }
+    end
+  end
+
+  def search
+    @query = params[:query]
+    @page  = params[:page] || 1
+    @search = Ultrasphinx::Search.new(:query => "#{@query}", :class_names => ['Campaign'], :page => @page)
+    @search.run
+    respond_to do |format|
+      format.html
     end
   end
 

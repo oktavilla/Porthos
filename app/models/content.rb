@@ -20,8 +20,10 @@ class Content < ActiveRecord::Base
   belongs_to :page
   belongs_to :content_collection, :foreign_key => 'parent_id'
   belongs_to :resource, :polymorphic => true
-  has_finder :active, :conditions => "contents.active = 1"
-  acts_as_list :scope => 'page_id = \'#{page_id}\' AND column_position = \'#{column_position}\''
+  named_scope :active, :conditions => "contents.active = 1"
+  acts_as_list :scope => 'page_id = \'#{page_id}\' AND column_position = \'#{column_position}\' AND parent_id #{(parent_id.blank? ? "IS NULL" : (" = " + parent_id.to_s))}'
+  
+  acts_as_settingable
   
   # Should destroy resource unless it's shared in any sence
   before_destroy do |content|
@@ -74,7 +76,7 @@ class Content < ActiveRecord::Base
   end
 
   def self.approved_resources
-    ['Textfield', 'Teaser', 'ContentModule', 'RegistrationForm', 'ContentImage']
+    ['Textfield', 'Teaser', 'ContentModule', 'RegistrationForm', 'ContentImage', 'ContentMovie']
   end
 
 end

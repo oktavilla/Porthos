@@ -1,20 +1,28 @@
 class Admin::RegistrationsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'old_activities'
+  layout 'activities'
   
   def index
-    @type = params[:type].nil? ? 'Registration' : params[:type]
-    page = params[:page] || 1
+    @type = params[:type] || 'Registration'
+    page  = params[:page] || 1
     per_page = params[:per_page] || 20
-    @registrations = @type.constantize.paginate :page => page, :per_page => per_page, :order => 'created_at DESC'
-  end
-  
-  def invalid
-    @type = params[:type].nil? ? Registration : params[:type]
-    page = params[:page] || 1
-    per_page = params[:per_page] || 20
-    @registrations = @type.constantize.respond_to?(:invalid) ? @type.constantize.invalid.paginate(:page => page, :per_page => per_page, :order => 'created_at DESC') : []
+
+    klass = @type.constantize
+    scope = params[:filter] ? params[:filter].to_sym : :confirmed_or_pending
+
+    conditions = {
+      :conditions => ['conversions.measure_point_id = ?', params[:measure_point_id]],
+      :include => 'conversion'
+    } if params[:measure_point_id]
+
+    @filter = klass.public_filters.include?(scope) ? scope : :confirmed_or_pending
+    
+    @registrations = klass.send(@filter).paginate({
+      :page     => page,
+      :per_page => per_page,
+      :order    => 'registrations.created_at DESC'
+    }.merge(conditions || {}))
   end
   
   def period
@@ -33,7 +41,33 @@ class Admin::RegistrationsController < ApplicationController
   def show
     @type = params[:type].nil? ? 'Registration' : params[:type]
     @registration = @type.constantize.find(params[:id])
+    @registration_comment = RegistrationComment.new(:status => @registration.status, :fraud => @registration.fraud)
   end
+  
+  def search
+    @type = 'Registration'
+    @query = params[:query]
+    @page  = params[:page] || 1
+    @search = Ultrasphinx::Search.new(:query => "#{@query}", :class_names => [@type], :page => @page)
+    @search.run
+    respond_to do |format|
+      format.html
+    end
+  end
+  
+  def comment
+    @registration_comment = RegistrationComment.new(params[:registration_comment])
+    respond_to do |format|
+      if @registration_comment.save
+        format.html { redirect_to formatted_admin_registration_path(:id => @registration_comment.registration, :type => @registration_comment.registration.type, :format => 'html') }
+      else
+        @type = @registration_comment.registration.class.to_s
+        @registration = @registration_comment.registration
+        format.html { render :action => 'show'}
+      end
+    end
+  end
+  
 protected
   def extract_periods
     if params[:period]

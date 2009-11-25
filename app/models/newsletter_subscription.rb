@@ -59,22 +59,30 @@
 
 class NewsletterSubscription < Registration
   validates_presence_of :email
+  validates_as_email :email, :message => l(:validators, :bad_email_format)
   
-  def cvs_fields
-    [
-      created_at.strftime("%Y-%m-%d %H:%M"),
-      first_name,
-      last_name,
-      email,
-      ((conversion and conversion.measure_point) ? conversion.measure_point.public_id : ''),
-      id
-    ]
-  end
+  before_save :allow_contact_approval
   
   class << self
     def export(period)
-      find_by_sql ["SELECT id, created_at, first_name, last_name, email FROM registrations WHERE (created_at BETWEEN ? AND ?) AND (type != ? AND type != ?) AND contact_approval = ?", period.first, period.last, 'GlobalParent', 'PrivateDonation', '1']
+      find_by_sql ["SELECT id, created_at, first_name, last_name, email FROM registrations WHERE (created_at BETWEEN ? AND ?) AND (type != ? AND type != ? AND (status = 1 OR status = 3)) AND contact_approval = ?", period.first, period.last, 'GlobalParent', 'PrivateDonation', '1']
+    end
+    
+    def cvs_fields
+      [
+        :created_at_date,
+        :created_at_time,
+        :first_name,
+        :last_name,
+        :email,
+        :conversion_point_id,
+        :id
+      ]
     end
   end
   
+protected
+  def allow_contact_approval
+    self.contact_approval = 1
+  end
 end

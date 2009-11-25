@@ -20,8 +20,10 @@ class RegistrationsController < ApplicationController
     type = params[:registration_type]
     @registration = Registration.new_from_type(type, params[:registration])
     @registration.ip_address = request.remote_ip
+    @registration.session_id = porthos_session_id
 
     if @registration.save
+      approved_url = params[:approved_url] || http_url_from_path(registration_path(:id => @registration.to_url))
       session[:current_registration] = @registration.id
 
       if @registration.payable?
@@ -31,15 +33,15 @@ class RegistrationsController < ApplicationController
         
         @redirection_url = case
         when @payment.direct_payment?
-          @payment.status = 'Redirected'
-          @payment.save
+          @payment.update_attributes(:status => 'Redirected')
           @payment.integration_url({
-            :approved_url => (request.format.to_sym == :xml) ? params[:approved_url] : registration_url(:id => @registration.to_url),
-            :declined_url => (request.format.to_sym == :xml) ? params[:declined_url] : registration_url(:id => @registration.to_url, :denied => true)
+            :approved_url => approved_url,
+            :declined_url => params[:declined_url] || registration_url(:id => @registration.to_url, :denied => true)
           })
         when @payment.creditcard_payment?
-          session[:registration_return_path] = http_url_from_path(registration_path(:id => @registration.to_url))
-          https_url_from_path(new_payment_path())
+          @payment.update_attributes(:status => 'Redirected')
+          session[:registration_return_path] = approved_url
+          https_url_from_path((request.format.to_sym == :xml) ? new_payment_path(:public_id => @registration.public_id) : new_payment_path)
         when @payment.invoice_payment?
           registration_path(:id => @registration.to_url)
         end
@@ -47,6 +49,9 @@ class RegistrationsController < ApplicationController
         Conversion.from_click(session[:measure_point], @registration) if session[:measure_point]
         @redirection_url = registration_path(:id => @registration.to_url)
       end
+      
+      @registration.update_attribute(:return_path, approved_url)
+      
       respond_to do |format|
         format.html { redirect_to @redirection_url }
         format.xml { render :layout => false, :status => :created }

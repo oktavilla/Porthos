@@ -9,7 +9,7 @@ class PagesController < ApplicationController
     @page = if params[:id]
       (current_user != :false and current_user.admin?) ? Page.find(params[:id]) : Page.active.published.find(params[:id])
     elsif params[:page_slug]
-      page = Page.active.find_by_slug("#{params[:page_slug]}") || (raise ActiveRecord::RecordNotFound)
+      page = @node.resource.pages.active.find_by_slug("#{params[:page_slug]}") || (raise ActiveRecord::RecordNotFound)
       login_required if page.restricted and not logged_in?
       (page and (not page.parent_type.blank? and page.parent.calendar?) or page.published?) ? page : (raise ActiveRecord::RecordNotFound)
     else 
@@ -17,15 +17,42 @@ class PagesController < ApplicationController
     end
     if @page.is_a?(PageCollection)
       unless params[:tags]
-        from, to = Time.delta(params[:year] || Time.now.year, params[:month], params[:day])
-        unless @page.calendar?
-          @pages = @page.pages.active.published.include_restricted(logged_in?).published_within(from, to).paginate(:page => params[:page], :per_page => 10)
+        @pages = if params[:year]
+          if @page.calendar?
+            @page.pages.active.by_date({
+              :year   => params[:year],
+              :month  => params[:month],
+              :day    => params[:day],
+              :page   => params[:page],
+              :include_restricted => true
+            })
+          else
+            @page.pages.active.published.by_date({
+              :year   => params[:year],
+              :month  => params[:month],
+              :day    => params[:day],
+              :page   => params[:page],
+              :include_restricted => true
+            })
+          end
         else
-          to += 1.month
-          @pages = @page.pages.active.include_restricted(logged_in?).published_within(from, to).paginate(:page => params[:page], :per_page => 10, :order => 'published_on ASC')
+          if @page.calendar?
+            @page.pages.active.latest({
+              :page => params[:page],
+              :include_restricted => true
+            })
+          else
+            @page.pages.active.published.latest({
+              :page => params[:page],
+              :include_restricted => true
+            })
+          end
         end
       else
-        @pages = @page.pages.active.include_restricted(logged_in?).published.find_tagged_with({ :tags => params[:tags].join(','), :order => 'created_at DESC' }).paginate(:page => params[:page], :per_page => 10)
+        @pages = @page.pages.active.include_restricted(logged_in?).published.find_tagged_with({
+          :tags => params[:tags].join(Tag.delimiter),
+          :order => 'created_at DESC'
+        }).paginate(:page => params[:page], :per_page => 10)
       end
     end
     # pre cache content resources
@@ -44,9 +71,16 @@ class PagesController < ApplicationController
   def comment
     @page    = Page.find(params[:id])
     @comment = @page.comments.new(params[:comment])
+    @comment.ip_address = request.remote_ip
+    @comment.env = request.env
     respond_to do |format|
       if @comment.save
-        format.html { redirect_to "/#{@node.slug}#comment_#{@comment.id}" }
+        if @comment.spam
+          flash[:notice] = 'Din kommentar har sparats'
+        else
+          flash[:notice] = 'Din kommentar har sparats och publicerats'
+        end  
+        format.html { redirect_to (params[:return_to] || "/#{@node.slug}#comment_#{@comment.id}") }
       else
         format.html { render :action => 'show' }
       end

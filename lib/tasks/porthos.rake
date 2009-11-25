@@ -67,7 +67,6 @@ namespace :porthos do
     
     printf "Install plugins? [y/n] "
     if STDIN.gets.chomp == 'y'
-      system('svn export svn://projects.jkraemer.net/acts_as_ferret/tags/stable/acts_as_ferret vendor/plugins/acts_as_ferret')
       system('svn export http://dev.rubyonrails.org/svn/rails/plugins/acts_as_list vendor/plugins/acts_as_list')
       system('svn export http://dev.rubyonrails.org/svn/rails/plugins/acts_as_tree vendor/plugins/acts_as_tree')
       system('svn export http://svn.arkanis-development.de/projects/rails_plugins/current/simple_localization vendor/plugins/simple_localization')
@@ -77,8 +76,10 @@ namespace :porthos do
       system('svn export http://repo.pragprog.com/svn/Public/plugins/annotate_models vendor/plugins/annotate_models')
       system('svn export http://labnotes.org/svn/public/ruby/rails_plugins/assert_select vendor/plugins/assert_select')
       system('svn export svn://rubyforge.org/var/svn/fauna/ultrasphinx/trunk vendor/plugins/ultrasphinx')
-      system('svn export  http://ruby-imagespec.googlecode.com/svn/trunk/ vendor/plugins/imagespec')
-      printf "\n\n Also install will_paginate gem (sudo gem install will_paginate)\n"
+      system('svn export http://ruby-imagespec.googlecode.com/svn/trunk/ vendor/plugins/imagespec')
+      system('svn export http://code.macournoyer.com/svn/plugins/defensio/ vendor/plugins/defensio')
+      system('script/plugin install git://github.com/giraffesoft/ultrasphinx.git')
+      printf "\n\n Also install will_paginate gem (sudo gem install mislavs-will_paginate)\n"
     end
     
     printf "Run ultrasphinx configuration task? [y/n] "

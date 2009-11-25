@@ -120,8 +120,12 @@ Porthos.AssetUsages.Member = Class.create({
     this._element = element;
     this.json = json;
     if (this._element) {
-      this.observeDestroy();
+      this.setupObserves();
     }
+  },
+  
+  setupObserves: function() {
+    this.observeDestroy();
   },
   
   observeDestroy: function() {
@@ -144,6 +148,10 @@ Porthos.AssetUsages.Member = Class.create({
   },
   
   createElement: function() {
+    return this._createElement();
+  },
+  
+  _createElement: function() {
     this._element = $li({
       'id': 'asset_usage_' + this.json.id
     });
@@ -162,6 +170,7 @@ Porthos.AssetUsages.Member = Class.create({
     }));
     return this._element;
   }
+  
 });
 Porthos.AssetUsages.Member.create = function(data, callback) {
   new Ajax.Request(Routes.admin_asset_usages(), {

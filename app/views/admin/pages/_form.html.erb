@@ -33,8 +33,8 @@
 <%= f.date_select :published_on, :order => [:day, :month, :year ] %>
 
 <div class="tags">
-  <label for="page_tag_names">Nyckelord <span class="info">(olika nyckelord separeras med ett kommatecknen)</label>
-  <%= f.text_area :tag_names, :rows => 2 %>
+  <label for="page_tag_names">Nyckelord <span class="info">(olika nyckelord separeras med mellanslag)</label>
+  <%= f.text_field :tag_names %>
 </div>
 
 <label for="page_restricted" class="contains-input">

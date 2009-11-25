@@ -1,0 +1,9 @@
+<script type="text/javascript">
+  setTimeout("window.location = '/payments/<%= @payable.public_id %>/pending'", 1000);
+</script>
+<% @page_id = 'payments' -%>
+<% @page_title = "Tack, din betalning håller på att genomföras. Du kommer att pekas vidare automatiskt." -%>
+<div id="logo"><img src="/graphics/general/logo.gif" alt="UNICEF"></div>
+<div id="payment_complete">
+  <p><img src="/graphics/progress_bar.gif" alt="Tack, din betalning håller på att genomföras. Du kommer att pekas vidare automatiskt."></p>
+</div>

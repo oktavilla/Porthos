@@ -22,6 +22,9 @@
 
 require 'digest/sha1'
 class User < ActiveRecord::Base
+  # class accessor to be set and unset in the application controller
+  # used to be able to access the current logged in user (controller variable) in models
+  cattr_accessor :current
   # Virtual attribute for the unencrypted password
   attr_accessor :password
   # Virtual attribute for uploaded avatar file
@@ -29,6 +32,7 @@ class User < ActiveRecord::Base
 
   has_many :user_roles
   has_many :roles, :through => :user_roles
+  has_many :registrations
   
   belongs_to :avatar, :foreign_key => 'avatar_id', :class_name => 'ImageAsset'
 
@@ -37,12 +41,22 @@ class User < ActiveRecord::Base
   validates_presence_of     :password_confirmation,      :if => :password_required?
   validates_length_of       :password, :within => 4..40, :if => :password_required?
   validates_confirmation_of :password,                   :if => :password_required?
-  validates_length_of       :login,    :within => 3..40, :allow_nil => true
+  validates_length_of       :login,    :within => 3..40, :allow_blank => true
   validates_length_of       :email,    :within => 3..100
   validates_uniqueness_of   :email, :case_sensitive => false
-  validates_uniqueness_of   :login, :case_sensitive => false, :allow_nil => true
+  validates_uniqueness_of   :login, :case_sensitive => false, :allow_blank => true
   
   before_save :encrypt_password, :save_avatar
+  
+  is_indexed :fields => ['first_name', 'last_name', 'email']
+  
+  def validate
+    if file and file.size.nonzero?
+      unless Asset::IMAGE_FORMATS.include?(File.extname(file.original_filename).gsub(/\./,'').downcase.to_sym)
+        errors.add_to_base("Bilden måste vara av typen jpg, gif eller png för att den ska kunna användas")
+      end
+    end
+  end
   
   def name
     "#{first_name} #{last_name}"
@@ -155,5 +169,4 @@ protected
       self.avatar = ImageAsset.create(:title => name, :file => file, :private => true)
     end
   end
-
 end

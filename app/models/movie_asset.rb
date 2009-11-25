@@ -14,14 +14,14 @@ protected
       self.file_name         = @file.original_filename.gsub(file_extname,'').to_url
       self.file_name         = make_unique_filename(file_name) unless Asset.count(:conditions => {:file_name => self.file_name}).zero?
       self.extname           = file_extname.gsub(/\./,'').downcase
+      self.size              = @file.size
       @original_path_with_ext = "#{@file.local_path}.#{self.extname}"
+      self.mime_type         = MIME::Types.type_for(@original_path_with_ext).first.to_s
       FileUtils.move(@file.local_path, @original_path_with_ext)
       create_thumbnail
       self.width  = thumbnail.width
       self.height = thumbnail.height
       file_extname == '.flv' ? write_to_disk : convert_to_flv 
-      self.size              = @file.size
-      self.mime_type         = MIME::Types.type_for(@file.original_filename).first.to_s
       self.title             = file_name.gsub(/\-/,'_').humanize if title.blank?
       symlink_to_public
     end
@@ -30,7 +30,7 @@ protected
   def convert_to_flv
     self.extname = 'flv'
     @file = Asset.new_tempfile "/tmp/#{self.file_name}.flv"
-    system "(ffmpeg -v 0 -i #{@original_path_with_ext} -ar 22050 -ab 64 -b 1500kbps -y #{path}; rm #{@original_path_with_ext}; flvtool2 -U #{path})&"
+    system "(/usr/local/bin/ffmpeg -v 0 -i #{@original_path_with_ext} -ar 22050 -ab 64 -b 1500kbps -y #{path}; rm #{@original_path_with_ext}; /usr/local/bin/flvtool2 -U #{path});chmod 644 #{path}&"
   end
   
   def thumbnail_position=(marker)
@@ -40,7 +40,10 @@ protected
   def create_thumbnail(options = {:position => 8})
     self.thumbnail.destroy if self.thumbnail
     thumbnail_name = "#{file_name}_thumbnail.jpg"
-    system("ffmpeg -i #{@original_path_with_ext||path} -vframes 1 -ss #{options[:position]} -f image2 -an /tmp/#{thumbnail_name}")
+    if self.extname == 'flv'
+      system("/usr/local/bin/flvtool2 -U #{@original_path_with_ext||path}")
+    end
+    system("/usr/local/bin/ffmpeg -i #{@original_path_with_ext||path} -vframes 1 -ss #{options[:position]} -f image2 -an /tmp/#{thumbnail_name}")
     if File.exists? "/tmp/#{thumbnail_name}"
       self.thumbnail = ImageAsset.create({:file => Asset.new_tempfile("/tmp/#{thumbnail_name}"), :private => true})
       File.unlink "/tmp/#{thumbnail_name}"
@@ -64,5 +67,6 @@ protected
   def write_to_disk
     Dir.mkdir(SAVE_DIR) unless File.exists?(SAVE_DIR)
     FileUtils.move(@original_path_with_ext, path)
+    File.chmod 0644, path # -rw-r--r--
   end
 end

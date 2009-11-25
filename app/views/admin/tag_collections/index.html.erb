@@ -1,0 +1,40 @@
+<% @page_class = "AB content" -%>
+<div id="content_header">
+  <h1>Nyckelordssamlingar för sidor under <%= @page.title %></h1>
+  <span class="controls">
+    <%= link_to "Lägg till / redigera sidor", admin_page_collection_path(@page) %>
+    <%= link_to "Redigera huvudsida", admin_page_path(@page) %>
+  </span>
+</div>
+<div id="container">
+  <span class="controls">
+    <%= link_to "Skapa en ny nyckelordssamling", new_admin_page_collection_tag_collection_path(@page), :class => 'create' %>
+  </span>
+  <div id="content">
+    <div id="ca">
+      <div class="inner">
+      <% if @page.tag_collections.any? -%>
+        <ul class="tag_collections">
+        <% @page.tag_collections.each do |tag_collection| %>
+          <li>
+            <h2><%= link_to tag_collection.name, edit_admin_page_collection_tag_collection_path(@page, tag_collection) %></h2>
+            <p><%= tag_collection.description %></p>
+            <h3>Nyckelord</h3>
+            <ul>
+            <% tag_collection.tags.each do |tag| %>
+              <li><%= tag.name %></li>
+            <% end %>
+            </ul>
+          </li>
+        <% end %>
+        </ul>
+      <% else -%>
+      <p class="notice">Det finns inga nyckelords samlingar för den här sidan</p>
+      <% end -%>
+      </div>
+    </div>
+    <div id="cb">
+    </div>
+  </div>
+</div>
+<%= javascript_include_tag 'named_routes' %>

@@ -28,7 +28,7 @@ class Teaser < ActiveRecord::Base
   belongs_to :product
   
   has_many :asset_usages, :as => :parent, :order => 'position', :dependent => :destroy
-  has_many :images, :source => :asset, :through => :asset_usages, :order => 'position', :conditions => "assets.type = 'ImageAsset'" do
+  has_many :images, :source => :asset, :through => :asset_usages, :order => 'position', :conditions => "assets.type = 'ImageAsset'", :select => "assets.*, asset_usages.gravity" do
     def primary
       find(:first)
     end

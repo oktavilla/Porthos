@@ -1,13 +1,22 @@
-<% @page_class = "A measure_point" -%>
-<h1>Ny mätpunkt</h1>
-
-<div id="content">
-  <div id="c-a">
-    <% form_for :measure_point, @measure_point, admin_measure_points_path, :html => {:method => 'post'} do |f| %>
-      <%= render :partial => 'form', :locals => {:f => f}  %>
-      <div class="submit">
-        <%= f.submit "Skapa mätpunkt" %> eller <%= link_to "Avbryt", previous_view_path(admin_campaigns_path) %>
+<% @page_title = "Skapa en ny mätpunkt" -%>
+<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<div id="workspace">
+  <div id="c_wrap" class="layout_2">
+    <div id="c_1">
+      <div class="header">
+        <h1>
+          Skapa en ny mätpunkt
+          <% if @campaign -%>
+          under kampanjen <%= @campaign.name %>
+          <% end -%>
+        </h1>
       </div>
-    <% end %>
+      <% form_for :measure_point, :url => admin_measure_points_path, :html => {:method => 'post'} do |f| %>
+        <%= render :partial => 'form', :locals => {:f => f}  %>
+        <div class="submit">
+          <%= f.submit "Skapa mätpunkten" %> eller <%= link_to "Avbryt", previous_view_path(admin_campaigns_path) %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

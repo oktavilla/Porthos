@@ -31,13 +31,13 @@
       <th></th>
       <th scope="col">
         <span class="period"><%= second_period_string %></span>
-        <% if export_links %>
+        <% if export_links and @type.respond_to?(:cvs_fields) %>
           <%= link_to "Ladda ned som CSV", admin_export_registration_path(:format => 'csv', :period => [{:day => second_period.first.day, :month => second_period.first.month, :year => second_period.first.year}, {:day => second_period.last.day, :month => second_period.last.month, :year => second_period.last.year}], :type => @type.to_s) %>
         <% end %>
       </th>
       <th scope="col" class="even">
         <span class="period"><%= first_period_string %></span>
-        <% if export_links %>
+        <% if export_links and @type.respond_to?(:cvs_fields) %>
           <%= link_to "Ladda ned som CSV", admin_export_registration_path(:format => 'csv', :period => [{:day => first_period.first.day, :month => first_period.first.month, :year => first_period.first.year}, {:day => first_period.last.day, :month => first_period.last.month, :year => first_period.last.year}], :type => @type.to_s) %>
         <% end %>
       </th>
@@ -46,3 +46,8 @@
   </thead>
   <%= body %>
 </table>
+<% if @type and @type.respond_to?(:cvs_fields) %>
+<div class="export_info">
+  <p><strong>Fält som exporteras:</strong> <%= @type.cvs_fields.join(', ') %></p>
+</div>
+<% end %>

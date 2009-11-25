@@ -31,12 +31,12 @@ class Page < ActiveRecord::Base
   belongs_to  :default_child_layout, :foreign_key => 'default_child_layout_id', :class_name => 'PageLayout'
   has_many :comments, :as => :commentable, :order => 'comments.created_at'
   
-  has_finder :published, :conditions => "published_on <= CURRENT_DATE"
-  has_finder :published_within, lambda { |from, to| { :conditions => ["published_on BETWEEN ? AND ?", from.to_s(:db), to.to_s(:db)] } }
+  named_scope :published, :conditions => "published_on <= CURRENT_DATE"
+  named_scope :published_within, lambda { |from, to| { :conditions => ["published_on BETWEEN ? AND ?", from.to_s(:db), to.to_s(:db)] } }
 
-  has_finder :active,   :conditions => "active = 1"
-  has_finder :inactive, :conditions => "active = 0"
-  has_finder :include_restricted, lambda {|restricted| { :conditions => ['restricted = ? or restricted = 0', restricted]} }
+  named_scope :active,   :conditions => "active = 1"
+  named_scope :inactive, :conditions => "active = 0"
+  named_scope :include_restricted, lambda {|restricted| { :conditions => ['restricted = ? or restricted = 0', restricted]} }
 
   before_validation_on_create :set_default_layout, :set_layout_and_parent, :set_inactive
 
@@ -48,6 +48,8 @@ class Page < ActiveRecord::Base
   acts_as_list :scope => 'parent_id = \'#{parent_id}\' and parent_type = \'#{parent_type}\''
 
   acts_as_taggable
+  
+  #acts_as_defensio_article :fields => { :title => :title, :content => :body }
   
   is_indexed({
     :fields => ['title', 'description', 'slug', 'type'],
@@ -108,6 +110,7 @@ private
     contents.update_all("column_position = #{page_layout.columns}", "column_position > #{page_layout.columns}") unless column_count == page_layout.columns or column_count.blank?
     self.layout_class = page_layout.css_id
     self.column_count = page_layout.columns
+    self.main_content_column = page_layout.main_content_column
   end
   
   def set_default_layout

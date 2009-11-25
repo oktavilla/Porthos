@@ -1,0 +1,18 @@
+<% if content.resource %>
+<div class="content_movie">
+  <h3>Film</h3>
+  <% if content.resource.asset %>
+  <div class="thumbnail">
+    <%= image_tag(display_image_path(:id => content.resource.asset.thumbnail, :size => 'c100x100', :format => content.resource.asset.thumbnail.extname)) %>
+  </div>
+  <% end %>
+  <strong>Titel:</strong>
+  <%= content.resource.title %><br>
+  <strong>Beskrivning:</strong>
+  <%= content.resource.caption %><br>
+  <strong>Copyright:</strong>
+  <%= content.resource.copyright %>
+</div>
+<% else %>
+Bilden saknas
+<% end %>

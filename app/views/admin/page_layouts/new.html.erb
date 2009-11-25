@@ -12,6 +12,8 @@
         <%= f.text_field :css_id %>
         <label for="page_columns">Antal kolumner</label>
         <%= f.text_field :columns %>
+        <label for="page_main_content_column">Kolumn med huvudinnehåll</label>
+        <%= f.text_field :main_content_column %>
       </fieldset>
       <div class="submit">
         <%= submit_tag 'Spara' %> eller <%= link_to "avbryt", previous_view_path(admin_page_layouts_path) %>

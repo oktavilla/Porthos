@@ -99,20 +99,6 @@ class File
   end
 end
 
-module ActsAsFerret
-  module ClassMethods
-    def paginate_search(query, options = {}, find_options = {})
-      options, page, per_page = wp_parse_options!(options)
-      pager = WillPaginate::Collection.new(page, per_page, nil)
-      options.merge!(:offset => pager.offset, :limit => per_page)
-      result = find_by_contents(query, options, find_options)
-      returning WillPaginate::Collection.new(page, per_page, result.total_hits) do |pager|
-        pager.replace result
-      end
-    end
-  end
-end
-
 
 # Overides the money gem's format method to accept :prefix and :precision rules
 class Money
@@ -229,34 +215,47 @@ module Ultrasphinx
   end
 end
 
-# Hot fix for not beeing able to resolve file names that includes periods
-module Synthesis
-  module AssetPackageHelper
+module ArkanisDevelopment::SimpleLocalization #:nodoc:
+  module LocalizedDateHelpers
+    def date_select(object_name, method, options = {}, html_options = {})
+      options = Language[:helpers, :date_select].symbolize_keys.update(options)
+      super object_name, method, options, html_options
+    end
+  end
+end
 
-    private
-      # rewrite compute_public_path to allow us to not include the query string timestamp
-      # used by ActionView::Helpers::AssetTagHelper
-      def compute_public_path(source, dir, ext = nil, add_asset_id=true)
-        source = source.dup
-        source << ".#{ext}" if File.extname(source).blank? || (!ext.nil? && File.extname(source) != ext)
-        unless source =~ %r{^[-a-z]+://}
-          source = "/#{dir}/#{source}" unless source[0] == ?/
-          asset_id = rails_asset_id(source)
-          source << '?' + asset_id if defined?(RAILS_ROOT) and add_asset_id and not asset_id.blank?
-          source = "#{ActionController::Base.asset_host}#{@controller.request.relative_url_root}#{source}"
+# override to not make acts_as_defensio submit articles
+# not sure if this is good, override needed to be able to to create new pages
+module Defensio
+  module ActsAs
+    module ClassMethods
+      def acts_as_defensio(type, options={})
+        return unless ENV['RAILS_ENV']
+        include InstanceMethods
+        
+        case type
+        when :comment
+          after_create :audit_comment
         end
-        source
+        
+        @defensio_type = type
+        self.defensio_options = options
+        @defensio = Defensio::Client.new(@defensio_options)
+        
+        unless defensio_options.has_key?(:validate_key) && !defensio_options[:validate_key]
+          begin
+            @defensio.validate_key.success?
+          rescue
+            RAILS_DEFAULT_LOGGER.info "\n** Unable to validate defensio key, #{$!}\n"
+          end
+        end      end
+      def defensio_fields(field)
+        if @defensio_options and @defensio_options[:fields] and @defensio_options[:fields][field]
+          @defensio_options[:fields][field]
+        else
+          field
+        end
       end
-  
-      # rewrite javascript path function to not include query string timestamp
-      def javascript_path(source)
-        compute_public_path(source, 'javascripts', 'js', false)       
-      end
-
-      # rewrite stylesheet path function to not include query string timestamp
-      def stylesheet_path(source)
-        compute_public_path(source, 'stylesheets', 'css', false)
-      end
-
+    end
   end
 end

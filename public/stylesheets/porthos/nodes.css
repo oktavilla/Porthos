@@ -134,6 +134,7 @@
     body#content_modules #n-modules a,
     body#registration_forms #n-forms a,
     body#page_presets #n-presets a,
+    body#comments #n-comments a,
     #main_nav .current a,
     #main_nav .current a:hover {
       color:#333;

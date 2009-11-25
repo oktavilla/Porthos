@@ -1,0 +1,35 @@
+<div class="vcard main">
+  <%= "<span class=\"fn\">#{registration.name}</span>" unless registration.name.blank? %>
+  <%= "<span class=\"org\">#{registration.organization}</span>" unless registration.organization.blank? %>
+  <%= "<span class=\"department\">#{registration.department}</span>" unless registration.department.blank? %>
+  <% if registration.address || registration.post_code || registration.locality -%>
+  <address class="adr">
+  <%= "<span class=\"street-address\">#{registration.address}</span>" unless registration.address.blank? %>
+  <%= "<span class=\"postal-code\">#{registration.post_code}</span>" unless registration.post_code.blank? %>
+  <%= "<span class=\"locality\">#{registration.locality}</span>" unless registration.locality.blank? %>
+  </address>
+  <% end -%>
+  <% unless registration.phone.blank? %>
+  <span class="tele">
+    <span class="value"><%= registration.phone %></span>
+    <span class="type">telefon</span>
+  </span>
+  <% end -%>
+  <% unless registration.cell_phone.blank? %>
+  <span class="tele">
+    <span class="value"><%= registration.cell_phone %></span>
+    <span class="type">mobil</span>
+    <% if registration.cell_phone_contact_approval? %>
+      <span class="optin">opt-in</span>
+    <% end %>
+  </span>
+  <% end -%>
+  <% unless registration.email.blank? %>
+  <span class="email">
+    <span class="value"><%= registration.email %></span>
+    <% if registration.contact_approval? %>
+      <span class="optin">opt-in</span>
+    <% end %>
+  </span>
+  <% end -%>
+</div>

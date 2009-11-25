@@ -57,7 +57,7 @@ Object.extend(Porthos.Editor.Options, {
                    + "</div>"
                    + "<script type='text/javascript' src='/javascripts/porthos/jquery-1.1.4.js'></script>"
                    + "<script type='text/javascript' src='/javascripts/porthos/wymeditor/jquery.wymeditor.js'></script>"
-                   + "<script type='text/javascript' src='/javascripts/routes.js'></script>"
+                   + "<script type='text/javascript' src='/javascripts/named_routes.js'></script>"
                    + "<script type='text/javascript' src='/javascripts/porthos/jquery.wymeditor.porthos-linking.js'></script>"
                    + "<script type='text/javascript' src='/javascripts/porthos/jquery.form.js'></script>"
                    + "</body>",

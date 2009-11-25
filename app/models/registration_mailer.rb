@@ -6,7 +6,7 @@ class RegistrationMailer < ActionMailer::Base
     if registration.replyable_email?
       @from = registration.reply_to_email.blank? ? registration.contact_person.email : registration.reply_to_email
     else
-      @from = 'no.reply@unicef.se'
+      @from = 'no.reply@example.com'
     end
     @sent_on    = registration.created_at
 
@@ -22,7 +22,7 @@ class RegistrationMailer < ActionMailer::Base
     @subject    = "#{registration.class.localized_model_name} registrering"
     @body       = { :registration => registration }
     @recipients = registration.notification_person.email
-    @from       = 'no.reply@unicef.se'
+    @from       = 'no.reply@example.com'
     @sent_on    = registration.created_at
   end
 end

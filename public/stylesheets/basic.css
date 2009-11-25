@@ -110,6 +110,7 @@ input, textarea {
 input:focus, textarea:focus {
   background:#e0f5cc;}
 input.invalid {background: #fcc;}
+  input#trigger { display:none; }
 textarea {width:350px;}
   .layout1 textarea {width:250px;}
 fieldset legend {

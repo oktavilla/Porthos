@@ -64,6 +64,7 @@
 					Porthos.Dialog('page').insert('new', response.responseText);
           Porthos.Editor.Initialize();
           Porthos.Dialog().clearWaitState();
+          new Porthos.TagAutoCompletion($('page_tag_names'));
         }
       });
       event.stop();

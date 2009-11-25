@@ -28,6 +28,6 @@ class Textfield < ActiveRecord::Base
   # before_update do |textfield|
   # end
   
-  has_finder :shared, :conditions => ["shared = ?", 1]
+  named_scope :shared, :conditions => ["shared = ?", 1]
   
 end

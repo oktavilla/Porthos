@@ -7,7 +7,7 @@
 
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title><%= "#{@page_title} | " unless @page_title.blank? %></title>
-  <%= stylesheet_link_merged :public, :title => "Screen" %>
+  <%= stylesheet_link_tag 'basic', 'public', :cache => 'screen', :title => 'Screen', :media => 'screen, projection' %>
   <!--[if IE 7]>
     <link href="/stylesheets/ie7.css" media="screen,projection" rel="Stylesheet" type="text/css">  
   <![endif]-->
@@ -42,7 +42,5 @@
     </div>
   </div>
 </div>
-<%= javascript_include_merged :public %>
-<%= javascript_include_tag 'debug' if RAILS_ENV == 'development' %>
 </body>
 </html>

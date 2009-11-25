@@ -48,7 +48,7 @@ private
   end
   
   def update_linked_pages
-    Page.update_all("layout_class = '#{css_id}', column_count = #{columns}", "page_layout_id = #{id}")
+    Page.update_all("layout_class = '#{css_id}', column_count = #{columns}, main_content_column = '#{main_content_column}'", "page_layout_id = #{id}")
   end
   
   def store_default_contents

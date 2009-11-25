@@ -24,8 +24,8 @@
         <td><%= @measure_point.updated_at.strftime("%Y-%m-%d %H:%M") %></td>
       </tr>
     </table>
-      <p><span class="description">Adress till mätpunkten:</span><br><a href="http://www.unicef.se/ad/<%= @measure_point.public_id %>">http://www.unicef.se/ad/<%= @measure_point.public_id %></a></p>
-    <p class="info">Du kan länka till specifika sidor på sajten genom att lägga till <code>?target=/din-adress</code>, te.x. <a href="http://www.unicef.se/ad/<%= @measure_point.public_id %>?target=/butik/privat">http://www.unicef.se/ad/<%= @measure_point.public_id %>?target=/butik/privat</a>.</p>
+      <p><span class="description">Adress till mätpunkten:</span><br><a href="/ad/<%= @measure_point.public_id %>">/ad/<%= @measure_point.public_id %></a></p>
+    <p class="info">Du kan länka till specifika sidor på sajten genom att lägga till <code>?target=/din-adress</code>, te.x. <a href="/ad/<%= @measure_point.public_id %>?target=/butik/privat">/ad/<%= @measure_point.public_id %>?target=/butik/privat</a>.</p>
     <h2>Avslut</h2>
     <table>
       <tr>

@@ -21,11 +21,60 @@
 #
 
 class PageCollection < Page
-
+  
+  has_many :tag_collections
+  
   has_many :pages, :as => :parent, :dependent => :destroy, :order => 'published_on DESC' do
     def within(year, month, day)
       from, to = Time.delta(year, month, day)
       published_within from, to
+    end
+    
+    def latest(options = {})
+      options = {
+        :include_restricted => false,
+        :page => 1,
+        :per_page => 10,
+        :order => (proxy_owner.calendar? ? 'published_on ASC' : 'published_on DESC')
+      }.merge(options)
+      unless proxy_owner.calendar?
+        active.include_restricted(options[:include_restricted]).paginate({
+          :page => options[:page],
+          :per_page => options[:per_page],
+          :order => options[:order]
+        })
+      else
+        from = Time.now.midnight - 1
+        active.include_restricted(options[:include_restricted]).paginate({
+          :page     => options[:page],
+          :per_page => options[:per_page],
+          :order    => options[:order],
+          :conditions => ["published_on > ?", from.to_s(:db)]
+        })        
+      end
+    end
+    
+    def by_date(options = {})
+      options = {
+        :include_restricted => false,
+        :page => 1,
+        :per_page => 10,
+        :order => (proxy_owner.calendar? ? 'published_on ASC' : 'published_on DESC')
+      }.merge(options)
+      from, to = Time.delta(options[:year], options[:month], options[:day])
+      unless proxy_owner.calendar?
+        active.published.include_restricted(options[:include_restricted]).published_within(from, to).paginate({
+          :page => options[:page],
+          :per_page => options[:per_page],
+          :order => options[:order]
+        })
+      else
+        active.include_restricted(options[:include_restricted]).published_within(from, to).paginate({
+          :page => options[:page],
+          :per_page => options[:per_page],
+          :order => options[:order]
+        })
+      end
     end
     
     def tags

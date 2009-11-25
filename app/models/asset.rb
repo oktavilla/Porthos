@@ -28,7 +28,7 @@ class Asset < ActiveRecord::Base
   
   has_one :child, :class_name => 'Asset', :foreign_key => 'parent_id', :dependent => :destroy
   
-  has_finder :public, :conditions => {:private => false}
+  named_scope :public, :conditions => { :private => false }
   
   is_indexed :fields => ['type', 'title', 'extname', 'author', 'description'], :concatenate => [{
     :class_name => 'Tag', :field => 'name', :as => 'tags', 
@@ -38,9 +38,9 @@ class Asset < ActiveRecord::Base
   acts_as_taggable
 
   SAVE_DIR = "#{RAILS_ROOT}/assets"
-  IMAGE_FORMATS = [:jpg, :png, :gif]
+  IMAGE_FORMATS = [:jpg, :jpeg, :png, :gif]
   MOVIE_FORMATS = [:flv, :mov, :qt, :mpg, :avi, :mp4]
-  SOUND_FORMATS = [:mp3]
+  SOUND_FORMATS = [:mp3, :wav, :aiff, :aif]
   FLASH_FORMATS = [:swf]
 
   validates_presence_of :file, :on => :create
@@ -84,6 +84,10 @@ class Asset < ActiveRecord::Base
   
   def attributes_for_js
     self.attributes
+  end
+
+  def creator
+    @creator ||= created_by ? created_by.name : nil
   end
 
   class << self

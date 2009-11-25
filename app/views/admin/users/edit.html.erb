@@ -1,19 +1,32 @@
 <% @page_title = "Användare > Ändra uppgifter för #{@user.name}" -%>
 <% @page_class = "A" -%>
-<div id="content_header">
-  <h1>Användare</h1>
-</div>
-<div id="container">
-  <div id="content">
-    <div id="ca">
-      <h2 class="label">Ändra uppgifter för ”<%= @user.name %>”</h2>
+<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<div id="workspace">
+  <div id="c_wrap" class="layout_2">
+    <div id="c_1">
+      <div class="header">
+        <h1>Ändra uppgifter för ”<%= @user.name %>”</h1>
+      </div>
       <div class="inner">
-        <% form_for :user, @user, :url => admin_user_path(@user), :html => { :method => :put, :multipart => true } do |f| %>
+        <% form_for :user, @user, :url => admin_user_path(@user), :html => { :method => :put, :multipart => true, :autocomplete => "off" } do |f| %>
           <%= render :partial => "#{@user.roles.first.name.downcase}_form", :locals => { :f => f } %>
           <div class="confirm">
             <%= f.submit "Spara ändringar" %> eller <%= link_to "Avbryt", previous_view_path(admin_users_path) %>
           </div>
         <% end %>
+      </div>
+    </div>
+    <div id="c_2">
+      <div class="inner">
+        <% if @user.registrations.any? %>
+          <h1>Registreringar</h1>
+          <ul>
+          <% @user.registrations.each do |registration| %>
+            <li><%= link_to "#{registration.class.localized_model_name} ##{registration.id}", formatted_admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></li>
+          <% end %>
+          </ul>
+        <% end %>
+        <%= link_to "Radera användaren", admin_user_path(@user), :method => :delete, :class => 'delete', :confirm => 'Är du säker på att du vill tabort användaren?' %>
       </div>
     </div>
   </div>

@@ -1,26 +1,33 @@
-<% @page_class = "AB campaigns" -%>
-<h1>Kampanjer</h1>
-<div id="content">
-  <div id="c-b">
-  </div>
-  <div di="c-a">
-    <span class="controls">  
-      <%= link_to 'Skapa ny kampanj', new_admin_campaign_path, :onclick => "$('new-campaign').toggle();return false;" %>
-      <%= link_to 'Exportera alla mätpunkter', formatted_admin_measure_points_path(:format => 'csv') %>
-    </span>
-    
-    <% form_for :campaign, @campaign, :url => admin_campaigns_path, :html => { :method => :post, :id => 'new-campaign', :style => "display:none", :class => 'tiny' } do |f| %>
-      <%= render :partial => 'form', :locals => {:f => f}  %>
-      <div class="submit">
-        <%= f.submit "Skapa kampanj" %> eller <%= link_to "Avbryt", previous_view_path(admin_campaigns_path), :onclick => "$('new-campaign').toggle();return false;" %>
+<% @page_title = "Kampanjer" -%>
+<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<div id="workspace">
+  <div id="c_wrap" class="layout_2">
+    <div id="c_1">
+      <div class="header">
+        <h1>Kampanjer</h1>
       </div>
-    <% end %>
-    
-    <%= render :partial => 'table', :locals => {:campaigns => Campaign.active} %>
-    
-    <% if Campaign.archived.count != 0  %>
-      <h2>Arkiverade kampanjer</h2>
-      <%= render :partial => 'table', :locals => {:campaigns => Campaign.archived}  %>
-    <% end %>
+      <% if @campaigns.any? %>
+        <%= render :partial => 'table', :locals => {:campaigns => Campaign.active} %>
+
+        <% if Campaign.archived.count != 0  %>
+          <h2>Arkiverade kampanjer</h2>
+          <%= render :partial => 'table', :locals => {:campaigns => Campaign.archived}  %>
+        <% end %>
+      <% end -%>
+    </div>
+    <div id="c_2">
+      <div class="inner">
+        <% form_tag search_admin_campaigns_path, :method => 'get' do %>
+        <div class="search">
+          <%= text_field_tag :query, (@query || 'Sök'), :class => "search_query", :id=> "search_query" %>
+          <%= submit_tag "Sök", :style => "display:none" %>
+        </div>
+        <% end %>
+        <div class="main_action">
+          <%= link_to 'Skapa ny kampanj', new_admin_campaign_path, :class => "new_campaign" %>
+        </div>
+        <%= link_to 'Exportera alla mätpunkter', formatted_admin_measure_points_path(:format => 'csv') %>
+      </div>
+    </div>
   </div>
 </div>

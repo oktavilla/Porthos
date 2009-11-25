@@ -23,13 +23,13 @@
       <div class="teaser-images">
         <ul id="teaser-images-<%= child.resource.id %>">
           <li>
-            <%= image_tag(display_image_path(:size => teaser_image_size, :id => child.resource.images.first, :format => child.resource.images.first.extname), :alt => child.resource.images.first.title ) %>
+            <%= image_tag(display_image_path(:size => "#{teaser_image_size}g-#{child.resource.images.first.gravity}", :id => child.resource.images.first, :format => child.resource.images.first.extname), :alt => child.resource.images.first.title ) %>
             <span></span>
           </li>
           <% if child.resource.has_slideshow? %>
             <% child.resource.images.each do |image| %>
               <% if image != child.resource.images.first %>
-                <li style="display:none;"><%= image_tag(display_image_path(:size => teaser_image_size, :id => image, :format => image.extname), :alt => image.title) %></li>
+                <li style="display:none;"><%= image_tag(display_image_path(:size => "#{teaser_image_size}g-#{image.gravity}", :id => image, :format => image.extname), :alt => image.title) %></li>
               <% end %>
             <% end %>
           <% end %>

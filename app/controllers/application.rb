@@ -9,6 +9,8 @@ class ApplicationController < ActionController::Base
   include Porthos::AccessControl
   
   before_filter :login_from_cookie
+  around_filter :set_current_user
+
   consider_local "213.115.77.90"
 
   #rescue_from ActiveRecord::RecordNotFound, ActionController::RoutingError, :with => :status_404
@@ -23,6 +25,12 @@ protected
       format.html { render :file => "#{RAILS_ROOT}/public/404.html", :status => '404 Not Found' } 
       format.xml  { head(:not_found) } 
     end 
+  end
+
+  def set_current_user
+    User.current = current_user if logged_in?
+    yield
+    User.current = nil
   end
 
 end

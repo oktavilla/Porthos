@@ -209,7 +209,7 @@ jQuery.fn.wymeditor = function(options) {
     
     jQueryPath: false,
     
-    xhtmlParser: 'xhtml_parser.pack.js',
+    xhtmlParser: 'xhtml_parser.js',
     
     cssParser: 'wym_css_parser.pack.js',
     
@@ -725,7 +725,7 @@ Wymeditor.prototype.bindEvents = function() {
   });
   
   //handle keyup event on html value: set the editor value
-  jQuery(this._box).find(this._options.htmlValSelector).keyup(function() {
+  jQuery(this._box).find(this._options.htmlValSelector).keyup(function() { 
     jQuery(wym._doc.body).html(jQuery(this).val());
   });
   
@@ -768,8 +768,7 @@ Wymeditor.prototype.box = function() {
 /* @name html
  * @description Get/Set the html value
  */
-Wymeditor.prototype.html = function(html) {
-
+Wymeditor.prototype.html = function(html) {  
   if(html) jQuery(this._doc.body).html(html);
   else return(jQuery(this._doc.body).html());
 };
@@ -778,7 +777,8 @@ Wymeditor.prototype.html = function(html) {
  * @description Cleans up the HTML
  */
 Wymeditor.prototype.xhtml = function() {
-    return this.parser.parse(this.html());
+    // Porthos addition - replacing of style tags
+    return this.parser.parse(this.html().replace(/\n/g,'\uffff').replace(/<style(.*)<\/style>/i,'').replace(/\uffff/g,'\n'));
 };
 
 /* @name exec
@@ -1706,26 +1706,30 @@ WymClassMozilla.prototype.initIframe = function(iframe) {
  * @description Get/Set the html value
  */
 WymClassMozilla.prototype.html = function(html) {
-
   if(html) {
-  
     //disable designMode
     this._doc.designMode = "off";
     
     //replace em by i and strong by bold
     //(designMode issue)
-    html = html.replace(/<em([^>]*)>/gi, "<i$1>")
+    // html = html.replace(/<em([^>]*)>/gi, "<i$1>")
+    //   .replace(/<\/em>/gi, "</i>")
+    //   .replace(/<strong([^>]*)>/gi, "<b$1>")
+    //   .replace(/<\/strong>/gi, "</b>");
+      
+    html = html.replace(/<em(\b[^>]*)>/gi, "<i$1>")
       .replace(/<\/em>/gi, "</i>")
-      .replace(/<strong([^>]*)>/gi, "<b$1>")
+      .replace(/<strong(\b[^>]*)>/gi, "<b$1>")
       .replace(/<\/strong>/gi, "</b>");
-    
     //update the html body
     jQuery(this._doc.body).html(html);
     
     //re-init designMode
     this.enableDesignMode();
   }
-  else return(jQuery(this._doc.body).html());
+  else{
+    return(jQuery(this._doc.body).html());
+  } 
 };
 
 WymClassMozilla.prototype._exec = function(cmd,param) {

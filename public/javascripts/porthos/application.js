@@ -5,6 +5,51 @@ if (typeof LowPro != "undefined") {
   })();
 }
 
+Math.roundWithPrecision = function(floatnum, precision) {
+  return Math.round ( floatnum * Math.pow ( 10, precision ) ) / Math.pow ( 10, precision );
+};
+
+Math.formatBytes = function(bytes) {
+  var size;
+  var unit;
+
+  // Terabytes (TB).
+  if ( bytes >= 1099511627776 ) {
+    size = bytes / 1099511627776;
+    unit = ' TB';
+  // Gigabytes (GB).
+  } else if ( bytes >= 1073741824 ) {
+    size = bytes / 1073741824;
+    unit = ' GB';
+  // Megabytes (MB).
+  } else if ( bytes >= 1048576 ) {
+    size = bytes / 1048576;
+    unit = ' MB';
+  // Kilobytes (KB).
+  } else if ( bytes >= 1024 ) {
+    size = bytes / 1024;
+    unit = ' KB';
+  // The file is less than one KB
+  } else {
+    size = bytes;
+    unit = ' bytes';
+  }
+   
+  // Single-digit numbers have greater precision
+  var precision = 1;
+  if (size < 10) {
+    precision = 2;
+  }
+  size = Math.roundWithPrecision(size, precision);
+
+  // Add the decimal if this is an integer
+  if ((size % 1) == 0 && unit != ' bytes') {
+    size = size + '.0';
+  }
+
+  return size + unit;
+};
+
 if (typeof Porthos == "undefined") {
     var Porthos = {};
 }
@@ -154,4 +199,45 @@ Porthos.Sorting = Class.create({
     this.list.removeClassName('sorting');
 	  this.sorting = false;
   }
+});
+
+Porthos.TagAutoCompletion = Class.create({
+  initialize: function (element){
+    Element.insert(element, {
+    'after': $div({
+      'id': 'tags_list_'+element.id,
+      'class' : 'tags autocomplete'
+      })
+    });
+    new Ajax.Autocompleter(element, 'tags_list_'+element.id, Routing.formatted_search_admin_tags_path({ 'format' : 'js' }), { 
+      'select'    : '.tag', 
+      'tokens'    : ' ', 
+      'paramName' : 'query', 
+      'method'    : 'get',
+      afterUpdateElement: function(targetInput, sourceLi){ targetInput.value += ' '; }
+    });
+  }
+});
+
+Porthos.SearchFieldAutoClear = Class.create({
+  initialize: function () {
+    $$('input.search_query').each(function(input) {
+      input.observe('focus', function(ev) {
+        if(!input.orginal_value){
+          input.orginal_value = input.value;
+        }
+        if(input.value == input.orginal_value) {
+          input.value = '';
+        }
+      });
+      input.observe('blur', function(ev) {
+        if (input.value == '') {
+          input.value = input.orginal_value;
+        }  
+      });
+    });
+  }
+});
+Event.onReady(function() {
+  new Porthos.SearchFieldAutoClear;
 });

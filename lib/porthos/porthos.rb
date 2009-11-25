@@ -11,3 +11,6 @@ end
 require 'porthos/access_controll'
 require 'porthos/model_restrictions'
 require 'porthos/routing'
+require 'porthos/acts_as_taggable'
+require 'porthos/validators'
+require 'porthos/acts_as_settingable'

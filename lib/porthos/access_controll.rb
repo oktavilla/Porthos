@@ -105,8 +105,8 @@ module Porthos
     # Store the URI of the current request in the session.
     #
     # We can return to this location by calling #redirect_back_or_default.
-    def store_location
-      session[:return_to] = request.request_uri
+    def store_location(return_url = nil)
+      session[:return_to] = return_url ? return_url : request.request_uri
     end
   
     # Redirect to the URI stored by the most recent store_location call or

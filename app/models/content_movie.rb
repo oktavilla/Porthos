@@ -1,4 +1,3 @@
 class ContentMovie < ActiveRecord::Base
-  has_many :asset_usages, :order => 'position', :as => :parent
-  has_many :assets, :through => :asset_usages, :order => 'position'
+  belongs_to :asset, :class_name => 'MovieAsset', :foreign_key => 'movie_asset_id'
 end

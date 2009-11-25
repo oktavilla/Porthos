@@ -3,20 +3,23 @@ class Admin::AssetsController < ApplicationController
   before_filter :login_required
   layout 'admin'
   skip_before_filter :remember_uri, :only => [:index, :show, :create, :search]
+  skip_before_filter :verify_authenticity_token, :only => :create
+  session :cookie_only => false, :only => :create
   
   # GET /assets
   # GET /assets.xml
   def index
     @type = params[:type] ? params[:type].classify.constantize : Asset
-    @tags = @type.find_tags(:order => 'name ASC')
+    @tags = Tag.on('Asset').popular.find(:all, :limit => 30)
     @current_tags = params[:tags] || []
     @related_tags = @current_tags.any? ? @type.find_related_tags(@current_tags) : []
     @assets = unless @current_tags.any?
-      @per_page = params[:assets][:per_page] rescue 12
+      @per_page = params[:per_page] || 20
       @type.public.paginate(:page => params[:page], :per_page => @per_page.to_i, :order => 'created_at DESC', :conditions => 'incomplete = 0')
     else
       @type.public.find_tagged_with({:tags => params[:tags].join(','), :order => 'created_at DESC'})
     end
+    @asset = Asset.new
     respond_to do |format|
       format.html
       format.xml { render :xml => @assets.to_xml }
@@ -26,6 +29,7 @@ class Admin::AssetsController < ApplicationController
 
   def search
     @type = params[:type] ? params[:type] : 'Asset'
+    @tags = Tag.on('Asset').popular.find(:all, :limit => 30)
     unless params[:query].blank?
       @query = params[:query] 
       @page = params[:page] || 1
@@ -58,7 +62,10 @@ class Admin::AssetsController < ApplicationController
 
   # GET /assets/new
   def new
-    @assets = Array.new(params[:upload_spots]) || []
+    @asset = Asset.new
+    respond_to do |format|
+      format.html
+    end
   end
 
   # GET /assets/1;edit
@@ -74,7 +81,7 @@ class Admin::AssetsController < ApplicationController
   # POST /assets.xml
   def create
     if params[:asset]
-      @assets = [Asset.from_upload(params[:asset].merge({ :created_by => current_user }))]
+      @assets = [Asset.from_upload(params[:asset].merge({ :created_by => current_user, :incomplete => true }))]
     else
       @assets = params[:files].collect do |upload|
         Asset.from_upload(:file => upload, :created_by => current_user, :incomplete => true) unless upload.blank?
@@ -90,7 +97,7 @@ class Admin::AssetsController < ApplicationController
         format.js do
           # empty file object because it messes up the json parser
           @assets.first.file = nil
-          render :action => 'create', :layout => false
+          render :action => 'create', :layout => false, :status => 200
         end
       else
         format.html { render :action => "new" }

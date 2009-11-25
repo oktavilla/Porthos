@@ -1,0 +1,24 @@
+<div class="header">
+  <h1><%= @type.localized_model_name %></h1>
+</div>
+<% activity_table(@first_period, @second_period) do %>
+  <tbody>
+    <tr class="totals">
+      <th scope="colgroup"><%= @type.localized_model_name %></th>
+      <% num_first_period, num_second_period = @type.with_period(@first_period).confirmed.count, @type.with_period(@second_period).confirmed.count -%>
+      <% num_first_period_opt_in, num_second_period_opt_in = @type.with_period(@first_period).confirmed.with_opt_in.count, @type.with_period(@second_period).confirmed.with_opt_in.count -%>
+      <% diff = num_first_period - num_second_period -%>
+      <td><%= num_second_period %> st</td>
+      <td><%= num_first_period %> st</td>
+      <td><%= '+' if diff > 0 %><%= diff %> st</td>
+    </tr>
+    <tr>
+      <th scope="row">Opt-in</th>
+      <% diff = num_first_period_opt_in - num_second_period_opt_in %>
+      <td><%= num_second_period_opt_in %> st</td>
+      <td><%= num_first_period_opt_in %> st</td>
+      <td><%= '+' if diff > 0 %><%= diff %> st</td>
+    </tr>
+  </tbody>
+<% end %>
+</div>

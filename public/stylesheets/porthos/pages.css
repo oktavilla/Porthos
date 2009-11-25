@@ -31,6 +31,7 @@ ul.contents > li {
     margin:0 0 10px 0;
     line-height:1.2;
     color:#555; }
+    .textfield_content .teasers .teaser .images {display:none !important;} /* Quickfix for UNICEF campaign */
     .textfield_content p.preamble {font-size:1.1em;}
   li.content ul, .content ol {
     list-style:disc; 
@@ -49,7 +50,8 @@ ul.contents > li {
     color:#555;
     background:transparent url(/graphics/porthos/content_image_wrapper_bg.gif) 10px 10px no-repeat; }
     .teaser_wrapper li img,
-    .content_image_wrapper img {
+    .ContentImage img,
+    .ContentMovie img {
       position:absolute;
       top:10px;
       left:10px; }
@@ -70,7 +72,8 @@ ul.contents > li {
         padding-left:23px;
         background:transparent url(/graphics/porthos/icons/16_create.png) 0 0 no-repeat; }
         
-ul.contents li.content_image_wrapper {
+ul.contents li.content_image_wrapper,
+ul.contents .ContentMovie {
   padding:10px 20% 10px 120px;
   min-height:100px; }
   .content_image_wrapper .controls {line-height:1.4;}
@@ -79,12 +82,10 @@ ul.contents li.shared,
 ul.contents li.registration_form_wrapper,
 ul.contents li.content_module_wrapper {
   padding:16px 0 16px 52px;
-  min-height:29px;
-  font-size:1.4em;
-  font-weight:bold; }
-  ul.contents li.shared .controls,
-  ul.contents li.registration_form_wrapper .controls,
-  ul.contents li.content_module_wrapper .controls {font-size:.8em;}
+  min-height:29px; }
+  ul.contents li.content_module_wrapper h1 { 
+    font-weight:bold;
+    font-size:1.4em; }
 .shared {background:transparent url(/graphics/porthos/icons/32_shared_content.png) 10px 12px no-repeat;}
 .registration_form_wrapper {background:transparent url(/graphics/porthos/icons/32_form.png) 10px 12px no-repeat;}
 .content_module_wrapper {background:transparent url(/graphics/porthos/icons/32_module.png) 10px 12px no-repeat;}
@@ -156,13 +157,18 @@ ul.contents li.content_module_wrapper {
   .page_layout.sorting .textfield_content {padding-left:46px;}
   .page_layout.sorting .teaser_wrapper {padding-left:36px;}
   .page_layout.sorting .content_image_wrapper {padding-left:156px;}
-    .page_layout.sorting .content_image_wrapper img {left:46px;}
+  .page_layout.sorting .content_image_wrapper img {left:46px;}
+  .page_layout.sorting .teasers {min-height:59px;}
+
+  #content .page_layout.sorting .collection {
+    padding-left:36px;}
+  #content .page_layout.sorting .content_image_wrapper.collection img {left:10px;}
   .page_layout.sorting .registration_form_wrapper,
   .page_layout.sorting .content_module_wrapper,
   .page_layout.sorting .shared {
     padding-left:88px;
     background-position:46px 12px; }
-
+    
 .page_layout.sorting .content .controls,
 .page_layout.sorting .teaser_wrapper .controls {visibility:hidden;}
 .page_layout.sorting .sub_content {display:none;}
@@ -231,6 +237,24 @@ li.content .controls {
     li.content .controls a.delete {text-indent:-9999px;padding-right:0;}
     li.content .controls a.visibility {background-position:0 2px;} /* Declare specific position for show/hide icon */
 
+.collection li.create {
+  clear:left;
+  padding:10px;
+  min-height:19px; }
+  .collection li.create a {
+    padding-left:23px;
+    background:transparent url(/graphics/porthos/icons/16_create.png) 0 0 no-repeat; }
+
+.ContentMovie h3 {
+  position:absolute;
+  top:10px;
+  left:10px;
+  z-index:100;
+  width:30px;
+  height:30px;
+  text-indent:-9999px;
+  background:#fff url(/graphics/porthos/icons/16_movie.png) no-repeat scroll 6px 6px;
+}
 
 /**** PAGE LAYOUTS */
 
@@ -268,3 +292,14 @@ li.content .controls {
   #page_collections .restricted { 
     color:#888;
     font-size: .5em; }
+    
+#tag_collections {}
+  #tag_collections .tag_collections {
+    padding:10px 15px; }
+    #tag_collections .tag_collections h3:after { content:":";}
+    #tag_collections .tag_collections h3,
+    #tag_collections .tag_collections ul,
+    #tag_collections .tag_collections ul li {
+      font-size:1em;
+      display:inline; }
+    #tag_collections .tag_collections li { margin-bottom:1em; }

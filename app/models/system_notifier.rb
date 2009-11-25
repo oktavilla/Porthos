@@ -3,7 +3,7 @@ class SystemNotifier < ActionMailer::Base
     @subject    = "[UNICEF] Alert (#{exception.class}) #{exception.message.inspect}"
     @body       = { :exception => exception, :backtrace => sanitize_backtrace(exception.backtrace), :object => object }
     @recipients = "errors@winstondesign.se"
-    @from       = 'no.reply@unicef.se'
+    @from       = 'no.reply@winstondesign.se'
   end
   
   private

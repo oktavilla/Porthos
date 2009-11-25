@@ -61,7 +61,8 @@
           <ul class="assets" id="teaser_<%= @content.resource.id %>_asset_usages">
           <% @content.resource.asset_usages.each do |usage| %>
             <li id="asset_usage_<%= usage.id %>" class="asset_usage">
-              <%= image_tag(display_image_path(:size => 'c80x80', :id => usage.asset, :format => usage.asset.extname), :class => 'asset') %>
+              <%= image_tag(display_image_path(:size => "c80x80#{(!usage.gravity.blank? ? 'g-'+usage.gravity : '')}", :id => usage.asset, :format => usage.asset.extname), :class => 'asset') %>
+              <%= link_to "Beskär", edit_admin_asset_usage_path(:id => usage, :return_to => admin_page_path(@content.page_id)), :class => 'edit' %>
               <%= button_to "Radera", admin_asset_usage_path(:id => usage.id, :return_to => admin_page_path(@content.page_id)), { :method => :delete, :class => "delete", :src => "/graphics/porthos/icons/16_delete.png", :confirm => "Är du säker, detta går inte att ångra." } %>
             </li>
           <% end %>

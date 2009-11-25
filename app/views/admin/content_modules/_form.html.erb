@@ -2,5 +2,3 @@
 <%= f.text_field :name %>
 <label for="content_module_template">Modul</label>
 <%= f.select :template, @content_module.available_templates.collect { |t| [t.humanize, t] } %>
-<label for="content_module_avalible_in_page_type">Typ av sida den kan finnas i</label>
-<%= f.select :available_in_page_type, @content_module.available_page_types.collect { |t| [t.humanize, t] } %>

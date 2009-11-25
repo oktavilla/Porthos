@@ -39,6 +39,5 @@
     </div>
   </div>
 </div>
-<%= javascript_include_merged :admin %>
-<%= javascript_include_merged :action_dialog %>
-<%= javascript_include_merged :registration_forms %>
+<%= javascript_include_tag 'named_routes' %>
+<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', 'porthos/safari_search', :cache => 'admin' %>

@@ -1,0 +1,67 @@
+<% @page_title = "Användare" -%>
+<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<div id="workspace">
+  <div id="c_wrap" class="layout_2">
+    <div id="c_1">
+      <div class="header">
+        <h1>Användare - besökare</h1>
+      </div>
+      <% if @search.total_entries != 0 -%>
+        <h2>Din sökning på <strong><%= @query %></strong> gav <strong><%= @search.total_entries %></strong> resultat</h2>
+      <% else -%>
+        <p class="blank-slate info">Inga träffar hittades på sökningen ”<%= @query %>”</p>
+      <% end -%>
+      <% @search.results.each do |user| -%>
+        <div class="user<%= " first" if @search.results.first == user %>">
+          <div class="vcard main">
+            <% if user.avatar %>
+              <%= image_tag(display_image_path(:size => 'c90x90', :id => user.avatar, :format => user.avatar.extname), :class => "avatar") %>
+            <% end %>
+            <% if user.admin? %>
+             <span class="role type">
+               Redaktör
+            </span>
+            <% end %>
+            <span class="fn"><%= link_to user.name, edit_admin_user_path(user) %> </span>
+            <span class="created_at">
+              <% t = user.created_at %>
+              <%= t.day  %>
+              <%= t.strftime("%b %Y %H:%M") %>
+            </span>
+            <a class="email" title="Skicka e-post till <%= user.name %>" href="mailto:<%= user.email %>"><%= user.email %></a>
+            <% unless user.phone.blank? and user.cell_phone.blank? -%>
+            <span class="tel">
+              <% unless user.phone.blank? -%>
+              <span class="work">
+                <span class="type">Telefon:</span>
+                <span class="value"><%= user.phone %></span>
+              </span>
+              <% end -%>
+              <% unless user.cell_phone.blank? -%>
+              <span class="cell">
+                <span class="type">Mobil:</span>
+                <span class="value"><%= user.cell_phone %></span>
+              </span>
+              <% end -%>
+            </span>
+            <% end %>
+          </div>
+        </div>
+      <% end -%>
+      <%= will_paginate @search %>
+    </div>
+    <div id="c_2">
+      <div class="inner">
+        <%= link_to "Lägg till besökare", new_public_admin_users_path %>
+        <% form_tag search_admin_users_path, :method => 'get' do %>
+        <div class="search">
+          <%= text_field_tag :query, (@query ? @query : 'Sök användare ...'), :class => "search_query", :id=> "ref_search_query" %>
+          <%= submit_tag "Sök", :style => "display:none" %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<%= javascript_include_tag 'named_routes' %>
+<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', 'porthos/safari_search', :cache => 'admin' %>

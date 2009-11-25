@@ -1,0 +1,9 @@
+<label for="content_settings_title">Rubrik</label>
+<%= text_field_tag "content[new_settings][title]", content.settings.value_for(:title), :id => 'content_new_settings_title' %>
+<label for="content_settings_title_tag">HTML element för rubrik</label>
+<%= text_field_tag "content[new_settings][title_tag]", content.settings.value_for(:title_tag) || "h2", :id => 'content_new_settings_title_tag' %>
+<label for="content_settings_css_class">CSS klass för omslutande element</label>
+<%= text_field_tag "content[new_settings][css_class]", content.settings.value_for(:css_class), :id => 'content_new_settings_css_class' %>
+<label for="content_settings_title"><%= check_box_tag "content[new_settings][show_description]", 1, (content.settings.value_for(:show_description).to_i == 1), :id => 'content_new_settings_show_description' %>
+ Visa beskrivningar</label>
+<%= hidden_field_tag "content[new_settings][show_description]", 0 %>

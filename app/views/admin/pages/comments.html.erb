@@ -1,0 +1,58 @@
+<% @page_class = "A content" -%>
+<% @page_title = "Kommentarer för sidan ”#{@page.title}”" -%>
+<style type="text/css">
+  body#comments .inner {padding: 10px;}
+  .comments {
+    width:100%;
+    margin-bottom:10px;
+    border-collapse:collapse;
+    font-size:12px;
+    color:#666; 
+    border-bottom:1px solid #ccc;}
+    .comments th,
+    .comments td {
+      vertical-align:top;
+      text-align:left;
+      padding:10px; }
+    .comments td {
+      border-top:1px solid #ccc; }
+  
+    .comments .details {width:130px;}
+    .comments .author {width:150px;}
+    .comments .spam {width:120px;}
+    
+      .comments .created_at, 
+      .comments .ip_address,
+      .comments .spam_score,
+      .comments a {display: block;}
+    
+      .comments .created_at,
+      .comments .commentable a,
+      .comments .reference {padding-left: 22px;}
+      .comments .name { 
+        color: #000;
+        font-weight: bold; }
+      .comments .reference {
+        font-weight:bold;
+        font-size:16px; }
+      .comments .is_spam { background: url(/graphics/porthos/icons/16_failed.png) no-repeat transparent; background-position:0 3px; }
+      .comments .spam .is_spam {
+        background: none; 
+        color: #f00;
+        font-weight: bold;}
+</style>
+<div id="content_header">
+  <h1>Kommentarer för sidan ”<%= @page.title %>”</h1>
+  <span class="controls">
+    <%= link_to "Redigera sidan", admin_page_path(:id => @page) %>
+  </span>
+</div>
+<div id="container">
+  <div id="content">
+    <div id="ca">
+      <div class="inner">
+        <%= render :partial => "admin/comments/table", :locals => { :comments => @page.comments.find(:all, :order => 'created_at DESC'), :return_to => comments_admin_page_path(@page) } %>
+      </div>
+    </div>
+  </div>
+</div>

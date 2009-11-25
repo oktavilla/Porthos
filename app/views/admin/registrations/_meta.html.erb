@@ -1,0 +1,13 @@
+<div class="details meta">
+  <div class="status <%= @registration.humanized_status[:class] %>"><%= @registration.id %></div>
+  <div class="created_at">
+    <% t = @registration.created_at %>
+    <span class="value"><%= t.day  %> <%= t.strftime("%b %Y %H:%M") %></span>
+  </div>
+  <% unless @registration.ip_address.blank? -%>
+  <div class="ip">
+    <span class="type">IP-nummer</span>
+    <span class="value"><%= @registration.ip_address %></span>
+  </div>
+  <%- end -%>
+</div>

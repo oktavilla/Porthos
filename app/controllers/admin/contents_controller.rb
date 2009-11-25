@@ -1,6 +1,7 @@
 class Admin::ContentsController < ApplicationController
   include Porthos::Admin
-  before_filter :login_required, :find_page
+  before_filter :login_required
+  before_filter :find_page, :except => [:sort]
   skip_after_filter :remember_uri
 
   layout 'admin'
@@ -85,11 +86,10 @@ class Admin::ContentsController < ApplicationController
 
   def sort
     params[:contents].each_with_index do |id, index|
-      if params[:column_position]
-        @page.contents.update(id, :position => index+1, :column_position => params[:column_position])
-      else
-        Content.update(id, :position => index+1)
-      end
+      attributes = { :position => index+1 }
+      attributes[:column_position] = params[:column_position] if params[:column_position]
+      attributes[:parent_id] = params[:parent_id] if params[:parent_id]
+      Content.update(id, attributes)
     end if params[:contents]
     respond_to do |format|
       format.js { render :nothing => true }
@@ -102,6 +102,13 @@ class Admin::ContentsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to admin_page_path(:id => @page, :anchor => "content_#{@content.id}") }
       format.js
+    end
+  end
+  
+  def settings
+    @content = Content.find(params[:id])
+    respond_to do |format|
+      format.js { render :layout => false }
     end
   end
 

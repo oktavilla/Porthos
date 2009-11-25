@@ -449,6 +449,26 @@ var XhtmlValidator = {
     "13":"dl",
     "14":"dt",
     "15":"em",
+    "embed":
+    {
+      "attributes":
+      [
+        "allowscriptaccess",
+        "allowfullscreen",
+        "height",
+        "src",
+        "type",
+        "width"
+      ]
+    },
+    "script":
+    {
+      "attributes":
+      [
+        "src",
+        "type"
+      ]
+    },
     "fieldset":
     {
       "inside":"form"
@@ -639,19 +659,19 @@ var XhtmlValidator = {
       ]
     },
     "31":"samp",
-    "script":
-    {
-      "attributes":
-      {
-        "type":/^(text\/ecmascript|text\/javascript|text\/jscript|text\/vbscript|text\/vbs|text\/xml)$/,
-        "0":"charset",
-        "defer":/^(defer)$/,
-        "1":"src"
-      },
-      "required":[
-      "type"
-      ]
-    },
+    // "script":
+    //     {
+    //       "attributes":
+    //       {
+    //         "type":/^(text\/ecmascript|text\/javascript|text\/jscript|text\/vbscript|text\/vbs|text\/xml)$/,
+    //         "0":"charset",
+    //         "defer":/^(defer)$/,
+    //         "1":"src"
+    //       },
+    //       "required":[
+    //       "type"
+    //       ]
+    //     },
     "select":
     {
       "attributes":
@@ -1827,7 +1847,7 @@ function XhtmlSaxListener()
     this.block_tags = ["a", "abbr", "acronym", "address", "area", "b",
     "base", "bdo", "big", "blockquote", "body", "button",
     "caption", "cite", "code", "col", "colgroup", "dd", "del", "div",
-    "dfn", "dl", "dt", "em", "fieldset", "form", "head", "h1", "h2",
+    "dfn", "dl", "dt", "em", "embed", "fieldset", "form", "head", "h1", "h2",
     "h3", "h4", "h5", "h6", "html", "i", "ins",
     "kbd", "label", "legend", "li", "map", "noscript",
     "object", "ol", "optgroup", "option", "p", "param", "pre", "q",

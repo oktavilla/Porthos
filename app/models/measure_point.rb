@@ -19,10 +19,11 @@
 class MeasurePoint < ActiveRecord::Base
   belongs_to :campaign
   has_many   :conversions, :order => 'created_at DESC'
+  belongs_to :user 
 
   # See config/languages/sv.yaml
   LINK_TYPES = { :banner_flash => 1, :banner_gif => 2, :text_link => 3 }
-  TARGETS    = { :global_parents => 1, :private_donations => 2, :private_buys => 3 }
+  TARGETS    = { :private_buys => 3 }
   
   before_create :create_public_id
   
@@ -39,7 +40,10 @@ class MeasurePoint < ActiveRecord::Base
   end
   
   def total_conversions
-    conversions.count
+    query = "SELECT count(conversions.id) as conversions_count FROM conversions
+     LEFT JOIN registrations ON conversions.registration_id = registrations.id 
+     WHERE conversions.measure_point_id = #{self.id} AND registrations.status = 1"
+    (MeasurePoint.find_by_sql(query)[0]['conversions_count'].to_i || 0)
   end
   
   def income(registration_type = false)
@@ -47,14 +51,14 @@ class MeasurePoint < ActiveRecord::Base
       query = "SELECT 
         sum(payments.amount) AS sum_amount 
         FROM conversions 
-        INNER JOIN measure_points ON conversions.measure_point_id = measure_points.id "
-      query << "LEFT JOIN registrations ON conversions.registration_id = registrations.id " unless registration_type.blank?
+        INNER JOIN measure_points ON conversions.measure_point_id = measure_points.id 
+        LEFT JOIN registrations ON conversions.registration_id = registrations.id " 
       query << "LEFT JOIN payments ON conversions.registration_id = payments.payable_id
-        WHERE measure_points.id = #{self.id} AND (payments.status = 'Completed' OR payments.billing_method = 'invoice')"
+        WHERE measure_points.id = #{self.id} AND (payments.status = 'Completed' OR payments.billing_method = 'invoice') AND registrations.status = 1"
       query << " AND registration_type = '#{registration_type}'" unless registration_type.blank?
       amount = MeasurePoint.find_by_sql(query)[0]['sum_amount'].to_i
     else 
-      amount = conversions.sum(:amount)
+      amount = conversions.sum(:amount, {:joins => 'LEFT JOIN registrations ON conversions.registration_id = registrations.id', :conditions => ['registrations.status = 1']})
     end
     Money.new(amount || 0)
   end

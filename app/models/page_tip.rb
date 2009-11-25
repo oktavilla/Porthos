@@ -59,21 +59,25 @@
 
 class PageTip < Registration
   validates_presence_of :name, :email, :recipients
+  validates_as_email :email, :message => l(:validators, :bad_email_format)
   after_create :send_tip
   
-  def cvs_fields
-    [
-      created_at.strftime("%Y-%m-%d %H:%M"),
-      first_name,
-      last_name,
-      email,
-      contact_approval.to_s,
-      recipients,
-      uri,
-      message,
-      ((conversion and conversion.measure_point) ? conversion.measure_point.public_id : ''),
-      id
-    ]
+  class << self
+    def cvs_fields
+      [
+        :created_at_formatted_date,
+        :created_at_formatted_time,
+        :first_name,
+        :last_name,
+        :email,
+        :contact_approval,
+        :recipients,
+        :uri,
+        :message,
+        :conversion_point_public_id,
+        :id
+      ]
+    end
   end
 
 protected

@@ -29,6 +29,8 @@ class Admin::RegistrationFormsController < ApplicationController
         flash[:notice] = "#{@registration_form.name} #{l(:admin_general, :saved)}"
         format.html { redirect_to edit_admin_registration_form_path(@registration_form) }
       else
+        @role = Role.find_or_create_by_name('Admin')
+        @users = @role.users.find(:all, :order => "last_name, first_name")
         format.html { render :action => :new }
       end
     end

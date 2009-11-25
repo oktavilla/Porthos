@@ -35,6 +35,10 @@ module Porthos
           []
         end
       end
+      
+      def porthos_session_id
+        session[:porthos_id] ||= CGI::Session.generate_unique_id
+      end
     end
   end
 end

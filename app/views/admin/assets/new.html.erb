@@ -1,19 +1,24 @@
-<% @page_title = "Filarkiv" %>
-<% @page_class = "AB" %>
-<h1>Filer och dokument</h1>
-<div id="content">
-<div id="c-b">
+<% @page_title = "Ladda upp filer" %>
+<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<div id="workspace">
+  <div class="header">
+    <h1>Ladda upp bilder och filmer</h1>
+  </div>
+  <div id="c_wrap" class="layout_3">
+    <div id="c_1">
+      <div id="uploader">
+        <% form_for @asset, :url => admin_assets_path(SESSION_KEY => session.session_id), :html => { :multipart => true, :id => 'upload' } do |f| %>
+        <fieldset id="files">
+          <%= f.file_field :file, :size => 15 %>
+        </fieldset>
+        <fieldset class="submit" id="submit_container">
+          <input type="submit" value="Börja uppladdning"> eller <%= link_to "Avbryt", :action => "index" %>
+        </fieldset>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
-<div id="c-a">
-  <h2 class="label">Ladda upp nya filer</h2>
-  <% form_for :asset, :url => admin_assets_path, :html => { :method => :post, :multipart => true, :id => 'add_file' } do |f| %>
-    <% @assets.each do |asset| %>
-      <% if asset.errors.any? %>
-        <p>Det gick inte att ladda upp filen "<%= "#{asset.title}.#{asset.extname}" %>". Försök igen eller <%= link_to "gå vidare &rarr;", incomplete_admin_assets_url %></p>
-      <% end %>
-      <%= file_field_tag 'files[]', :size => "15", :class => "file" %> 
-    <% end %>
-    <div class="submit"><%= f.submit 'Ladda upp' %></div>
-  <% end %>
-</div>
-</div>
+<%= javascript_include_tag 'named_routes' %>
+<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', 'porthos/safari_search', :cache => 'admin' %>
+<%= javascript_include_tag 'porthos/swfupload/swfupload', 'porthos/swfupload/swfupload.queue.js', 'porthos/assets', 'porthos/swfobject', 'porthos/mediaplayer', :cache => 'assets_uploader' %>

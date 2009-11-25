@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :registrations
   map.connect '/payments/update', :controller => 'payments', :action => 'update'
-  map.resources :payments
+  map.resources :payments, :member => { :pending => :get }
 
   map.with_options :controller => 'assets', :action => 'show' do |asset|
     asset.display_image  '/images/:size/:id.:format'
@@ -37,7 +37,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :sessions, :collection => { :token => :get }
     admin.dashboard '/', :controller => 'nodes'
 
-    admin.resources :users, :collection => { :admins => :get, :public => :get, :new_public => :get }
+    admin.resources :users, :collection => { :admins => :get, :public => :get, :new_public => :get, :search => :get }
 
     admin.resources :nodes, 
       :member => { :place => :get },
@@ -52,7 +52,7 @@ ActionController::Routing::Routes.draw do |map|
 
     admin.resources :teasers, :collection => { :sort => :put }
     
-    admin.resources :campaigns
+    admin.resources :campaigns, :collection => { :search => :get }
     admin.resources :measure_points
     admin.conversions '/measure_points/:measure_point_id/conversions', :controller => 'conversions', :action => 'show'
     admin.resources :payments
@@ -60,22 +60,31 @@ ActionController::Routing::Routes.draw do |map|
     
     admin.resources :assets, :collection => { :search => :get, :incomplete => :get, :update_multiple => :put }
     admin.resources :asset_usages, :collection => { :sort => :put }
+    admin.resources :tags, :collection => { :search => :get }
     
-    admin.resources :page_collections
+    admin.resources :page_collections do |page_collections|
+      page_collections.resources :tag_collections
+    end
     
-    admin.resources :pages, :collection => { :sort => :put }, :member => { :toggle => :put } do |pages|
-      pages.resources :contents, :collection => { :sort => :put }, :member => { :toggle => :put }
+    admin.resources :comments, :member => { :report_as_spam => :put, :report_as_ham => :put }, :collection => { :destroy_all_spam => :delete }
+    
+    admin.resources :pages, :collection => { :sort => :put }, :member => { :toggle => :put, :comments => :get } do |pages|
+      pages.resources :contents, :collection => { :sort => :put }, :member => { :toggle => :put, :settings => :get }
       pages.resources :textfields
     end
-  
-  
-   admin.registrations         '/registrations',               :controller => 'registrations', :action => 'index'
-   admin.registrations_by_type '/registrations/:type',         :controller => 'registrations', :action => 'index'
-   admin.invalid_registrations_by_type '/registrations/:type/invalid', :controller => 'registrations', :action => 'invalid'
-   admin.registration          '/registrations/:type/:id',     :controller => 'registrations', :action => 'show'
-   admin.export_registration   '/registrations/export/:type.:format',  :controller => 'registrations', :action => 'period'
+
+    admin.registrations         '/registrations',               :controller => 'registrations', :action => 'index'
+    admin.comment_registration  '/registrations/comment',       :controller => 'registrations', :action => 'comment'
+    admin.registrations_by_type '/registrations/:type',         :controller => 'registrations', :action => 'index'
+    admin.invalid_registrations_by_type '/registrations/:type/invalid', :controller => 'registrations', :action => 'invalid'
+    admin.registration          '/registrations/:type/:id',     :controller => 'registrations', :action => 'show'
+    admin.export_registration   '/registrations/export/:type.:format',  :controller => 'registrations', :action => 'period'
     
-   admin.activities '/activities', :controller => 'activities', :action => 'index'
-   admin.registration_activity '/activities/:type', :controller => 'activities', :action => 'show'
+    admin.show_registration  '/registration/',       :controller => 'registrations', :action => 'show'
+    admin.resources(:registrations, :collection => { :invalid => :get, :search => :get, :export => :get })
+    
+     
+    admin.activities '/activities', :controller => 'activities', :action => 'index'
+    admin.registration_activity '/activities/:type', :controller => 'activities', :action => 'show'
   end
 end

@@ -1,4 +1,3 @@
-
 function WymCssLexer(parser, only_wym_blocks)
 {
   var only_wym_blocks = (only_wym_blocks == undefined ? true : only_wym_blocks);

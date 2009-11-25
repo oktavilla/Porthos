@@ -1,0 +1,401 @@
+@import url(reset_old_design.css);
+
+#c_wrap:after,
+.assets li:after,
+#assets.incomplete .describe_asset:after,
+#uploader li:after,
+#uploader .totals:after,
+#campaigns.show .overview:after,
+#registrations.show .update_comment_status .comment_status:after {
+  content:".";
+  display:block;
+  height:0;
+  line-height:0;
+  clear:both; 
+  visibility:hidden; }
+
+#assets #n-assets a {color:#fff;font-weight:bold;}
+
+#c_wrap.layout_1 {position:relative;}
+  #c_wrap.layout_1 #c_1 {
+    position:absolute; 
+    top:20px;
+    left:10px;
+    width:361px; }
+  #c_wrap.layout_1 #c_2 {
+    float:none; 
+    width:auto;
+    margin-left:391px; }
+
+#c_wrap.layout_2 #c_1 {width:70%;}
+#c_wrap.layout_2 #c_2 {width:30%;}
+  #c_wrap.layout_2 #c_2 .inner {margin-left:30px;}
+#c_wrap.layout_3 #c_1 {width:100%;}
+
+.search .search_query {
+  width:95%; 
+  color:#999; }
+.search .search_query:focus {color:#000;}
+
+.assets {margin:0;}
+.assets.detailed li {
+  margin:0; 
+  padding:.5em 0 .5em 115px; }
+  .assets.detailed img {
+    float:left;
+    margin-left:-115px; 
+    border:1px solid #ccc; }
+  .assets.detailed .title {margin:.5em 0 0 0;}
+    .assets.detailed .title a {color:#000;text-decoration:none;}
+    .assets.detailed .title a:hover {text-decoration:underline;}
+  .assets.detailed .description {margin-bottom:.3em;}
+  .assets.detailed .description.blank a {color:#999;text-decoration:none;}
+  .assets.detailed .description.blank a:hover {text-decoration:underline;color:#000;}
+  .assets.detailed .tags,
+  .assets.detailed .meta,
+  .assets.detailed .actions {
+    font-size:12px; 
+    color:#999; }
+  .assets.detailed .meta,
+  .assets.detailed .actions {display:inline;}
+
+  .assets li .actions {display:none !important;}
+  .assets li:hover .actions {display:inline !important;}
+
+  .assets.detailed .tags a,
+  .assets.detailed .actions a {margin-right:.3em;}
+  .assets.detailed .tags a {color:#777;}
+
+.meta {
+  margin-right:10px;
+  font-size:12px;
+  color:#777; }
+  .meta span {color:#aaa;}
+.asset {
+  overflow:hidden;
+  padding:20px; 
+  border-right:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+  background:#fff; }
+  .asset.MovieAsset {background:#000;border-color:#000;}
+  .asset.SoundAsset {padding-top:100px;padding-bottom:100px;}
+  .asset .icon {display:block;margin:40px auto 40px auto;}
+  #assets.edit .meta {
+    margin-left:20px; }
+    #assets.edit .meta li {margin:0;}
+
+#assets.incomplete {}
+  #assets.incomplete .describe_asset {
+    margin-bottom:15px;
+    padding-bottom:15px;
+    border-bottom:1px solid #ddd; }
+  #assets.incomplete .describe_asset .preview {
+    width:35%;
+    float:left; 
+    clear:left;
+    margin-bottom:20px; }
+    #assets.incomplete .describe_asset .asset {
+      margin-right:30px; }
+  #assets.incomplete .describe_asset fieldset.compact {
+    float:left;
+    width:64%;
+    padding-top:5px; }
+  #assets.incomplete .describe_asset .asset_tags {margin-bottom:.5em;}
+  #assets.incomplete .submit {text-align:center;}
+
+.swfupload { position:absolute; }
+
+.flash.notice {display:none;}
+.main_action {margin:0 0 20px 0;}
+  .main_action .upload_files {
+    display:block;
+    height:34px;
+    width:148px;
+    background:transparent url(/graphics/porthos/ui.png) -20px -20px no-repeat;
+    text-indent:-9999px; }
+  .main_action .upload_files:hover {background-position:-20px -75px;}
+div.filter {margin:1em 0 1em 5px;}
+ul.filter {margin:0;}
+ul.filter li {margin:.8em -5px;}
+  .filter .current,
+  .filter a {
+    padding:4px 5px;
+    margin-right:10px; }
+  .filter .current {
+    background:#555;
+    color:#fff; 
+    text-decoration:none;}
+
+.pagination {
+  margin:20px 0 20px 0;
+  padding:15px 15px;
+  border-top:1px solid #ddd; }
+  .pagination a {border:1px solid #ddd;}
+  .pagination .prev_page,
+  .pagination .next_page {
+    float:left;
+    margin-top:-5px; }
+  .pagination .next_page {float:right;}
+
+/* REGISTRATIONS */
+
+.status {
+  display:block;
+  font-weight:bold;
+  font-size:16px;
+  color:#000;
+  padding-left:22px; }
+.status.complete,
+.status.completed {
+  color:#59941c;
+  background:transparent url(/graphics/porthos/_new/icons/completed.png) 0 1px no-repeat; }
+.status.pending {
+  color:#ffba00;
+  background:transparent url(/graphics/porthos/_new/icons/pending.png) 0 1px no-repeat; }
+.status.deleted {
+  background:transparent url(/graphics/porthos/_new/icons/deleted.png) 1px 1px no-repeat;
+  color:#a00;
+  text-decoration:line-through; }
+.status.failed {
+  background:transparent url(/graphics/porthos/_new/icons/failed.png) 0 1px no-repeat; }
+.status.invoice {  
+  background:transparent url(/graphics/porthos/_new/icons/invoice.png) 0 1px no-repeat; }
+
+.registrations {
+  color:#666;
+  width:100%; }
+  .registrations td {padding:10px;}
+  .registrations .details {width:130px;}
+  .registrations .details span {
+    display:block;
+    padding-left:22px; }
+  .registrations .personal {}
+  .registrations .payment {width:200px;}
+    .registrations .payment .payment,
+    .registrations .payment .target_code,
+    .registrations .payment .measure_point,
+    .registrations .payment .delivery,
+    .registrations .payment .shipping {
+      display:block; 
+      padding-left:22px; }
+    .registrations .payment .amount {
+      font-weight:bold;
+      font-size:16px; 
+      color:#000; }
+    .registrations .type {
+      font-weight:normal;
+      color:#999; }
+    .registrations .payment .payment_status.complete,
+    .registrations .payment .payment_status.pending,
+    .registrations .payment .payment_status.invoice,
+    .registrations .details .reference.complete,
+    .registrations .details .reference.pending,
+    .registrations .details .reference.deleted {
+      background-position:0 3px; }
+
+.comments {
+  margin-top:1em;
+  border-top:1px solid #eee;}
+  .comments li {
+    padding:10px 0;
+    font-size:12px;
+    border-bottom:1px solid #eee; }
+/*  .comments li .meta {
+    color:#777;
+    padding:0 !important;
+    font-size:11px; 
+    margin-bottom:.5em; }*/
+  .comments li .status_changed {
+    text-transform:uppercase;
+    margin-left:5px;
+    font-weight:bold;
+    padding:3px 4px 2px 4px; }
+  .comments li .status_changed.completed {
+    color:#fff;
+    background:#59941c;}
+  .comments li .status_changed.pending {
+    background:#ffba00;
+    color:#fff; }
+  .comments li .status_changed.deleted {
+    background:#a00;
+    color:#fff; }
+
+
+#registrations.search #c_1 h2 {
+  margin:5px 10px 5px 10px;
+  font-size:14px;
+  font-weight:normal; }
+
+#registrations.show {}
+  #registrations.show .details.meta {
+    width:150px;
+    float:left;
+    margin-left:0;
+    border:none; }
+    #registrations.show .details.meta div {padding-left:22px;}
+    #registrations.show .details.meta .type {display:inline;}
+  #registrations.show .details.contact {border:none;}
+  #registrations.show .data .details:first-child {border-top:none;}
+  #registrations.show .data .details {margin-left:180px;}
+  #registrations.show .details {
+    padding:10px 10px 15px 10px;
+    border-top:1px solid #eee; }
+    #registrations.show .details h3 {
+      margin-top:5px;
+      font-size:12px;
+      text-transform:uppercase; 
+      color:#999; 
+      font-weight:normal; }
+    #registrations.show .details .type {
+      font-size:12px;
+      display:block; }
+    #registrations.show .details .vcard .type {display:inline;}
+  #registrations.show #registration_comment_body {
+    width:100%;
+    margin-bottom:0;}
+  #registrations.show .update_comment_status {
+    margin-top:-5px;
+    padding:5px 7px;
+    background:#f2f2f2;
+    border:1px solid #ccc; }
+    #registrations.show .update_comment_status div {
+      clear:left;
+      font-size:12px; 
+      padding-top:2px;
+      color:#777; }
+    #registrations.show .textfield_wrap {margin-right:11px;}
+    #registrations.show .textfield_wrap textarea {font-size:12px;}
+    #registrations.show .update_comment_status label {font-weight:normal;}
+    #registrations.show .update_comment_status label input {margin-left:2px;}
+    #registrations.show .update_comment_status #registration_comment_submit {
+      margin:0 0 3px 0;
+      padding:5px 10px;
+      color:#000;
+      font-size:14px; }
+    #registrations.show .update_comment_status .comment_status,
+    #registrations.show .update_comment_status .refund_fraud {margin-bottom:10px;}
+    #registrations.show .update_comment_status .comment_status label {
+      clear:none;
+      float:left;
+      width:33%;
+      margin:0;
+      padding:0; }
+  #registrations.show .related_registrations .type {padding-left:22px;}
+
+.campaigns {
+  color:#666; 
+  width:100%; }
+  .campaigns .total_clicks,
+  .campaigns .total_conversions,
+  .campaigns .total_roi {
+    text-align:right; }
+  .campaigns td.name,
+  .campaigns td.total_clicks,
+  .campaigns td.total_conversions,
+  .campaigns td.total_roi {
+    font-size:16px;
+    color:#000;
+    font-weight:bold; }
+
+.main_action .new_measure_point {
+  display:block;
+  height:34px;
+  width:200px;
+  background:transparent url(/graphics/porthos/ui.png) -20px -129px no-repeat;
+  text-indent:-9999px; }
+.main_action .new_measure_point:hover {background-position:-20px -184px;}
+
+.main_action .new_campaign {
+  display:block;
+  height:34px;
+  width:200px;
+  background:transparent url(/graphics/porthos/ui.png) -20px -240px no-repeat;
+  text-indent:-9999px; }
+.main_action .new_campaign:hover {background-position:-20px -295px;}
+
+
+
+#campaigns.show {}
+  #campaigns.show .overview .clicks,
+  #campaigns.show .overview .conversions,
+  #campaigns.show .overview .income {
+    float:left;
+    width:30%;
+    margin:20px 5% 0 0;
+    padding:40px 0; 
+    -moz-border-radius:10px 10px;
+    -webkit-border-radius:10px 10px; 
+    background: #f8faed; }
+    #campaigns.show .overview .income {margin-right:0;}
+    #campaigns.show .overview .type,
+    #campaigns.show .overview .value,
+    #campaigns.show .overview .description {
+      display:block;
+      text-align:center; 
+      padding:0 30px;}
+    #campaigns.show .overview .type {}
+    #campaigns.show .overview .value {
+      color:#59941c;
+      font-size:36px; 
+      font-weight:bold; }
+    #campaigns.show .overview .description {
+      font-size:12px; }
+  #campaigns.show #c_1 h2 {margin:2em 0 10px 10px;}
+  #campaigns.show #c_1 > div.conversions {margin-left:10px;}
+
+.measure_points {
+  color:#666; 
+  width:100%; }
+  .measure_points td {padding:10px;}
+  .measure_points .details .ref_nr {
+    display:block;
+    font-weight:bold;
+    font-size:16px; 
+    color:#000; }
+  .measure_points .details .ref_nr,
+  .measure_points .details .created_at,
+  .measure_points .details .created_by,
+  .measure_points .details .updated_at {display:block;}
+  .measure_points .total_clicks,
+  .measure_points .total_conversions,
+  .measure_points .total_roi {
+    text-align:right; }
+  .measure_points td.total_clicks,
+  .measure_points td.total_conversions,
+  .measure_points td.total_roi {
+    font-size:16px;
+    color:#000;
+    font-weight:bold; }
+  .measure_points div.description {
+    color:#333;
+    margin-bottom:3px;
+    font-size:14px; }
+  .measure_points div.conversions {}
+    div.conversions ul {margin:0;}
+    div.conversions .type {
+      font-style:normal;
+      font-weight:bold; 
+      color:#000; }
+    div.conversions .value {
+      font-weight:bold; }
+    div.conversions .average {
+      display:block; 
+      color:#999; }
+
+#users {}      
+  #users .user { 
+    padding: 10px;
+    width: 100%;
+    color: #666;
+    font-size: 12px; 
+    clear: left; 
+    border-top:1px solid #eee;
+    min-height: 90px;}
+  #users .first { border: none;} 
+  #users.show .details {
+    padding:10px 10px 15px 10px;
+    border-top:1px solid #eee; }
+    #users .avatar { 
+      float: right; 
+      margin-right: 10px;}
+    #users .tel .work, #users .tel .cell, #users .extra_details  { display: block; }  

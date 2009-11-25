@@ -1,0 +1,14 @@
+<% if registration.conversion || registration.come_from %>
+<div id="measure" class="details">
+  <h3>Källa/mätpunkt</h3>
+  <% if registration.conversion and registration.conversion.measure_point -%>
+    <span class="measure_point"><span class="type">Mätpunkt:</span> <%= link_to registration.conversion.measure_point.public_id.upcase, admin_campaign_path(:id => registration.conversion.measure_point.campaign.id, :anchor => "measure_point_#{registration.conversion.measure_point.id}") %></span>
+  <% end -%>
+  <% if registration.come_from -%>
+    <span class="come_from">
+      <span class="type">Källa:</span>
+      <span class="value"><%= registration.come_from %></span>
+    </span>
+  <% end -%>
+</div>
+<% end -%>

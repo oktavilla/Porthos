@@ -6,9 +6,13 @@ class Admin::PageCollectionsController < ApplicationController
   def show
     @page = PageCollection.find(params[:id])
     per_page = params[:per_page] || 12
-    from, to = Time.delta(params[:year] || Time.now.year, params[:month], params[:day])
-    to += 1.month if @page.calendar?
-    @pages = @page.pages.published_within(from, to).paginate(:page => params[:page], :per_page => per_page, :order => 'published_on DESC')
+    if params[:year]
+      from, to = Time.delta(params[:year] || Time.now.year, params[:month], params[:day])
+      to += 1.month if @page.calendar?
+      @pages = @page.pages.published_within(from, to).paginate(:page => params[:page], :per_page => per_page, :order => 'published_on DESC')
+    else
+      @pages = @page.pages.paginate(:page => params[:page], :per_page => per_page, :order => 'published_on DESC')
+    end
     @inactive_pages = @page.pages.inactive.find(:all, :order => 'published_on DESC')
     respond_to do |format|
       format.html {}

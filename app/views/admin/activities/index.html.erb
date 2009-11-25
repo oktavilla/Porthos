@@ -1,218 +1,47 @@
-<% @page_class = 'AxB' -%>
-<div id="content_header">
-  <h1>Översikt av aktivitet</h1>
-</div>
-<div id="container">
-  <div id="content">
-    <div id="ca">
+<% @page_title = "Statistik" -%>
+<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<div id="workspace">
+  <div id="c_wrap" class="layout_2">
+    <div id="c_1">
+      <div class="header">
+        <h1>Statistik</h1>
+      </div>
+      <% activity_table(@first_period, @second_period, {:export_links => false}) do %>
+        <tbody>
+        <tbody>
+          <tr class="totals">
+            <th scope="colgroup"><%= link_to "E-postadresser", admin_registration_activity_path(:type => 'newsletter_subscriptions') %></th>
+            <% num_first_period, num_second_period = Registration.with_period(@first_period).confirmed.with_opt_in.count, Registration.with_period(@second_period).confirmed.with_opt_in.count -%>
+            <% diff = num_first_period - num_second_period -%>
+            <td><%= num_second_period %> st</td>
+            <td><%= num_first_period %> st</td>
+            <td><%= '+' if diff > 0 %><%= diff %> st</td>
+          </tr>
+          <tr>
+            <th scope="row">Via anmälan</th>
+            <% num_direct_first_period, num_direct_second_period = NewsletterSubscription.with_period(@first_period).confirmed.count, NewsletterSubscription.with_period(@second_period).confirmed.count -%>
+            <% diff = num_direct_first_period - num_direct_second_period %>
+            <td><%= num_direct_second_period %> st</td>
+            <td><%= num_direct_first_period %> st</td>
+            <td><%= '+' if diff > 0 %><%= diff %> st</td>
+          </tr>
+          <tr>
+            <th scope="row">Via opt-in</th>
+            <% diff = (num_first_period - num_direct_first_period) - (num_second_period - num_direct_second_period) %>
+            <td><%= num_second_period - num_direct_second_period %> st</td>
+            <td><%= num_first_period - num_direct_first_period %> st</td>
+            <td><%= '+' if diff > 0 %><%= diff %> st</td>
+          </tr>
+        </tbody>
+      <% end %>
+    </div>
+    <div id="c_2">
       <div class="inner">
         <%= render :partial => 'activities_nav', :locals => {:type => @type} %>
-      </div>
-    </div>
-    <div id="cb">
-      <div class="inner">
-        <% activity_table(@first_period, @second_period, {:export_links => false}) do %>
-          <tbody>
-            <tr class="totals">
-              <th scope="colgroup"><%= link_to "Världsföräldrar", admin_registration_activity_path(:type => 'global_parents') %></th>
-              <% num_first_period, num_second_period = GlobalParent.with_period(@first_period).count, GlobalParent.with_period(@second_period).count -%>
-              <% diff = num_first_period - num_second_period -%>
-              <td><%= num_second_period %> st</td>
-              <td><%= num_first_period %> st</td>
-              <td><%= '+' if diff > 0 %><%= diff %> st</td>
-            </tr>
-            <tr>
-              <th scope="row">Onlinebetalningar</th>
-              <% num_first_period_payers, num_second_period_payers = GlobalParent.with_period(@first_period).with_payment.count, GlobalParent.with_period(@second_period).with_payment.count -%>
-              <% diff = num_first_period_payers - num_second_period_payers %>
-              <td>
-              <% if num_second_period > 0 -%>
-                <%= num_second_period_payers %> st / <%= (num_second_period_payers / num_second_period) * 100 %>%
-              <% else -%>
-                -
-              <% end -%>
-              </td>
-              <td>
-              <% if num_first_period > 0 -%>
-                <%= num_first_period_payers %> st / <%= (num_first_period_payers / num_first_period) * 100 %>%
-              <% else -%>
-                -
-              <% end -%>
-              </td>
-              <td><%= '+' if diff > 0 %><%= diff %> st</td>
-            </tr>
-            <tr>
-              <th scope="row">Genomsnittligt värde</th>
-              <% average_sum_first_period, average_sum_second_period = GlobalParent.average_sum(:period => @first_period), GlobalParent.average_sum(:period => @second_period) -%>
-              <% diff = average_sum_first_period - average_sum_second_period %>
-              <td><%= number_to_currency average_sum_second_period.to_f, :precision => 2 %></td>
-              <td><%= number_to_currency average_sum_first_period.to_f, :precision => 2 %></td>
-              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f, :precision => 2 %></td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr class="totals">
-              <th scope="colgroup"><%= link_to "E-postadresser", admin_registration_activity_path(:type => 'newsletter_subscriptions') %></th>
-              <% num_first_period, num_second_period = Registration.with_period(@first_period).with_opt_in.count, Registration.with_period(@second_period).with_opt_in.count -%>
-              <% diff = num_first_period - num_second_period -%>
-              <td><%= num_second_period %> st</td>
-              <td><%= num_first_period %> st</td>
-              <td><%= '+' if diff > 0 %><%= diff %> st</td>
-            </tr>
-            <tr>
-              <th scope="row">Via anmälan</th>
-              <% num_direct_first_period, num_direct_second_period = NewsletterSubscription.with_period(@first_period).count, NewsletterSubscription.with_period(@second_period).count -%>
-              <% diff = num_direct_first_period - num_direct_second_period %>
-              <td><%= num_direct_second_period %> st</td>
-              <td><%= num_direct_first_period %> st</td>
-              <td><%= '+' if diff > 0 %><%= diff %> st</td>
-            </tr>
-            <tr>
-              <th scope="row">Via opt-in</th>
-              <% diff = (num_first_period - num_direct_first_period) - (num_second_period - num_direct_second_period) %>
-              <td><%= num_second_period - num_direct_second_period %> st</td>
-              <td><%= num_first_period - num_direct_first_period %> st</td>
-              <td><%= '+' if diff > 0 %><%= diff %> st</td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr class="totals">
-              <th scope="colgroup"><%= link_to "Privatförsäljning", admin_registration_activity_path(:type => 'private_orders') %></th>
-              <% sum_first_period, sum_second_period = PrivateOrder.total_sum(:period => @first_period), PrivateOrder.total_sum(:period => @second_period) -%>
-              <% diff = sum_first_period - sum_second_period -%>
-              <td><%= number_to_currency sum_second_period.to_f %></td>
-              <td><%= number_to_currency sum_first_period.to_f %></td>
-              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f %></td>
-            </tr>
-            <tr>
-              <th scope="row">Köp</th>
-              <% num_first_period, num_second_period = PrivateOrder.with_period(@first_period).completed.count, PrivateOrder.with_period(@second_period).completed.count -%>
-              <% diff = num_first_period - num_second_period %>
-              <td><%= num_second_period %> st</td>
-              <td><%= num_first_period %> st</td>
-              <td><%= '+' if diff > 0 %><%= diff %> st</td>
-            </tr>
-            <tr>
-              <th scope="row">Genomsnitt</th>
-              <% average_sum_first_period, average_sum_second_period = PrivateOrder.average_sum(:period => @first_period), PrivateOrder.average_sum(:period => @second_period) -%>
-              <% diff = average_sum_first_period - average_sum_second_period %>
-              <td><%= number_to_currency average_sum_second_period.to_f, :precision => 2 %></td>
-              <td><%= number_to_currency average_sum_first_period.to_f, :precision => 2 %></td>
-              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f, :precision => 2 %></td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr class="totals">
-              <th scope="colgroup"><%= link_to "Företagsförsäljning", admin_registration_activity_path(:type => 'company_orders') %></th>
-              <% sum_first_period, sum_second_period = CompanyOrder.total_sum(:period => @first_period), CompanyOrder.total_sum(:period => @second_period) -%>
-              <% diff = sum_first_period - sum_second_period -%>
-              <td><%= number_to_currency sum_second_period.to_f %></td>
-              <td><%= number_to_currency sum_first_period.to_f %></td>
-              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f %></td>
-            </tr>
-            <tr>
-              <th scope="row">Köp</th>
-              <% num_first_period, num_second_period = CompanyOrder.with_period(@first_period).completed.count, CompanyOrder.with_period(@second_period).completed.count -%>
-              <% diff = num_first_period - num_second_period %>
-              <td><%= num_second_period %> st</td>
-              <td><%= num_first_period %> st</td>
-              <td><%= '+' if diff > 0 %><%= diff %> st</td>
-            </tr>
-            <tr>
-              <th scope="row">Genomsnitt</th>
-              <% average_sum_first_period, average_sum_second_period = CompanyOrder.average_sum(:period => @first_period), CompanyOrder.average_sum(:period => @second_period) -%>
-              <% diff = average_sum_first_period - average_sum_second_period %>
-              <td><%= number_to_currency average_sum_second_period.to_f, :precision => 2 %></td>
-              <td><%= number_to_currency average_sum_first_period.to_f, :precision => 2 %></td>
-              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f, :precision => 2 %></td>
-            </tr>
-          </tbody>
-      
-      
-          <tbody>
-            <tr class="totals">
-              <th scope="colgroup"><%= link_to "Privatgåvor", admin_registration_activity_path(:type => 'private_donations') %></th>
-              <% sum_first_period, sum_second_period = PrivateDonation.total_sum(:period => @first_period), PrivateDonation.total_sum(:period => @second_period) -%>
-              <% diff = sum_first_period - sum_second_period -%>
-              <td><%= number_to_currency sum_second_period.to_f %></td>
-              <td><%= number_to_currency sum_first_period.to_f %></td>
-              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f %></td>
-            </tr>
-            <tr>
-              <th scope="row">Gåvor</th>
-              <% num_first_period, num_second_period = PrivateDonation.with_period(@first_period).count, PrivateDonation.with_period(@second_period).count -%>
-              <% diff = num_first_period - num_second_period %>
-              <td><%= num_second_period %> st</td>
-              <td><%= num_first_period %> st</td>
-              <td><%= '+' if diff > 0 %><%= diff %> st</td>
-            </tr>
-            <tr>
-              <th scope="row">Genomsnitt</th>
-              <% average_sum_first_period, average_sum_second_period = PrivateDonation.average_sum(:period => @first_period), PrivateDonation.average_sum(:period => @second_period) -%>
-              <% diff = average_sum_first_period - average_sum_second_period %>
-              <td><%= number_to_currency average_sum_second_period.to_f, :precision => 2 %></td>
-              <td><%= number_to_currency average_sum_first_period.to_f, :precision => 2 %></td>
-              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f, :precision => 2 %></td>
-            </tr>
-          </tbody>
-      
-          <tbody>
-            <tr class="totals">
-              <th scope="colgroup"><%= link_to "Företagsgåvor", admin_registration_activity_path(:type => 'company_donations') %></th>
-              <% sum_first_period, sum_second_period = CompanyDonation.total_sum(:period => @first_period), CompanyDonation.total_sum(:period => @second_period) -%>
-              <% diff = sum_first_period - sum_second_period -%>
-              <td><%= number_to_currency sum_second_period.to_f %></td>
-              <td><%= number_to_currency sum_first_period.to_f %></td>
-              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f %></td>
-            </tr>
-            <tr>
-              <th scope="row">Gåvor</th>
-              <% num_first_period, num_second_period = CompanyDonation.with_period(@first_period).count, CompanyDonation.with_period(@second_period).count -%>
-              <% diff = num_first_period - num_second_period %>
-              <td><%= num_second_period %> st</td>
-              <td><%= num_first_period %> st</td>
-              <td><%= '+' if diff > 0 %><%= diff %> st</td>
-            </tr>
-            <tr>
-              <th scope="row">Genomsnitt</th>
-              <% average_sum_first_period, average_sum_second_period = CompanyDonation.average_sum(:period => @first_period), CompanyDonation.average_sum(:period => @second_period) -%>
-              <% diff = average_sum_first_period - average_sum_second_period %>
-              <td><%= number_to_currency average_sum_second_period.to_f, :precision => 2 %></td>
-              <td><%= number_to_currency average_sum_first_period.to_f, :precision => 2 %></td>
-              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f, :precision => 2 %></td>
-            </tr>
-          </tbody>
-
-          <tbody>
-            <tr class="totals">
-              <th scope="colgroup"><%= link_to "Symboliska gåvor", admin_registration_activity_path(:type => 'vg_donations') %></th>
-              <% sum_first_period, sum_second_period = VgDonation.total_sum(:period => @first_period), VgDonation.total_sum(:period => @second_period) -%>
-              <% diff = sum_first_period - sum_second_period -%>
-              <td><%= number_to_currency sum_second_period.to_f %></td>
-              <td><%= number_to_currency sum_first_period.to_f %></td>
-              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f %></td>
-            </tr>
-            <tr>
-              <th scope="row">Gåvor</th>
-              <% num_first_period, num_second_period = VgDonation.with_period(@first_period).completed.count, VgDonation.with_period(@second_period).completed.count -%>
-              <% diff = num_first_period - num_second_period %>
-              <td><%= num_second_period %> st</td>
-              <td><%= num_first_period %> st</td>
-              <td><%= '+' if diff > 0 %><%= diff %> st</td>
-            </tr>
-            <tr>
-              <th scope="row">Genomsnitt</th>
-              <% average_sum_first_period, average_sum_second_period = VgDonation.average_sum(:period => @first_period), VgDonation.average_sum(:period => @second_period) -%>
-              <% diff = average_sum_first_period - average_sum_second_period %>
-              <td><%= number_to_currency average_sum_second_period.to_f, :precision => 2 %></td>
-              <td><%= number_to_currency average_sum_first_period.to_f, :precision => 2 %></td>
-              <td><%= '+' if diff.cents > 0 %><%= number_to_currency diff.to_f, :precision => 2 %></td>
-            </tr>
-          </tbody>
-        <% end %>
       </div>
     </div>
   </div>
 </div>
 
-<%= javascript_include_merged :admin %>
+<%= javascript_include_tag 'named_routes' %>
+<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', 'porthos/safari_search', :cache => 'admin' %>

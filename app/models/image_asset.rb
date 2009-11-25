@@ -47,6 +47,7 @@ class ImageAsset < Asset
       :scale => false,
       :remove_color_profiles => true
     }.merge!(options)
+    
     options[:crop] ||= (options[:size] and options[:size].include?("c"))
     
     if options[:remove_color_profiles]
@@ -54,46 +55,41 @@ class ImageAsset < Asset
       image.color_profile = nil
       image.iptc_profile  = nil
     end
-
-    _width, _height = options[:width], options[:height] unless options.include?(:size)
   
-    size = if options.include?(:size)
-      _width, _height =  case 
-                         when options[:size].include?("x"): options[:size].split(/([0-9]*)x([0-9]*)/)[1..2]
-                         when options[:size].include?("w"): [options[:size].split("w").last, nil]
-                         when options[:size].include?("h"): [nil, options[:size].split("h").last]
-                         else                               [options[:size], nil]
-                         end
-      options[:size]
-    elsif _width and _height
-      "#{width}x#{height}"
-    elsif _width and not _height
-      "w#{width}"
-    elsif _height and not _width
-      "h#{height}"
-    end
-  
-    Dir.mkdir(IMAGE_VERSIONS_DIR) unless File.exists?(IMAGE_VERSIONS_DIR)
-    save_path = "#{IMAGE_VERSIONS_DIR}/#{size}"
-    Dir.mkdir(save_path) unless File.exists?(save_path)
-    _width = self.width if _width.to_i >= self.width
-    _height = self.height if _height.to_i >= self.height
-    # Generate the resized image
-    image = if options[:scale]
-      image.scale(options[:scale].to_f)
-    elsif not _width or not _height
-      scale_factor = 1
-      scale_factor = (_width.to_f  / image.columns.to_f) if _width
-      scale_factor = (_height.to_f / image.rows.to_f)    if _height
-      scale_factor = 1 if scale_factor > 1
-      image.scale( scale_factor )
-    else
-      if options[:crop]
-        image.crop_resized( _width.to_i, _height.to_i )
-      else
-        image.scale( _width.to_i, _height.to_i )
+    resize_parameters = if format_string = options[:size].match(/([a-z])([0-9]*)(x|)([0-9]*)(g\-|)([a-z]{1,2}|)/)
+      case format_string[1]
+      when "c" then { :width  => $2.to_i, :height => $4.to_i, :method => "crop" }
+      when "w" then { :width  => $2.to_i, :method => "resize" }
+      when "h" then { :height => $2.to_i, :method => "resize" }
       end
+    else
+      { :width => options[:size].to_i, :height => calculate_height_for_width(options[:size].to_i), :method => "resize" }
     end
+    resize_parameters[:gravity] = gravity_from_size($6)
+  
+  
+    resize_parameters[:width]  = self.width  if resize_parameters[:width].to_i >= self.width
+    resize_parameters[:height] = self.height if resize_parameters[:height].to_i >= self.height
+
+    Dir.mkdir(IMAGE_VERSIONS_DIR) unless File.exists?(IMAGE_VERSIONS_DIR)
+    save_path = "#{IMAGE_VERSIONS_DIR}/#{options[:size]}"
+    Dir.mkdir(save_path) unless File.exists?(save_path)
+    # Generate the resized image
+    image = case resize_parameters[:method]
+    when 'resize'
+      if not resize_parameters[:width] or not resize_parameters[:height]
+        scale_factor = 1
+        scale_factor = (resize_parameters[:width].to_f  / image.columns.to_f) if resize_parameters[:width]
+        scale_factor = (resize_parameters[:height].to_f / image.rows.to_f)    if resize_parameters[:height]
+        scale_factor = 1 if scale_factor > 1
+        image.scale(scale_factor)
+      else
+        image.scale(resize_parameters[:width], resize_parameters[:height])
+      end
+    when 'crop'
+      image.crop_resized(resize_parameters[:width], resize_parameters[:height], resize_parameters[:gravity])
+    end
+
     # Set rgb so we can atleast see the images in the browser even tho colors may (will) get scewed
     image.colorspace = Magick::RGBColorspace if image.colorspace != Magick::RGBColorspace
     image.write("#{save_path}/#{self.full_name}") do
@@ -125,6 +121,26 @@ class ImageAsset < Asset
   end
 
 protected
+
+  def gravity_from_size(key)
+    gravities.keys.include?(key.to_s) ? gravities[key] : gravities['c']
+  end
+
+  def gravities
+    {
+      'nw' => Magick::NorthWestGravity,
+      'n'  => Magick::NorthGravity,
+      'ne' => Magick::NorthEastGravity,
+      'w'  => Magick::WestGravity,
+      'c'  => Magick::CenterGravity,
+      'e'  => Magick::EastGravity,
+      'e'  => Magick::EastGravity,
+      'e'  => Magick::EastGravity,
+      'sw' => Magick::SouthWestGravity,
+      's'  => Magick::SouthGravity,
+      'sw' => Magick::SouthEastGravity
+    }
+  end
 
   def validate_on_create  
     image = magick_instance(@file.path)

@@ -18,7 +18,7 @@
   <% end -%>
   <span class="amount"><%= number_to_currency @payment.amount %></span>
 </p>
-<% form_for :payment, :url => payments_path do |f| %>
+<% form_for :payment, :url => payments_path, :html => { :id => 'new_payment' } do |f| %>
   <%= f.hidden_field :card_type %>
   <%= flash_messages :payment_notice %>
   <fieldset>
@@ -50,9 +50,9 @@
   <p class="notice secure"><strong>Betalningen sker via en säker anslutning</strong></p>
   <div class="submit">
   <% if @payable.sale? -%>
-    <input type="image" src="/graphics/forms/submit/slutfor_kop.gif" name="submit" value="Slutför köp »">
+    <input type="image" src="/graphics/forms/submit/slutfor_kop.gif" name="submit" id="post_payment" value="Slutför köp »" >
   <% else -%>
-    <input type="image" src="/graphics/forms/submit/ge_gavan_nu.gif" name="submit" value="Ge gåvan nu »">
+    <input type="image" src="/graphics/forms/submit/ge_gavan_nu.gif" name="submit" id="post_payment" value="Ge gåvan nu »">
   <% end -%>
   </div>
 <% end %>

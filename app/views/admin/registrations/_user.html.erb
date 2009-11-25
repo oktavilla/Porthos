@@ -1,0 +1,8 @@
+<% if registration.user %>
+<div class="details">
+  <h3>Användare</h3>
+  <% if registration.user %>
+    <%= link_to registration.user.name, edit_admin_user_path(registration.user) %>
+  <% end %>
+</div>
+<% end %>

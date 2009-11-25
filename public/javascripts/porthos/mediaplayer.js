@@ -23,14 +23,9 @@ function create_player(el) {
   option_tags = el.getElementsByTagName("span");
   for(var i=0; i<option_tags.length; i++){
     options[option_tags[i].className] = option_tags[i].innerHTML;
-  }  
-  
-  var swf = new SWFObject("/swf/mediaplayer.swf","mediaplayer",options['width'],options['height'], '7');
-  for(option in options) {
-    swf.addVariable(option,options[option]);
   }
-  swf.addParam("allowfullscreen","true");
-  swf.write(el);
+  options['id'] = el.id;
+  swfobject.embedSWF("/swf/mediaplayer.swf", el.id, options['width'], options['height'], '7', "", options, {"allowfullscreen":"true"});
 }
 
 /*

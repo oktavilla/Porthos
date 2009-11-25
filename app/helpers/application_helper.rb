@@ -166,8 +166,10 @@ module ApplicationHelper
   end 
   
   def flash_mediaplayer_tag(asset, options = {})
-   options.merge!(:file => display_movie_path(asset, asset.extname), 
-                    :image => (display_image_path(:size => asset.thumbnail.width, :id => asset.thumbnail, :format => asset.thumbnail.extname) if asset.movie? ))
+   options.merge!( {
+     :file => display_movie_path(asset, asset.extname), 
+     :image => (display_image_path(:size => asset.thumbnail.width, :id => asset.thumbnail, :format => asset.thumbnail.extname) if asset.movie?)
+    })
     content = content_tag('a', l(:general, :flash_is_needed), { :href => 'http://www.macromedia.com/go/getflashplayer'})
     content << options.collect { |option, value| content_tag('span', value, {:class => option}) }.join
     content_tag('div', content, { :class => 'mediaplayer', :id => "asset-#{asset.id}" })
@@ -179,7 +181,7 @@ module ApplicationHelper
   # :date_format, used with <tt>to_formatted_s<tt>, default to :default
   def time_ago(time, options = {})
     start_date = options.delete(:start_date) || Time.new
-    date_format = options.delete(:date_format) || :default
+    date_format = options.delete(:date_format) || :short
     delta_minutes = (start_date.to_i - time.to_i).floor / 60
     if delta_minutes.abs <= (8724*60) # eight weeks… I’m lazy to count days for longer than that
       distance = distance_of_time_in_words(delta_minutes);
@@ -189,7 +191,7 @@ module ApplicationHelper
         "#{distance} sen"
       end
     else
-      return "på #{system_date.to_formatted_s(date_format)}"
+      return "på #{time.to_formatted_s(date_format)}"
     end
   end
 
@@ -218,6 +220,11 @@ module ApplicationHelper
     javascript_include_tag(js_file) if File.exists?(path)
   end
   
+  def installation_specific_stylesheet_link_tag
+    path = File.join(RAILS_ROOT, 'public/stylesheets/porthos_extensions.css')
+    stylesheet_link_tag(js_file) if File.exists?(path)
+  end
+  
   def flash_tag_for_asset(asset, options = {})
     options = { :max_width => 800 }.merge(options.symbolize_keys)
     width, height = if asset.width > options[:max_width]
@@ -227,5 +234,13 @@ module ApplicationHelper
       [asset.width, asset.height]
     end
     tag("embed", { :width => width, :height => height, :quality => "high", :src => "/swf/#{asset.full_name}", :type => "application/x-shockwave-flash" })
+  end
+  
+  def render_page_contents_for_rss(contents, &block)
+    capture do
+      contents.collect do |content|
+        render(:partial => "/pages/contents/#{content.resource_type.underscore}.html.erb", :locals => { :resource => content.resource, :page => @page, :content => content }) 
+      end.join
+    end
   end
 end

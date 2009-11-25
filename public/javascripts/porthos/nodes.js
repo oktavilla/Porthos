@@ -212,9 +212,11 @@
         },
         onComplete: function(response) {
           Porthos.Dialog('page').insert('new', response.responseText);
-          if (typeof Porthos.Pages.New != 'undefined') {
-            Porthos.Pages.New();
-          }
+          $$('form#page.new').each(function(form) {
+            form.select('div.graphic').each(function(element) {
+              Porthos.Helpers.graphicLabel(element);
+            });
+          });
           Porthos.Dialog().clearWaitState();
         }
       });

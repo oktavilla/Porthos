@@ -1,15 +1,25 @@
-<% @page_class = "AB conversions" -%>
-<h1><%= @type.constantize.localized_model_name %></h1>
-<div id="content">
-  <div id="c-b">
-    <%= render :partial => 'nav', :locals => { :current_type => @type } %>
-  </div>
-  <div id="c-a">
-  <% if @registrations.any? -%>
-    <%= render :partial => "table", :locals => { :registrations => @registrations } %>
-  <% else -%>
-    <p class="blank-slate">Det finns inga registreringar av den här typen</p>
-  <% end -%>
-    <%= will_paginate @registrations %>
+<% @page_title = "Registreringar" -%>
+<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<div id="workspace">
+  <div id="c_wrap" class="layout_2">
+    <div id="c_1">
+      <div class="header">
+        <h1><%= @type.constantize.localized_model_name %></h1>
+      </div>
+      <%= render :partial => 'filters', :locals => { :type => @type, :current_filter => @filter } %>
+    <% if @registrations.any? -%>
+      <%= render :partial => "table", :locals => { :registrations => @registrations } %>
+      <%= will_paginate @registrations %>
+    <% else -%>
+      <p class="blank-slate">Det finns inga registreringar av den här typen</p>
+    <% end -%>
+    </div>
+    <div id="c_2">
+      <div class="inner">
+        <%= render :partial => 'nav', :locals => { :current_type => @type } %>
+      </div>
+    </div>
   </div>
 </div>
+<%= javascript_include_tag 'named_routes' %>
+<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', 'porthos/safari_search', :cache => 'admin' %>

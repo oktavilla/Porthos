@@ -1,24 +1,20 @@
-<table>
+<table class="campaigns">
   <tr>
-    <th>Kampanj</th>
-    <th>Klick</th>
-    <th>Avslut</th>
-    <th>Frekvens</th>
+    <th class="name">Kampanj</th>
+    <th class="total_clicks">Klick</th>
+    <th class="total_conversions">Avslut</th>
+    <th class="total_roi">Frekvens</th>
   </tr>
 <% campaigns.each do |campaign| %>
   <tr>
-    <td>
+    <td class="name">
       <%= link_to campaign.name, admin_campaign_path(campaign) %> 
-      <div class="settings">
-        <%= link_to "Redigera", edit_admin_campaign_path(campaign) %>
-        <%= button_to "Radera", admin_campaign_path(campaign), { :method => :delete, :class => "delete", :src => "/graphics/porthos/icons/trash.gif", :confirm => "Är du säker, detta går inte att ångra." } %>
-      </div>
     </td>
     <% total_clicks = campaign.measure_points.sum(:num_clicks) -%>
-    <% total_conversions = campaign.measure_points.sum(:conversions_count) -%>
-    <td><%= total_clicks %></td>
-    <td><%= total_conversions %></td>
-    <td><%= number_to_percentage((total_conversions.to_f / total_clicks.to_f)*100, :precision => 2) if total_clicks.to_i > 0 %></td>
+    <% total_conversions = campaign.total_conversions -%>
+    <td class="total_clicks"><%= total_clicks %></td>
+    <td class="total_conversions"><%= total_conversions %></td>
+    <td class="total_roi"><%= number_to_percentage((total_conversions.to_f / total_clicks.to_f)*100, :precision => 2) if total_clicks.to_i > 0 %></td>
   </tr>
 <% end %>
 </table>

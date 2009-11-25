@@ -100,14 +100,17 @@ h6 {color:#222;}
 .controls .create,
 .controls .edit,
 .controls .delete,
+.controls .export,
 .controls .visibility {padding-left:23px;}
 .controls .back {padding-left:23px;}
 
 .controls .sort {background:transparent url(/graphics/porthos/icons/16_sort.png) 0 9px no-repeat;}
 .controls .create {background:transparent url(/graphics/porthos/icons/16_create.png) 0 9px no-repeat;}
-.controls .edit {background:transparent url(/graphics/porthos/icons/16_edit.png) 0 9px no-repeat;}
+.controls .edit, 
+.controls .settings {background:transparent url(/graphics/porthos/icons/16_edit.png) 0 9px no-repeat;}
 .controls .delete {background:transparent url(/graphics/porthos/icons/16_delete.png) 0 9px no-repeat;}
 .controls .back {background:transparent url(/graphics/porthos/icons/16_back.png) 0 9px no-repeat;}
+.controls .export {background:transparent url(/graphics/porthos/icons/16_export.png) 0 9px no-repeat;}
 .active .controls .visibility {background:transparent url(/graphics/porthos/icons/16_hide.png) 0 2px no-repeat;}
 .inactive .controls .visibility {background:transparent url(/graphics/porthos/icons/16_show.png) 0 2px no-repeat;}
 
@@ -363,3 +366,38 @@ ul.tags {padding:10px;}
     
 /**** MEDIA PLAYER */
 .mediaplayer span {display: none;}
+
+/**** TAG AUTOCOMPLETION */
+.tags {}
+  .tags.autocomplete {
+    position:absolute;
+    width:250px !important; }
+  .tags ul {  
+    margin:0;
+    padding:0;
+    list-style-type:none;
+    background-color:white;
+    border:1px solid #ddd;
+    border-bottom:none; }
+  .tags li {margin:0;}
+  .tags li a.tag,
+  .tags.current li,
+  .tags.autocomplete li {
+    border-bottom: 1px solid #ddd;
+    display:block;
+    margin:0;
+    padding:5px 10px; }
+    .tags li.selected,
+    .tags li.selected a {
+      background-color: blue;
+      color:white; }
+  .tags.autocomplete li {
+    padding:5px;
+    cursor:pointer;}
+  .tags.current a,
+  .tags li .taggings {
+    float:right;
+    margin-top:.2em;
+    font-size:11px; }
+  .tags.popular li .taggings {color:#777;}
+  #pages .tags li .taggings, #page_collections .tags li .taggings {display: none;}

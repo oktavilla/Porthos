@@ -1,47 +1,56 @@
 <% @page_title = "Användare" -%>
-<% @page_class = "A" -%>
-<div id="content_header">
-  <h1>Användare - redaktörer</h1>
-</div>
-<div id="container">
-  <div id="content">
-    <div id="ca">
-      <span class="controls">
-        <%= link_to "Lägg till redaktör", new_admin_user_path, :class => 'create' %>
-      </span>
-      <div class="inner">
-        <ul id="users_list">
-        <% @users.each do |user| -%>
-          <li class="vcard user" id="user_<%= user.id %>">
-            <%= image_tag(display_image_path(:size => 'c90x90', :id => user.avatar, :format => user.avatar.extname), :class => "photo") if user.avatar %>
-            <div>
-              <span class="fn"><%= user.name %></span>
-              <a class="email" title="Skicka e-post till <%= user.name %>" href="mailto:<%= user.email %>"><%= user.email %></a>
-              <% unless user.phone.blank? and user.cellphone.blank? -%>
-              <span class="tel">
-                <% unless user.phone.blank? -%>
-                <span class="work">
-                  <span class="type">Telefon:</span>
-                  <span class="value"><%= user.phone %></span>
-                </span>
-                <% end -%>
-                <% unless user.cellphone.blank? -%>
-                <span class="cell">
-                  <span class="type">Mobil:</span>
-                  <span class="value"><%= user.cellphone %></span>
-                </span>
-                <% end -%>
-              </span>
-              <% end %>
-            </div>
-            <span class="controls general">
-              <%= link_to "Ändra uppgifter", edit_admin_user_path(user), :class => 'edit' %>
-              <%= link_to "Radera", admin_user_path(user), :method => :delete, :class => 'delete', :confirm => 'Är du säker på att du vill tabort användaren?' %>
+<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<div id="workspace">
+  <div id="c_wrap" class="layout_2">
+    <div id="c_1">
+      <div class="header">
+        <h1>Användare - redaktörer</h1>
+      </div>
+      <% @users.each do |user| -%>
+        <div class="user<%= " first" if @users.first == user %>">
+          <div class="vcard main">
+            <% if user.avatar %>
+              <%= image_tag(display_image_path(:size => 'c90x90', :id => user.avatar, :format => user.avatar.extname), :class => "avatar") %>
+            <% end %>
+            <span class="fn"><%= link_to user.name, edit_admin_user_path(user) %></span>
+            <span class="created_at">
+              <% t = user.created_at %>
+              <%= t.day  %>
+              <%= t.strftime("%b %Y %H:%M") %>
             </span>
-          </li>
-        <% end -%>
-        </ul>
+            <a class="email" title="Skicka e-post till <%= user.name %>" href="mailto:<%= user.email %>"><%= user.email %></a>
+            <% unless user.phone.blank? and user.cell_phone.blank? -%>
+            <span class="tel">
+              <% unless user.phone.blank? -%>
+              <span class="work">
+                <span class="type">Telefon:</span>
+                <span class="value"><%= user.phone %></span>
+              </span>
+              <% end -%>
+              <% unless user.cell_phone.blank? -%>
+              <span class="cell">
+                <span class="type">Mobil:</span>
+                <span class="value"><%= user.cell_phone %></span>
+              </span>
+              <% end -%>
+            </span>
+            <% end %>
+          </div>
+        </div>
+      <% end -%>
+    </div>
+    <div id="c_2">
+      <div class="inner">
+        <%= link_to "Lägg till redaktör", new_admin_user_path %>
+        <% form_tag search_admin_users_path, :method => 'get' do %>
+        <div class="search">
+          <%= text_field_tag :query, (@query ? @query : 'Sök användare ...'), :class => "search_query", :id=> "ref_search_query" %>
+          <%= submit_tag "Sök", :style => "display:none" %>
+        </div>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
+<%= javascript_include_tag 'named_routes' %>
+<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', 'porthos/safari_search', :cache => 'admin' %>
