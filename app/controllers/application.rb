@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   before_filter :login_from_cookie
   around_filter :set_current_user
 
-  #rescue_from ActiveRecord::RecordNotFound, ActionController::RoutingError, :with => :status_404
   rescue_from 'SecurityTransgression' do |e|
     head :forbidden
   end
