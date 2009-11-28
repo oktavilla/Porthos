@@ -1,5 +1,5 @@
 <h1>
-  Lägg till bild <span class="info">eller <a href="#" class="back">Gå tillbaka</a></span>
+  Lägg till bild <span class="info">eller <a href="#" class="back">gå tillbaka</a></span>
 </h1>
 <% form_for :content, @content, :url => admin_page_contents_path(:page_id => @page, :collection => params[:collection]) do |f| %>
   <div class="column column1">
@@ -33,6 +33,6 @@
     </div>
   </div>
   <div class="submit">
-    <input type="submit" value="L√§gg till bild"> eller <a href="#" class="back">avbryt</a>
+    <input type="submit" value="Lägg till bild"> eller <a href="#" class="back">avbryt</a>
   </div>
 <% end %>
