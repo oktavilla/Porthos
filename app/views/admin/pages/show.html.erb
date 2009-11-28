@@ -47,7 +47,7 @@
                   <a class="shared_content new_content" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'Textfield', :column_position => column }, :resource => { :shared => 1 }) %>">Delat innehåll</a>
                 </li>
                 <li class="cl">
-                  <a class="teasers Teaser new_content" href="<%= new_admin_page_content_path(:page_id => @page, :collection => true, :content => { :resource_type => 'Teaser', :column_position => column }) %>">Puffar</a>
+                  <a class="image ContentImage" href="<%= new_admin_page_content_path(:page_id => @page, :collection => 1, :content => { :resource_type => 'ContentImage', :column_position => column }) %>">Bildsamling</a>
                 </li>
                 <li>
                   <a class="movie ContentMovie" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'ContentMovie', :column_position => column }) %>">Film</a>
@@ -62,7 +62,7 @@
             </div>
             <ul class="contents sortable" id="contents_in_column_<%= column %>">
             <% @page.contents.find_all { |content| content.column_position == column }.each do |content| -%>
-              <li class="<%= "#{content.resource_type} content " unless content.collection? %> sortable <%= content.resource_type.underscore %>_wrapper<%= " shared" if content.shared? %><%= content.active? ? ' active' : ' inactive' %>" id="content_<%= content.id %>">
+              <li class="<%= "#{content.resource_type} content " unless content.collection? %><%= ' collection' if content.collection? %> sortable <%= content.resource_type.underscore %>_wrapper<%= " shared" if content.shared? %><%= content.active? ? ' active' : ' inactive' %>" id="content_<%= content.id %>">
               <span class="draghandle"></span>
               <span class="inactive_proxy"></span>
               <% unless content.collection? -%>

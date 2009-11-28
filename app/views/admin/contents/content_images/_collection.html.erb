@@ -1,0 +1,21 @@
+<% if content.contents.any? %>
+<ul class="content_images sortable" id="content_<%= content.id %>_teasers">
+<% content.contents.each do |child| -%>
+  <li id="content_<%= child.id %>" class="ContentImage content sortable <%= child.active? ? ' active' : ' inactive' %>">
+    <span class="draghandle"></span>
+    <span class="inactive_proxy"></span
+    <% if child.resource.asset %>
+      <%= image_tag display_image_path(:size => 'c70x70', :id => child.resource.asset, :format => child.resource.asset.extname, :alt => child.resource.title) %>
+    <% end %>
+    <span class="controls">
+      <%= link_to "√Ñndra", edit_admin_content_path(:page_id => @page, :id => child, :return_to => request.request_uri), :class => 'edit' %>
+      <%= link_to child.active? ? 'D√∂lj' : 'Visa', toggle_admin_page_content_path(@page, child), :method => :put, :class => 'visibility' %>
+      <%= link_to "Ta bort", admin_content_path(:id => child, :page_id => @page), :method => :delete, :confirm => "√Ñr du s√§ker, detta g√•r inte att √•ngra.", :class => 'delete' %>
+    </span>
+  </li>
+<% end -%>
+  <li class="sub_content create">
+    <%= link_to("L√§gg till bild", new_admin_page_content_path(:page_id => @page, :return_to => request.request_uri, :content => { :resource_type => 'ContentImage', :parent_id => content, :column_position => content.column_position }), :class => 'image ContentImage') %>
+  </li>
+</ul>
+<% end %>

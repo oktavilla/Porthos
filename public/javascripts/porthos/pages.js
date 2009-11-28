@@ -89,15 +89,16 @@
           event.stop();
         }.bind(this));
         // Asset pickers
-        column.container.select('div.sub_controls a.image').invoke('observe', 'click', function(event) {
+        column.container.select('div.sub_controls a.image', 'li.sub_content a.image').invoke('observe', 'click', function(event) {
           Porthos.Dialog().setWaitState();
           Porthos.Dialog().show();
           if (!this.asset_picker) {
             link = event.element();
+            is_collection = Porthos.parseUri(link.href).queryKey['collection'] == 1 ? 1 : 0;
             this.asset_picker = new Porthos.Assets.Picker('image_assets', {
               callback: function(event) {
                 asset = event.element();
-                new Ajax.Request(Routes.new_admin_page_content(this.id), {
+                new Ajax.Request(Routing.new_admin_page_content_path({ page_id: this.id, collection: is_collection }), {
                   method:'get',
                   parameters: $A([
                     link.href,
@@ -117,6 +118,7 @@
           }
           event.stop();
         }.bind(this));
+
         column.container.select('div.sub_controls a.movie', 'li.sub_content a.movie').invoke('observe', 'click', function(event) {
           Porthos.Dialog().setWaitState();
           Porthos.Dialog().show();
@@ -146,6 +148,7 @@
           }
           event.stop();
         }.bind(this));
+
       }.bind(this));
     },
     
@@ -186,7 +189,7 @@
       }.bind(this));
       this.columns.each(function(column) {
         form = $form(
-          { 'action': Routes.sort_admin_page_contents(this.id) },
+          { 'action': Routing.sort_admin_page_contents_path(this.id) },
           $input({ 'type': 'submit', 'value': 'Spara sortering', 'class': 'button' }),
           ' eller ',
           $a({ 'href': '' }, 'avbryt')
@@ -207,7 +210,7 @@
         } else if (sortable.isTeaserContainer) {
           params = '&parent_id=' + encodeURIComponent(Porthos.extractId(sortable.id));
         }
-        new Ajax.Request(Routes.sort_admin_page_contents(this.id), {
+        new Ajax.Request(Routing.sort_admin_page_contents_path(this.id), {
           method: 'put',
           parameters: Sortable.serialize(sortable, {
             name: 'contents'
@@ -371,7 +374,7 @@
     this.asset_picker = new Porthos.Assets.Picker('movie_assets', {
       callback: function(event) {
         asset = event.element();
-        new Ajax.Request(Routes.new_admin_page_content(this.id), {
+        new Ajax.Request(Routing.new_admin_page_content_path(this.id), {
           method:'get',
           parameters: $A([
             link.href,

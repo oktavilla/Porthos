@@ -8,8 +8,8 @@ ul.contents > li {
   min-height:59px;
   background-color:#fff; }
   ul.contents > li:last-child {border-bottom:none;}
-  li.teaser_wrapper li {border-bottom:1px solid #eee;}
-  li.teaser_wrapper li:last-child {
+  li.collection li {border-bottom:1px solid #eee;}
+  li.collection li:last-child {
     border-bottom:none;
     background:transparent; }
 
@@ -65,12 +65,6 @@ ul.contents > li {
       visibility:hidden;
       line-height:1.4; }
     .teaser_wrapper li:hover .controls {visibility:visible;}
-    .teaser_wrapper li.create {
-      padding:10px;
-      min-height:19px; }
-      .teaser_wrapper li.create a {
-        padding-left:23px;
-        background:transparent url(/graphics/porthos/icons/16_create.png) 0 0 no-repeat; }
         
 ul.contents li.content_image_wrapper,
 ul.contents .ContentMovie {
@@ -147,7 +141,7 @@ ul.contents li.content_module_wrapper {
   height:100%;
   background:#eee url(/graphics/porthos/content_li_draghandle_bg.gif) center center no-repeat; }
   .page_layout.sorting .draghandle {display:block;}
-  .page_layout .teaser_wrapper li .draghandle {
+  .page_layout .collection li .draghandle {
      top:10px;
      left:10px;
      width:70px;
@@ -155,7 +149,6 @@ ul.contents li.content_module_wrapper {
      background:transparent url(/graphics/porthos/content_teaser_draghandle_bg.png) 0 0 no-repeat; }
   
   .page_layout.sorting .textfield_content {padding-left:46px;}
-  .page_layout.sorting .teaser_wrapper {padding-left:36px;}
   .page_layout.sorting .content_image_wrapper {padding-left:156px;}
   .page_layout.sorting .content_image_wrapper img {left:46px;}
   .page_layout.sorting .teasers {min-height:59px;}
@@ -237,6 +230,14 @@ li.content .controls {
     li.content .controls a.delete {text-indent:-9999px;padding-right:0;}
     li.content .controls a.visibility {background-position:0 2px;} /* Declare specific position for show/hide icon */
 
+#content li.collection.content_image_wrapper {
+  padding:10px 10px 10px 0;
+  background:transparent; }
+#content li.collection.content_image_wrapper li.content {
+  min-height:90px;
+  clear:left;
+  position:relative; }
+
 .collection li.create {
   clear:left;
   padding:10px;
@@ -255,6 +256,7 @@ li.content .controls {
   text-indent:-9999px;
   background:#fff url(/graphics/porthos/icons/16_movie.png) no-repeat scroll 6px 6px;
 }
+
 
 /**** PAGE LAYOUTS */
 

@@ -59,7 +59,7 @@ class Admin::ContentsController < ApplicationController
         @content.resource = @resource
       end
       @content.save!
-      if params[:collection]
+      if params[:collection] && params[:collection].to_i == 1
         @collection = ContentCollection.create((params[:content] || {}).merge(:page_id => @page.id) )
         @collection.contents << @content
       end

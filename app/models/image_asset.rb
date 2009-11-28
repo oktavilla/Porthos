@@ -157,7 +157,9 @@ protected
   # after destroy
   def cleanup
     super
-    # TODO: iterate over generated versions and remove them
+    Dir["#{RAILS_ROOT}/public/images/*/*"].each do |file| 
+      File.unlink(file) if File.basename(file) == full_name
+    end
   end
 
   def magick_instance(file = nil)

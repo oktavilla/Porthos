@@ -6,7 +6,7 @@ javascripts:
   - porthos/controls
   - porthos/dragdrop
   - porthos/lowpro
-  - routes
+  - named_routes
   - porthos/lib
   - porthos/application
   - porthos/safari_search

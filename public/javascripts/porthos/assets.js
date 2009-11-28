@@ -31,14 +31,14 @@ Porthos.Assets.Asset = Class.create({
     if (this.attributes.type == 'ImageAsset') {
       if (this.landscape()) {
         img = $img({
-          'src'   : Routes.display_image('c87x87', this.attributes.file_name, this.attributes.extname),
+          'src'   : Routing.display_image_path('c87x87', this.attributes.file_name, this.attributes.extname),
           'alt'   : this.attributes.title,
           'width' : 87,
           'height': 87
         });
       } else {
         img = $img({
-          'src'   : Routes.display_image('c87x87', this.attributes.file_name, this.attributes.extname),
+          'src'   : Routing.display_image_path('c87x87', this.attributes.file_name, this.attributes.extname),
           'alt'   : this.attributes.title,
           'width' : 84,
           'height': 87
@@ -46,7 +46,7 @@ Porthos.Assets.Asset = Class.create({
       }
     } else if (this.attributes.type == 'MovieAsset') {
       img = $img({
-        'src'   : Routes.display_image('c87x87', this.attributes.thumbnail.file_name, this.attributes.thumbnail.extname),
+        'src'   : Routing.display_image_path('c87x87', this.attributes.thumbnail.file_name, this.attributes.thumbnail.extname),
         'alt'   : this.attributes.title,
         'width' : 87,
         'height': 87
@@ -340,7 +340,7 @@ Porthos.Assets.Picker = Class.create({
   },
   
   findAssets: function(url) {
-    new Ajax.Request(url || Routes.admin_assets()+'?type='+this.assets_type+'&per_page=24', {
+    new Ajax.Request(url || Routing.admin_assets_path()+'?type='+this.assets_type+'&per_page=24', {
       method: 'get',
       onLoading: function() {
         Porthos.Dialog().setWaitState();
@@ -365,7 +365,7 @@ Porthos.Assets.Picker = Class.create({
             });
             if (new_assets.size() == 1) {
               new_asset = new_assets.first();
-              new Ajax.Request(Routes.formatted_edit_admin_asset(new_asset.attributes.file_name, 'js'), {
+              new Ajax.Request(Routing.formatted_edit_admin_asset_path(new_asset.attributes.file_name, 'js'), {
                 method: 'get',
                 evalScripts: true,
                 onComplete: function(response) {

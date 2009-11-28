@@ -163,7 +163,7 @@
       open_string = Porthos.Nodes.Collection.openNodes().collect(function(node) {
         return encodeURIComponent("open_nodes[]")+'='+encodeURIComponent(Porthos.extractId(node.element.id));
       }).join('&');
-      new Ajax.Request(Routes.sort_admin_nodes(), {
+      new Ajax.Request(Routing.sort_admin_nodes_path(), {
         method: 'put',
         parameters: Sortable.serialize(this.element)+'&'+open_string,
         onComplete: function(response) {
@@ -188,7 +188,7 @@
     $$('span.controls a.sort').invoke('observe', 'click', function(ev) {
       if (!nodes.sorting) {
         nodes.setupSorting();
-        form = $form({ 'action': Routes.sort_admin_nodes() },
+        form = $form({ 'action': Routing.sort_admin_nodes_path() },
           $input({ 'type': 'submit', 'value': 'Spara sortering', 'class': 'button' }),
           ' eller ',
           $a({ 'href': '' }, 'Avbryt'));

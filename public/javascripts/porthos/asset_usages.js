@@ -72,7 +72,7 @@ Porthos.AssetUsages.Collection = Class.create({
     });
     cancel = $a({ 'href': '' }, 'avbryt');
     form = $form(
-      { 'action': Routes.sort_admin_asset_usages() },
+      { 'action': Routing.sort_admin_asset_usages_path() },
       $input({ 'type': 'submit', 'value': 'Spara sortering', 'class': 'button' }),
       ' eller ',
       cancel
@@ -97,7 +97,7 @@ Porthos.AssetUsages.Collection = Class.create({
   },
   
   sort: function(event) {
-    new Ajax.Request(Routes.sort_admin_asset_usages(), {
+    new Ajax.Request(Routing.sort_admin_asset_usages_path(), {
       method: 'put',
       parameters: Sortable.serialize(this.list, {
         name: 'asset_usages'
@@ -156,13 +156,13 @@ Porthos.AssetUsages.Member = Class.create({
       'id': 'asset_usage_' + this.json.id
     });
     this._element.appendChild($img({
-      'src': Routes.display_image('c80x80', this.json.asset.file_name, this.json.asset.extname),
+      'src': Routing.display_image_path('c80x80', this.json.asset.file_name, this.json.asset.extname),
       'alt': this.json.asset.title,
       'width' : 80,
       'height': 80
     }));
     this._element.appendChild(Porthos.Helpers.buttonTo({
-      'action' : Routes.admin_asset_usage(this.json.id) + '?return_to=' + window.location,
+      'action' : Routing.admin_asset_usage_path(this.json.id) + '?return_to=' + window.location,
       'method' : 'delete',
       'value'  : 'Radera',
       'src'    : '/graphics/porthos/icons/16_delete.png',
@@ -173,7 +173,7 @@ Porthos.AssetUsages.Member = Class.create({
   
 });
 Porthos.AssetUsages.Member.create = function(data, callback) {
-  new Ajax.Request(Routes.admin_asset_usages(), {
+  new Ajax.Request(Routing.admin_asset_usages_path(), {
     method: 'post',
     parameters: $H(data).collect(function(value){
       return 'asset_usage['+value[0]+']='+value[1];
