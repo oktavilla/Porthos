@@ -71,7 +71,7 @@ class PaymentsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render :text => notification.acknowledge_response }
+      format.html { render :text => (notification ? notification.acknowledge_response : '') }
     end
   end
   
