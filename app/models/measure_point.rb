@@ -65,7 +65,7 @@ class MeasurePoint < ActiveRecord::Base
   
   def roi
     if cost.cents > 0
-      (income.cents.to_f-cost.cents.to_f/cost.cents.to_f) * 100
+      ((income.cents.to_f-cost.cents.to_f)/cost.cents.to_f) * 100
     else
       0
     end

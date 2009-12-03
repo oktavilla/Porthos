@@ -17,5 +17,5 @@
 <%= f.select :target, MeasurePoint::TARGETS.collect {|key, value| [l(:measure_point, :targets, key), value]} %>
 
 <label for="measure_point_cost">Vad har annonseringen kostat?</label>
-<%= f.text_field :cost, :size => 8 %> kr
+<%= f.text_field :cost, :size => 8, :value => @measure_point.cost %> kr
 <p class="form_help">Räkna ihop kostnader för exponering och produktion.</p>
