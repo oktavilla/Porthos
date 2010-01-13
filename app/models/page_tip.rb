@@ -82,6 +82,8 @@ class PageTip < Registration
 
 protected
   def send_tip
-    PageTipMailer.deliver_tip(self)
+    self.recipients.split(' ').each do |recipient|
+      PageTipMailer.deliver_tip(self, recipient)
+    end
   end
 end
