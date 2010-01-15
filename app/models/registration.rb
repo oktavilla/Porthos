@@ -96,6 +96,8 @@ class Registration < ActiveRecord::Base
   attr_accessor :trigger  
   validates_length_of :trigger, :is => 0, :allow_nil => true
   
+  attr_accessor :env
+  
   before_validation_on_create :generate_public_id, :set_current_user
   
   delegate :send_email_response?, :replyable_email?, :reply_to_email, :email_subject, :email_body, :parsed_email_body, :contact_person, :notification_person, :to => :registration_form

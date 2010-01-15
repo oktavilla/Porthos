@@ -21,6 +21,7 @@ class RegistrationsController < ApplicationController
     @registration = Registration.new_from_type(type, params[:registration])
     @registration.ip_address = request.remote_ip
     @registration.session_id = porthos_session_id
+    @registration.env = request.env
 
     if @registration.save
       approved_url = params[:approved_url] || http_url_from_path(registration_path(:id => @registration.to_url))
