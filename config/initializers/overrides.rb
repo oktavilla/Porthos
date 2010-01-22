@@ -33,6 +33,10 @@ class String
   def to_url!
     replace to_url
   end
+  
+  def escape_for_sphinx
+    self.gsub(/(:|@|-|!|~|&|"|\(|\)|\\|\|)/) { "\\#{$1}" }
+  end
 
   require 'iconv'  
   def to_utf8(from_charset = 'ISO-8859-1')
