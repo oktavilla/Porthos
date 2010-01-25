@@ -8,6 +8,9 @@ class Admin::PagesController < ApplicationController
 
   def show
     @page = Page.find(params[:id])
+    if @page.node and @page.node.parent
+      cookies[:last_opened_node] = { :value => @page.node.parent.id.to_s, :expires => 1.week.from_now }
+    end
     @trail = if @node = @page.node
       (@node and @node.ancestors.any?) ? @node.ancestors.reverse << @node : [@node]
     else

@@ -8,7 +8,7 @@ class Admin::NodesController < ApplicationController
       format.html do
         @root  = Node.root
         @nodes = @root ? @root.children : []
-        @open_nodes = Node.find_all_by_id(params[:nodes]) if params[:nodes]
+        @open_nodes = params[:nodes] ? Node.find_all_by_id(params[:nodes]) : Node.find_all_by_id(cookies[:last_opened_node])
         @trail = @open_nodes ? @open_nodes.collect{ |node| (node.ancestors || []) << node }.flatten : []
       end
       format.js do
