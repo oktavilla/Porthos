@@ -16,7 +16,7 @@ class Admin::PagePresetsController < ApplicationController
   
     respond_to do |format|
       if @page_preset.save
-        flash[:notice] = "”#{@page_preset.name}” #{l(:admin_general, :saved)}"
+        flash[:notice] = "”#{@page_preset.name}” #{t(:saved, :scope => [:app, :admin_general])}"
         format.html { redirect_to admin_page_presets_path }
       else
         format.html { render :action => "new" }
@@ -32,7 +32,7 @@ class Admin::PagePresetsController < ApplicationController
     @page_preset = PagePreset.find(params[:id])
     respond_to do |format|
       if @page_preset.update_attributes(params[:page_preset])
-        flash[:notice] = "”#{@page_preset.name}” #{l(:admin_general, :saved)}"
+        flash[:notice] = "”#{@page_preset.name}” #{t(:saved, :scope => [:app, :admin_general])}"
         format.html { redirect_to admin_page_presets_path }
       else
         format.html { render :action => 'edit' }

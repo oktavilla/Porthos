@@ -11,10 +11,10 @@
   <%= f.select :campaign_id, Campaign.find(:all).collect {|c| [c.name, c.id] } %>
 <% end %>
 <label for="measure_point_link_type">Vad är det för typ av annons?</label>
-<%= f.select :link_type, MeasurePoint::LINK_TYPES.collect {|key, value| [l(:measure_point, :link_types, key), value]} %>
+<%= f.select :link_type, MeasurePoint::LINK_TYPES.collect {|key, value| [t(key, :scope => [:app, :measure_point, :link_types]), value]} %>
 
 <label for="measure_point_target">Vilken är målgruppen?</label>
-<%= f.select :target, MeasurePoint::TARGETS.collect {|key, value| [l(:measure_point, :targets, key), value]} %>
+<%= f.select :target, MeasurePoint::TARGETS.collect {|key, value| [t(key, :scope => [:app, :measure_point, :targets]), value]} %>
 
 <label for="measure_point_cost">Vad har annonseringen kostat?</label>
 <%= f.text_field :cost, :size => 8, :value => @measure_point.cost %> kr

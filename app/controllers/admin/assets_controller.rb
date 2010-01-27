@@ -91,7 +91,7 @@ class Admin::AssetsController < ApplicationController
     @not_saved = @assets.collect{ |a| a.save }.include? false
     respond_to do |format|
       unless @not_saved
-        flash[:notice] = l(:admin_assets, :saved)
+        flash[:notice] = t(:saved, :scope => [:app, :admin_assets])
         format.html { redirect_to incomplete_admin_assets_url }
         format.xml  { head :created, :location => asset_url(@asset) }
         format.js do
@@ -116,7 +116,7 @@ class Admin::AssetsController < ApplicationController
       save_asset.incomplete = 0
       save_asset.update_attributes(asset[1])
     end
-    flash[:notice] = l(:admin_assets, :saved)
+    flash[:notice] = t(:saved, :scope => [:app, :admin_assets])
     respond_to do |format|
       format.html { redirect_to admin_assets_url }
       format.xml  { head :ok }
@@ -130,7 +130,7 @@ class Admin::AssetsController < ApplicationController
 
     respond_to do |format|
       if @asset.update_attributes(params[:asset])
-        flash[:notice] = "#{@asset.full_name} #{l(:admin_general, :saved)}"
+        flash[:notice] = "#{@asset.full_name} #{t(:saved, :scope => [:app, :admin_general])}"
         format.html { redirect_to previous_view_path(admin_assets_url) }
         format.js   { render :layout => false }
         format.xml  { head :ok }
@@ -147,7 +147,7 @@ class Admin::AssetsController < ApplicationController
   def destroy
     @asset = Asset.find_by_file_name(params[:id])
     @asset.destroy
-    flash[:notice] = "#{@asset.full_name} #{l(:admin_general, :deleted)}"
+    flash[:notice] = "#{@asset.full_name} #{t(:deleted, :scope => [:app, :admin_general])}"
     respond_to do |format|
       format.html { redirect_to admin_assets_path }
       format.xml  { head :ok }

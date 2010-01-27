@@ -15,7 +15,7 @@ class Admin::PageLayoutsController < ApplicationController
     @page_layout = PageLayout.new(params[:page_layout])
     respond_to do |format|
       if @page_layout.save
-        flash[:notice] = "”#{@page_layout.name}” #{l(:admin_general, :saved)}"
+        flash[:notice] = "”#{@page_layout.name}” #{t(:saved, :scope => [:app, :admin_general])}"
         format.html { redirect_to admin_page_layouts_path }
       else
         format.html { render :action => "new" }
@@ -33,7 +33,7 @@ class Admin::PageLayoutsController < ApplicationController
     @page_layout = PageLayout.find(params[:id])
     respond_to do |format|
       if @page_layout.update_attributes(params[:page_layout])
-        flash[:notice] = "”#{@page_layout.name}” #{l(:admin_general, :saved)}"
+        flash[:notice] = "”#{@page_layout.name}” #{t(:saved, :scope => [:app, :admin_general])}"
         format.html { redirect_to admin_page_layouts_path }
       else
         format.html { render :action => 'edit' }

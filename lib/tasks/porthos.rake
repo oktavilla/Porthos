@@ -69,7 +69,6 @@ namespace :porthos do
     if STDIN.gets.chomp == 'y'
       system('svn export http://dev.rubyonrails.org/svn/rails/plugins/acts_as_list vendor/plugins/acts_as_list')
       system('svn export http://dev.rubyonrails.org/svn/rails/plugins/acts_as_tree vendor/plugins/acts_as_tree')
-      system('svn export http://svn.arkanis-development.de/projects/rails_plugins/current/simple_localization vendor/plugins/simple_localization')
       system('svn export http://liquid-markup.googlecode.com/svn/trunk vendor/plugins/liquid')
       system('svn export http://sbecker.net/shared/plugins/asset_packager vendor/plugins/asset_packager')
       system('svn export http://repo.pragprog.com/svn/Public/plugins/annotate_models vendor/plugins/annotate_models')

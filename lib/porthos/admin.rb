@@ -8,7 +8,7 @@ module Porthos
     end
 
   
-  protected
+#  protected
 
     def access_denied
       respond_to do |accepts|

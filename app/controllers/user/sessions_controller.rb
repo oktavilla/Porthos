@@ -16,9 +16,9 @@ class User::SessionsController < ApplicationController
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
       redirect_back_or_default('/')
-      flash[:notice] = l(:general, :logged_in)
+      flash[:notice] = t(:logged_in, :scope => [:app, :general])
     else
-      flash[:notice] = l(:general, :login_failed)
+      flash[:notice] = t(:login_failed, :scope => [:app, :general])
       render :action => 'new'
     end
   end
@@ -27,7 +27,7 @@ class User::SessionsController < ApplicationController
     self.current_user.forget_me if logged_in?
     cookies.delete :auth_token
     reset_session
-    flash[:notice] = l(:general, :logged_out)
+    flash[:notice] = t(:logged_out, :scope => [:app, :general])
     redirect_back_or_default(login_path)
   end
   
@@ -38,9 +38,9 @@ class User::SessionsController < ApplicationController
     if @user = User.find(:first, :conditions => ['email = ?', params[:email]])
       @user.generate_new_password!
       UserMailer.deliver_new_password(@user)
-      flash[:notice] = l(:general, :password_has_been_sent)
+      flash[:notice] = t(:password_has_been_sent, :scope => [:app, :general])
     else
-      flash[:notice] = l(:general, :unable_to_find_user)
+      flash[:notice] = t(:unable_to_find_user, :scope => [:app, :general])
     end
     render :action => 'forgot_password'
   end

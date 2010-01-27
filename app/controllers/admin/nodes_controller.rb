@@ -91,7 +91,7 @@ class Admin::NodesController < ApplicationController
     @node = Node.find(params[:id])
     @node.destroy
     respond_to do |format|
-      flash[:notice] = "”#{@node.name}” #{l(:admin_nodes, :deleted)}"
+      flash[:notice] = "”#{@node.name}” #{t(:deleted, :scope => [:app, :admin_nodes])}"
       format.html { redirect_to admin_nodes_path }
     end
   end

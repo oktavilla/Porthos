@@ -51,7 +51,7 @@ class Admin::UsersController < ApplicationController
     @role = Role.find_or_create_by_name(params[:role])
     @user.roles << @role
     @user.save!
-    flash[:notice] = "#{@user.login} #{l(:admin_general, :saved)}"
+    flash[:notice] = "#{@user.login} #{t(:saved, :scope => [:app, :admin_general])}"
     respond_to do |format|
       format.html { redirect_to params[:return_to] || admin_users_path }
     end
@@ -71,7 +71,7 @@ class Admin::UsersController < ApplicationController
     raise SecurityTransgression unless current_user.can_edit?(@user)
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        flash[:notice] = "#{@user.name} #{l(:admin_general, :saved)}"
+        flash[:notice] = "#{@user.name} #{t(:saved, :scope => [:app, :admin_general])}"
         format.html { redirect_to params[:return_to] || admin_users_path }
       else
         format.html { render :action => 'edit' }
@@ -83,7 +83,7 @@ class Admin::UsersController < ApplicationController
     @user = User.find(params[:id])
     raise SecurityTransgression unless current_user.can_destroy?(@user)
     @user.destroy
-    flash[:notice] = "#{@user.login} #{l(:admin_general, :deleted)}"
+    flash[:notice] = "#{@user.login} #{l(:deleted, :scope => [:app, :admin_general])}"
     respond_to do |format|
       format.html { redirect_to admin_users_path }
     end
