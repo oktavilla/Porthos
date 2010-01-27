@@ -86,5 +86,7 @@ ActionController::Routing::Routes.draw do |map|
      
     admin.activities '/activities', :controller => 'activities', :action => 'index'
     admin.registration_activity '/activities/:type', :controller => 'activities', :action => 'show'
+    
+    admin.resources :redirects
   end
 end

@@ -93,6 +93,12 @@
  
   activerecord:
     errors:
+      template:
+        header:
+          one:   "Ett fel förhindrade denna {{model}} från att sparas"
+          other: "{{count}} fel förhindrade denna {{model}} från att sparas"
+        # The variable :count is also available
+        body: "Det var problem med följande fält:"
       # model.errors.full_messages format.
       format: "{{attribute}} {{message}}"
  
@@ -150,6 +156,7 @@
       teaser: Teaser
       user: Användare
       sample_product_order: Provkortsbeställning
+      redirect: Vidarebefordring
     attributes:
       registration: 
         first_name: Förnamn
@@ -269,6 +276,9 @@
         password_confirmation: Lösenordsbekräftelse
       sample_product_order:
         selected_products: valda produkter
+      redirect:
+        path: Från
+        target: Till
       # You can define own errors for models or model attributes.
       # The values :model, :attribute and :value are always available for interpolation.
       #
