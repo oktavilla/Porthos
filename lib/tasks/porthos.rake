@@ -5,7 +5,7 @@ namespace :porthos do
     printf "Warning this will overwrite any changes done. Continue? [y/n]"
     if STDIN.gets.chomp == 'y'
       ['config/initializers', 
-       'config/languages',
+       'config/locales',
        'config/ultrasphinx',
        'vendor/plugins'].each { |dir| find_and_copy_files(dir) }
     end
