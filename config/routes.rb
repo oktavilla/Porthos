@@ -45,7 +45,15 @@ ActionController::Routing::Routes.draw do |map|
 
     admin.resources :page_presets
     admin.resources :page_layouts
-    admin.resources :contents
+    admin.resources(:contents, {
+      :collection => {
+        :sort => :put
+      },
+      :member => {
+        :toggle   => :put,
+        :settings => :get
+      }
+    })
     admin.resources :content_modules
     admin.resources :registration_forms
     admin.resources :textfields, :collection => { :shared => :get }
@@ -69,7 +77,6 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :comments, :member => { :report_as_spam => :put, :report_as_ham => :put }, :collection => { :destroy_all_spam => :delete }
     
     admin.resources :pages, :collection => { :sort => :put }, :member => { :toggle => :put, :comments => :get } do |pages|
-      pages.resources :contents, :collection => { :sort => :put }, :member => { :toggle => :put, :settings => :get }
       pages.resources :textfields
     end
 

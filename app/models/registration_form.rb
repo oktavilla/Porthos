@@ -1,27 +1,6 @@
-# == Schema Information
-# Schema version: 76
-#
-# Table name: registration_forms
-#
-#  id                     :integer(11)   not null, primary key
-#  contact_person_id      :integer(11)   
-#  name                   :string(255)   
-#  template               :string(255)   
-#  send_email_response    :boolean(1)    
-#  replyable_email        :boolean(1)    
-#  reply_to_email         :string(255)   
-#  email_subject          :string(255)   
-#  email_body             :text          
-#  created_at             :datetime      
-#  updated_at             :datetime      
-#  type                   :string(255)   
-#  target_code            :string(255)   
-#  default_amounts        :string(255)   
-#  notification_person_id :integer(11)   
-#  product_category_id    :integer(11)   
-#
-
 class RegistrationForm < ActiveRecord::Base
+  include Porthos::ContentResource
+
   belongs_to :contact_person, :class_name => 'User', :foreign_key => 'contact_person_id'
   belongs_to :notification_person, :class_name => 'User', :foreign_key => 'notification_person_id'
   has_one :page, :dependent => :nullify, :as => :parent

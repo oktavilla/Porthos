@@ -1,5 +1,5 @@
 <h1>Redigera bilden ”<%= @content.resource.title %>”</h1>
-<% form_for :content_image, @content.resource, :url => admin_page_content_path(@page, @content), :html => { :method => :put } do |f| %>
+<% form_for :resource, @content.resource, :url => admin_content_path(@content), :html => { :method => :put } do |f| %>
   <div class="column column1">
   <div class="inner">
     <%= f.hidden_field :image_asset_id, :value => @content.resource.asset.id %>

@@ -1,4 +1,6 @@
 class ContentImage < ActiveRecord::Base
+  include Porthos::ContentResource
+  
   belongs_to :asset, :class_name => 'ImageAsset', :foreign_key => 'image_asset_id'
   
   def style_properties

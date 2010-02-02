@@ -1,27 +1,11 @@
-# == Schema Information
-# Schema version: 76
-#
-# Table name: contents
-#
-#  id                              :integer(11)   not null, primary key
-#  page_id                         :integer(11)   
-#  column_position                 :integer(11)   
-#  position                        :integer(11)   
-#  resource_id                     :integer(11)   
-#  resource_type                   :string(255)   
-#  created_at                      :datetime      
-#  updated_at                      :datetime      
-#  parent_id                       :integer(11)   
-#  type                            :string(255)   
-#  accepting_content_resource_type :string(255)   
-#
-
 class Content < ActiveRecord::Base
-  belongs_to :page
-  belongs_to :content_collection, :foreign_key => 'parent_id'
+  belongs_to :context,  :polymorphic => true
   belongs_to :resource, :polymorphic => true
+  belongs_to :content_collection, :foreign_key => 'parent_id'
+
   named_scope :active, :conditions => "contents.active = 1"
-  acts_as_list :scope => 'page_id = \'#{page_id}\' AND column_position = \'#{column_position}\' AND parent_id #{(parent_id.blank? ? "IS NULL" : (" = " + parent_id.to_s))}'
+
+  acts_as_list :scope => 'context_id = \'#{context_id}\' AND context_type = \'#{context_type}\' AND column_position = \'#{column_position}\' AND parent_id #{(parent_id.blank? ? "IS NULL" : (" = " + parent_id.to_s))}'
   
   acts_as_settingable
   
@@ -41,6 +25,10 @@ class Content < ActiveRecord::Base
 
   def validate
     errors.add(:resource_type, "är inte av rätt typ") if resource_type and not self.approved_resources.include?(resource_type)
+  end
+
+  def resource_class
+    @resource_class ||= resource_type.constantize
   end
 
   def text?

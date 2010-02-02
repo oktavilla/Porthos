@@ -1,13 +1,15 @@
 <h1>
   Lägg till film <span class="info">eller <a href="#" class="back">gå tillbaka</a></span>
 </h1>
-<% form_for :content, @content, :url => admin_page_contents_path(:page_id => @page, :collection => params[:collection]) do |f| %>
+<% form_for :content, @content, :url => admin_contents_path(:collection => params[:collection]) do |f| %>
   <div class="column column1">
     <div class="inner">
+      <%= f.hidden_field :context_id %>
+      <%= f.hidden_field :context_type %>
       <%= f.hidden_field :parent_id %>
       <%= f.hidden_field :column_position %>
       <%= f.hidden_field :resource_type %>
-      <% fields_for :content_movie do |resource| %>
+      <% fields_for :resource do |resource| %>
         <%= resource.hidden_field :movie_asset_id, :value => @content.resource.asset.id %>
         <label for="content_image_title">Titel</label>
         <%= resource.text_field :title, :value => @content.resource.asset.title %>
