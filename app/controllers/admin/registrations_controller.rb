@@ -9,7 +9,7 @@ class Admin::RegistrationsController < ApplicationController
     per_page = params[:per_page] || 20
 
     klass = @type.constantize
-    scope = params[:filter] ? params[:filter].to_sym : :confirmed_or_pending
+    scope = !params[:filter].blank? ? params[:filter].to_sym : :confirmed_or_pending
 
     conditions = {
       :conditions => ['conversions.measure_point_id = ?', params[:measure_point_id]],
