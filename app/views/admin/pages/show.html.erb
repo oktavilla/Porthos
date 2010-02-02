@@ -56,7 +56,7 @@
                   <a class="teasers Teaser new_content" href="<%= new_admin_content_path(:collection => 1, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'Teaser', :column_position => column }) %>">Puffar</a>
                 </li>
                 <li>
-                  <a class="module ContentModule new_content" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'ContentModule', :column_position => column }) %>">Modul</a>
+                  <a class="module ContentModule new_content" href="<%= new_admin_content_path(:content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentModule', :column_position => column }) %>">Modul</a>
                 </li>
               </ul>
             </div>
