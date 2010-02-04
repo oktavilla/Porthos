@@ -9,6 +9,8 @@ class Content < ActiveRecord::Base
   
   acts_as_settingable
   
+  after_update :notify_context
+  
   # Should destroy resource unless it's shared in any sence
   before_destroy do |content|
     if content.resource and not content.module? and not content.form?
@@ -65,6 +67,12 @@ class Content < ActiveRecord::Base
 
   def self.approved_resources
     ['Textfield', 'Teaser', 'ContentModule', 'RegistrationForm', 'ContentImage', 'ContentMovie']
+  end
+  
+protected
+
+  def notify_context
+    context.update_attributes(:changed_at => Time.now) if context && context.respond_to?(:changed_at)
   end
 
 end

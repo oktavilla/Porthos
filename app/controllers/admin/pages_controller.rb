@@ -107,7 +107,11 @@ class Admin::PagesController < ApplicationController
       @pages = @page.pages.find_by_params(params, :logged_in => logged_in?)
     end
     
-    @page.update_attributes(:rendered_body => render_to_string(:template => 'pages/show', :layout => 'public'))
+    @page.update_attributes({
+      :rendered_body => render_to_string(:template => 'pages/show', :layout => 'public'),
+      :changes_published_at => Time.now
+    })
+
     respond_to do |format|
       format.html { redirect_back_or_default admin_page_path(@page) }
     end

@@ -16,10 +16,12 @@
 <div id="container">
   <div id="content">
     <div id="ca">
-      <% unless @page.active? -%>
+      <% if not @page.active? -%>
       <p class="notice">
         Denna sida är inte aktiverad och kommer inte att synas på siten. <%= link_to "Aktivera sidan »", toggle_admin_page_path(@page), :method => :put %>
       </p>
+      <% elsif @page.unpublished_changes? -%>
+      <p class="notice"><%= link_to "Publisera ändringarna", publish_admin_page_path(@page), :method => :put %></p>
       <% end -%>
       <div id="page_<%= @page.id %>" class="page_layout <%= @page.layout_class %>">
       <% (1..@page.column_count).each do |column| -%>
