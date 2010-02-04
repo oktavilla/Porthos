@@ -150,15 +150,8 @@ protected
 
   # after destroy
   def cleanup
-    if File.exists? path and File.unlink path
-      Dir["#{RAILS_ROOT}/public/images/*/*"].each do |file| 
-        File.unlink(file) if File.basename(file) == full_name
-      end
-      logger.info "Deleted asset: #{path}"
-    else
-      logger.warn "Unable to delete asset #{path}"
-    end
-  end
+    File.unlink(path) if File.exists?(path)
+   end
   
   def make_unique_filename(string)
     chars = ("a".."z").to_a + ("1".."9").to_a 
