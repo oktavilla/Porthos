@@ -8,14 +8,14 @@
       <%= image_tag display_image_path(:size => 'c70x70', :id => child.resource.asset, :format => child.resource.asset.extname, :alt => child.resource.title) %>
     <% end %>
     <span class="controls">
-      <%= link_to "Ändra", edit_admin_content_path(:page_id => @page, :id => child, :return_to => request.request_uri), :class => 'edit' %>
-      <%= link_to child.active? ? 'Dölj' : 'Visa', toggle_admin_page_content_path(@page, child), :method => :put, :class => 'visibility' %>
-      <%= link_to "Ta bort", admin_content_path(:id => child, :page_id => @page), :method => :delete, :confirm => "Är du säker, detta går inte att ångra.", :class => 'delete' %>
+      <%= link_to "Ändra", edit_admin_content_path(:id => child, :return_to => request.request_uri), :class => 'edit' %>
+      <%= link_to child.active? ? 'Dölj' : 'Visa', toggle_admin_content_path(child), :method => :put, :class => 'visibility' %>
+      <%= link_to "Ta bort", admin_content_path(:id => child), :method => :delete, :confirm => "Är du säker, detta går inte att ångra.", :class => 'delete' %>
     </span>
   </li>
 <% end -%>
   <li class="sub_content create">
-    <%= link_to("Lägg till bild", new_admin_page_content_path(:page_id => @page, :return_to => request.request_uri, :content => { :resource_type => 'ContentImage', :parent_id => content, :column_position => content.column_position }), :class => 'image ContentImage') %>
+    <%= link_to("Lägg till bild", new_admin_content_path(:return_to => request.request_uri, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentImage', :parent_id => content, :column_position => content.column_position }), :class => 'image ContentImage') %>
   </li>
 </ul>
 <% end %>

@@ -1,26 +1,6 @@
-# == Schema Information
-# Schema version: 76
-#
-# Table name: teasers
-#
-#  id                  :integer(11)   not null, primary key
-#  title               :string(255)   
-#  body                :text          
-#  link                :string(255)   
-#  parent_type         :string(255)   
-#  parent_id           :integer(11)   
-#  image_asset_id      :integer(11)   
-#  created_at          :datetime      
-#  updated_at          :datetime      
-#  product_category_id :integer(11)   
-#  product_id          :integer(11)   
-#  position            :integer(11)   
-#  css_class           :string(255)   
-#  display_type        :string(255)   
-#  images_display_type :integer(11)   default(0)
-#
-
 class Teaser < ActiveRecord::Base
+  include Porthos::ContentResource
+
   has_one :content, :as => :resource
   
   belongs_to :parent, :polymorphic => true

@@ -7,10 +7,12 @@
     <div id="ca">
     <div class="inner">
       <%= error_messages_for :resource %>
-      <% form_for :content, :url => admin_page_contents_path(:page_id => @page), :html => { :multipart => true }  do |f| %>
+      <% form_for :content, :url => admin_contents_path, :html => { :multipart => true }  do |f| %>
+        <%= f.hidden_field :context_id %>
+        <%= f.hidden_field :context_type %>
         <%= f.hidden_field :parent_id, { :value => @content.id } %>
         <%= f.hidden_field :resource_type, { :value => 'Teaser' } %>
-        <% fields_for :teaser do |teaser| %>
+        <% fields_for :resource do |teaser| %>
           <label for="content_<%= @content.id %>_teaser_title">Rubrik</label>
           <%= teaser.text_field :title, :id => "content_#{@content.id}_teaser_title" %>
           <label for="content_<%= @content.id %>_teaser_body">Text</label>
@@ -50,4 +52,7 @@
 <%= javascript_include_tag 'porthos/editor' %>
 <script type="text/javascript">
   Porthos.Editor.Initialize();
+  $$('div.graphic').each(function(div) {
+    Porthos.Helpers.graphicLabel(div);
+  });
 </script>

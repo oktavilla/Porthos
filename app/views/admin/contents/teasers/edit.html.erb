@@ -5,7 +5,7 @@
     <% nested_list_of @content.contents, {}, :id => 'teasers_list', :class => 'teasers' do |content| %>
       <%= render :partial => 'admin/contents/teasers/teaser', :locals => {:content => content, :page => @page} %>
     <% end %>
-    <% form_for :content, :url => admin_page_contents_path(:page_id => @page), :html => {:multipart => true}  do |f| %>
+    <% form_for :content, :url => admin_content_path(@content), :html => {:multipart => true}  do |f| %>
       <%= f.hidden_field :parent_id, { :value => @content.id } %>
       <%= f.hidden_field :column_position %>
       <%= f.hidden_field :resource_type, { :value => 'Teaser' } %>

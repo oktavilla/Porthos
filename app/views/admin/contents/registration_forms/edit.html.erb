@@ -1,0 +1,24 @@
+<% @page_title = "Ändra formulär" %>
+<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<div id="workspace">
+  <div id="c_wrap" class="layout_2">
+    <div id="c_1">
+      <div class="header">
+        <h1>Ändra formulär</h1>
+      </div>
+      <% form_for :content, :url => admin_content_path(@content), :html => { :method => :put } do |f| %>
+        <div class="column1">
+          <div class="inner form">
+            <%= f.hidden_field :column_position %>
+            <%= f.hidden_field :resource_type %>
+            <label for="content_resource_id">Välj formulär:</label>
+            <%= f.select :resource_id, RegistrationForm.find(:all, :order => 'name ASC').collect { |t| [t.name, t.id] } %>
+          </div>
+        </div>
+        <div class="submit">
+          <%= submit_tag 'Spara' %> eller <%= link_to "avbryt", previous_view_path(admin_page_path(@page)), :class => 'cancel' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

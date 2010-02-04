@@ -1,19 +1,6 @@
-# == Schema Information
-# Schema version: 76
-#
-# Table name: textfields
-#
-#  id         :integer(11)   not null, primary key
-#  shared     :boolean(1)    
-#  filter     :string(255)   
-#  class_name :string(255)   
-#  body       :text          
-#  created_at :datetime      
-#  updated_at :datetime      
-#  title      :string(255)   
-#
-
 class Textfield < ActiveRecord::Base
+  include Porthos::ContentResource
+  
   has_many :contents, :as => :resource
   has_many :default_contents, :as => :resource
   validates_presence_of :body, :on => :update

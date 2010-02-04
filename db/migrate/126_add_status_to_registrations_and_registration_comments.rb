@@ -52,8 +52,8 @@ class AddStatusToRegistrationsAndRegistrationComments < ActiveRecord::Migration
   end
 
   def self.down
-    remove_table :registration_comments
-    remove_table :payments_registration_comments
+    drop_table :registration_comments
+    drop_table :payments_registration_comments
     remove_column :registrations, :process_status
     remove_column :registrations, :fraud
   end

@@ -1,0 +1,26 @@
+<% @page_title = "Lägg till formulär" %>
+<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<div id="workspace">
+  <div id="c_wrap" class="layout_2">
+    <div id="c_1">
+      <div class="header">
+        <h1>Lägg till formulär</h1>
+      </div>
+      <% form_for :content, :url => admin_contents_path do |f| %>
+        <div class="column1">
+          <div class="inner form">
+            <%= f.hidden_field :context_id %>
+            <%= f.hidden_field :context_type %>
+            <%= f.hidden_field :column_position %>
+            <%= f.hidden_field :resource_type %>
+            <label for="content_resource_id">Välj formulär:</label>
+            <%= f.select :resource_id, RegistrationForm.find(:all, :order => 'name ASC').collect { |t| [t.name, t.id] } %>
+          </div>
+        </div>
+        <div class="submit">
+          <%= submit_tag 'Lägg till' %> eller <%= link_to "avbryt", previous_view_path(admin_page_path(@page)), :class => 'cancel' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
