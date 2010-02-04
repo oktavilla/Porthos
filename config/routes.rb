@@ -17,9 +17,7 @@ ActionController::Routing::Routes.draw do |map|
     asset.download_asset '/assets/:id.:format'
   end
 
-  shop_prefix = '/butik/:shop_id'
-
-  map.resources :pages, :member => { :comment => :post }
+  map.resources :pages, :member => { :preview => :get, :comment => :post }
   map.resources :page_collections
   
   map.login  '/login',  :controller => 'user/sessions', :action => 'new'
@@ -68,7 +66,7 @@ ActionController::Routing::Routes.draw do |map|
     
     admin.resources :comments, :member => { :report_as_spam => :put, :report_as_ham => :put }, :collection => { :destroy_all_spam => :delete }
     
-    admin.resources :pages, :collection => { :sort => :put }, :member => { :toggle => :put, :comments => :get } do |pages|
+    admin.resources :pages, :collection => { :sort => :put }, :member => { :toggle => :put, :publish => :put, :comments => :get } do |pages|
       pages.resources :contents, :collection => { :sort => :put }, :member => { :toggle => :put, :settings => :get }
       pages.resources :textfields
     end

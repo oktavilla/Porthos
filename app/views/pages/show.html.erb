@@ -1,6 +1,12 @@
+<% if @full_render -%>
 <% @page_class = @page.layout_class -%>
 <% @page_title = @page.title -%>
 <% @page_id = 'pages-show' -%>
+<% else -%>
+<%= '<'+'% @page_class = @page.layout_class %'+'>' -%>
+<%= '<'+'% @page_title = @page.title %'+'>' -%>
+<%= '<'+'% @page_id = "pages-show" %'+'>' -%>
+<% end -%>
 <% if @breadcrumbs and @breadcrumbs.any? -%>
   <%= render :partial => 'shared/breadcrumbs', :locals => { :breadcrumbs => @breadcrumbs } %>
 <% end %>
@@ -12,7 +18,11 @@
         <% if content.collection? -%>
           <%= render(:partial => "/pages/contents/#{content.resource_type.underscore.pluralize}/collection.html.erb", :locals => { :page => @page, :content => content }) %>
         <% elsif content.module? -%>
+          <% if @full_render %>
           <%= render(:partial => "/pages/contents/modules/#{content.resource.template}/content.html.erb", :locals => { :page => @page, :content => content }) %>
+          <% else %>
+          <%= "<"+"%= render(:partial => '/pages/contents/modules/#{content.resource.template}/content.html.erb', :locals => { :page => @page, :content => content }) %"+">" %>
+          <% end %>
         <% elsif content.form? -%>
           <%= render(:partial => "/pages/contents/registration_forms/#{content.resource.template}.html.erb", :locals => { :page => @page, :content => content, :resource => content.resource }) %>
         <% else %>
