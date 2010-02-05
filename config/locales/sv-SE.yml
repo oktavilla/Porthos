@@ -16,6 +16,9 @@
         # Where is the currency sign? %u is the currency unit, %n the number (default: $5.00)
         format: "%n %u"
         unit: "kr"
+        precision: 0
+        delimiter: '.'
+        separator: ','
  
     # Used in number_to_human_size()
     human:
@@ -341,51 +344,51 @@
     select:
       # default value for :prompt => true in FormOptionsHelper
       prompt: "Välj"
-app:
-  general:
-    logged_in: Du är inlogagd
-    logged_out: Du är utloggad
-    login_failed: Användarnamnet och lösenordet stämde inte överens
-    password_has_been_sent: Ett nytt lösenord har skapats och skickats till din e-postadress 
-    unable_to_find_user: Det gick inte att hitta någon användare med den e-postadressen
-    flash_is_needed: Du behöver flash för att se den här delen av sidan
-  cart_item:
-    exceeds_available_products: överstiger antalet tillgängliga produkter
-    require_positive_number: måste vara ett tal större än noll
-    not_enough_products: inte tillräckligt många produkter
-  global_parent:
-    not_less_than_100: får inte vara mindre än 100 kr
-  image_asset:
-    unknown_format: gick inte att läsa filtypen
-    must_be_rgb: måste vara en bild i RGB-format
-  carts:
-    unknown_product: kunde inte hitta produkten
-  print_settings:
-    print_settings: Inställningar för tryck
-    saved: Tilltrycks inställningarna är sparade
-    save_error: Det uppstod ett fel när inställningarna skulle sparas
-    not_allowed_filetype: har fel filtyp, ladda upp en TIFF-fil eller en EPS-fil istället
-  admin_assets:
-    saved: Filerna sparades
-  admin_nodes:
-    deleted: och alla sidor under den är borttagna
-  admin_general:
-    saved: sparades
-    deleted: raderades
-    logged_in: Du är inloggad
-    logged_out: Du är nu utloggad och lugnt surfa vidare
-    login_failed: Användarnamnet och lösenordet stämde inte överens
-  admin_pages:
-    unable_to_find: Kunde inte hitta sidtypen
-    saved: Dina ändringar är sparade
-  measure_point:
-    link_types: 
-      text_link: Text-länk
-      banner_flash: Banner (flash)
-      banner_gif: Banner (gif)
-    targets:
-      global_parents: Världsföräldrar
-      private_donations: Privatgivare
-      private_buys: Privata beställare i butiken
-  validators:
-    bad_email_format: har fel format      
+  app:
+    general:
+      logged_in: Du är inloggad
+      logged_out: Du är utloggad
+      login_failed: Användarnamnet och lösenordet stämde inte överens
+      password_has_been_sent: Ett nytt lösenord har skapats och skickats till din e-postadress 
+      unable_to_find_user: Det gick inte att hitta någon användare med den e-postadressen
+      flash_is_needed: Du behöver flash för att se den här delen av sidan
+    cart_item:
+      exceeds_available_products: överstiger antalet tillgängliga produkter
+      require_positive_number: måste vara ett tal större än noll
+      not_enough_products: inte tillräckligt många produkter
+    global_parent:
+      not_less_than_100: får inte vara mindre än 100 kr
+    image_asset:
+      unknown_format: gick inte att läsa filtypen
+      must_be_rgb: måste vara en bild i RGB-format
+    carts:
+      unknown_product: kunde inte hitta produkten
+    print_settings:
+      print_settings: Inställningar för tryck
+      saved: Tilltrycks inställningarna är sparade
+      save_error: Det uppstod ett fel när inställningarna skulle sparas
+      not_allowed_filetype: har fel filtyp, ladda upp en TIFF-fil eller en EPS-fil istället
+    admin_assets:
+      saved: Filerna sparades
+    admin_nodes:
+      deleted: och alla sidor under den är borttagna
+    admin_general:
+      saved: sparades
+      deleted: raderades
+      logged_in: Du är inloggad
+      logged_out: Du är nu utloggad och lugnt surfa vidare
+      login_failed: Användarnamnet och lösenordet stämde inte överens
+    admin_pages:
+      unable_to_find: Kunde inte hitta sidtypen
+      saved: Dina ändringar är sparade
+    measure_point:
+      link_types: 
+        text_link: Text-länk
+        banner_flash: Banner (flash)
+        banner_gif: Banner (gif)
+      targets:
+        global_parents: Världsföräldrar
+        private_donations: Privatgivare
+        private_buys: Privata beställare i butiken
+    validators:
+      bad_email_format: har fel format

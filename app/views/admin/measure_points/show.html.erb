@@ -35,7 +35,7 @@
       <tr>
       <% @measure_point.conversions.count(:group => 'registration_type').each do |result| %>
         <tr>
-          <td><%= link_to result.first.constantize.localized_model_name, admin_conversions_path({:measure_point_id => @measure_point.id, :type => result.first}) %></td>
+          <td><%= link_to result.first.constantize.human_name, admin_conversions_path({:measure_point_id => @measure_point.id, :type => result.first}) %></td>
           <td><%= result.last %> st</td>
           <td><%= number_to_currency(@measure_point.income(result.first).to_f) %></td>
         </tr>

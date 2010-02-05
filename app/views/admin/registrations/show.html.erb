@@ -1,10 +1,10 @@
-<% @page_title = "Registrering: #{@type.constantize.localized_model_name} #{@registration.id}" -%>
+<% @page_title = "Registrering: #{@type.constantize.human_name} #{@registration.id}" -%>
 <style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
 <div id="workspace">
   <div id="c_wrap" class="layout_2">
     <div id="c_1">
       <div class="header">
-        <h1><%= link_to "Visa alla #{@registration.class.localized_model_name.downcase}", admin_registrations_path(:type => @registration.type) %></h1>
+        <h1><%= link_to "Visa alla #{@registration.class.human_name.downcase}", admin_registrations_path(:type => @registration.type) %></h1>
       </div>
       <%= render :partial => "admin/registrations/meta", :locals => { :registration => @registration } %>
       <div class="data">
@@ -106,7 +106,7 @@
           <% @registration.related_registrations.each do |registration| %>
           <li>
             <span class="status <%= registration.humanized_status[:class] %>"><%= link_to "#{registration.id}", formatted_admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></span>
-            <span class="type"><%= registration.class.localized_model_name %></span>
+            <span class="type"><%= registration.class.human_name %></span>
           </li>
           <% end %>
         </ul>

@@ -161,8 +161,8 @@ module ApplicationHelper
   # though it will not be the exact length.
   def awesome_truncate(text, length = 30, truncate_string = "...")
     return if text.nil?
-    l = length - truncate_string.chars.length
-    text.chars.length > length ? text[/\A.{#{l}}\w*\;?/m][/.*[\w\;]/m] + truncate_string : text
+    l = length - truncate_string.mb_chars.length
+    text.mb_chars.length > length ? text[/\A.{#{l}}\w*\;?/m][/.*[\w\;]/m] + truncate_string : text
   end 
   
   def flash_mediaplayer_tag(asset, options = {})

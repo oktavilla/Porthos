@@ -1,7 +1,7 @@
 Ny registering
 
 Typ
-<%= registration.class.localized_model_name || registration.class.to_s %>
+<%= registration.class.human_name || registration.class.to_s %>
 
 Skapad
 <%= registration.created_at.strftime("%d %B %Y, %H:%M") %>

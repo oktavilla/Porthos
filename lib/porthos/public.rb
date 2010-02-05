@@ -37,7 +37,7 @@ module Porthos
       end
       
       def porthos_session_id
-        session[:porthos_id] ||= CGI::Session.generate_unique_id
+        session[:porthos_id] ||= ActiveSupport::SecureRandom.hex
       end
     end
   end

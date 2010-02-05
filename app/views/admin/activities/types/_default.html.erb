@@ -1,10 +1,10 @@
 <div class="header">
-  <h1><%= @type.localized_model_name %></h1>
+  <h1><%= @type.human_name %></h1>
 </div>
 <% activity_table(@first_period, @second_period) do %>
   <tbody>
     <tr class="totals">
-      <th scope="colgroup"><%= @type.localized_model_name %></th>
+      <th scope="colgroup"><%= @type.human_name %></th>
       <% num_first_period, num_second_period = @type.with_period(@first_period).confirmed.count, @type.with_period(@second_period).confirmed.count -%>
       <% num_first_period_opt_in, num_second_period_opt_in = @type.with_period(@first_period).confirmed.with_opt_in.count, @type.with_period(@second_period).confirmed.with_opt_in.count -%>
       <% diff = num_first_period - num_second_period -%>

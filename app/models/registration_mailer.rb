@@ -19,7 +19,7 @@ class RegistrationMailer < ActionMailer::Base
   end
   
   def notification(registration)
-    @subject    = "#{registration.class.localized_model_name} registrering"
+    @subject    = "#{registration.class.human_name} registrering"
     @body       = { :registration => registration }
     @recipients = registration.notification_person.email
     @from       = 'no.reply@example.com'
