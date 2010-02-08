@@ -11,6 +11,7 @@ class PagesController < ApplicationController
   layout 'public'
 
   def show
+    # raise Page.find(1).inspect
     # If the page belongs to a date sorted structure we need to find by the slug, otherwise the id should be registred in routes
     @page = if params[:id]
       Page.active.published.find(params[:id])
@@ -25,7 +26,7 @@ class PagesController < ApplicationController
     if @page.respond_to?(:pages)
       @pages = @page.pages.find_by_params(params, :logged_in => logged_in?)
     end
-        
+    
     respond_to do |format|
       format.html { render :inline => @page.rendered_body, :layout => true }
       format.rss { render :layout => false } if @page.is_a?(PageCollection)

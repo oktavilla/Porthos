@@ -27,9 +27,10 @@ module Porthos
     protected
     
       def notify_content_context
-        content = Content.find(:first, :conditions => ["resource_id = ? and resource_type = ?", self.id, self.class.to_s], :include => :context)
-        if content && content.context && content.context.respond_to?(:changed_at)
-          content.context.update_attributes(:changed_at => Time.now)
+        Content.find(:all, :conditions => ["resource_id = ? and resource_type = ?", self.id, self.class.to_s], :include => :context).each do |content|
+          if content.context && content.context.respond_to?(:changed_at)
+            content.context.update_attributes(:changed_at => Time.now)
+          end
         end
       end
     

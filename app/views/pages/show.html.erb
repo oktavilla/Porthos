@@ -7,8 +7,8 @@
 <%= '<'+'% @page_title = @page.title %'+'>' -%>
 <%= '<'+'% @page_id = "pages-show" %'+'>' -%>
 <% end -%>
-<% if @breadcrumbs and @breadcrumbs.any? -%>
-  <%= render :partial => 'shared/breadcrumbs', :locals => { :breadcrumbs => @breadcrumbs } %>
+<% if breadcrumbs and breadcrumbs.any? -%>
+  <%= render :partial => 'shared/breadcrumbs', :locals => { :breadcrumbs => breadcrumbs } %>
 <% end %>
   <div id="c_w"><div class="c_w2">
     <div id="content">
@@ -21,7 +21,7 @@
           <% if @full_render %>
           <%= render(:partial => "/pages/contents/modules/#{content.resource.template}/content.html.erb", :locals => { :page => @page, :content => content }) %>
           <% else %>
-          <%= "<"+"%= render(:partial => '/pages/contents/modules/#{content.resource.template}/content.html.erb', :locals => { :page => @page, :content => content }) %"+">" %>
+          <%= "<"+"%= render(:partial => '/pages/contents/modules/#{content.resource.template}/content.html.erb', :locals => { :page => @page, :content => Content.find(#{content.id}) }) %"+">" %>
           <% end %>
         <% elsif content.form? -%>
           <%= render(:partial => "/pages/contents/registration_forms/#{content.resource.template}.html.erb", :locals => { :page => @page, :content => content, :resource => content.resource }) %>
