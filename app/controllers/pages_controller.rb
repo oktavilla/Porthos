@@ -20,7 +20,6 @@ class PagesController < ApplicationController
       (page and (not page.parent_type.blank? and page.parent.calendar?) or page.published?) ? page : (raise ActiveRecord::RecordNotFound)
     end
 
-    raise ActiveRecord::RecordNotFound if !@page or @page.rendered_body.blank?
     login_required if @page.restricted
     
     if @page.respond_to?(:pages)
@@ -28,7 +27,12 @@ class PagesController < ApplicationController
     end
     
     respond_to do |format|
-      format.html { render :inline => @page.rendered_body, :layout => true }
+      unless @page.rendered_body.blank?
+        format.html { render :inline => @page.rendered_body, :layout => true }
+      else
+        @full_render = true
+        format.html { render :action => 'show' }
+      end
       format.rss { render :layout => false } if @page.is_a?(PageCollection)
     end
   end
