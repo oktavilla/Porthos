@@ -7,7 +7,7 @@
   <div id="c_wrap" class="layout_3">
     <div id="c_1">
       <div id="uploader">
-        <% form_for @asset, :url => admin_assets_path(SESSION_KEY => session.session_id), :html => { :multipart => true, :id => 'upload' } do |f| %>
+        <% form_for @asset, :url => admin_assets_path_with_session_key, :html => { :multipart => true, :id => 'upload' } do |f| %>
         <fieldset id="files">
           <%= f.file_field :file, :size => 15 %>
         </fieldset>

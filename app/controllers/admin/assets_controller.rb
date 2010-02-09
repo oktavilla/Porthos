@@ -3,8 +3,9 @@ class Admin::AssetsController < ApplicationController
   before_filter :login_required
   layout 'admin'
   skip_before_filter :remember_uri, :only => [:index, :show, :create, :search]
-  skip_before_filter :verify_authenticity_token, :only => :create
-  session :cookie_only => false, :only => :create
+  
+  protect_from_forgery :only => :create
+  
   
   # GET /assets
   # GET /assets.xml
@@ -81,7 +82,7 @@ class Admin::AssetsController < ApplicationController
   # POST /assets.xml
   def create
     if params[:asset]
-      @assets = [Asset.from_upload(params[:asset].merge({ :created_by => current_user, :incomplete => true }))]
+      @assets = [Asset.from_upload(params[:asset].merge({:created_by => current_user,  :incomplete => true }))]
     else
       @assets = params[:files].collect do |upload|
         Asset.from_upload(:file => upload, :created_by => current_user, :incomplete => true) unless upload.blank?

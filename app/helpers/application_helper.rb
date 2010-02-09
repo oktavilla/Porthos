@@ -243,4 +243,9 @@ module ApplicationHelper
       end.join
     end
   end
+  
+  def admin_assets_path_with_session_key
+    session_key = ActionController::Base.session_options[:key]
+    admin_assets_path(session_key => cookies[session_key], request_forgery_protection_token => form_authenticity_token)
+  end
 end
