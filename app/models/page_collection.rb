@@ -90,6 +90,50 @@ class PageCollection < Page
     def published_within(from, to)
       find(:all, :conditions => ["active = 1 AND published_on BETWEEN ? AND ? #{'AND published_on <= CURRENT_DATE' unless proxy_owner.calendar?}", from.to_s(:db), to.to_s(:db)])
     end
+    
+    def find_by_params(params, options = {})
+      if params[:tags]
+        return find_with_tags(params[:tags], {
+          :include_restricted => options[:logged_in],
+          :page     => params[:page],
+          :per_page => params[:per_page] || 10
+        })
+      end
+      if params[:year]
+        conditions = {
+          :year   => params[:year],
+          :month  => params[:month],
+          :day    => params[:day],
+          :page   => params[:page],
+          :include_restricted => true
+        }
+        unless self.calendar?
+          active.published.by_date(conditions)
+        else
+          active.by_date(conditions)
+        end
+      else
+        unless self.calendar?
+          active.published.latest({
+            :page => params[:page],
+            :include_restricted => true
+          })
+        else
+          active.latest({
+            :page => params[:page],
+            :include_restricted => true
+          })
+        end
+      end
+    end
+
+    def find_with_tags(tags, options)
+      active.include_restricted(options[:include_restricted]).published.find_tagged_with({
+        :tags => tags.join(Tag.delimiter),
+        :order => 'created_at DESC, id DESC'
+      }).paginate(:page => options[:page], :per_page => options[:per_page])
+    end
+
   end
 
   def dates_with_children(options = {})

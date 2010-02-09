@@ -53,7 +53,7 @@ class Admin::ContentsController < ApplicationController
     Content.transaction do
       @content = Content.new({
         :column_position => 1,
-        :active => 0
+        :active => 1
       }.stringify_keys.merge(params[:content]))
       if @content.resource_id.blank?
         @resource = @content.resource_class.new(params[:resource])

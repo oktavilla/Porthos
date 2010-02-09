@@ -3,11 +3,13 @@ class Content < ActiveRecord::Base
   belongs_to :resource, :polymorphic => true
   belongs_to :content_collection, :foreign_key => 'parent_id'
 
-  named_scope :active, :conditions => "contents.active = 1"
+  named_scope :active, :conditions => ["contents.active = ?", true]
 
   acts_as_list :scope => 'context_id = \'#{context_id}\' AND context_type = \'#{context_type}\' AND column_position = \'#{column_position}\' AND parent_id #{(parent_id.blank? ? "IS NULL" : (" = " + parent_id.to_s))}'
   
   acts_as_settingable
+  
+  after_update :notify_context
   
   # Should destroy resource unless it's shared in any sence
   before_destroy do |content|
@@ -65,6 +67,12 @@ class Content < ActiveRecord::Base
 
   def self.approved_resources
     ['Textfield', 'Teaser', 'ContentModule', 'RegistrationForm', 'ContentImage', 'ContentMovie']
+  end
+  
+protected
+
+  def notify_context
+    context.update_attributes(:changed_at => Time.now) if context && context.respond_to?(:changed_at)
   end
 
 end
