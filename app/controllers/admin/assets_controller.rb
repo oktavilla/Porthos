@@ -88,17 +88,16 @@ class Admin::AssetsController < ApplicationController
         Asset.from_upload(:file => upload, :created_by => current_user, :incomplete => true) unless upload.blank?
       end.compact
     end
-
     @not_saved = @assets.collect{ |a| a.save }.include? false
     respond_to do |format|
       unless @not_saved
         flash[:notice] = t(:saved, :scope => [:app, :admin_assets])
         format.html { redirect_to incomplete_admin_assets_url }
         format.xml  { head :created, :location => asset_url(@asset) }
-        format.js do
+        format.json do
           # empty file object because it messes up the json parser
           @assets.first.file = nil
-          render :action => 'create', :layout => false, :status => 200
+          render :text => @assets.collect{ |asset| asset.attributes_for_js }.to_json, :layout => false, :status => 200
         end
       else
         format.html { render :action => "new" }

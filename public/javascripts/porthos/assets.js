@@ -288,7 +288,7 @@ Porthos.Assets.Uploader = Class.create({
 Porthos.Assets.IframeUploader = Class.create({
   initialize: function(form, options) {
     if (!(this.form = $(form))) { return; }
-    this.form.action += '.js';
+    this.form.action += '.json';
     this.options = Object.extend({
       timer: 0.5
     }, options || {});
@@ -365,7 +365,7 @@ Porthos.Assets.Picker = Class.create({
             });
             if (new_assets.size() == 1) {
               new_asset = new_assets.first();
-              new Ajax.Request(Routing.formatted_edit_admin_asset_path(new_asset.attributes.file_name, 'js'), {
+              new Ajax.Request(Routing.edit_admin_asset_path({'id': new_asset.attributes.file_name}, 'js'), {
                 method: 'get',
                 evalScripts: true,
                 onComplete: function(response) {

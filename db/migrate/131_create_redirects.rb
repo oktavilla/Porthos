@@ -5,6 +5,7 @@ class CreateRedirects < ActiveRecord::Migration
       t.string      :target
       t.timestamps
     end
+    add_index :redirects, :path
   end
 
   def self.down
