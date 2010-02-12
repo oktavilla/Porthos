@@ -156,7 +156,7 @@ Porthos.AssetUsages.Member = Class.create({
       'id': 'asset_usage_' + this.json.id
     });
     this._element.appendChild($img({
-      'src': Routing.display_image_path('c80x80', this.json.asset.file_name, this.json.asset.extname),
+      'src': Routing.display_image_path({'size':'c80x80', 'id' : this.json.asset.file_name, 'format' : this.json.asset.extname}),
       'alt': this.json.asset.title,
       'width' : 80,
       'height': 80

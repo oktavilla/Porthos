@@ -83,7 +83,7 @@ class Admin::UsersController < ApplicationController
     @user = User.find(params[:id])
     raise SecurityTransgression unless current_user.can_destroy?(@user)
     @user.destroy
-    flash[:notice] = "#{@user.login} #{l(:deleted, :scope => [:app, :admin_general])}"
+    flash[:notice] = "#{@user.login} #{t(:deleted, :scope => [:app, :admin_general])}"
     respond_to do |format|
       format.html { redirect_to admin_users_path }
     end

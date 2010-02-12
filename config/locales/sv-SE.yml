@@ -271,6 +271,7 @@
       user:
         first_name: Förnamn
         last_name: Efternamn
+        civic_number: Personnummer
         login: Användarnamn
         email: E-post
         phone: Telefon
