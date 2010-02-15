@@ -9,7 +9,7 @@ class Content < ActiveRecord::Base
   
   acts_as_settingable
   
-  after_update :notify_context
+  after_save :notify_context
   
   # Should destroy resource unless it's shared in any sence
   before_destroy do |content|

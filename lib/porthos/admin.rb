@@ -5,10 +5,17 @@ module Porthos
     def self.included(base)
       base.send :include, Porthos::AccessControl
       base.send :skip_before_filter, :remember_uri, :only => [:edit, :create, :update, :destroy, :sort]
+      base.send :before_filter, :clear_content_context
     end
 
-  
   protected
+
+    def clear_content_context
+      unless params[:content]
+        session[:content] = nil
+        @content = nil
+      end
+    end
 
     def access_denied
       respond_to do |accepts|

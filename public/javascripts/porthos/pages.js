@@ -88,38 +88,6 @@
           column.container.select('div.sub_controls').invoke('toggle');
           event.stop();
         }.bind(this));
-        // Asset pickers
-        column.container.select('div.sub_controls a.image', 'li.sub_content a.image').invoke('observe', 'click', function(event) {
-          Porthos.Dialog().setWaitState();
-          Porthos.Dialog().show();
-          if (!this.asset_picker) {
-            link = event.element();
-            is_collection = Porthos.parseUri(link.href).queryKey['collection'] == 1 ? 1 : 0;
-            this.asset_picker = new Porthos.Assets.Picker('image_assets', {
-              callback: function(event) {
-                asset = event.element();
-                new Ajax.Request(Routing.new_admin_content_path({ collection: is_collection }), {
-                  method:'get',
-                  parameters: $A([
-                    link.href,
-                    'content[context_id]=' + this.id,
-                    'content[context_type]=Page',
-                    'resource[image_asset_id]=' + Porthos.extractId(asset.id)
-                  ]).join('&'),
-                  onLoading: function() {
-                    Porthos.Dialog().setWaitState();
-                  }.bind(this),
-                  onComplete: function(response) {
-                    Porthos.Dialog('page_contents').insert('new', response.responseText);
-                    Porthos.Dialog().clearWaitState();
-                  }.bind(this)
-                });
-              }.bind(this)
-            });
-            this.asset_picker.open();
-          }
-          event.stop();
-        }.bind(this));
 
         column.container.select('div.sub_controls a.movie', 'li.sub_content a.movie').invoke('observe', 'click', function(event) {
           Porthos.Dialog().setWaitState();

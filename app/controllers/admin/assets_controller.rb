@@ -1,10 +1,16 @@
 class Admin::AssetsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'admin'
+
+  skip_before_filter :clear_content_context
+  before_filter :set_cotent_context, :only => :index
+
   skip_before_filter :remember_uri, :only => [:index, :show, :create, :search]
   skip_before_filter :verify_authenticity_token, :only => :create
+
   session :cookie_only => false, :only => :create
+
+  layout 'admin'
   
   # GET /assets
   # GET /assets.xml
@@ -153,5 +159,11 @@ class Admin::AssetsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
+
+protected
+
+  def set_cotent_context
+    @content = session[:content] ||= params[:content]
+  end
+
 end

@@ -4,16 +4,25 @@
 <div id="workspace">
   <div id="c_wrap" class="layout_2">
     <div id="c_1">
+      <% unless @content -%>
       <div class="header">
         <h1>Bilder, filmer, ljud och dokument</h1>
       </div>
       <p class="filter">
         <%= asset_filter_links(:current => @type).join(' ') %>
       </p>
+      <% else -%>
+      <div class="header">
+        <h1>Välj vilken bild du vill använda</h1>
+      </div>
+      <% end -%>
       <% if @assets.any? -%>
       <ul class="assets detailed">
         <% @assets.each do |asset| -%>
         <li<%= cycle ' class="even"', ' class="odd"' %>>
+          <% if @content && asset.image? -%>
+          <%= link_to "Välj", new_admin_content_path(:content => @content, :resource => { :image_asset_id => asset.id }) %>
+          <% end -%>
           <a href="<%= edit_admin_asset_path(asset) %>">
           <% if asset.image? %>
             <%= image_tag display_image_path(:size => 'c100x100', :id => asset, :format => asset.extname), :id => "asset_#{asset.id}", :width => 100, :height => 100 %>
@@ -49,11 +58,11 @@
     <div id="c_2">
       <div class="inner">
         <p class="main_action"><a href="<%= new_admin_asset_path %>" class="upload_files">Ladda upp filer</a></p>
-        <% form_for :asset, :url => search_admin_assets_path, :html => { :method => :get } do |f| %>
-        <div class="search">
-          <%= text_field_tag :query, (@query || 'Sök'), :class => "search_query", :id=> "search_query" %>
-          <%= submit_tag "Sök", :style => "display:none" %>
-        </div>
+        <% form_for :asset, :url => search_admin_assets_path(:type => params[:type]), :html => { :method => :get } do |f| %>
+          <div class="search">
+            <%= text_field_tag :query, (@query || 'Sök'), :class => "search_query", :id=> "search_query" %>
+            <%= submit_tag "Sök", :style => "display:none" %>
+          </div>
         <% end %>
         <% if @current_tags.any? -%>
         <h2>Valda nyckelord</h2>
