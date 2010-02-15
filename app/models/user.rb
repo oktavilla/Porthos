@@ -1,25 +1,3 @@
-# == Schema Information
-# Schema version: 76
-#
-# Table name: users
-#
-#  id                        :integer(11)   not null, primary key
-#  admin                     :boolean(1)    
-#  first_name                :string(255)   
-#  last_name                 :string(255)   
-#  login                     :string(255)   
-#  email                     :string(255)   
-#  phone                     :string(255)   
-#  cellphone                 :string(255)   
-#  crypted_password          :string(40)    
-#  salt                      :string(40)    
-#  created_at                :datetime      
-#  updated_at                :datetime      
-#  remember_token            :string(255)   
-#  remember_token_expires_at :datetime      
-#  avatar_id                 :integer(11)   
-#
-
 require 'digest/sha1'
 class User < ActiveRecord::Base
   # class accessor to be set and unset in the application controller
