@@ -1,17 +1,6 @@
-# == Schema Information
-# Schema version: 76
-#
-# Table name: content_modules
-#
-#  id                     :integer(11)   not null, primary key
-#  name                   :string(255)   
-#  template               :string(255)   
-#  created_at             :datetime      
-#  updated_at             :datetime      
-#  available_in_page_type :string(255)   
-#
-
 class ContentModule < ActiveRecord::Base
+  include Porthos::ContentResource
+  
   validates_presence_of :name, :template
 
   def available_templates

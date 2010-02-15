@@ -1,42 +1,41 @@
-# == Schema Information
-# Schema version: 76
-#
-# Table name: pages
-#
-#  id                      :integer(11)   not null, primary key
-#  title                   :string(255)   
-#  description             :text          
-#  page_layout_id          :integer(11)   
-#  layout_class            :string(255)   
-#  column_count            :integer(11)   
-#  published_on            :datetime      
-#  created_at              :datetime      
-#  updated_at              :datetime      
-#  slug                    :string(255)   
-#  type                    :string(255)   
-#  position                :integer(11)   
-#  parent_id               :integer(11)   
-#  parent_type             :string(255)   
-#  default_child_layout_id :integer(11)   
-#
-
 class Page < ActiveRecord::Base
   
   validates_presence_of :title, :page_layout_id
 
-  belongs_to  :parent,      :polymorphic => true
-  has_one     :node,        :as    => :resource
-  has_many    :contents,    :order => :position,  :conditions => ["contents.parent_id IS NULL"], :dependent => :destroy
+  belongs_to  :parent,  :polymorphic => true
+  has_one     :node,    :as => :resource
+  has_many(:contents, {
+    :as         => :context,
+    :order      => :position,
+    :conditions => ["contents.parent_id IS NULL"],
+    :dependent  => :destroy
+  })
+
   belongs_to  :page_layout
-  belongs_to  :default_child_layout, :foreign_key => 'default_child_layout_id', :class_name => 'PageLayout'
+  belongs_to(:default_child_layout, {
+    :foreign_key => 'default_child_layout_id',
+    :class_name  => 'PageLayout'
+  })
   has_many :comments, :as => :commentable, :order => 'comments.created_at'
   
-  named_scope :published, :conditions => "published_on <= CURRENT_DATE"
-  named_scope :published_within, lambda { |from, to| { :conditions => ["published_on BETWEEN ? AND ?", from.to_s(:db), to.to_s(:db)] } }
+  named_scope :published, :conditions => ["published_on <= ?", Time.now.at_midnight + 1.day]
+  named_scope :published_within, lambda { |from, to| {
+    :conditions => [
+      "published_on BETWEEN ? AND ?",
+      from.to_s(:db),
+      to.to_s(:db)
+    ] 
+  }}
 
-  named_scope :active,   :conditions => "active = 1"
-  named_scope :inactive, :conditions => "active = 0"
-  named_scope :include_restricted, lambda {|restricted| { :conditions => ['restricted = ? or restricted = 0', restricted]} }
+  named_scope :active,   :conditions => ["active = ?", true]
+  named_scope :inactive, :conditions => ["active = ?", false]
+  named_scope :include_restricted, lambda { |restricted| {
+    :conditions => [
+      'restricted = ? or restricted = 0',
+      restricted
+    ]
+  }}
+  named_scope :with_unpublished_changes, :conditions => ["changed_at > changes_published_at"]
 
   before_validation_on_create :set_default_layout, :set_layout_and_parent, :set_inactive
 
@@ -72,6 +71,10 @@ class Page < ActiveRecord::Base
   
   def published?
     published_on <= Time.now.end_of_day
+  end
+
+  def unpublished_changes?
+    !changes_published_at.nil? && !changed_at.nil? ? changed_at > changes_published_at : true
   end
 
   def child?

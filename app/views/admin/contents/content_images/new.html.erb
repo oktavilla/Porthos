@@ -1,3 +1,3 @@
-<% form_for :content_image, admin_page_contents_path(@page) do |f| %>
-  <%= render :partial => 'form', :locals => { :f => f } %>
+<% form_for :resource, admin_contents_path do |f| %>
+  <%= render :partial => 'admin/contents/content_images/form', :locals => { :f => f } %>
 <% end %>

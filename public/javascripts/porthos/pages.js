@@ -98,10 +98,12 @@
             this.asset_picker = new Porthos.Assets.Picker('image_assets', {
               callback: function(event) {
                 asset = event.element();
-                new Ajax.Request(Routing.new_admin_page_content_path({ page_id: this.id, collection: is_collection }), {
+                new Ajax.Request(Routing.new_admin_content_path({ collection: is_collection }), {
                   method:'get',
                   parameters: $A([
                     link.href,
+                    'content[context_id]=' + this.id,
+                    'content[context_type]=Page',
                     'resource[image_asset_id]=' + Porthos.extractId(asset.id)
                   ]).join('&'),
                   onLoading: function() {
@@ -128,10 +130,12 @@
             this.asset_picker = new Porthos.Assets.Picker('movie_assets', {
               callback: function(event) {
                 asset = event.element();
-                new Ajax.Request(Routing.new_admin_page_content_path({ page_id: this.id, collection: is_collection }), {
+                new Ajax.Request(Routing.new_admin_content_path({ collection: is_collection }), {
                   method:'get',
                   parameters: $A([
                     link.href,
+                    'content[context_id]=' + this.id,
+                    'content[context_type]=Page',
                     'resource[movie_asset_id]=' + Porthos.extractId(asset.id)
                   ]).join('&'),
                   onLoading: function() {
@@ -189,7 +193,7 @@
       }.bind(this));
       this.columns.each(function(column) {
         form = $form(
-          { 'action': Routing.sort_admin_page_contents_path(this.id) },
+          { 'action': Routing.sort_admin_contents_path() },
           $input({ 'type': 'submit', 'value': 'Spara sortering', 'class': 'button' }),
           ' eller ',
           $a({ 'href': '' }, 'avbryt')
@@ -210,7 +214,7 @@
         } else if (sortable.isTeaserContainer) {
           params = '&parent_id=' + encodeURIComponent(Porthos.extractId(sortable.id));
         }
-        new Ajax.Request(Routing.sort_admin_page_contents_path(this.id), {
+        new Ajax.Request(Routing.sort_admin_contents_path(), {
           method: 'put',
           parameters: Sortable.serialize(sortable, {
             name: 'contents'
@@ -228,6 +232,29 @@
       $(this.columns_container).select('div.confirm').invoke('remove');
       $(this.columns_container).select('span.controls').invoke('show');
       this.columns_container.removeClassName('sorting');
+      var publish_link = $a({
+        'href' : Routing.publish_admin_page_path({ 'id' : this.id })
+      }, 'Publicera ändringarna');
+      publish_link.observe('click', function(event) {
+        event.stop();
+        var link = event.element();
+        var f = $form({
+          'action' : link.href,
+          'method' : 'post',
+          'style'  : 'display:none;'
+        }, $input({
+          'type'  : 'hidden',
+          'name'  : '_method',
+          'value' : 'put'
+        }));
+        link.parentNode.appendChild(f);
+        f.submit();
+      });
+      if (this.columns_container.select('> p.notice').size() == 0) {
+        this.columns_container.insert({
+          'top' : $p({ 'class' : 'notice' }, publish_link)
+        });
+      }
       this.sorting = false;
     }
   });

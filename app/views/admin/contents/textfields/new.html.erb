@@ -1,16 +1,16 @@
-<% @page_title = "Redigera text" %>
+<% @page_title = "Ny text" %>
 <style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
 <div id="workspace">
   <div id="c_wrap" class="layout_2">
     <div id="c_1">
       <div class="header">
-        <h1>Redigera text</h1>
+        <h1>Ny text</h1>
       </div>
-      <% form_for :content, @content, :url => admin_content_path(@content), :html => { :method => :put } do |f| %>
-        <%= render :partial => 'admin/contents/textfields/form', :locals => { :f => f } %>
+      <% form_for :content, @content, :url => admin_contents_path do |f| %>
+        <%= render :partial => '/admin/contents/textfields/form', :locals => { :f => f } %>
         <div class="submit">
           <%= submit_tag 'Spara', :class => 'commit button' %> eller
-          <%= link_to "avbryt", previous_view_path(), :class => 'cancel' %>
+          <%= link_to "Avbryt", previous_view_path(), :class => 'cancel' %>
         </div>
       <% end %>
     </div>

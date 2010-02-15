@@ -29,11 +29,11 @@
 <% end -%>
 <div id="wrap">
   <div id="header">
-    <% nested_list_of @root_nodes, {}, :id => 'nav' do |node| %>
-      <a href="/<%= node.slug %>"<%= ' class="current"' if @trail and @trail.include?(node) %>>
+    <% nested_list_of root_nodes, {}, :id => 'nav' do |node| %>
+      <a href="/<%= node.slug %>"<%= ' class="current"' if trail and trail.include?(node) %>>
         <span><%= node.name %></span>
       </a>
-    <% end if @root_nodes and @root_nodes.any? %>
+    <% end if root_nodes and root_nodes.any? %>
   </div>
   <%= yield %>
   <div id="footer">

@@ -1,10 +1,10 @@
 <h1>
   Redigera film <span class="info">eller <a href="#" class="back">gå tillbaka</a></span>
 </h1>
-<% form_for :content, @content.resource, :url => admin_page_content_path(@page, @content), :html => { :method => :put } do |f| %>
+<% form_for :content, @content.resource, :url => admin_content_path(@content), :html => { :method => :put } do |f| %>
   <div class="column column1">
     <div class="inner">
-      <% fields_for :content_movie do |resource| %>
+      <% fields_for :resource do |resource| %>
         <%= resource.hidden_field :movie_asset_id, :value => @content.resource.asset.id %>
         <label for="content_image_title">Titel</label>
         <%= resource.text_field :title, :value => @content.resource.asset.title %>

@@ -1,1 +1,12 @@
-<%= f.text_area :body, :class => 'wymeditor' %>
+<%= f.hidden_field :context_id %>
+<%= f.hidden_field :context_type %>
+<%= f.hidden_field :resource_type %>
+<%= f.hidden_field :column_position %>
+<% unless @content.resource.shared? -%>
+  <% fields_for :resource do |_f| %>
+    <%= _f.text_area :body, :class => 'wymeditor' %>
+  <% end %>
+<% else -%>
+  <%= f.select :resource_id, Textfield.shared.find(:all, :order => 'title ASC').collect { |t| [t.title, t.id] } %>
+<% end -%>
+

@@ -6,6 +6,7 @@ class RegistrationsController < ApplicationController
   
   def show
     @registration = Registration.find(session[:current_registration])
+    @full_render = true
     session[:current_registration] = nil
     respond_to do |format|
       format.html do        

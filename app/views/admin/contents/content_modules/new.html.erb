@@ -1,0 +1,24 @@
+<% @page_title = "Lägg till modul" %>
+<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<div id="workspace">
+  <div id="c_wrap" class="layout_2">
+    <div id="c_1">
+      <div class="header">
+        <h1>Lägg till modul</h1>
+      </div>
+      <% form_for :content, :url => admin_contents_path do |f| %>
+        <%= f.hidden_field :context_id %>
+        <%= f.hidden_field :context_type %>
+        <%= f.hidden_field :column_position %>
+        <%= f.hidden_field :resource_type %>
+        <fieldset>
+            <label for="content_resource_id">Välj modul:</label>
+            <%= f.select :resource_id, ContentModule.find(:all, :order => 'name ASC').collect { |t| [t.name, t.id] } %>
+        </fieldset>
+        <div class="submit">
+          <%= submit_tag 'Lägg till' %> eller <%= link_to "avbryt", previous_view_path(), :class => 'cancel' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

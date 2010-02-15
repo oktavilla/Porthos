@@ -6,7 +6,7 @@
       <%= link_to 'Kommentarer', comments_admin_page_path(:id => @page), :class => 'comments' %>
     <% end %>
     <% unless @page.is_a? PageCollection %>
-      <%= link_to 'Förhandsgranska', page_path(:id => @page.id, :preview => 1), :class => 'preview' %>
+      <%= link_to 'Förhandsgranska', preview_page_path(@page.id), :class => 'preview' %>
     <% else %>
       <%= link_to "Lägg till / redigera sidor", admin_page_collection_path(@page) %>
     <% end %>
@@ -16,10 +16,12 @@
 <div id="container">
   <div id="content">
     <div id="ca">
-      <% unless @page.active? -%>
+      <% if not @page.active? -%>
       <p class="notice">
         Denna sida är inte aktiverad och kommer inte att synas på siten. <%= link_to "Aktivera sidan »", toggle_admin_page_path(@page), :method => :put %>
       </p>
+      <% elsif @page.unpublished_changes? -%>
+      <p class="notice"><%= link_to "Publicera ändringarna", publish_admin_page_path(@page), :method => :put %></p>
       <% end -%>
       <div id="page_<%= @page.id %>" class="page_layout <%= @page.layout_class %>">
       <% (1..@page.column_count).each do |column| -%>
@@ -28,35 +30,35 @@
             <span class="sort_contents controls">
               <a class="add" href="#">Lägg till innehåll</a>
             <% if @page.contents.any? -%>
-              <%= link_to("Sortera innehåll", sort_admin_page_contents_path(@page), :class => 'sort fr') %>
+              <%= link_to("Sortera innehåll", sort_admin_contents_path, :class => 'sort fr') %>
               <%= display_indicator :id => 'page_contents_indicator' %>
             <% end -%>
             </span>
             <div class="sub_controls" style="display:none;">
               <ul>
                 <li>
-                  <a class="text Textfield new_content" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'Textfield', :column_position => column }) %>">Text</a>
+                  <a class="text Textfield new_content" href="<%= new_admin_content_path(:content => { :context_id => @page.id, :context_type => 'Page', :context_id => @page.id, :context_type => 'Page', :resource_type => 'Textfield', :column_position => column }) %>">Text</a>
                 </li>
                 <li>
-                  <a class="form RegistrationForm new_content" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'RegistrationForm', :column_position => column }) %>">Formulär</a>
+                  <a class="form RegistrationForm new_content" href="<%= new_admin_content_path(:content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'RegistrationForm', :column_position => column }) %>">Formulär</a>
                 </li>
                 <li class="cl">
-                  <a class="image ContentImage" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'ContentImage', :column_position => column }) %>">Bild</a>
+                  <a class="image ContentImage" href="<%= new_admin_content_path(:content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentImage', :column_position => column }) %>">Bild</a>
                 </li>
                 <li>
-                  <a class="shared_content new_content" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'Textfield', :column_position => column }, :resource => { :shared => 1 }) %>">Delat innehåll</a>
+                  <a class="shared_content new_content" href="<%= new_admin_content_path(:content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'Textfield', :column_position => column }, :resource => { :shared => 1 }) %>">Delat innehåll</a>
                 </li>
                 <li class="cl">
-                  <a class="image ContentImage" href="<%= new_admin_page_content_path(:page_id => @page, :collection => 1, :content => { :resource_type => 'ContentImage', :column_position => column }) %>">Bildsamling</a>
+                  <a class="image ContentImage" href="<%= new_admin_content_path(:collection => 1, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentImage', :column_position => column }) %>">Bildsamling</a>
                 </li>
                 <li>
-                  <a class="movie ContentMovie" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'ContentMovie', :column_position => column }) %>">Film</a>
+                  <a class="movie ContentMovie" href="<%= new_admin_content_path(:content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentMovie', :column_position => column }) %>">Film</a>
                 </li>
                 <li class="cl">
-                  <a class="teasers Teaser new_content" href="<%= new_admin_page_content_path(:page_id => @page, :collection => 1, :content => { :resource_type => 'Teaser', :column_position => column }) %>">Puffar</a>
+                  <a class="teasers Teaser new_content" href="<%= new_admin_content_path(:collection => 1, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'Teaser', :column_position => column }) %>">Puffar</a>
                 </li>
                 <li>
-                  <a class="module ContentModule new_content" href="<%= new_admin_page_content_path(:page_id => @page, :content => { :resource_type => 'ContentModule', :column_position => column }) %>">Modul</a>
+                  <a class="module ContentModule new_content" href="<%= new_admin_content_path(:content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentModule', :column_position => column }) %>">Modul</a>
                 </li>
               </ul>
             </div>
@@ -69,15 +71,15 @@
                 <span class="type"></span>
                 <span class="controls">
                   <% if content.module? and content.resource.has_settings? %>
-                    <%= link_to("Inställningar", settings_admin_page_content_path(@page, content), :class => (!content.collection? ? 'settings' : 'settings')) %>
+                    <%= link_to("Inställningar", settings_admin_content_path(content), :class => (!content.collection? ? 'settings' : 'settings')) %>
                   <% end %>
-                  <%= link_to("Ändra", edit_admin_page_content_path(@page, content), :class => (!content.collection? ? 'edit' : 'edit')) if not content.module? %>
-                  <%= link_to content.active? ? 'Dölj' : 'Visa', toggle_admin_page_content_path(@page, content), :method => :put, :class => 'visibility' %>
-                  <%= link_to "Ta bort", admin_page_content_path(@page, content), :method => :delete, :confirm => "Är du säker? Detta går inte att ångra.", :class => 'delete' %>
+                  <%= link_to("Ändra", edit_admin_content_path(content), :class => (!content.collection? ? 'edit' : 'edit')) if not content.module? %>
+                  <%= link_to content.active? ? 'Dölj' : 'Visa', toggle_admin_content_path(content), :method => :put, :class => 'visibility' %>
+                  <%= link_to "Ta bort", admin_content_path(content), :method => :delete, :confirm => "Är du säker? Detta går inte att ångra.", :class => 'delete' %>
                 </span>
-                <%= render :partial => content.resource_template, :locals => { :resource => content.resource, :page => @page, :content => content } %>
+                <%= render :partial => content.resource_template, :locals => { :resource => content.resource, :content => content } %>
               <% else %>
-                <%= render :partial => content.collection_template, :locals => { :page => @page, :content => content } %>
+                <%= render :partial => content.collection_template, :locals => { :content => content } %>
               <% end %>
               </li>
             <% end -%>

@@ -1,8 +1,10 @@
-<% form_for :content, :url => admin_page_contents_path(:page_id => @page) do |f| %>
+<% form_for :content, :url => admin_contents_path do |f| %>
   <h1>Lägg till modul</h1>
   <div class="column1">
     <div class="inner">
       <label for="content_resource_id">Välj modul:</label>
+      <%= f.hidden_field :context_id %>
+      <%= f.hidden_field :context_type %>
       <%= f.hidden_field :column_position %>
       <%= f.hidden_field :resource_type %>
       <%= f.select :resource_id, ContentModule.find(:all, :order => 'name ASC').collect { |t| [t.name, t.id] } %>
