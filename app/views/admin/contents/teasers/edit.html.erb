@@ -1,37 +1,34 @@
-<% @page_class = 'A page-teasers' -%>
-<div id="content">
-  <div id="c-a">
-    <%= link_to "« Tillbaka till sidan", admin_page_path(@page), :class => 'back' %>
-    <% nested_list_of @content.contents, {}, :id => 'teasers_list', :class => 'teasers' do |content| %>
-      <%= render :partial => 'admin/contents/teasers/teaser', :locals => {:content => content, :page => @page} %>
-    <% end %>
-    <% form_for :content, :url => admin_content_path(@content), :html => {:multipart => true}  do |f| %>
-      <%= f.hidden_field :parent_id, { :value => @content.id } %>
-      <%= f.hidden_field :column_position %>
-      <%= f.hidden_field :resource_type, { :value => 'Teaser' } %>
-      <% fields_for :teaser do |teaser| %>
-      <fieldset>
-        <legend>Lägg till puff</legend>
-        <label for="content_<%= @content.id %>_teaser_title">Rubrik</label>
-        <%= teaser.text_field :title, :id => "content_#{@content.id}_teaser_title" %>
-        <label for="content_<%= @content.id %>_teaser_body">Text</label>
-        <%= teaser.text_area :body, :id => "content_#{@content.id}_teaser_body" %>
-        
-        <label for="teaser_display_type">Typ</label>
-        <label for="teaser_display_type_0"><%= teaser.radio_button :display_type, Teaser::DISPLAY_TYPES[:small] %> Liten</label>
-        <label for="teaser_display_type_1"><%= teaser.radio_button :display_type, Teaser::DISPLAY_TYPES[:medium] %> Mellan</label>
-        <label for="teaser_display_type_2"><%= teaser.radio_button :display_type, Teaser::DISPLAY_TYPES[:big] %> Stor</label>
-        
-        <label for="teaser_css_class">CSS-klass</label>
-        <%= teaser.select :css_class, Teaser::CSS_CLASSES %>
-        
-        <label for="teaser_files">Bild</label>
-        <%= file_field_tag 'teaser[files][]', :size => "15", :class => "file" %>
-      </fieldset>
-      <% end %>
-      <div class="submit">
-        <%= submit_tag 'Lägg till puff', :class => 'button' %> eller <%= link_to "Avbryt", previous_view_path(admin_page_path(@page)) %>
+<% @page_title = "Redigera puff" %>
+<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<div id="workspace">
+  <div id="c_wrap" class="layout_2">
+    <div id="c_1">
+      <div class="header">
+        <h1>Ändra puff</h1>
       </div>
-    <% end %>
+      <% form_for :content, :url => admin_content_path(@content), :html => { :multipart => true, :method => :put }  do |f| %>
+        <% fields_for :resource do |resource| %>
+        <fieldset>
+          <label for="content_<%= @content.id %>_resource_title">Rubrik</label>
+          <%= resource.text_field :title, :id => "content_#{@content.id}_resource_title" %>
+          <label for="content_<%= @content.id %>_resource_body">Text</label>
+          <%= resource.text_area :body, :id => "content_#{@content.id}_resource_body" %>
+        
+          <label for="resource_display_type">Typ</label>
+          <label for="resource_display_type_0"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:small] %> Liten</label>
+          <label for="resource_display_type_1"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:medium] %> Mellan</label>
+          <label for="resource_display_type_2"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:big] %> Stor</label>
+        
+          <label for="resource_css_class">CSS-klass</label>
+          <%= resource.select :css_class, Teaser::CSS_CLASSES %>
+        
+          <label for="resource_files">Bild</label>
+          <%= file_field_tag 'resource[files][]', :size => "15", :class => "file" %>
+        </fieldset>
+        <% end %>
+        <div class="submit">
+          <%= submit_tag 'Lägg till puff', :class => 'button' %> eller <%= link_to "Avbryt", previous_view_path %>
+        </div>
+      <% end %>
   </div>
 </div>
