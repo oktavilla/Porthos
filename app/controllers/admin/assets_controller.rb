@@ -110,7 +110,7 @@ class Admin::AssetsController < ApplicationController
   end
   
   def incomplete
-    @assets = Asset.find(:all, :conditions => ['incomplete = 1 AND created_by = ?', current_user.id])
+    @assets = Asset.find(:all, :conditions => ['incomplete = 1 AND created_by_id = ?', current_user.id])
   end
 
   def update_multiple
