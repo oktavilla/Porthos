@@ -61,12 +61,12 @@ module ApplicationHelper
     end.join("\n")
     
     list = content_tag('ul', ret, html_options)
-    first_level ? concat(list, block.binding) : list
+    first_level ? concat(list) : list
   end
   
   def block_to_partial(partial_name, options = {}, &block)
     options.merge!(:body => capture(&block))
-    concat(render(:partial => partial_name, :locals => options), block.binding)
+    concat(render(:partial => partial_name, :locals => options))
   end
   
   def toolbox(type, options = {}, &block)
