@@ -25,7 +25,7 @@ class Admin::CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     @comment.destroy
     respond_to do |format|
-      flash[:notice] = "Kommentaren #{l(:admin_general, :deleted)}"
+      flash[:notice] = "Kommentaren #{t(:deleted, :scope => [:app, :admin_general])}"
       format.html { 
         redirect_to params[:return_to] || comments_admin_page_path(@comment.commentable)
       }
@@ -35,7 +35,7 @@ class Admin::CommentsController < ApplicationController
   def destroy_all_spam
     @comment = Comment.destroy_all('spam = 1')
     respond_to do |format|
-      flash[:notice] = "Alla spam-kommentarer #{l(:admin_general, :deleted)}"
+      flash[:notice] = "Alla spam-kommentarer #{t(:deleted, :scope => [:app, :admin_general])}"
       format.html { 
         redirect_to params[:return_to] || comments_admin_page_path(@comment.commentable)
       }

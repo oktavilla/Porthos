@@ -65,7 +65,7 @@ class Admin::PagesController < ApplicationController
     @page = Page.find(params[:id])
     respond_to do |format|
       if @page.update_attributes(params[:page])
-        flash[:notice] = l(:admin_pages, :saved)
+        flash[:notice] = t(:saved, :scope => [:app, :admin_pages])
         format.html { redirect_to params[:return_to] || admin_page_path(@page) }
       else
         format.html { render :action => 'edit' }
@@ -77,7 +77,7 @@ class Admin::PagesController < ApplicationController
     @page = Page.find(params[:id])
     @page.destroy
     respond_to do |format|
-      flash[:notice] = "”#{@page.title}” #{l(:admin_general, :deleted)}"
+      flash[:notice] = "”#{@page.title}” #{t(:deleted, :scope => [:app, :admin_general])}"
       format.html { 
         redirect_to @page.child? ? url_for(:controller => @page.parent.class.to_s.tableize, :action => 'show', :id => @page.parent) : admin_nodes_path(:nodes => @page.node)
       }

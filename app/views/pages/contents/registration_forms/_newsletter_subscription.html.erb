@@ -2,7 +2,7 @@
   <%= error_messages_for :registration %>
   <div style="display:none;">
     <%= hidden_field_tag 'registration_type', 'NewsletterSubscription' %>
-    <%= f.hidden_field :node_id, :value => @node.id %>
+    <%= f.hidden_field :node_id, :value => node.id %>
     <%= f.hidden_field :registration_form_id, :value => content.resource.id %>
   </div>
   <fieldset>

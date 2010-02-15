@@ -1,7 +1,5 @@
 require 'fileutils' 
 class AssetsController < ApplicationController
-  session :off
-
   # GET /assets/1
   # GET /assets/1.xml
   def show

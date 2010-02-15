@@ -144,7 +144,7 @@ protected
 
   def validate_on_create  
     image = magick_instance(@file.path)
-    return errors.add(:file, l(:image_asset, :unknown_format)) unless image
+    return errors.add(:file, t(:unknown_format, :scope => [:app, :image_asset])) unless image
   end
 
   # before create

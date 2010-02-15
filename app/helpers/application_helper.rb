@@ -161,8 +161,8 @@ module ApplicationHelper
   # though it will not be the exact length.
   def awesome_truncate(text, length = 30, truncate_string = "...")
     return if text.nil?
-    l = length - truncate_string.chars.length
-    text.chars.length > length ? text[/\A.{#{l}}\w*\;?/m][/.*[\w\;]/m] + truncate_string : text
+    l = length - truncate_string.mb_chars.length
+    text.mb_chars.length > length ? text[/\A.{#{l}}\w*\;?/m][/.*[\w\;]/m] + truncate_string : text
   end 
   
   def flash_mediaplayer_tag(asset, options = {})
@@ -170,7 +170,7 @@ module ApplicationHelper
      :file => display_movie_path(asset, asset.extname), 
      :image => (display_image_path(:size => asset.thumbnail.width, :id => asset.thumbnail, :format => asset.thumbnail.extname) if asset.movie?)
     })
-    content = content_tag('a', l(:general, :flash_is_needed), { :href => 'http://www.macromedia.com/go/getflashplayer'})
+    content = content_tag('a', t(:flash_is_needed, :scope => [:app, :general]), { :href => 'http://www.macromedia.com/go/getflashplayer'})
     content << options.collect { |option, value| content_tag('span', value, {:class => option}) }.join
     content_tag('div', content, { :class => 'mediaplayer', :id => "asset-#{asset.id}" })
   end
@@ -244,4 +244,8 @@ module ApplicationHelper
     end
   end
   
+  def admin_assets_path_with_session_key
+    session_key = ActionController::Base.session_options[:key]
+    admin_assets_path(session_key => cookies[session_key], request_forgery_protection_token => form_authenticity_token)
+  end
 end

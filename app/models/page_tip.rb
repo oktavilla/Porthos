@@ -59,7 +59,7 @@
 
 class PageTip < Registration
   validates_presence_of :name, :email, :recipients
-  validates_as_email :email, :message => l(:validators, :bad_email_format)
+  validates_as_email :email, :message => "har fel format"
   after_create :send_tip
   
   class << self

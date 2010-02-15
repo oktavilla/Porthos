@@ -114,7 +114,7 @@ Porthos.IframeObserver = Class.create(Abstract.TimedObserver, {
   },
   getElement: function() {
     var iframe = this.element.contentWindow ? this.element.contentWindow.document : this.element.contentDocument;
-    return (iframe.documentElement || iframe.body);
+    return (iframe.body || iframe.documentElement);
   },    
   resetElement: function() {
     this.clearCallback();

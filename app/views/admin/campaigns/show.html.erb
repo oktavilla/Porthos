@@ -37,7 +37,7 @@
             <li>
               <% if result.first.constantize.new.payable? %>
                 <% amount = @campaign.income(result.first) %>
-                <span class="value"><%= number_to_currency(amount) %> <%= result.first.constantize.localized_model_name %></span>
+                <span class="value"><%= number_to_currency(amount) %> <%= result.first.constantize.human_name %></span>
                 <span class="average">
                 <%= result.last %> omvandlingar.
                 <% if not amount.zero? -%>
@@ -45,7 +45,7 @@
                 <% end -%>
                 </span>
               <% else -%>
-                <span class="value"><%= result.last %> <%= result.first.constantize.localized_model_name %></span>
+                <span class="value"><%= result.last %> <%= result.first.constantize.human_name %></span>
               <% end -%>
             </li>
           <% end %>
@@ -94,7 +94,7 @@
                   <li>
                   <% if result.first.constantize.new.payable? %>
                     <% amount = point.income(result.first) %>
-                    <span class="value"><%= number_to_currency(amount) %> <%= result.first.constantize.localized_model_name %></span>
+                    <span class="value"><%= number_to_currency(amount) %> <%= result.first.constantize.human_name %></span>
                     <span class="average">
                     <%= result.last %> omvandlingar.
                     <% if not amount.zero? -%>
@@ -102,7 +102,7 @@
                     <% end -%>
                     </span>
                   <% else -%>
-                    <span class="value"><%= result.last %> <%= result.first.constantize.localized_model_name %></span>
+                    <span class="value"><%= result.last %> <%= result.first.constantize.human_name %></span>
                   <% end -%>
                   </li>
                   <% end %>

@@ -15,22 +15,19 @@ protected
       self.file_name         = make_unique_filename(file_name) unless Asset.count(:conditions => {:file_name => self.file_name}).zero?
       self.extname           = file_extname.gsub(/\./,'').downcase
       self.size              = @file.size
-      @original_path_with_ext = "#{@file.local_path}.#{self.extname}"
-      self.mime_type         = MIME::Types.type_for(@original_path_with_ext).first.to_s
-      FileUtils.move(@file.local_path, @original_path_with_ext)
+      self.mime_type         = MIME::Types.type_for(@file.original_filename).first.to_s
+      write_to_disk
       create_thumbnail
       self.width  = thumbnail.width
       self.height = thumbnail.height
-      file_extname == '.flv' ? write_to_disk : convert_to_flv 
+      file_extname == '.flv' ? symlink_to_public : convert_to_flv 
       self.title             = file_name.gsub(/\-/,'_').humanize if title.blank?
-      symlink_to_public
     end
   end  
   
   def convert_to_flv
-    self.extname = 'flv'
-    @file = Asset.new_tempfile "/tmp/#{self.file_name}.flv"
-    system "(/usr/local/bin/ffmpeg -v 0 -i #{@original_path_with_ext} -ar 22050 -ab 64 -b 1500kbps -y #{path}; rm #{@original_path_with_ext}; /usr/local/bin/flvtool2 -U #{path});chmod 644 #{path}&"
+    Dir.mkdir(public_movie_path) unless File.exists?(public_movie_path)
+    system "(/usr/local/bin/ffmpeg -v 0 -i #{path} -ar 22050 -ab 64 -b 1500kbps -y #{flv_path}; /usr/local/bin/flvtool2 -U #{flv_path});chmod 644 #{flv_path}&"
   end
   
   def thumbnail_position=(marker)
@@ -41,9 +38,9 @@ protected
     self.thumbnail.destroy if self.thumbnail
     thumbnail_name = "#{file_name}_thumbnail.jpg"
     if self.extname == 'flv'
-      system("/usr/local/bin/flvtool2 -U #{@original_path_with_ext||path}")
+      system("/usr/local/bin/flvtool2 -U #{path}")
     end
-    system("/usr/local/bin/ffmpeg -i #{@original_path_with_ext||path} -vframes 1 -ss #{options[:position]} -f image2 -an /tmp/#{thumbnail_name}")
+    system("/usr/local/bin/ffmpeg -i #{path} -vframes 1 -ss #{options[:position]} -f image2 -an /tmp/#{thumbnail_name}")
     if File.exists? "/tmp/#{thumbnail_name}"
       self.thumbnail = ImageAsset.create({:file => Asset.new_tempfile("/tmp/#{thumbnail_name}"), :private => true})
       File.unlink "/tmp/#{thumbnail_name}"
@@ -51,22 +48,19 @@ protected
   end
 
   def symlink_to_public
-    movie_dir = File.join(RAILS_ROOT, 'public', 'movies')
-    Dir.mkdir(movie_dir) unless File.exists?(movie_dir)
-    system("ln -nfs #{path} #{symlink_path}")
+    Dir.mkdir(public_movie_path) unless File.exists?(public_movie_path)
+    system("ln -nfs #{path} #{flv_path}")
   end
 
   def remove_symlink
-    system("rm #{symlink_path}")
+    system("rm #{flv_path}")
   end
 
-  def symlink_path
-    File.join(RAILS_ROOT, 'public', 'movies', full_name)
+  def flv_path
+    File.join(RAILS_ROOT, 'public', 'movies', "#{file_name}.flv")
   end
   
-  def write_to_disk
-    Dir.mkdir(SAVE_DIR) unless File.exists?(SAVE_DIR)
-    FileUtils.move(@original_path_with_ext, path)
-    File.chmod 0644, path # -rw-r--r--
+  def public_movie_path
+    File.join(RAILS_ROOT, 'public', 'movies')
   end
 end

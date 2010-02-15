@@ -1,0 +1,22 @@
+<% @page_class = "AB content" -%>
+<div id="content_header">
+  <h1>Ny vidarebefordring</h1>
+</div>
+<div id="container">
+  <div id="content">
+    <div id="ca"><div id="ca2">
+      <% form_for :redirect, :url => admin_redirects_path, :html => { :class => "tiny" } do |f| %>
+        <%= error_messages_for :redirect %>
+        <label for="redirect_path">Från</label>
+        <%= f.text_field :path %>
+        <p class="form_help after">Vilken address som ska vidarebefordras, t.ex. /ge-en-gava</span>
+        <label for="redirect_target">Till</label>
+        <%= f.text_field :target %>
+        <p class="form_help after">Vilken address som besökaren ska vidarebefordras till, t.ex. /stod-oss/ge-en-gava</span>
+        <div class="submit">
+          <%= submit_tag 'Spara' %> eller <%= link_to "avbryt", admin_redirects_path %>
+        </div>
+      <% end %>
+    </div></div>
+  </div>
+</div>

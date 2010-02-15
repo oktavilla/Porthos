@@ -15,6 +15,6 @@
 <ul class="filter">
   <li><%= link_to "Visa alla", admin_registrations_path(), :class => (current_type == "Registration" ? 'current' : nil) %></li>
 <% Registration::valid_registration_types.each do |registration_type| -%>
-  <li><%= link_to registration_type.constantize.localized_model_name, admin_registrations_path(:type => registration_type), :class => (current_type == registration_type ? 'current' : nil) %></li>
+  <li><%= link_to registration_type.constantize.human_name, admin_registrations_path(:type => registration_type), :class => (current_type == registration_type ? 'current' : nil) %></li>
 <% end -%>
 </ul>

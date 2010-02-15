@@ -25,6 +25,7 @@ ActionController::Routing::Routes.draw do |map|
   map.forgot_password '/forgot_password', :controller => 'user/sessions', :action => 'forgot_password'
   map.send_password '/send_password', :controller => 'user/sessions', :action => 'send_new_password'
   
+  map.new_user  '/skapa-konto',  :controller => 'user/users', :action => 'new'
   map.namespace(:user) do |user|
     user.resources :sessions, :collection => { :token => :get, :send_new_password => :get, :forgot_password => :get }
   end
@@ -100,5 +101,7 @@ ActionController::Routing::Routes.draw do |map|
      
     admin.activities '/activities', :controller => 'activities', :action => 'index'
     admin.registration_activity '/activities/:type', :controller => 'activities', :action => 'show'
+    
+    admin.resources :redirects
   end
 end

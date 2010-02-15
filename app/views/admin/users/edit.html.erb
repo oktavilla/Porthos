@@ -22,7 +22,7 @@
           <h1>Registreringar</h1>
           <ul>
           <% @user.registrations.each do |registration| %>
-            <li><%= link_to "#{registration.class.localized_model_name} ##{registration.id}", formatted_admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></li>
+            <li><%= link_to "#{registration.class.human_name} ##{registration.id}", formatted_admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></li>
           <% end %>
           </ul>
         <% end %>

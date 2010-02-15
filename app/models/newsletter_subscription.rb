@@ -59,7 +59,7 @@
 
 class NewsletterSubscription < Registration
   validates_presence_of :email
-  validates_as_email :email, :message => l(:validators, :bad_email_format)
+  validates_as_email :email, :message => "har fel format"
   
   before_save :allow_contact_approval
   

@@ -26,7 +26,7 @@ class Admin::RegistrationFormsController < ApplicationController
     @registration_form = params[:type] ? params[:type].constantize.new(params[:registration_form]) : RegistrationForm.new(params[:registration_form])
     respond_to do |format|
       if @registration_form.save
-        flash[:notice] = "#{@registration_form.name} #{l(:admin_general, :saved)}"
+        flash[:notice] = "#{@registration_form.name} #{t(:saved, :scope => [:app, :admin_general])}"
         format.html { redirect_to edit_admin_registration_form_path(@registration_form) }
       else
         @role = Role.find_or_create_by_name('Admin')
@@ -49,7 +49,7 @@ class Admin::RegistrationFormsController < ApplicationController
     @registration_form = RegistrationForm.find(params[:id])
     respond_to do |format|
       if @registration_form.update_attributes(params[:registration_form])
-        flash[:notice] = "#{@registration_form.name} #{l(:admin_general, :saved)}"
+        flash[:notice] = "#{@registration_form.name} #{t(:saved, :scope => [:app, :admin_general])}"
         format.html { redirect_to admin_registration_forms_path }
       else
         format.html { render :action => :edit }
@@ -61,7 +61,7 @@ class Admin::RegistrationFormsController < ApplicationController
     @registration_form = RegistrationForm.find(params[:id])
     @registration_form.destroy
     Content.destroy_all(['resource_id = ? AND resource_type = ?', @registration_form.id, 'RegistrationForm'])
-    flash[:notice] = "#{@registration_form.name} #{l(:admin_general, :deleted)}"
+    flash[:notice] = "#{@registration_form.name} #{t(:deleted, :scope => [:app, :admin_general])}"
     respond_to do |format|
       format.html { redirect_to admin_registration_forms_path }
     end

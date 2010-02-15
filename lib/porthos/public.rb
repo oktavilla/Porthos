@@ -42,6 +42,10 @@ module Porthos
         end
       end
       
+      def porthos_session_id
+        session[:porthos_id] ||= ActiveSupport::SecureRandom.hex
+      end
+      
       def node_ancestors
         unless defined?(@node_ancestors)
           @node_ancestors = node.ancestors.reverse

@@ -32,11 +32,11 @@ class MeasurePoint < ActiveRecord::Base
   end
   
   def link_type_name
-    l(:measure_point, :link_types, LINK_TYPES.index(link_type)) rescue ''
+    t(LINK_TYPES.index(link_type), :scope => [:app, :measure_point, :link_types] ) rescue ''
   end
   
   def target_name
-    l(:measure_point, :targets, TARGETS.index(target)) rescue ''
+    t(TARGETS.index(target), :scope => [:app, :measure_point, :targets] ) rescue ''
   end
   
   def total_conversions

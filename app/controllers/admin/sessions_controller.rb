@@ -1,6 +1,7 @@
 # This controller handles the login/logout function of the site.  
 class Admin::SessionsController < ApplicationController
   layout 'sessions'
+  include Porthos::Admin
 
   def index
     redirect_to admin_dashboard_path
@@ -18,9 +19,9 @@ class Admin::SessionsController < ApplicationController
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
       redirect_back_or_default('/admin')
-      flash[:notice] = l(:admin_general, :logged_in)
+      flash[:notice] = t(:logged_in, :scope => [:app, :admin_general])
     else
-      flash[:notice] = l(:admin_general, :login_failed)
+      flash[:notice] = t(:admin_general, :scope => [:app, :login_failed])
       render :action => 'new'
     end
   end
@@ -29,7 +30,7 @@ class Admin::SessionsController < ApplicationController
     self.current_user.forget_me if logged_in?
     cookies.delete :auth_token
     reset_session
-    flash[:notice] = l(:admin_general, :logged_out)
+    flash[:notice] = t(:logged_out, :scope => [:app, :admin_general])
     redirect_back_or_default(admin_login_path)
   end
 
