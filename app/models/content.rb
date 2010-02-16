@@ -2,7 +2,7 @@ class Content < ActiveRecord::Base
   belongs_to :context,  :polymorphic => true
   belongs_to :resource, :polymorphic => true
   belongs_to :content_collection, :foreign_key => 'parent_id'
-
+  has_many :restrictions
   named_scope :active, :conditions => ["contents.active = ?", true]
 
   acts_as_list :scope => 'context_id = \'#{context_id}\' AND context_type = \'#{context_type}\' AND column_position = \'#{column_position}\' AND parent_id #{(parent_id.blank? ? "IS NULL" : (" = " + parent_id.to_s))}'
@@ -67,6 +67,21 @@ class Content < ActiveRecord::Base
 
   def self.approved_resources
     ['Textfield', 'Teaser', 'ContentModule', 'RegistrationForm', 'ContentImage', 'ContentMovie']
+  end
+  
+  def viewable_by(user)
+    !self.restrictions.detect { |r| r.denies?(user) }
+  end
+  
+  def restricted?
+    restrictions_count != 0
+  end
+  
+  def multiple_restrictions=(_restrictions)
+    self.restrictions.destroy_all
+    _restrictions.each do |key|
+      self.restrictions << self.restrictions.create(:mapping_key => key)
+    end
   end
   
 protected
