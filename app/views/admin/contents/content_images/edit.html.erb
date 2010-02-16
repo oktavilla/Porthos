@@ -9,6 +9,6 @@
   <%= f.select :style, ContentImage.styles.collect { |s, klass| [s[:name], s[:class]] } %>
   <label for="content_image_downloadable"><%= f.check_box :downloadable %> Länka till orginal</label>
   <div class="submit">
-    <input class="button" type="submit" value="Spara ändringar"> eller <%= link_to "Avbryt", previous_view_path(admin_page_path(@page)) %>
+    <input class="button" type="submit" value="Spara ändringar"> eller <%= link_to "Avbryt", previous_view_path %>
   </div>
 <% end %>

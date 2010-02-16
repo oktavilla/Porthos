@@ -5,7 +5,7 @@
       <label for="asset_usage_gravity">Var i bilden ska beskärningen utgå ifrån?</label>
       <%= f.select :gravity, [["Övre delen", 'n'], ['Mitten', 'c'], ['Undre delen', 's']] %>
       <div class="submit absolute">
-        <%= submit_tag 'Spara', :class => 'commit' %> eller <%= link_to "avbryt", previous_view_path(admin_page_path(@page)), :class => 'cancel' %>
+        <%= submit_tag 'Spara', :class => 'commit' %> eller <%= link_to "avbryt", previous_view_path, :class => 'cancel' %>
       </div>
     <% end %>
   </div>
