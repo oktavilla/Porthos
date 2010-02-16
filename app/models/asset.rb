@@ -23,7 +23,7 @@
 require 'digest/sha1'
 require 'mime/types'
 class Asset < ActiveRecord::Base
-  belongs_to :created_by, :class_name => 'User', :foreign_key => "created_by"
+  belongs_to :created_by, :class_name => 'User'
   has_many   :usages, :class_name => 'AssetUsage'
   
   has_one :child, :class_name => 'Asset', :foreign_key => 'parent_id', :dependent => :destroy
@@ -86,7 +86,7 @@ class Asset < ActiveRecord::Base
     self.attributes
   end
 
-  def creator
+  def creator_name
     @creator ||= created_by ? created_by.name : nil
   end
 

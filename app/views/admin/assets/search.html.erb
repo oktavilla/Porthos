@@ -38,8 +38,8 @@
                 <% end %>
                 <div class="meta">
                   <span>Uppladdad</span> den <%= asset.created_at.strftime("%d %b %Y") %>
-                  <% unless asset.creator.blank? -%>
-                  <span>av</span> <%= asset.creator %>
+                  <% unless asset.created_by.nil? -%>
+                  <span>av</span> <%= asset.created_by.name %>
                   <% end -%>
                 </div>
                 <div class="actions">
