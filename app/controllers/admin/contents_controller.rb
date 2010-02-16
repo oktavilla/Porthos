@@ -33,13 +33,9 @@ class Admin::ContentsController < ApplicationController
   
   def update
     @content = Content.find(params[:id])
-    @saved = if params[:resource]
-      @content.resource.update_attributes(params[:resource])
-    elsif params[:content]
-      @content.update_attributes(params[:content])
-    else
-      false
-    end
+    @content.resource.update_attributes(params[:resource]) if params[:resource]
+    @content.update_attributes(params[:content]) if params[:content]
+    @saved = @content.valid? && @content.resource.valid?
     respond_to do |format|
       if @saved
         format.html { redirect_to restfull_path_for(@content.context, :anchor => "content_#{@content.id}") }

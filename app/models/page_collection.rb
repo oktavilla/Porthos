@@ -107,13 +107,13 @@ class PageCollection < Page
           :page   => params[:page],
           :include_restricted => true
         }
-        unless self.calendar?
+        unless proxy_owner.calendar?
           active.published.by_date(conditions)
         else
           active.by_date(conditions)
         end
       else
-        unless self.calendar?
+        unless proxy_owner.calendar?
           active.published.latest({
             :page => params[:page],
             :include_restricted => true
