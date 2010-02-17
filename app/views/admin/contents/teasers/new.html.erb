@@ -33,6 +33,7 @@
             <% end -%>
           </div>  
         <% end %>
+        <%= render :partial => 'admin/contents/restriction_settings', :locals => { :content => @content }%>
         <div class="submit">
           <%= submit_tag 'Lägg till puff' %> eller <%= link_to "avbryt", previous_view_path %>
         </div>

@@ -9,12 +9,4 @@
 <% else -%>
   <%= f.select :resource_id, Textfield.shared.find(:all, :order => 'title ASC').collect { |t| [t.title, t.id] } %>
 <% end -%>
-
-<div class="restrictions">
-<% User.allowed_restrictions.each do |name, restriction| -%>
-  <label for="content_restrictions_<%= name.to_s %>" class="contains-input">
-    <%= check_box_tag "content[multiple_restrictions][]", name, @content.restrictions.detect { |r| r.mapping_key.to_sym == name } %>
-    <%= t(name, :scope => [:app, :restrictions]) %>
-  </label>
-<% end -%>
-</div>
+<%= render :partial => 'admin/contents/restriction_settings', :locals => { :content => @content }%>
