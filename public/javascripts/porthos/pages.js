@@ -218,7 +218,7 @@
         link.parentNode.appendChild(f);
         f.submit();
       });
-      if (this.columns_container.select('> p.notice').size() == 0) {
+      if ($$('p.notice').size() == 0) {
         this.columns_container.insert({
           'top' : $p({ 'class' : 'notice' }, publish_link)
         });
