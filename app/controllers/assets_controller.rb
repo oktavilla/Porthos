@@ -1,5 +1,8 @@
 require 'fileutils' 
 class AssetsController < ApplicationController
+  
+  skip_before_filter :remember_uri
+  
   # GET /assets/1
   # GET /assets/1.xml
   def show
