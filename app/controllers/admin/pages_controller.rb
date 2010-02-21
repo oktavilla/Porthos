@@ -115,7 +115,7 @@ class Admin::PagesController < ApplicationController
       :rendered_body => render_to_string(:template => 'pages/show', :layout => false),
       :changes_published_at => Time.now
     })
-
+    
     respond_to do |format|
       format.html { redirect_back_or_default admin_page_path(@page) }
     end

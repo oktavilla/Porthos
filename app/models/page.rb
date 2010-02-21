@@ -35,7 +35,7 @@ class Page < ActiveRecord::Base
       restricted
     ]
   }}
-  named_scope :with_unpublished_changes, :conditions => ["changed_at > changes_published_at"]
+  named_scope :with_unpublished_changes, :conditions => ["changed_at > changes_published_at AND rendered_body IS NOT NULL"]
 
   before_validation_on_create :set_default_layout, :set_layout_and_parent, :set_inactive
 
@@ -74,7 +74,12 @@ class Page < ActiveRecord::Base
   end
 
   def unpublished_changes?
-    !changes_published_at.nil? && !changed_at.nil? ? changed_at > changes_published_at : true
+    return false if rendered_body.blank?
+    if !changes_published_at.nil? && !changed_at.nil?
+      changed_at > changes_published_at
+    else
+      true
+    end
   end
 
   def child?
