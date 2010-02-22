@@ -74,7 +74,6 @@ class Page < ActiveRecord::Base
   end
 
   def unpublished_changes?
-    return false if rendered_body.blank?
     if !changes_published_at.nil? && !changed_at.nil?
       changed_at > changes_published_at
     else
