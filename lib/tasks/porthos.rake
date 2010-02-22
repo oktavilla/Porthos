@@ -43,7 +43,7 @@ namespace :porthos do
     else
       mkdir File.join(app_path, 'assets')
     end
-    
+      
     Rake::Task["porthos:copy_dependencys"].invoke      
     Rake::Task["porthos:symlink_public_dirs"].invoke      
         
@@ -67,20 +67,19 @@ namespace :porthos do
       Rake::Task["ultrasphinx:configure"].invoke 
     end
     
-    printf "Run porthos migrations? [y/n] "
+    printf "Run porthos migrations? Make sure you configured config/database.yml before continuing [y/n] "
     if STDIN.gets.chomp == 'y'
-      ENV['SCHEMA'] = File.join(plugin_path, 'db/schema.rb')
-      Rake::Task["db:schema:load"].invoke      
-      User.create(:admin => true, :login => 'admin', :password => 'password', :password_confirmation => 'password', :first_name => 'Admin', :last_name => 'Admin', :email => 'admin@example.com')
+      Rake::Task["porthos:install_database"].invoke
     end
   end
   
   desc "Load default db"
   task :install_database do
-    plugin_path = "#{File.dirname(__FILE__)}/../.."
     ENV['SCHEMA'] = File.join(plugin_path, 'db/schema.rb')
     Rake::Task["db:schema:load"].invoke      
-    User.create(:admin => true, :login => 'admin', :password => 'password', :password_confirmation => 'password', :first_name => 'Admin', :last_name => 'Admin', :email => 'admin@example.com')
+    admin_role = Role.create(:name => 'Admin')
+    admin_user = User.create(:login => 'admin', :password => 'password', :password_confirmation => 'password', :first_name => 'Admin', :last_name => 'Admin', :email => 'admin@example.com')
+    UserRole.create(:role_id => admin_role.id, :user_id => admin_user.id)
   end
   
   desc "Reset MemCache node cache"
