@@ -16,4 +16,4 @@ end
 
 controller_path = File.join(File.dirname(__FILE__), 'controllers')
 $LOAD_PATH << controller_path
-::Dependencies.load_paths << controller_path
+ActiveSupport::Dependencies.load_paths << controller_path
