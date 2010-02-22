@@ -230,6 +230,21 @@ li.content .controls {
     li.content .controls a.delete {text-indent:-9999px;padding-right:0;}
     li.content .controls a.visibility {background-position:0 2px;} /* Declare specific position for show/hide icon */
 
+.restriction-info {
+  position:absolute;
+  background:transparent url(/graphics/porthos/icons/32_lock.png) 0 0 no-repeat;
+  bottom:10px;
+  right:10px;
+  width:32px;
+  height:32px;
+  overflow:hidden; }
+.restriction-info ul {
+  position:absolute;
+  width:200px;
+  left:-200px;
+  top:0;
+  display:none; }
+.restriction-info:hover ul { display:block; }
 #content li.collection.content_image_wrapper {
   padding:10px 10px 10px 0;
   background:transparent; }

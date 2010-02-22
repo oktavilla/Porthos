@@ -67,10 +67,9 @@ class ImageAsset < Asset
     end
     resize_parameters[:gravity] = gravity_from_size($6)
   
-  
     resize_parameters[:width]  = self.width  if resize_parameters[:width].to_i >= self.width
     resize_parameters[:height] = self.height if resize_parameters[:height].to_i >= self.height
-
+    
     Dir.mkdir(IMAGE_VERSIONS_DIR) unless File.exists?(IMAGE_VERSIONS_DIR)
     save_path = "#{IMAGE_VERSIONS_DIR}/#{options[:size]}"
     Dir.mkdir(save_path) unless File.exists?(save_path)

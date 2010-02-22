@@ -11,8 +11,8 @@ class PagesController < ApplicationController
   layout 'public'
 
   def show
-    # raise Page.find(1).inspect
-    # If the page belongs to a date sorted structure we need to find by the slug, otherwise the id should be registred in routes
+    # If the page belongs to a date sorted structure we need to find by the slug,
+    # otherwise the id should be registred in routes
     @page = if params[:id]
       Page.active.published.find(params[:id])
     elsif params[:page_slug]
@@ -20,7 +20,7 @@ class PagesController < ApplicationController
       (page and (not page.parent_type.blank? and page.parent.calendar?) or page.published?) ? page : (raise ActiveRecord::RecordNotFound)
     end
 
-    login_required if @page.restricted
+    login_required if @page.restricted?
     
     if @page.respond_to?(:pages)
       @pages = @page.pages.find_by_params(params, :logged_in => logged_in?)
@@ -52,15 +52,10 @@ class PagesController < ApplicationController
   def comment
     @page    = Page.find(params[:id])
     @comment = @page.comments.new(params[:comment])
-    @comment.ip_address = request.remote_ip
-    @comment.env = request.env
+    @comment.ip_address, @comment.env = request.remote_ip, request.env
     respond_to do |format|
       if @comment.save
-        if @comment.spam
-          flash[:notice] = 'Din kommentar har sparats'
-        else
-          flash[:notice] = 'Din kommentar har sparats och publicerats'
-        end  
+        flash[:notice] = @comment.spam ? 'Din kommentar har sparats' : 'Din kommentar har sparats och publicerats'
         format.html { redirect_to (params[:return_to] || "/#{@node.slug}#comment_#{@comment.id}") }
       else
         format.html { render :action => 'show' }

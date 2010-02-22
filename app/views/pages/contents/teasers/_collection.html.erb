@@ -1,47 +1,14 @@
 <% reset_cycle() %>
 <% if content.contents.active.any? -%>
-  <ul class="teasers">
+  <div class="teasers">
   <% content.contents.active.each do |child| %>
-    <% 
-      classes = cycle("odd","even")
-      classes += " #{child.resource.css_class}" unless child.resource.css_class.blank?
-      classes += " type_#{(child.resource.display_type || 0)}"
-      classes += ' slide-show' if child.resource.has_slideshow?
-      classes += ' no-image' unless child.resource.images.any?
-      if child.resource.big?
-        teaser_image_size = "c310x230"
-      elsif child.resource.medium?
-        teaser_image_size = "c70x96"
-      elsif child.resource.small?
-        teaser_image_size = "c70x70"
-      else
-        teaser_image_size = "c70x70"
-      end
-    -%>
-    <li class="<%= classes %>" id="teaser_<%= child.resource.id %>">
-      <% if child.resource.images.any? %>
-      <div class="teaser-images">
-        <ul id="teaser-images-<%= child.resource.id %>">
-          <li>
-            <%= image_tag(display_image_path(:size => "#{teaser_image_size}g-#{child.resource.images.first.gravity}", :id => child.resource.images.first, :format => child.resource.images.first.extname), :alt => child.resource.images.first.title ) %>
-            <span></span>
-          </li>
-          <% if child.resource.has_slideshow? %>
-            <% child.resource.images.each do |image| %>
-              <% if image != child.resource.images.first %>
-                <li style="display:none;"><%= image_tag(display_image_path(:size => "#{teaser_image_size}g-#{image.gravity}", :id => image, :format => image.extname), :alt => image.title) %></li>
-              <% end %>
-            <% end %>
-          <% end %>
-        </ul>
-        <span></span>
-      </div>
-      <% end %>
-      <div class="teaser_content">
-        <h2><%= child.resource.title %></h2>
-        <%= textilize(child.resource.body) %>
-      </div>
-    </li>
+    <% unless @full_render -%>
+      <%= "<"+"% if Content.find(#{child.id}).viewable_by(current_user) %"+">" if child.restricted? %>
+      <%= render(:partial => 'pages/contents/teasers/teaser', :locals => { :content => child, :parent => content }) %>
+      <%= "<"+"% end %"+">" if child.restricted? %>
+    <% else -%>
+      <%= render(:partial => 'pages/contents/teasers/teaser', :locals => { :content => child, :parent => content }) if child.restricted? && child.viewable_by(current_user) %>
+    <% end -%>
   <% end -%>
-  </ul>
+  </div>
 <% end -%>
