@@ -219,15 +219,6 @@ module Ultrasphinx
   end
 end
 
-module ArkanisDevelopment::SimpleLocalization #:nodoc:
-  module LocalizedDateHelpers
-    def date_select(object_name, method, options = {}, html_options = {})
-      options = Language[:helpers, :date_select].symbolize_keys.update(options)
-      super object_name, method, options, html_options
-    end
-  end
-end
-
 # override to not make acts_as_defensio submit articles
 # not sure if this is good, override needed to be able to to create new pages
 module Defensio
