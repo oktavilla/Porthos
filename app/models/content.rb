@@ -49,6 +49,16 @@ class Content < ActiveRecord::Base
     resource_type == 'RegistrationForm'
   end
 
+  def public_template
+    @public_template ||= if collection?
+      "/pages/contents/#{resource_type.underscore.pluralize}/collection"
+    elsif form?
+      "/pages/contents/registration_forms/#{resource.template}"
+    else
+      "/pages/contents/#{resource_type.underscore.pluralize}/#{resource_type.underscore}"
+    end
+  end
+
   def resource_template
     "admin/contents/#{resource_type.underscore.pluralize}/#{resource_type.underscore}.html.erb"
   end
@@ -66,7 +76,14 @@ class Content < ActiveRecord::Base
   end
 
   def self.approved_resources
-    ['Textfield', 'Teaser', 'ContentModule', 'RegistrationForm', 'ContentImage', 'ContentMovie']
+    [
+      'Textfield',
+      'Teaser',
+      'ContentModule',
+      'RegistrationForm',
+      'ContentImage',
+      'ContentMovie'
+    ]
   end
   
   def viewable_by(user)
@@ -74,7 +91,7 @@ class Content < ActiveRecord::Base
   end
   
   def restricted?
-    restrictions_count != 0
+    !restrictions_count.nil? && restrictions_count > 0
   end
   
   def multiple_restrictions=(_restrictions)

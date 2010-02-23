@@ -67,6 +67,15 @@
               <li class="<%= "#{content.resource_type} content " unless content.collection? %><%= ' collection' if content.collection? %> sortable <%= content.resource_type.underscore %>_wrapper<%= " shared" if content.shared? %><%= content.active? ? ' active' : ' inactive' %>" id="content_<%= content.id %>">
               <span class="draghandle"></span>
               <span class="inactive_proxy"></span>
+              <% if content.restricted? -%>
+              <div class="restriction-info">
+                <ul>
+                <% content.restrictions.each do |restriction| -%>
+                  <li><%= t(restriction.mapping_key, :scope => [:app, :restrictions]) %></li>
+                <% end -%>
+                </ul>
+              </div>
+              <% end -%>
               <% unless content.collection? -%>
                 <span class="type"></span>
                 <span class="controls">

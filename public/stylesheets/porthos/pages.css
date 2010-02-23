@@ -213,7 +213,7 @@ ul.contents li.content_module_wrapper {
 /**** CONTENT CONTROLS */
 
 .page .controls,
-li.content .controls {
+.contents .content .controls {
   display:none;
   position:absolute;
   top:10px;
@@ -221,15 +221,30 @@ li.content .controls {
   z-index:1000;
   padding:0 10px 0 0; }
   .page:hover .controls,
-  li.content:hover .controls {display:block;}
+  .contents .content:hover .controls {display:block;}
   .page .controls a,
-  li.content .controls a {
+  .contents .content .controls a {
     margin:10px 0 10px 10px;
     padding:0 5px 0 20px;
     background-position:0 1px; }
-    li.content .controls a.delete {text-indent:-9999px;padding-right:0;}
-    li.content .controls a.visibility {background-position:0 2px;} /* Declare specific position for show/hide icon */
+    .contents .content .controls a.delete {text-indent:-9999px;padding-right:0;}
+    .contents .content .controls a.visibility {background-position:0 2px;} /* Declare specific position for show/hide icon */
 
+.restriction-info {
+  position:absolute;
+  background:transparent url(/graphics/porthos/icons/32_lock.png) 0 0 no-repeat;
+  bottom:10px;
+  right:10px;
+  width:32px;
+  height:32px;
+  overflow:hidden; }
+.restriction-info ul {
+  position:absolute;
+  width:200px;
+  left:-200px;
+  top:0;
+  display:none; }
+.restriction-info:hover ul { display:block; }
 #content li.collection.content_image_wrapper {
   padding:10px 10px 10px 0;
   background:transparent; }

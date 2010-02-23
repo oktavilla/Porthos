@@ -15,19 +15,7 @@
     <% (1..@page.column_count).each do |column| %>
       <div id="c_<%= column %>" class="column">
       <% @page.contents.active.find_all { |content| content.column_position == column }.each do |content| -%>
-        <% if content.collection? -%>
-          <%= render(:partial => "/pages/contents/#{content.resource_type.underscore.pluralize}/collection.html.erb", :locals => { :page => @page, :content => content }) %>
-        <% elsif content.module? -%>
-          <% if @full_render %>
-          <%= render(:partial => "/pages/contents/modules/#{content.resource.template}/content.html.erb", :locals => { :page => @page, :content => content }) %>
-          <% else %>
-          <%= "<"+"%= render(:partial => '/pages/contents/modules/#{content.resource.template}/content.html.erb', :locals => { :page => @page, :content => Content.find(#{content.id}) }) %"+">" %>
-          <% end %>
-        <% elsif content.form? -%>
-          <%= render(:partial => "/pages/contents/registration_forms/#{content.resource.template}.html.erb", :locals => { :page => @page, :content => content, :resource => content.resource }) %>
-        <% else %>
-          <%= render(:partial => "/pages/contents/#{content.resource_type.underscore}.html.erb", :locals => { :resource => content.resource, :page => @page, :content => content }) %>
-        <% end %>
+        <%= render_page_content(@page, content, { :render_full => @full_render }) %>
       <% end -%>
       </div>
     <% end %>

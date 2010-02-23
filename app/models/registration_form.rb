@@ -38,5 +38,4 @@ protected
     errors.add(:email_body, "innehåller syntax fel")
   end
 
-  
 end
