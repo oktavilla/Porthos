@@ -1,7 +1,6 @@
 class Admin::PageLayoutsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'content'
   
   def index
     @page_layouts = PageLayout.find(:all)

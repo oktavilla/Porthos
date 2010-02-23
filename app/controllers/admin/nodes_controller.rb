@@ -1,7 +1,6 @@
 class Admin::NodesController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'content'
   
   def index
     respond_to do |format|

@@ -1,7 +1,6 @@
 class Admin::CommentsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'content'
   
   def index
     @current_comment_id = params[:comment_id]

@@ -1,7 +1,6 @@
 class Admin::PageCollectionsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'content'
   
   def show
     @page = PageCollection.find(params[:id])

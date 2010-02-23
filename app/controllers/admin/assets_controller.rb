@@ -5,8 +5,6 @@ class Admin::AssetsController < ApplicationController
   skip_before_filter :clear_content_context
   before_filter :set_cotent_context, :only => :index
   skip_before_filter :remember_uri, :only => [:index, :show, :create, :search]
-
-  layout 'admin'
   
   protect_from_forgery :only => :create
   

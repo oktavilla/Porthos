@@ -1,7 +1,6 @@
 class Admin::RedirectsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'content'
   
   def index
     @redirects = Redirect.find(:all, :order => 'path')

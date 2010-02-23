@@ -14,7 +14,7 @@
         <%= f.hidden_field :resource_type %>
         <% fields_for :resource do |resource| %>
           <%= resource.hidden_field :image_asset_id, :value => @content.resource.asset.id %>
-          <label for="content_image_title">Alt. text</label>
+          <label for="content_image_title">Beskriv vad bilden föreställer</label>
           <%= resource.text_field :title, :value => @content.resource.asset.title %>
           <label for="content_image_caption">Bildtext</label>
           <%= resource.text_area :caption, :value => @content.resource.asset.description, :cols => 30, :rows => 5 %>    
@@ -24,7 +24,7 @@
           <label for="content_image_format">Format</label>
           <%= resource.select :style, ContentImage.styles.collect { |s, klass| [s[:name], s[:class]] } %>
           <% end %>
-          <label for="content_image_downloadable"><%= resource.check_box :downloadable %> Länka till orginal</label>
+          <label for="resource_downloadable"><%= resource.check_box :downloadable %> Länka till orginal</label>
         <% end %>
         <div class="submit">
           <input type="submit" value="Lägg till bild"> eller <a href="<%= previous_view_path %>" class="back">avbryt</a>

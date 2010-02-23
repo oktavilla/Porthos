@@ -1,8 +1,6 @@
 class Admin::RegistrationFormsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-
-  layout 'content'
   
   def index
     @registration_forms = RegistrationForm.find(:all, :order => 'name')
