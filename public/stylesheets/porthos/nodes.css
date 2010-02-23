@@ -33,9 +33,7 @@
         text-indent:-9999px;
         background:transparent url(/graphics/porthos/icons/show.gif) 0 0 no-repeat; }
       #nodes .toggle_handle.active {background:transparent url(/graphics/porthos/icons/hide.gif) 0 0 no-repeat;}
-      #nodes .name { padding-left:19px; }
-      #nodes .name.layout1 { background:transparent url(/graphics/porthos/icons/14_layout1.gif) 0 0 no-repeat; }
-      #nodes .name.layout3 { background:transparent url(/graphics/porthos/icons/14_layout3.gif) 0 0 no-repeat; }
+      #nodes .name { padding-left:5px; }
       #nodes .hidden .name { color:#888; }
       #nodes .inactive .name {
         color:#888;

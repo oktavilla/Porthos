@@ -6,7 +6,7 @@
       <%= link_to "+", admin_nodes_path(:nodes => [node.id]), :class => 'jax toggle_handle' %>
     <% end -%>
   <% end %>
-  <span class="name<%= " #{node.layout_class}" if node.layout_class %>"><%= node.name %></span>
+  <span class="name"><%= node.name %></span>
   <% if node.restricted? -%>
   <span class="info restricted">lösenordsskyddad</span>
   <% end -%>
