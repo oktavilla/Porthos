@@ -382,6 +382,12 @@
     admin_pages:
       unable_to_find: Kunde inte hitta sidtypen
       saved: Dina ändringar är sparade
+    admin_comments:
+      saved: Din kommentar har sparats
+      published: Din kommentar har sparats och publicerats
+    admin_redirects:
+      saved: Vidarebefordring sparad
+      deleted: Vidarebefordring raderad
     measure_point:
       link_types: 
         text_link: Text-länk

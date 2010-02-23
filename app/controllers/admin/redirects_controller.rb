@@ -21,7 +21,7 @@ class Admin::RedirectsController < ApplicationController
     @redirect = Redirect.new(params[:redirect])
     respond_to do |format|
       if @redirect.save
-        flash[:notice] = "Vidarebefordring sparad"
+        flash[:notice] = t(:saved, :scope => [:app, :admin_redirects])
         format.html { redirect_to admin_redirects_path }
       else
         format.html { render :action => :new }
@@ -40,7 +40,7 @@ class Admin::RedirectsController < ApplicationController
     @redirect = Redirect.find(params[:id])
     respond_to do |format|
       if @redirect.update_attributes(params[:redirect])
-        flash[:notice] = "Vidarebefordring sparad"
+        flash[:notice] = t(:saved, :scope => [:app, :admin_redirects])
         format.html { redirect_to admin_redirects_path }
       else
         format.html { render :action => :edit }
@@ -52,7 +52,7 @@ class Admin::RedirectsController < ApplicationController
     @redirect = Redirect.find(params[:id])
     @redirect.destroy
     respond_to do |format|
-      flash[:notice] = "Vidarebefordring raderad"
+      flash[:notice] = t(:deleted, :scope => [:app, :admin_redirects])
       format.html { redirect_to admin_redirects_path }
     end
   end
