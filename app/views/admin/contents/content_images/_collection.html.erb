@@ -15,7 +15,7 @@
   </li>
 <% end -%>
   <li class="sub_content create">
-    <%= link_to("Lägg till bild", new_admin_content_path(:return_to => request.request_uri, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentImage', :parent_id => content, :column_position => content.column_position }), :class => 'image ContentImage') %>
+    <%= link_to("Lägg till bild", admin_assets_path(:type => 'ImageAsset', :context_params => { :return_to => request.request_uri }, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentImage', :parent_id => content, :column_position => content.column_position }), :class => 'image ContentImage') %>
   </li>
 </ul>
 <% end %>

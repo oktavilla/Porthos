@@ -131,6 +131,7 @@ h6 {color:#222;}
 /**** ** CONFIRM POP */
 
 .confirm {
+  clear: left;
   padding:10px;
   color:#777;
   background:#cf9 url(/graphics/porthos/green_dropshadow.gif) 0 0 repeat-x; }

@@ -14,6 +14,8 @@ module Porthos
       unless params[:content]
         session[:content] = nil
         @content = nil
+        session[:context_params] = nil
+        @context_params = nil
       end
     end
 
