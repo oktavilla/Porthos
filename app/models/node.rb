@@ -58,18 +58,6 @@ class Node < ActiveRecord::Base
     access_status == 'inactive'
   end
   
-  def layout_class
-    if @layout_class
-      @layout_class
-    else
-      @layout_class ||= if (resource_type == 'Page' || resource_type == 'PageCollection')
-        ActiveRecord::Base.connection.select_value("SELECT layout_class FROM pages WHERE pages.id = #{resource_id}")
-      else
-        nil
-      end
-    end
-  end
-
   class << self
     def for_page(page)
       returning(self.new) do |node|
