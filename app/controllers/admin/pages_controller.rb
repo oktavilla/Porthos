@@ -38,11 +38,7 @@ class Admin::PagesController < ApplicationController
     respond_to do |format|
       if @page.save
         if @node
-          if @node.save
-            format.html { redirect_to place_admin_node_path(@node) }
-          else
-            format.html { render :action => :new }
-          end
+          format.html { @node.save ? redirect_to(place_admin_node_path(@node)) : render(:action => :new) }
         else
           format.html { redirect_to admin_page_path(@page) }
         end
@@ -101,7 +97,6 @@ class Admin::PagesController < ApplicationController
   end
   
   def publish
-    
     self.class.send :include, Porthos::Public
     
     @page = Page.find(params[:id])

@@ -37,10 +37,9 @@ class Page < ActiveRecord::Base
   }}
   named_scope :with_unpublished_changes, :conditions => ["changed_at > changes_published_at AND rendered_body IS NOT NULL"]
 
-  before_validation_on_create :set_default_layout, :set_layout_and_parent, :set_inactive
+  before_validation_on_create :set_default_layout, :set_inactive
 
   before_create :set_published_on
-  before_validation_on_update :set_layout_and_parent 
   before_save   :set_layout_attributes, :generate_slug
   after_create  :insert_default_contents
 
@@ -104,15 +103,6 @@ private
     self.published_on = Time.now.at_midnight if published_on.blank?
   end
   
-  def set_layout_and_parent
-    unless preset_id.blank?
-      page_preset = PagePreset.find(preset_id)
-      self.page_layout_id = page_preset.page_layout_id
-      self.parent_id      = page_preset.page_collection_id
-    end
-    self.parent = Page.find(self.parent_id) if self.parent_id and not self.parent_type
-  end
-
   def set_layout_attributes    
     contents.update_all("column_position = #{page_layout.columns}", "column_position > #{page_layout.columns}") unless column_count == page_layout.columns or column_count.blank?
     self.layout_class = page_layout.css_id

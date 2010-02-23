@@ -1,4 +1,11 @@
-<% if content.contents.any? %>
+<% if !content.contents.any? %>
+  <div class="content textfield_content" id="content_<%= content.id %>">
+    <p class="blank-slate">Det finns inga puffar i denna samling.</p>
+    <span class="controls">
+      <%= link_to "Ta bort", admin_content_path(:id => content), :method => :delete, :confirm => "Är du säker, detta går inte att ångra.", :class => 'delete' %>
+    </span>
+  </div>
+<% end %>
 <ul class="teasers sortable" id="content_<%= content.id %>_teasers">
 <% content.contents.each do |child| -%>
   <li id="content_<%= child.id %>" class="Teaser content sortable <%= child.active? ? ' active' : ' inactive' %>">
@@ -32,5 +39,3 @@
   </li>
 </ul>
 <% else %>
-  <p class="blank-slate">Du har inte skapat några puffar än. <%= link_to "Lägg till den första »", edit_admin_content_path(content) %></p>
-<% end %>

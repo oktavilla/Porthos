@@ -42,7 +42,6 @@ ActionController::Routing::Routes.draw do |map|
       :member => { :place => :get },
       :collection => { :sort => :put }
 
-    admin.resources :page_presets
     admin.resources :page_layouts
     admin.resources(:contents, {
       :collection => {
