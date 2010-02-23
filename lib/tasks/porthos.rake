@@ -37,6 +37,9 @@ namespace :porthos do
   desc "Install porthos"
   task :install do
     
+    printf "\n\033[1m\033[41mPorthos requires Rails 2.3.2\033[0m\nAre you sure this project is using Rails 2.3.2? [y/n] "
+    exit unless STDIN.gets.chomp == 'y'
+    
     if File.exists?("#{app_path}/assets")
       printf "Porthos looks to be installed, sure you want to continue? [y/n] "
       exit unless STDIN.gets.chomp == 'y'
@@ -55,16 +58,6 @@ namespace :porthos do
 
       rm 'config/environment.rb'
       cp 'vendor/plugins/porthos/config/environment.rb', 'config/environment.rb'
-    end
-    
-    # printf "Install plugins? [y/n] "
-    #     if STDIN.gets.chomp == 'y'
-    # 
-    #     end
-    
-    printf "Run ultrasphinx configuration task? [y/n] "
-    if STDIN.gets.chomp == 'y'
-      Rake::Task["ultrasphinx:configure"].invoke 
     end
     
     printf "Run porthos migrations? Make sure you configured config/database.yml before continuing [y/n] "
