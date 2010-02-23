@@ -11,9 +11,6 @@
     <% if current_user.can_create?(PageLayout) -%>
     <li id="n-page_layouts"><%= link_to "Layouter", admin_page_layouts_path %></li>
     <% end -%>
-    <% if current_user.can_create?(PagePreset) -%>
-    <li id="n-presets"><%= link_to "Sidtyper", admin_page_presets_path %></li>
-    <% end -%>
     <li id="n-redirects"><%= link_to "Vidarebefordringar", admin_redirects_path %></li>
     <li id="n-comments"><%= link_to "Kommentarer", admin_comments_path %></li>
   </ul>

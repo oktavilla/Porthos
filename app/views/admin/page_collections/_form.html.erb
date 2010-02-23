@@ -3,15 +3,7 @@
 
 <label for="page_title"><%= f.check_box :calendar %> Sidsamlingen är en kalender</label>
 
-<label for="page_layout">Välj förvald layout för undersidor</label>
-<%= f.select :default_child_layout_id, PageLayout.find(:all).collect { |layout| [layout.name, layout.id] } %>
-<label for="page_presets">Välj vilken sorts sida</label>
-<div class="graphic">
-<% PagePreset.find(:all).each do |preset| -%>
-  <label for="<%= "page_collection_preset_#{preset.id}" %>"<%= ' class="checked"' if @page and @page.preset_id.to_i == preset.id %>>
-    <%= radio_button_tag 'page_collection[preset_id]', preset.id, false, :id => "page_collection_preset_#{preset.id}" %> 
-    <%= image_tag preset.graphic.public_name, :width => 80, :height => 80, :class => "preset_graphic" if preset.graphic %>
-    <%= preset.name %>
-  </label>
-<% end -%>
-</div>
+<label for="page_default_child_layout_id">Välj förvald layout för undersidor</label>
+<%= f.select :default_child_layout_id, PageLayout.find(:all).collect { |page_layout| [page_layout.name, page_layout.id] } %>
+<label for="page_page_layout_id">Välj layout</label>
+<%= f.select :page_layout_id, PageLayout.find(:all).collect { |page_layout| [page_layout.name, page_layout.id] } %>

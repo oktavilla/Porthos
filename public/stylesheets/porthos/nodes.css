@@ -122,7 +122,6 @@
   body#textfields #nav #n-content a,
   body#content_modules #nav #n-content a,
   body#registration_forms #nav #n-content a,
-  body#page_presets #nav #n-content a,
   body#page_collections #nav #n-content a {
       color:#fff;
       font-weight:bold;
@@ -133,7 +132,6 @@
     body#textfields #n-textfields a,
     body#content_modules #n-modules a,
     body#registration_forms #n-forms a,
-    body#page_presets #n-presets a,
     body#comments #n-comments a,
     body#redirects #n-redirects a,
     #main_nav .current a,

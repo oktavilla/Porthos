@@ -4,24 +4,10 @@
 <label for="page_title">Sidans titel</label>
 <%= f.text_field :title, :class => "title" %>
 
-<% if @page and not @page.child? %>
-
-  <% if @page.is_a?(PageCollection) %>
-  <label for="page_layout">Välj förvald layout för undersidor</label>
-  <%= f.select :default_child_layout_id, PageLayout.find(:all).collect { |layout| [layout.name, layout.id] } %>
-  <% end %>
-
-<label for="page_presets">Välj vilken sorts sida</label>
-<div class="graphic">
-<% PagePreset.find(:all).each do |preset| -%>
-  <label for="<%= "page_preset_#{preset.id}" %>"<%= ' class="checked"' if @page and (@page.page_layout_id.to_i == preset.page_layout_id and @page.parent_id == preset.page_collection_id) %>>
-    <%= radio_button_tag 'page[preset_id]', preset.id, false, :id => "page_preset_#{preset.id}" %> 
-    <%= image_tag preset.graphic.public_name, :width => 80, :height => 80, :class => "preset_graphic" if preset.graphic %>
-    <%= preset.name %>
-  </label>
-<% end -%>
-</div>
-<% else -%>
+<label for="page_layout_id">
+  Välj vilken sorts sida
+  <%= f.select :page_layout_id, PageLayout.find(:all).collect { |layout| [layout.name, layout.id] } %>
+</label>
 
 <label for="page_description">
   Inledning / ingress
