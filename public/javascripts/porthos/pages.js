@@ -22,58 +22,14 @@
         }
       });
       this.contents = this.columns_container.select('ul.contents li.content').collect(function(element) {
-        return Porthos.Pages.Contents.create(element);
+//        return Porthos.Pages.Contents.create(element);
       }.bind(this));
-      this.contents.invoke('observeLinks');
+//      this.contents.invoke('observeLinks');
       this.sorting = false;
       this.observeSortContents();
       // New contents
-      this.columns_container.select('a.new_content').invoke('observe', 'click', function(event) {
-        var link = event.element();
-        new Ajax.Request(link.href, {
-          method      : 'get',
-          evalScripts : true,
-          onLoading: function() {
-            Porthos.Dialog().setWaitState();
-            Porthos.Dialog().show();
-          }.bind(this),
-          onComplete: function(response) {
-            Porthos.Dialog('page_contents').insert('new', response.responseText);
-            Porthos.Pages.Contents.init(link);
-            Porthos.Dialog('page_contents').get('new').select('form').invoke('observe', 'submit', function() {
-              Porthos.Dialog().setWaitState();
-            }.bind(this));
-            Porthos.Dialog().clearWaitState();
-          }.bind(this)
-        });
-        event.stop();
-      }.bind(this));
+      
       this.initializeDialogInvokers();
-      $$('#content_header a.edit_page').invoke('observe', 'click', this.edit.bindAsEventListener(this));
-    },
-    
-    edit: function(event) {
-      new Ajax.Request(event.element().href, {
-        method:'get',
-        evalScripts: true,
-        onLoading: function() {
-          Porthos.Dialog().setWaitState();
-          Porthos.Dialog().show();
-        }.bind(this),
-        onComplete: function(response) {
-          Porthos.Dialog('page').insert('edit', response.responseText);
-          Porthos.Editor.Initialize();
-          Porthos.Dialog().clearWaitState();
-          $(Porthos.Dialog('page').get('edit')).select('div.graphic').each(function(element) {
-            Porthos.Helpers.graphicLabel(element);
-          });
-          $(Porthos.Dialog('page').get('edit')).select('form').invoke('observe', 'submit', function(){
-            Porthos.Dialog().setWaitState();
-          }.bind(this));
-          new Porthos.TagAutoCompletion($('page_tag_names'));
-        }.bind(this)
-      });
-      event.stop();
     },
     
     initializeDialogInvokers: function() {
@@ -88,39 +44,6 @@
           column.container.select('div.sub_controls').invoke('toggle');
           event.stop();
         }.bind(this));
-
-        column.container.select('div.sub_controls a.movie', 'li.sub_content a.movie').invoke('observe', 'click', function(event) {
-          Porthos.Dialog().setWaitState();
-          Porthos.Dialog().show();
-          if (!this.asset_picker) {
-            link = event.element();
-            is_collection = Porthos.parseUri(link.href).queryKey['collection'] == 1 ? 1 : 0;
-            this.asset_picker = new Porthos.Assets.Picker('movie_assets', {
-              callback: function(event) {
-                asset = event.element();
-                new Ajax.Request(Routing.new_admin_content_path({ collection: is_collection }), {
-                  method:'get',
-                  parameters: $A([
-                    link.href,
-                    'content[context_id]=' + this.id,
-                    'content[context_type]=Page',
-                    'resource[movie_asset_id]=' + Porthos.extractId(asset.id)
-                  ]).join('&'),
-                  onLoading: function() {
-                    Porthos.Dialog().setWaitState();
-                  }.bind(this),
-                  onComplete: function(response) {
-                    Porthos.Dialog('page_contents').insert('new', response.responseText);
-                    Porthos.Dialog().clearWaitState();
-                  }.bind(this)
-                });
-              }.bind(this)
-            });
-            this.asset_picker.open();
-          }
-          event.stop();
-        }.bind(this));
-
       }.bind(this));
     },
     
@@ -226,168 +149,6 @@
       this.sorting = false;
     }
   });
-
-  Porthos.namespace('Porthos.Pages.Contents');
-  Porthos.Pages.Contents.avalible_types = $A(['Teaser', 'Textfield']),
-  
-  Porthos.Pages.Contents.getObjectType = function(element) {
-    return Porthos.Pages.Contents.avalible_types.detect(function(_type) {
-      return element.className.indexOf(_type) != -1
-    }) || 'Generic';
-  };
-  
-  Porthos.Pages.Contents.create = function(element) {
-    try {
-      return eval('new Porthos.Pages.Contents.' + Porthos.Pages.Contents.getObjectType(element) + '(element);');
-    } catch (e) {}
-  };
-
-  Porthos.Pages.Contents.init = function(element) {
-    try {
-      eval('Porthos.Pages.Contents.' + Porthos.Pages.Contents.getObjectType(element) + '.init()');
-    } catch (e) {}
-  };
-
-  Porthos.Pages.Contents.Generic = Class.create({
-    editCallback: Prototype.emptyFunction,
-    initialize: function(element) {
-      this.element = $(element);
-    },
-    
-    observeLinks: function() {
-      this.element.select('a.edit, a.settings').invoke('observe', 'click', this.edit.bindAsEventListener(this));
-    },
-    
-    edit: function(event) {
-      new Ajax.Request(event.element().href, {
-        method: 'get',
-        evalScripts: true,
-        onLoading: function() {
-          Porthos.Dialog().setWaitState();
-          Porthos.Dialog().show();
-        }.bind(this),
-        onComplete: function(response) {
-          Porthos.Dialog('page_contents').insert('edit', response.responseText);
-          Porthos.Dialog().clearWaitState();
-          $(Porthos.Dialog('page_contents').get('edit')).select('form').invoke('observe', 'submit', function() {
-            Porthos.Dialog().setWaitState();
-          });
-          this.editCallback(Porthos.Dialog('page_contents').get('edit'));
-        }.bind(this)
-      });
-      event.stop();
-    }
-  });
-  Porthos.Pages.Contents.Generic.init = function() {};
-  
-  Porthos.Pages.Contents.Textfield = Class.create(Porthos.Pages.Contents.Generic, {
-    editCallback: function($super, element) {
-      Porthos.Editor.Initialize();
-    }
-  });
-  Porthos.Pages.Contents.Textfield.init = function() {
-    Porthos.Editor.Initialize();
-  };
-
-  Object.extend(Porthos.AssetUsages.Member.prototype, {
-    createElement: function() {
-      this._createElement();
-      this._element.appendChild($a({ 'href' : Routing.edit_admin_asset_usage_path(this.json.id) + '?return_to=' + window.location, 'class' : 'edit' }, 'Beskär'));
-      this.setupObserves();
-      return this._element;
-    },
-    
-    setupObserves: function() {
-      this.observeEdit();
-      this.observeDestroy();
-    },
-    
-    observeEdit: function() {
-      this.element().select('a.edit').invoke('observe', 'click', this.edit.bindAsEventListener(this));
-    },
-    
-    edit: function(event) {
-      new Ajax.Request(event.element().href, {
-        method: 'get',
-        evalScripts: true,
-        onLoading: function() {
-          Porthos.Dialog().setWaitState();
-          Porthos.Dialog().show();
-        },
-        onComplete: function(response) {
-          Porthos.Dialog('asset_usages').insert('edit', response.responseText);
-          Porthos.Dialog().clearWaitState();
-          $(Porthos.Dialog('asset_usages').get('edit')).select('form').invoke('observe', 'submit', function(event) {
-            var form = event.element();
-            new Ajax.Request(form.action, {
-              method: 'put',
-              parameters: Form.serialize(form),
-              onLoading: function() {
-                Porthos.Dialog().setWaitState();
-              },
-              onComplete: function() {
-                Porthos.Dialog('page_contents').show('edit');
-                Porthos.Dialog().clearWaitState();
-              }
-            });
-            event.stop();
-          });
-        }.bind(this)
-      });
-      event.stop();
-    }
-  });
-
-  Porthos.Pages.Contents.Teaser = Class.create(Porthos.Pages.Contents.Generic, {
-    editCallback: function($super, element) {
-      Porthos.Editor.Initialize();
-      this.assetUsages = new Porthos.AssetUsages.Collection($(element).select('div.asset_usages').first(), {
-        afterCreate: function() {
-          Porthos.Dialog('page_contents').show('edit');
-        }
-      });
-      this.observeInputs();
-    },
-    
-    observeInputs: function() {
-      $$('div.graphic').each(function(div) {
-        Porthos.Helpers.graphicLabel(div);
-      });
-    }
-  });
-  Porthos.Pages.Contents.Teaser.init = function() {
-    teaser = new Porthos.Pages.Contents.Teaser(Porthos.Dialog('page_contents').get('new'));
-    teaser.observeInputs();
-    Porthos.Editor.Initialize();
-  };
-
-  Porthos.Pages.Contents.ContentMovie = Class.create(Porthos.Pages.Contents.Generic, {
-    editCallback: function($super, element) {
-    }
-  });
-  Porthos.Pages.Contents.ContentMovie.init = function() {
-    this.asset_picker = new Porthos.Assets.Picker('movie_assets', {
-      callback: function(event) {
-        asset = event.element();
-        new Ajax.Request(Routing.new_admin_page_content_path(this.id), {
-          method:'get',
-          parameters: $A([
-            link.href,
-            'resource[image_asset_id]=' + Porthos.extractId(asset.id)
-          ]).join('&'),
-          onLoading: function() {
-            Porthos.Dialog().setWaitState();
-          }.bind(this),
-          onComplete: function(response) {
-            Porthos.Dialog('page_contents').insert('new', response.responseText);
-            Porthos.Dialog().clearWaitState();
-          }.bind(this)
-        });
-      }.bind(this)
-    });
-    this.asset_picker.open();
-    event.stop();
-  };
   
   Event.onReady(function() {
     if ($$("body#pages.show").size() > 0) {
