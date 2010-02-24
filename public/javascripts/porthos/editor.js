@@ -148,8 +148,19 @@ dialogTableHtml:  "<body class='wym_dialog wym_dialog_table'"
 });
 
 Porthos.Editor.Initialize = function(selector, options) {
-  var selector = selector || '.wymeditor';
+  var selector = selector || '#editor';
   var options = Object.extend(Porthos.Editor.Options, options || {});
-  
-  Porthos.jQuery(selector).wymeditor(options);    
+  var editors = Porthos.jQuery(selector);
+  var filters = Porthos.jQuery('#resource_filter option').map(function() {
+    return Porthos.jQuery(this).val();
+  });
+  Porthos.jQuery('#resource_filter').change(function() {
+    var filter_string = ''
+    filters.each(function() {
+      filter_string += ' '+this;
+    });
+    editors.removeClass(filter_string)
+    .addClass(Porthos.jQuery(this).val());
+  });
+  Porthos.jQuery(selector).find('.wymeditor').wymeditor(options);
 };
