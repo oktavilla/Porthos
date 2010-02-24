@@ -1,43 +1,37 @@
-<% @page_class = "AB navigation" -%>
-<% @page_id = "contents" -%>
+<% @page_class = "layout1" -%>
+<% @page_id = 'site-structure' -%>
 <% @page_title = "Navigation" -%>
 <div id="workspace">
   <div class="header">
-    <h1>Webbplatsens innehåll & struktur</h1>
+    <h1>Struktur och Navigation</h1>
   </div>
-  <span class="controls">
+  <div class="tools">
     <%= link_to "Skapa en ny sida", new_admin_page_path, :class => 'create' %>
     <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'create' if current_user.can_create?(PageCollection) %>
     <%= link_to "Sortera", sort_admin_nodes_path, :class => 'sort' %>
-  </span>
+  </div>
   <div id="content">
-    <div id="cb">
-      <div class="inner">
-      </div>
-    </div>
-    <div id="ca">
-      <div class="inner">
-        <% form_for :page, :url => admin_pages_path, :html => {:class => "tiny", :id => "new_page_form", :style => "display:none;"} do |f| %>
-          <%= render :partial => 'admin/pages/form', :locals => {:f => f} %>
-          <div class="submit">
-            <%= f.submit "Lägg till sida" %> eller <%= link_to "Avbryt", admin_nodes_path, :onclick => "$('new_page_form').hide(); return false;" %>
-          </div>
-        <% end %>
-      <% if @root %>  
-        <h2 class="label" id="root">
-          <span class="name"><%= @root.name %></span>
-          <span class="tools">
-            <%= link_to "Redigera", node_path(@root), :class => 'edit' %>
-            <%= link_to "Inställningar", edit_admin_node_path(@root), :class => 'settings' %>
-          </span>
-        </h2>
-        <div id="navigation">
-          <%= render :partial => 'nodes_tree', :locals => { :nodes => @nodes, :open_nodes => @open_nodes, :trail => @trail, :place => false} %>
+    <div class="inner">
+      <% form_for :page, :url => admin_pages_path, :html => {:class => "tiny", :id => "new_page_form", :style => "display:none;"} do |f| %>
+        <%= render :partial => 'admin/pages/form', :locals => {:f => f} %>
+        <div class="submit">
+          <%= f.submit "Lägg till sida" %> eller <%= link_to "Avbryt", admin_nodes_path, :onclick => "$('new_page_form').hide(); return false;" %>
         </div>
-      <% else %>
-        <p class="blank-slate">Det finns inga sidor inlagda än. <%= link_to "Skapa din startsida nu »", new_admin_page_path, :onclick => "$('new_page_form').toggle(); return false;" %>
       <% end %>
+      <% if @root -%>  
+      <h2 class="label" id="root">
+        <span class="name"><%= @root.name %></span>
+        <span class="edit">
+          <%= link_to "Redigera", node_path(@root), :class => 'edit' %>
+          <%= link_to "Inställningar", edit_admin_node_path(@root), :class => 'settings' %>
+        </span>
+      </h2>
+      <div id="navigation">
+        <%= render :partial => 'nodes_tree', :locals => { :nodes => @nodes, :open_nodes => @open_nodes, :trail => @trail, :place => false} %>
       </div>
+      <% else -%>
+      <p class="blank-slate">Det finns inga sidor inlagda än. <%= link_to "Skapa din startsida nu »", new_admin_page_path, :onclick => "$('new_page_form').toggle(); return false;" %>
+      <% end %>
     </div>
   </div>
 </div>

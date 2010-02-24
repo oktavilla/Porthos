@@ -54,6 +54,9 @@ body {
   #main_nav a:hover,
   #account_nav a:hover,
   #groups .groups_index a,
+  #site-structure  .nodes_index a,
+  #registrations   .registrations_index a,
+  #users .users_index a,
   #assets .assets_index a,
   #pages .pages_index a,
   #link_lists .link_lists_index a {color:#fff;}
@@ -92,7 +95,7 @@ body {
 #wrap {}
 
 body.layout2 {
-  background:rgb(214,221,229) url(/graphics/bg_shadow.png) 0 0 repeat-y; }
+  background:rgb(214,221,229) url(/graphics/porthos/_new/layout2_bg_shadow.png) 0 0 repeat-y; }
 
 body.layout2 #wrap {
   padding-left:180px; }
@@ -103,6 +106,28 @@ body.layout2 #sub_nav {
   margin-left:-180px; }
 
 body.layout2 #workspace {
+  float:left; 
+  width:100%;
+  background:#f2f2f2; }
+
+body.layout3 { 
+  background:rgb(214,221,229) url(/graphics/porthos/_new/layout3_bg_shadow.png) 100% 0 repeat-y; }
+
+body.layout3 #wrap {
+  padding-right:250px; }
+
+body.layout3 #sub_nav {
+  float:right; 
+  width:250px; 
+  margin-right:-250px; }
+  body.layout3 #sub_nav form,
+  body.layout3 #sub_nav ul li a,
+  body.layout3 #sub_nav .label,
+  body.layout3 #sub_nav .new a {
+    padding:.5em 40px .45em 20px; }
+  
+
+body.layout3 #workspace {
   float:left; 
   width:100%;
   background:#f2f2f2; }
@@ -403,6 +428,46 @@ body#link_lists .link_list {margin-bottom:1.5em;}
       padding-top:.5em;
       border-top:1px dashed #ccc; }
 
+#nodes, #nodes ul {
+  list-style:none; 
+  margin:0; }
+  #nodes li {
+    margin:0; }
+  #nodes li .toggle_handle {
+    float:left;
+    margin:0 0 0 -30px; 
+    padding:6px 4px 4px 4px;
+    line-height:.2; 
+    background:#fff;
+    color:#000;
+    border:1px solid #ddd;
+    -webkit-border-radius:4px;
+    font-weight:bold; }
+    #nodes li .toggle_handle:hover {
+      border:1px solid #ccc;
+      background:#f7f7f7;}
+  #nodes li > div {
+    border-top:1px solid #ddd;
+    padding:.8em 0 .8em 40px; }
+    #nodes li > div:hover {background:#fff;}
+  #nodes li > div.active .name {
+    color:#000;
+    font-weight:bold; }
+  #nodes li > div.inactive .name {
+    font-style:italic;
+    color:#a00;}
+  #nodes li .name {
+    display:inline-block;
+    width:300px; }
+  #nodes li .edit {
+    display:none;
+    font-size:12px; 
+    margin-left:1em; }
+    #nodes li .edit a {margin-left:.5em;}
+  #nodes li div:hover .edit {display:inline;}
+  #nodes ul.placeholder {display:none;}
+  #nodes ul li {margin-left:3em;}
+  #nodes ul li > div {border-top:0;}
 
 #userslist {}
   #userslist li {

@@ -246,7 +246,7 @@ Porthos.TagAutoCompletion = Class.create({
       'class' : 'tags autocomplete'
       })
     });
-    new Ajax.Autocompleter(element, 'tags_list_'+element.id, Routing.formatted_search_admin_tags_path({ 'format' : 'js' }), { 
+    new Ajax.Autocompleter(element, 'tags_list_'+element.id, Routing.search_admin_tags_path({ 'format' : 'js' }), { 
       'select'    : '.tag', 
       'tokens'    : ' ', 
       'paramName' : 'query', 
