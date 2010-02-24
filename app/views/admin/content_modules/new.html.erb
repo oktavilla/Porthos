@@ -8,14 +8,16 @@
     <div class="header">
       <h1>Installera ny modul</h1>
     </div>
-    <% form_for :content_module, :url => admin_content_modules_path, :html => { :class => 'tiny' } do |f| %>
-      <fieldset>
-        <legend>Installera en ny modul</legend>
-        <%= render :partial => 'form', :locals => { :f => f } %>
-      </fieldset>
-      <div class="confirm">
-        <%= submit_tag 'Installera' %> eller <%= link_to "avbryt", previous_view_path(admin_content_modules_path) %>
-      </div>
-    <% end %>
+    <div id="content">
+      <% form_for :content_module, :url => admin_content_modules_path, :html => { :class => 'tiny' } do |f| %>
+        <fieldset>
+          <legend>Installera en ny modul</legend>
+          <%= render :partial => 'form', :locals => { :f => f } %>
+        </fieldset>
+        <div class="confirm">
+          <%= submit_tag 'Installera' %> eller <%= link_to "avbryt", previous_view_path(admin_content_modules_path) %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

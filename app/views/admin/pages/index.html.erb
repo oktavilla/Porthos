@@ -1,84 +1,61 @@
-<% @page_class = "AB navigation" -%>
-<% @page_id = "contents" -%>
-<% @page_title = "Sidor" -%>
-<div id="content_header">
-  <h1>Dina sidor</h1>
-</div>
-<div id="container">
-  <span class="controls">
-    <%= link_to "Skapa en ny sida", new_admin_page_path, :class => 'create' %>
-    <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'create' if current_user.can_create?(PageCollection) %>
-  </span>
-  <div id="content">
-    <div id="cb">
-      <div class="inner">
-      </div>
+<% @page_class = 'layout3' -%>
+<div id="wrap">
+  <div id="sub_nav">
+  <% if @current_tags.any? -%>
+    <div class="label">Valda nyckelord</div>
+    <ul class="tags current">
+    <% @current_tags.each do |current_tag| %>
+      <li>
+        <span class="tag"><%= current_tag %></span> <%= link_to "Ta bort", admin_pages_path(:tags => @current_tags - [current_tag]) %>
+      </li>
+    <% end -%>
+    </ul>
+    <% if @related_tags.any? -%>
+    <div class="label">Relaterade nyckelord</div>
+    <ul class="tags">
+    <% @related_tags.each do |tag| -%>
+      <li><%= link_to tag.name, admin_pages_path(:tags => @current_tags + [tag.name]), :class => "tag" %></li>
+    <% end -%>
+    </ul>
+    <% end -%>
+  <% end -%>
+  <% if @tags.any? -%>
+    <div class="label">Populära nyckelord</div>
+    <ul class="tags popular">
+    <% @tags.sort_by { |tag| tag.num_taggings }.each do |tag| %>
+      <li><%= link_to "#{tag.name} <span class=\"taggings\">#{tag.num_taggings}</span>", admin_pages_path(:tags => [tag.name]), :class => "tag" -%></li>
+    <% end %>
+    </ul>
+  <% end -%>
+  </div>
+  <div id="workspace">
+    <div class="header">
+      <h1>Dina sidor</h1>
     </div>
-    <div id="ca">
-      <div class="inner">
-      <% if current_user.created_pages %>
-        <h2>Sidor du har skapat</h2>
-        <%= render :partial => 'list_of_pages', :locals => {:pages => current_user.created_pages} %>
+    <div class="tools">
+      <%= link_to "Skapa en ny sida", new_admin_page_path, :class => 'create' %>
+      <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'create' if current_user.can_create?(PageCollection) %>
+    </div>
+    <% if current_user.created_pages.any? %>
+      <h2>Sidor du har skapat</h2>
+      <%= render :partial => 'list_of_pages', :locals => {:pages => current_user.created_pages} %>
+    <% end %>
+    <% if current_user.updated_pages.any? %>
+      <h2>Senaste sidor du har jobbat med</h2>
+      <%= render :partial => 'list_of_pages', :locals => {:pages => current_user.updated_pages} %>
+    <% end %>
+    <% unless @current_tags.any? %>
+      <% if latest_updated_pages = Page.updated_latest.find(:all, :limit => 10) %>
+        <h2>Senaste uppdaterade sidor</h2>
+        <%= render :partial => 'list_of_pages', :locals => {:pages => latest_updated_pages} %>
       <% end %>
-      <% if current_user.updated_pages %>
-        <h2>Senaste sidor du har jobbat med</h2>
-        <%= render :partial => 'list_of_pages', :locals => {:pages => current_user.updated_pages} %>
-      <% end %>
-      <% if not @current_tags.any? %>
-        <% if latest_updated_pages = Page.updated_latest.find(:all, :limit => 10) %>
-          <h2>Senaste uppdaterade sidor</h2>
-          <%= render :partial => 'list_of_pages', :locals => {:pages => latest_updated_pages} %>
-        <% end %>
+    <% else %>
+      <h2>Sidor som matchar din nyckelordssökning</h2>
+      <% if not @tagged_pages.any? %>
+        <p>Inga sidor hittades</p>
       <% else %>
-        <h2>Sidor som matchar din nyckelordssökning</h2>
-        <% if not @tagged_pages.any? %>
-          <p>Inga sidor hittades</p>
-        <% else %>
-          <%= render :partial => 'list_of_pages', :locals => {:pages => @tagged_pages, :current_tags => @current_tags} %>
-        <% end %>
+        <%= render :partial => 'list_of_pages', :locals => {:pages => @tagged_pages, :current_tags => @current_tags} %>
       <% end %>
-      </div>
-    </div>
-    <div id="cb">
-      <% if @current_tags.any? -%>
-      <h2>Valda nyckelord</h2>
-      <div class="tags current">
-        <ul>
-        <% @current_tags.each do |current_tag| %>
-          <li>
-            <span class="tag"><%= current_tag %></span> <%= link_to "Ta bort", admin_pages_path(:tags => @current_tags - [current_tag]) %>
-          </li>
-        <% end -%>
-        </ul>
-      </div>
-        <% if @related_tags.any? -%>
-        <h2>Relaterade nyckelord</h2>
-        <div class="tags">
-          <ul>
-          <% @related_tags.each do |tag| %>
-            <li>
-              <%= link_to tag.name, admin_pages_path(:tags => @current_tags + [tag.name]), :class => "tag" %>
-            </li>
-          <% end %>
-          </ul>
-        </div>
-        <%- end -%>
-      <% end -%>
-      <% if @tags.any? -%>
-      <h2>Populära nyckelord</h2>
-      <div class="tags popular">
-        <ul>
-        <% @tags.sort_by { |tag| tag.num_taggings }.each do |tag| %>
-          <li>
-            <%= link_to "#{tag.name} <span class=\"taggings\">#{tag.num_taggings}</span>", admin_pages_path(:tags => [tag.name]), :class => "tag" -%>
-          </li>
-        <% end %>
-        </ul>
-      </div>
-      <% end -%>
-    </div>
+    <% end %>
   </div>
 </div>
-<%= javascript_include_tag 'named_routes' %>
-<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', 'porthos/safari_search', :cache => 'admin' %>
-<%= javascript_include_tag 'porthos/action_dialog', 'porthos/nodes', :cache => 'nodes' %>
