@@ -1,8 +1,7 @@
-<% @page_title = "Användare > Ändra uppgifter för #{@user.name}" -%>
-<% @page_class = "A" -%>
+<% @page_title = "Användare > Ändra #{@user.name}" -%>
 <div id="workspace">
   <div class="header">
-    <h1>Ändra uppgifter för ”<%= @user.name %>”</h1>
+    <h1><span class="pre">Ändra</span> <%= @user.name %></h1>
   </div>
   <div id="content">
     <% form_for :user, @user, :url => admin_user_path(@user), :html => { :method => :put, :multipart => true, :autocomplete => "off" } do |f| %>
@@ -22,7 +21,7 @@
         <% end %>
         </ul>
       <% end %>
-      <%= link_to "Radera användaren", admin_user_path(@user), :method => :delete, :class => 'delete', :confirm => 'Är du säker på att du vill tabort användaren?' %>
+      <%= link_to "Ta bort användaren", admin_user_path(@user), :method => :delete, :class => 'delete', :confirm => 'Är du säker på att du vill tabort användaren?' %>
     </div>
   </div>
 </div>
