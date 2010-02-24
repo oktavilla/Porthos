@@ -155,12 +155,26 @@ Porthos.Editor.Initialize = function(selector, options) {
     return Porthos.jQuery(this).val();
   });
   Porthos.jQuery('#resource_filter').change(function() {
+    var self = Porthos.jQuery(this);
+    self.blur();
+    var value = self.val();
     var filter_string = ''
     filters.each(function() {
       filter_string += ' '+this;
     });
     editors.removeClass(filter_string)
-    .addClass(Porthos.jQuery(this).val());
+    .addClass(value);
+    switch(value) {
+      case 'wymeditor':
+        Porthos.jQuery(selector).wymeditor(options);
+      break;
+      default:
+        for(i=0; i < WYM_INSTANCES.length; i++) {
+          var editor = WYM_INSTANCES[i];
+          Porthos.jQuery(editor._box).remove();
+          Porthos.jQuery(editor._element).show();
+        }
+    }
   });
-  Porthos.jQuery(selector).find('.wymeditor').wymeditor(options);
+  Porthos.jQuery(selector).filter('.wymeditor').wymeditor(options);
 };
