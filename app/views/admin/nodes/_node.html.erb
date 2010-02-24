@@ -18,6 +18,6 @@
     <%= link_to "Redigera", node_path(node), :class => 'edit' %>
     <% end -%>
     <%= link_to "Inställningar", edit_admin_node_path(node), :class => 'settings' %>
-    <%= link_to "Radera", admin_node_path(node), { :method => :delete, :class => "delete", :confirm => "Är du säker, detta går inte att ångra." } %>
+    <%= link_to "Ta bort", admin_node_path(node), { :method => :delete, :class => "delete", :confirm => "Är du säker, detta går inte att ångra." } %>
   </span>
 </div>

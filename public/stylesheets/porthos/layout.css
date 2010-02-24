@@ -54,6 +54,9 @@ body {
   #main_nav a:hover,
   #account_nav a:hover,
   #groups .groups_index a,
+  #nodes  .nodes_index a,
+  #registrations  .registrations_index a,
+  #users .users_index a,
   #assets .assets_index a,
   #pages .pages_index a,
   #link_lists .link_lists_index a {color:#fff;}
@@ -92,7 +95,7 @@ body {
 #wrap {}
 
 body.layout2 {
-  background:rgb(214,221,229) url(/graphics/bg_shadow.png) 0 0 repeat-y; }
+  background:rgb(214,221,229) url(/graphics/porthos/_new/layout2_bg_shadow.png) 0 0 repeat-y; }
 
 body.layout2 #wrap {
   padding-left:180px; }
@@ -103,6 +106,22 @@ body.layout2 #sub_nav {
   margin-left:-180px; }
 
 body.layout2 #workspace {
+  float:left; 
+  width:100%;
+  background:#f2f2f2; }
+
+body.layout3 { 
+  background:rgb(214,221,229) url(/graphics/porthos/_new/layout3_bg_shadow.png) 100% 0 repeat-y; }
+
+body.layout3 #wrap {
+  padding-right:250px; }
+
+body.layout3 #sub_nav {
+  float:right; 
+  width:250px; 
+  margin-right:-250px; }
+
+body.layout3 #workspace {
   float:left; 
   width:100%;
   background:#f2f2f2; }
