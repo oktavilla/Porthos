@@ -181,5 +181,5 @@ Porthos.Editor.Initialize = function(selector, options) {
         }
     }
   });
-  Porthos.jQuery(selector).filter('.wymeditor').wymeditor(options);
+  editors.filter('.wymeditor').wymeditor(options);
 };
