@@ -3,8 +3,12 @@
 <%= f.hidden_field :resource_type %>
 <%= f.hidden_field :column_position %>
 <% unless @content.resource.shared? -%>
-  <% fields_for :resource do |_f| %>
-    <%= _f.text_area :body, :class => 'wymeditor', :cols => 90 %>
+  <% fields_for :resource do |resource| %>
+    <label for="resource_filter">
+      Filter: 
+      <%= resource.select :filter, Textfield.filters %>
+    </label>
+    <%= resource.text_area :body, :class => @content.resource.filter, :id => 'editor', :cols => 90 %>
   <% end %>
 <% else -%>
   <%= f.select :resource_id, Textfield.shared.find(:all, :order => 'title ASC').collect { |t| [t.title, t.id] } %>

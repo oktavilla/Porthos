@@ -55,7 +55,7 @@ class PagesController < ApplicationController
     @comment.ip_address, @comment.env = request.remote_ip, request.env
     respond_to do |format|
       if @comment.save
-        flash[:notice] = @comment.spam ? 'Din kommentar har sparats' : 'Din kommentar har sparats och publicerats'
+        flash[:notice] = @comment.spam ? t(:saved, :scope => [:app, :admin_comments]) : t(:published, :scope => [:app, :admin_comments])
         format.html { redirect_to (params[:return_to] || "/#{@node.slug}#comment_#{@comment.id}") }
       else
         format.html { render :action => 'show' }
