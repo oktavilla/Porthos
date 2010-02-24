@@ -4,15 +4,14 @@
     <h1><span class="pre">Ändra detaljer</span> <%= @page.title %></h1>
   </div>
   <div id="content">
-    <%= error_messages_for :page %>
-    <%= error_messages_for :node %>
-    <% form_for :page, :url => admin_page_path(@page), :html => { :method => :put } do |f| %>
-      <%= render :partial => 'form', :locals => {:f => f} %>
-      <div class="submit">
-        <%= f.submit "Spara ändringar", :class => 'button' %> eller <%= link_to "Avbryt", previous_view_path(admin_page_path(@page)) %>
-      </div>
+  <%= error_messages_for :page %>
+  <%= error_messages_for :node %>
+  <% form_for :page, :url => admin_page_path(@page), :html => { :method => :put } do |f| %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+    <div class="submit">
+      <%= f.submit "Spara ändringar", :class => 'button' %> eller <%= link_to "Avbryt", previous_view_path(admin_page_path(@page)) %>
     </div>
-  </div>
+  <% end %>
 </div>
 <%= javascript_include_tag 'named_routes' %>
 <%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', 'porthos/safari_search', :cache => 'admin' %>
