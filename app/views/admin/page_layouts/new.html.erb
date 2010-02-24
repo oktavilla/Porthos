@@ -1,9 +1,15 @@
-<% @page_class = "A content" -%>
-<h1>Ny layout</h1>
-<div id="content">
-  <div id="c-a">
+<% @page_class = 'layout2' -%>
+<% @page_id = 'site-settings' -%>
+<div id="wrap">
+  <div id="sub_nav">
+    <%= render :partial => 'admin/shared/settings_sub_nav' %>
+  </div>
+  <div id="workspace">
+    <div class="header">
+      <h1>Ny layout</h1>
+    </div>
     <% form_for :page_layout, :url => admin_page_layouts_path do |f| %>
-    <%= error_messages_for :page_layout %>
+      <%= error_messages_for :page_layout %>
       <fieldset>
         <legend>Attribut</legend>
         <label for="page_layout_name">Namn</label>
