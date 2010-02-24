@@ -10,6 +10,9 @@ class Page < ActiveRecord::Base
     :conditions => ["contents.parent_id IS NULL"],
     :dependent  => :destroy
   })
+  
+  belongs_to :created_by, :class_name => 'User'
+  belongs_to :updated_by, :class_name => 'User'
 
   belongs_to  :page_layout
   belongs_to(:default_child_layout, {
@@ -36,11 +39,16 @@ class Page < ActiveRecord::Base
     ]
   }}
   named_scope :with_unpublished_changes, :conditions => ["changed_at > changes_published_at AND rendered_body IS NOT NULL"]
+  
+  named_scope :created_latest, :order => 'created_at DESC'
+  named_scope :updated_latest, :conditions => 'changed_at > created_at', :order => 'changed_at DESC'
 
   before_validation_on_create :set_default_layout, :set_inactive
 
   before_create :set_published_on
+  before_create :set_created_by
   before_save   :set_layout_attributes, :generate_slug
+  before_update :set_updated_by
   after_create  :insert_default_contents
 
   acts_as_list :scope => 'parent_id = \'#{parent_id}\' and parent_type = \'#{parent_type}\''
@@ -120,6 +128,14 @@ private
       c.resource_type, c.resource_id, c.column_position = d.resource_type, d.resource_id, d.column_position
       self.contents << c
     end if self.page_layout and self.page_layout.default_contents.any?
+  end
+  
+  def set_created_by
+    self.created_by = User.current
+  end
+  
+  def set_updated_by
+    self.updated_by = User.current
   end
   
 end

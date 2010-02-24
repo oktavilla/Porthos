@@ -1,0 +1,19 @@
+<ul id="pages">
+<% pages.each do |page| %>
+  <li>
+    <span class="name"><%= page.title %></span>
+    <% if page.tags.any? %>
+    <span class="tags"><%= page.tags.collect { |tag| link_to(tag.name, admin_assets_path(:tags => [tag.name]))}.join(' ') %></span>
+    <% end %>
+    <span class="tools">
+      <%= link_to "Redigera", admin_page_path(page), :class => 'edit' %>
+      <% if page.node  %>
+        <%= link_to "Inställningar", edit_admin_node_path(page.node), :class => 'settings'  %>
+        <%= button_to "Radera", admin_node_path(page.node), { :method => :delete, :class => "delete", :src => "/graphics/porthos/icons/16_delete.png", :confirm => "Är du säker, detta går inte att ångra." } %>
+      <% else %>
+        <%= button_to "Radera", admin_page_path(page), { :method => :delete, :class => "delete", :src => "/graphics/porthos/icons/16_delete.png", :confirm => "Är du säker, detta går inte att ångra." } %>
+      <% end %>
+    </span>
+  </li>
+<% end %>
+</ul>

@@ -3,6 +3,17 @@ class Admin::PagesController < ApplicationController
   before_filter :login_required
 
   def index
+    @tags = Tag.on('Page').popular.find(:all, :limit => 30)
+    @current_tags = params[:tags] || []
+    @related_tags = @current_tags.any? ? Page.find_related_tags(@current_tags) : []
+    
+    if @current_tags.any?
+      @tagged_pages = Page.find_tagged_with({:tags => params[:tags].join(' '), :order => 'created_at DESC'})
+    end
+    
+    respond_to do |format|
+      format.html
+    end
   end
 
   def show
