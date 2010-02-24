@@ -1,7 +1,8 @@
 # This controller handles the login/logout function of the site.  
 class Admin::SessionsController < ApplicationController
-  layout 'sessions'
   include Porthos::Admin
+
+  layout 'sessions'
 
   def index
     redirect_to admin_dashboard_path
