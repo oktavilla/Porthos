@@ -41,27 +41,10 @@
         this.toggle_handle.observe('click', this.toggleChildren.bindAsEventListener(this));
       }
       
-      this.element.getElementsBySelector('> a.settings').invoke('observe', 'click', this.edit.bindAsEventListener(this));
-      
       this.loadChildren();
       Porthos.Nodes.Collection.register(this);
     },
-    
-    edit: function(ev) {
-      new Ajax.Request(Event.element(ev).href, {
-        method: 'get',
-        onLoading: function() {
-          Porthos.Dialog().setWaitState();
-          Porthos.Dialog().show();
-        },
-        onComplete: function(response) {
-          Porthos.Dialog('node').insert('edit', response.responseText);
-          Porthos.Dialog().clearWaitState();
-        }
-      });
-      Event.stop(ev);
-    },
-    
+        
     isOpen:function() {
       if (this.toggle_handle) {
         return this.toggle_handle.hasClassName('active');
@@ -201,25 +184,6 @@
           sort_event.stop();
         });
       }
-      Event.stop(ev);
-    });
-    $$('span.controls a.create').invoke('observe', 'click', function(ev) {
-      new Ajax.Request(Event.element(ev).href, {
-        method: 'get',
-        onLoading: function() {
-          Porthos.Dialog().show();
-          Porthos.Dialog().setWaitState();
-        },
-        onComplete: function(response) {
-          Porthos.Dialog('page').insert('new', response.responseText);
-          $$('form#page.new').each(function(form) {
-            form.select('div.graphic').each(function(element) {
-              Porthos.Helpers.graphicLabel(element);
-            });
-          });
-          Porthos.Dialog().clearWaitState();
-        }
-      });
       Event.stop(ev);
     });
   });

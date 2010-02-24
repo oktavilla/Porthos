@@ -64,12 +64,12 @@ class Admin::ContentsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to restfull_path_for(@content.context, :anchor => "content_#{@content.id}") }
     end
-  rescue ActiveRecord::RecordInvalid
-    @content.valid?
-    respond_to do |format|
-      format.html { render :template => (@resource || @content.resource).send(:view_path, :new) }
-      format.js { render :template => (@resource || @content.resource).send(:view_path, :new), :layout => false }
-    end
+  # rescue ActiveRecord::RecordInvalid
+  #   @content.valid?
+  #   respond_to do |format|
+  #     format.html { render :template => (@resource || @content.resource).send(:view_path, :new) }
+  #     format.js { render :template => (@resource || @content.resource).send(:view_path, :new), :layout => false }
+  #   end
   end
 
   def destroy

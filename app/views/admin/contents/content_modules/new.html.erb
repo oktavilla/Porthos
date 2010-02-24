@@ -14,7 +14,7 @@
             <label for="content_resource_id">Välj modul:</label>
             <%= f.select :resource_id, ContentModule.find(:all, :order => 'name ASC').collect { |t| [t.name, t.id] } %>
         </fieldset>
-        <div class="submit">
+        <div class="confirm">
           <%= submit_tag 'Lägg till' %> eller <%= link_to "avbryt", previous_view_path(), :class => 'cancel' %>
         </div>
       <% end %>

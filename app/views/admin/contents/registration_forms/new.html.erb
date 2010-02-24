@@ -16,7 +16,7 @@
             <%= f.select :resource_id, RegistrationForm.find(:all, :order => 'name ASC').collect { |t| [t.name, t.id] } %>
           </div>
         </div>
-        <div class="submit">
+        <div class="confirm">
           <%= submit_tag 'Lägg till' %> eller <%= link_to "avbryt", previous_view_path, :class => 'cancel' %>
         </div>
       <% end %>

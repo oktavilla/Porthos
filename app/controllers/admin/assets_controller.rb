@@ -3,7 +3,7 @@ class Admin::AssetsController < ApplicationController
   
   before_filter :login_required
   skip_before_filter :clear_content_context
-  before_filter :set_cotent_context, :only => :index
+  before_filter :set_content_context, :only => :index
   skip_before_filter :remember_uri, :only => [:index, :show, :create, :search]
   
   protect_from_forgery :only => :create
@@ -157,8 +157,9 @@ class Admin::AssetsController < ApplicationController
 
 protected
 
-  def set_cotent_context
+  def set_content_context
     @content = session[:content] ||= params[:content]
+    @context_params = session[:context_params] ||= params[:context_params] ||= {}
   end
 
 end
