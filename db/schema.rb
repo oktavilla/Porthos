@@ -299,8 +299,8 @@ ActiveRecord::Schema.define(:version => 20100224120647) do
     t.text     "rendered_body"
     t.datetime "changed_at"
     t.datetime "changes_published_at"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
   end
 
   add_index "pages", ["default_child_layout_id"], :name => "index_pages_on_default_child_layout_id"
