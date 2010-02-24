@@ -1,7 +1,7 @@
 class RemovePagePresets < ActiveRecord::Migration
 
   def self.up
-    drop_table :page_restrictions
+    drop_table :page_presets
   end
   
   def self.down

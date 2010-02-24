@@ -19,7 +19,7 @@ class Admin::AssetsController < ApplicationController
       @per_page = params[:per_page] || 20
       @type.public.paginate(:page => params[:page], :per_page => @per_page.to_i, :order => 'created_at DESC', :conditions => 'incomplete = 0')
     else
-      @type.public.find_tagged_with({:tags => params[:tags].join(','), :order => 'created_at DESC'})
+      @type.public.find_tagged_with({:tags => params[:tags].join(' '), :order => 'created_at DESC'})
     end
     @asset = Asset.new
     respond_to do |format|

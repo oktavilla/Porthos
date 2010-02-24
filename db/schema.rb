@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100222152519) do
+ActiveRecord::Schema.define(:version => 20100224120647) do
 
   create_table "asset_usages", :force => true do |t|
     t.integer  "asset_id"
@@ -65,6 +65,14 @@ ActiveRecord::Schema.define(:version => 20100222152519) do
 
   add_index "cart_items", ["cart_id"], :name => "index_cart_items_on_cart_id"
   add_index "cart_items", ["product_id"], :name => "index_cart_items_on_product_id"
+
+  create_table "carts", :force => true do |t|
+    t.integer  "shop_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "carts", ["shop_id"], :name => "index_carts_on_shop_id"
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id"
@@ -214,6 +222,42 @@ ActiveRecord::Schema.define(:version => 20100222152519) do
   add_index "order_items", ["order_id"], :name => "index_order_items_on_order_id"
   add_index "order_items", ["product_id"], :name => "index_order_items_on_product_id"
 
+  create_table "orders", :force => true do |t|
+    t.integer  "shop_id"
+    t.integer  "user_id"
+    t.string   "public_id"
+    t.integer  "type"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "cell_phone"
+    t.string   "phone"
+    t.string   "address"
+    t.string   "post_code"
+    t.string   "locality"
+    t.string   "shipping_address"
+    t.string   "shipping_post_code"
+    t.string   "shipping_locality"
+    t.decimal  "total_sum",              :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "total_vat",              :precision => 8, :scale => 2, :default => 0.0
+    t.integer  "total_items"
+    t.string   "dispatch_id"
+    t.string   "dispatch_status"
+    t.string   "shipment_id"
+    t.string   "shipment_type"
+    t.decimal  "shipment_price",         :precision => 8, :scale => 2, :default => 0.0
+    t.string   "payment_type"
+    t.string   "payment_transaction_id"
+    t.string   "payment_status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "orders", ["dispatch_id"], :name => "index_orders_on_dispatch_id"
+  add_index "orders", ["payment_transaction_id"], :name => "index_orders_on_payment_transaction_id"
+  add_index "orders", ["shop_id"], :name => "index_orders_on_shop_id"
+  add_index "orders", ["user_id"], :name => "index_orders_on_user_id"
+
   create_table "page_layouts", :force => true do |t|
     t.string   "css_id"
     t.string   "name"
@@ -255,6 +299,8 @@ ActiveRecord::Schema.define(:version => 20100222152519) do
     t.text     "rendered_body"
     t.datetime "changed_at"
     t.datetime "changes_published_at"
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   add_index "pages", ["default_child_layout_id"], :name => "index_pages_on_default_child_layout_id"
@@ -302,6 +348,58 @@ ActiveRecord::Schema.define(:version => 20100222152519) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "product_categories", :force => true do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.integer  "parent_id"
+    t.integer  "shop_id"
+    t.integer  "position"
+    t.boolean  "hidden"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "product_categories", ["parent_id"], :name => "index_product_categories_on_parent_id"
+  add_index "product_categories", ["shop_id"], :name => "index_product_categories_on_shop_id"
+  add_index "product_categories", ["slug"], :name => "index_product_categories_on_slug"
+
+  create_table "product_categorizations", :force => true do |t|
+    t.integer  "product_category_id"
+    t.integer  "product_id"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "product_categorizations", ["product_category_id"], :name => "index_product_categorizations_on_product_category_id"
+  add_index "product_categorizations", ["product_id"], :name => "index_product_categorizations_on_product_id"
+
+  create_table "product_images", :force => true do |t|
+    t.integer  "asset_id"
+    t.integer  "product_id"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "product_images", ["asset_id"], :name => "index_product_images_on_asset_id"
+  add_index "product_images", ["product_id"], :name => "index_product_images_on_product_id"
+
+  create_table "products", :force => true do |t|
+    t.string   "name"
+    t.text     "short_description"
+    t.text     "long_description"
+    t.string   "article_number"
+    t.decimal  "price",             :precision => 8, :scale => 2, :default => 0.0
+    t.float    "vat"
+    t.integer  "quantity"
+    t.boolean  "hidden",                                          :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "products", ["article_number"], :name => "index_products_on_article_number"
 
   create_table "redirects", :force => true do |t|
     t.string   "path"
@@ -462,6 +560,18 @@ ActiveRecord::Schema.define(:version => 20100222152519) do
   end
 
   add_index "settings", ["name"], :name => "index_settings_on_name"
+
+  create_table "shops", :force => true do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.boolean  "show_vat",      :default => true
+    t.boolean  "closed",        :default => false
+    t.text     "message"
+    t.string   "contact_phone"
+    t.string   "contact_email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "tag_collections", :force => true do |t|
     t.integer  "page_collection_id"

@@ -12,6 +12,9 @@ class User < ActiveRecord::Base
   has_many :roles, :through => :user_roles
   has_many :registrations
   
+  has_many :created_pages, :foreign_key => 'created_by_id', :class_name => 'Page', :order => 'created_at DESC'
+  has_many :updated_pages, :foreign_key => 'updated_by_id', :class_name => 'Page', :order => 'updated_at DESC'
+  
   belongs_to :avatar, :foreign_key => 'avatar_id', :class_name => 'ImageAsset'
 
   validates_presence_of     :first_name, :last_name

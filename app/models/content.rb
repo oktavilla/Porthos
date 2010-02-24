@@ -104,7 +104,9 @@ class Content < ActiveRecord::Base
 protected
 
   def notify_context
-    context.update_attributes(:changed_at => Time.now) if context && context.respond_to?(:changed_at)
+    if context && context.respond_to?(:changed_at)
+      context.changed_at = Time.now and context.save
+    end
   end
 
 end
