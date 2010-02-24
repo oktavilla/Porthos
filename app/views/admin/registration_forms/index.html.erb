@@ -1,26 +1,22 @@
-<% @page_class = 'A content' -%>
-<div id="content_header">
-  <h1>Formulär</h1>
-</div>
-<div id="container">
-  <div id="content">
-    <div id="ca">
-      <span class="controls">
-        <%= link_to "Skapa ett nytt formulär", new_admin_registration_form_path, :class => 'create' %>
-      </span>
-      <div class="inner">
-      <% if @registration_forms.any? -%>
-        <% nested_list_of @registration_forms, {}, :class => 'gl' do |form| %>
-          <%= link_to form.name, edit_admin_registration_form_path(form) %>
-          <span class="controls general">
-            <%= link_to "Redigera", edit_admin_registration_form_path(form), :class => 'edit' %>
-            <%= link_to "Radera", admin_registration_form_path(form), { :method => :delete, :confirm => "Är du säker, detta går inte att ångra.", :class => 'delete' } %>
-          </span>
-        <% end %>
-      <% else -%>
-        <p class="blank-slate">Det finns inga installerade formulär</p>
-      <% end -%>
-      </div>
+<% @page_class = 'layout2' -%>
+<% @page_id = 'site-settings' -%>
+<div id="wrap">
+  <div id="sub_nav">
+    <%= render :partial => 'admin/shared/settings_sub_nav' %>
+  </div>
+  <div id="workspace">
+    <div class="header">
+      <h1>Formulär</h1>
     </div>
+    <div class="tools">
+      <%= link_to "Skapa ett nytt formulär", new_admin_registration_form_path, :class => 'create' %>
+    </div>
+    <% nested_list_of @registration_forms, {}, :class => 'gl' do |form| %>
+      <%= link_to form.name, edit_admin_registration_form_path(form) %>
+      <span class="controls general">
+        <%= link_to "Redigera", edit_admin_registration_form_path(form), :class => 'edit' %>
+        <%= link_to "Radera", admin_registration_form_path(form), { :method => :delete, :confirm => "Är du säker, detta går inte att ångra.", :class => 'delete' } %>
+      </span>
+    <% end %>
   </div>
 </div>

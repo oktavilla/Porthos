@@ -1,22 +1,18 @@
-<% @page_class = 'A' -%>
-<div id="content_header">
-  <h1>Formulär</h1>
-</div>
-<div id="container">
-  <div id="content">
-    <div id="ca">
-      <h2 class="label">Nytt formulär</h1>
-      <div class="inner">
-        <% form_for :registration_form, :url => admin_registration_forms_path do |f| %>
-          <%= render :partial => 'form', :locals => {:f => f} %>
-          <div class="confirm">
-            <input type="submit" value="Lägg till formuläret">
-          </div>
-        <% end %>
-      </div>
+<% @page_class = 'layout2' -%>
+<% @page_id = 'site-settings' -%>
+<div id="wrap">
+  <div id="sub_nav">
+    <%= render :partial => 'admin/shared/settings_sub_nav' %>
+  </div>
+  <div id="workspace">
+    <div class="header">
+      <h1>Formulär</h1>
     </div>
+    <% form_for :registration_form, :url => admin_registration_forms_path do |f| %>
+      <%= render :partial => 'form', :locals => {:f => f} %>
+      <div class="confirm">
+        <input type="submit" value="Lägg till formuläret"> eller <%= link_to "avbryt", admin_registration_forms_path %>
+      </div>
+    <% end %>
   </div>
 </div>
-
-<%= javascript_include_tag 'named_routes' %>
-<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', 'porthos/safari_search', :cache => 'admin' %>
