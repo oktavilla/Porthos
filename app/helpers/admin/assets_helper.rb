@@ -10,11 +10,11 @@ module Admin::AssetsHelper
       { :name => 'Ljud',       :class => 'SoundAsset' }
     ]
     asset_links.collect do |link|
-      if options[:current].to_s != link[:class]
-        content_tag('a', link[:name], :href => admin_assets_path(:type => link[:class]))
-      else
-        content_tag('span', link[:name], { :class => 'current' })
-      end
+      content_tag('li', content_tag('a', link[:name], {
+        :href => admin_assets_path(:type => link[:class])
+      }), {
+        :class => "#{options[:current].to_s == link[:class] ? 'current' : ''}"
+      })
     end
   end
 end

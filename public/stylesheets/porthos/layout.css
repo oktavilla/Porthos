@@ -107,6 +107,21 @@ body.layout2 #workspace {
   width:100%;
   background:#f2f2f2; }
 
+body.layout3 { background:rgb(214,221,229); }
+
+body.layout3 #wrap {
+  padding-right:250px; }
+
+body.layout3 #sub_nav {
+  float:right; 
+  width:250px; 
+  margin-right:-250px; }
+
+body.layout3 #workspace {
+  float:left; 
+  width:100%;
+  background:#f2f2f2; }
+
 #sub_nav {
   border-top:10px solid #000; 
   padding-top:1em; }
