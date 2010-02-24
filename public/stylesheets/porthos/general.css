@@ -171,7 +171,7 @@ ul ul {list-style:none;}
         overflow:hidden; } 
 
     .A #content .inner {margin:0 10px 10px 10px;}
-    #pages.A #content .inner {margin:0;}
+    #pages.show #content .inner {margin:0;}
 
         
     .AxB #content { background:#fdfdfd url(/graphics/porthos/column_divider_left.gif) 20% 0 repeat-y; }

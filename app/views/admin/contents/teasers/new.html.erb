@@ -7,10 +7,11 @@
     <div id="ca">
     <div class="inner">
       <%= error_messages_for :resource %>
-      <% form_for :content, :url => admin_contents_path, :html => { :multipart => true }  do |f| %>
+      <% form_for :content, :url => admin_contents_path(:collection => params[:collection]), :html => { :multipart => true }  do |f| %>
         <%= f.hidden_field :context_id %>
         <%= f.hidden_field :context_type %>
         <%= f.hidden_field :parent_id, { :value => @content.id } %>
+        <%= f.hidden_field :column_position %>
         <%= f.hidden_field :resource_type, { :value => 'Teaser' } %>
         <% fields_for :resource do |resource| %>
           <label for="content_<%= @content.id %>_resource_title">Rubrik</label>
@@ -34,7 +35,7 @@
           </div>  
         <% end %>
         <%= render :partial => 'admin/contents/restriction_settings', :locals => { :content => @content }%>
-        <div class="submit">
+        <div class="confirm">
           <%= submit_tag 'Lägg till puff' %> eller <%= link_to "avbryt", previous_view_path %>
         </div>
       <% end %>

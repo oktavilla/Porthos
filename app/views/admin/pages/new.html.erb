@@ -9,7 +9,7 @@
       <%= error_messages_for :page %>
       <% form_for :page, :url => admin_pages_path, :html => { :id => 'page', :class => 'new' } do |f| %>
         <%= render :partial => 'form', :locals => {:f => f} %>
-        <div class="submit">
+        <div class="confirm">
           <%= f.submit "Lägg till sida" %> eller <%= link_to "avbryt", previous_view_path(admin_nodes_path) %>
         </div>
       <% end %>

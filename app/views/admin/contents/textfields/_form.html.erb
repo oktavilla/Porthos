@@ -8,7 +8,7 @@
       Filter: 
       <%= resource.select :filter, Textfield.filters %>
     </label>
-    <%= resource.text_area :body, :class => @content.resource.filter, :id => 'editor' %>
+    <%= resource.text_area :body, :class => @content.resource.filter, :id => 'editor', :cols => 90 %>
   <% end %>
 <% else -%>
   <%= f.select :resource_id, Textfield.shared.find(:all, :order => 'title ASC').collect { |t| [t.title, t.id] } %>

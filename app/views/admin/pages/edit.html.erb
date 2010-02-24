@@ -1,22 +1,21 @@
-<% @page_class = "AB content" -%>
-<h1>Ändra ”<%= @page.title %>”</h1>
-<div id="content">
-  <div id="c-a">
-    <%= error_messages_for :page %>
-    <%= error_messages_for :node %>
-    <% form_for :page, :url => admin_page_path(@page), :html => { :method => :put } do |f| %>
-      <label for="page_title">Titel</label>
-      <%= f.text_field :title %>
-      <label for="page_description">Kort beskrivning</label>
-      <%= f.text_area :description, :rows => 5 %>
-      <label for="page_tag_names">Nyckelord <span class="info">(olika nyckelord separeras med ett kommatecknen)</label>
-      <%= f.text_area :tag_names, :rows => 2 %>
-      <label for="page_layout">Välj layout</label>
-      <%= f.select :page_layout_id, PageLayout.find(:all).collect { |layout| [layout.name, layout.id] } %>
-      <div class="submit">
-        <%= f.submit "Spara", :class => 'button' %> eller <%= link_to "Avbryt", previous_view_path(admin_page_path(@page)) %>
+<% @page_class = "A" -%>
+<div id="content_header">
+  <h1>Ändra uppgifter för ”<%= @page.title %>”</h1>
+</div>
+<div id="container">
+  <div id="content">
+    <div id="ca">
+      <%= error_messages_for :page %>
+      <%= error_messages_for :node %>
+      <div class="inner">
+      <% form_for :page, :url => admin_page_path(@page), :html => { :method => :put } do |f| %>
+        <%= render :partial => 'admin/pages/form.html.erb', :locals => { :f => f, :page => @page } %>
+        <div class="confirm">
+          <%= f.submit "Spara", :class => 'button' %> eller <%= link_to "Avbryt", previous_view_path(admin_page_path(@page)) %>
+        </div>
+      <% end %>
       </div>
-    <% end %>
+    </div>
   </div>
 </div>
 <%= javascript_include_tag 'named_routes' %>
