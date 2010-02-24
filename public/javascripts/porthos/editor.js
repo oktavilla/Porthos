@@ -147,6 +147,13 @@ dialogTableHtml:  "<body class='wym_dialog wym_dialog_table'"
   ]
 });
 
+Wymeditor.prototype.teardown = function() {
+  this.update();
+  Porthos.jQuery(this._box).remove();
+  Porthos.jQuery(this._element).show();
+  WYM_INSTANCES[this._index] = null;
+};
+
 Porthos.Editor.Initialize = function(selector, options) {
   var selector = selector || '#editor';
   var options = Object.extend(Porthos.Editor.Options, options || {});
@@ -170,9 +177,7 @@ Porthos.Editor.Initialize = function(selector, options) {
       break;
       default:
         for(i=0; i < WYM_INSTANCES.length; i++) {
-          var editor = WYM_INSTANCES[i];
-          Porthos.jQuery(editor._box).remove();
-          Porthos.jQuery(editor._element).show();
+          WYM_INSTANCES[i].teardown();
         }
     }
   });
