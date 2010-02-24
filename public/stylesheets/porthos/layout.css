@@ -120,6 +120,12 @@ body.layout3 #sub_nav {
   float:right; 
   width:250px; 
   margin-right:-250px; }
+  body.layout3 #sub_nav form,
+  body.layout3 #sub_nav ul li a,
+  body.layout3 #sub_nav .label,
+  body.layout3 #sub_nav .new a {
+    padding:.5em 40px .45em 20px; }
+  
 
 body.layout3 #workspace {
   float:left; 
