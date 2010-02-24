@@ -19,13 +19,13 @@
         </div>
       <% end %>
       <% if @root -%>  
-      <h2 class="label" id="root">
+      <div id="root">
         <span class="name"><%= @root.name %></span>
         <span class="edit">
           <%= link_to "Redigera", node_path(@root), :class => 'edit' %>
           <%= link_to "Inställningar", edit_admin_node_path(@root), :class => 'settings' %>
         </span>
-      </h2>
+      </div>
       <div id="navigation">
         <%= render :partial => 'nodes_tree', :locals => { :nodes => @nodes, :open_nodes => @open_nodes, :trail => @trail, :place => false} %>
       </div>

@@ -7,5 +7,5 @@
     <% end -%>
   <% end %>
   <%= radio_button_tag('node[parent_id]', node.id, (node.id == trail.first.id), :id => "node_parent_id_#{node.id}") %>
-  <span class="node-name"><%= node.name %></span>
+  <span class="name"><%= node.name %></span>
 </div>
