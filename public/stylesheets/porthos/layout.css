@@ -54,6 +54,9 @@ body {
   #main_nav a:hover,
   #account_nav a:hover,
   #groups .groups_index a,
+  #nodes  .nodes_index a,
+  #registrations  .registrations_index a,
+  #users .users_index a,
   #assets .assets_index a,
   #pages .pages_index a,
   #link_lists .link_lists_index a {color:#fff;}
