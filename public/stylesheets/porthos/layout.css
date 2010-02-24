@@ -428,6 +428,46 @@ body#link_lists .link_list {margin-bottom:1.5em;}
       padding-top:.5em;
       border-top:1px dashed #ccc; }
 
+#nodes, #nodes ul {
+  list-style:none; 
+  margin:0; }
+  #nodes li {
+    margin:0; }
+  #nodes li .toggle_handle {
+    float:left;
+    margin:0 0 0 -30px; 
+    padding:6px 4px 4px 4px;
+    line-height:.2; 
+    background:#fff;
+    color:#000;
+    border:1px solid #ddd;
+    -webkit-border-radius:4px;
+    font-weight:bold; }
+    #nodes li .toggle_handle:hover {
+      border:1px solid #ccc;
+      background:#f7f7f7;}
+  #nodes li > div {
+    border-top:1px solid #ddd;
+    padding:.8em 0 .8em 40px; }
+    #nodes li > div:hover {background:#fff;}
+  #nodes li > div.active .name {
+    color:#000;
+    font-weight:bold; }
+  #nodes li > div.inactive .name {
+    font-style:italic;
+    color:#a00;}
+  #nodes li .name {
+    display:inline-block;
+    width:300px; }
+  #nodes li .edit {
+    display:none;
+    font-size:12px; 
+    margin-left:1em; }
+    #nodes li .edit a {margin-left:.5em;}
+  #nodes li div:hover .edit {display:inline;}
+  #nodes ul.placeholder {display:none;}
+  #nodes ul li {margin-left:3em;}
+  #nodes ul li > div {border-top:0;}
 
 #userslist {}
   #userslist li {

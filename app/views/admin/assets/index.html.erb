@@ -57,10 +57,12 @@
       <ul class="items detailed">
         <% @assets.each do |asset| -%>
         <li>
-          <% if asset.image? %>
-          <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :image_asset_id => asset.id }}.merge(@context_params)) %>
-          <% elsif asset.movie? %>
-          <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :movie_asset_id => asset.id }}.merge(@context_params)) %>
+          <% if @content -%>
+            <% if asset.image? %>
+            <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :image_asset_id => asset.id }}.merge(@context_params)) %>
+            <% elsif asset.movie? %>
+            <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :movie_asset_id => asset.id }}.merge(@context_params)) %>
+            <% end %>
           <% end %>
           <a href="<%= edit_admin_asset_path(asset) %>">
           <% if asset.image? %>
