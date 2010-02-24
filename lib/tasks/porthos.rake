@@ -71,8 +71,17 @@ namespace :porthos do
     ENV['SCHEMA'] = File.join(plugin_path, 'db/schema.rb')
     Rake::Task["db:schema:load"].invoke      
     admin_role = Role.create(:name => 'Admin')
+    public_role = Role.create(:name => 'Public')
+    site_admin_role = Role.create(:name => 'SiteAdmin')
     admin_user = User.create(:login => 'admin', :password => 'password', :password_confirmation => 'password', :first_name => 'Admin', :last_name => 'Admin', :email => 'admin@example.com')
     UserRole.create(:role_id => admin_role.id, :user_id => admin_user.id)
+    UserRole.create(:role_id => site_admin_role.id, :user_id => admin_user.id)
+    
+    Dir.foreach(File.join(plugin_path, 'db','migrate')) do |entry|
+      unless File.basename(entry)[0,1] == '.'
+        ActiveRecord::Base.connection.execute("INSERT INTO plugin_schema_migrations (plugin_name, version) VALUES('porthos', #{entry[0..2]})")
+      end
+    end
   end
   
   desc "Reset MemCache node cache"
