@@ -1,6 +1,5 @@
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
-<div id="wrap">
   <div id="sub_nav">
     <%= render :partial => 'admin/shared/settings_sub_nav' %>
   </div>
@@ -40,6 +39,5 @@
       <% end %>
     </div>
   </div>
-</div>
 <%= javascript_include_tag 'named_routes' %>
 <%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', 'porthos/safari_search', :cache => 'admin' %>
