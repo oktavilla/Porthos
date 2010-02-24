@@ -10,7 +10,7 @@
   <% if node.restricted? -%>
   <span class="info restricted">lösenordsskyddad</span>
   <% end -%>
-  <span class="tools">
+  <span class="edit">
     <% if node.resource_class_name == 'PageCollection' -%>
     <%= link_to "Lägg till / redigera sidor", admin_page_collection_path(node.resource_id), :class => 'edit' %>
     <%= link_to "Redigera huvudsida", admin_page_path(node.resource_id), :class => 'edit' %>
@@ -18,6 +18,6 @@
     <%= link_to "Redigera", node_path(node), :class => 'edit' %>
     <% end -%>
     <%= link_to "Inställningar", edit_admin_node_path(node), :class => 'settings' %>
-    <%= button_to "Radera", admin_node_path(node), { :method => :delete, :class => "delete", :src => "/graphics/porthos/icons/16_delete.png", :confirm => "Är du säker, detta går inte att ångra." } %>
+    <%= link_to "Radera", admin_node_path(node), { :method => :delete, :class => "delete", :confirm => "Är du säker, detta går inte att ångra." } %>
   </span>
 </div>

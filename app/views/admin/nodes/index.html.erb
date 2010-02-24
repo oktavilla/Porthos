@@ -3,19 +3,14 @@
 <% @page_title = "Navigation" -%>
 <div id="workspace">
   <div class="header">
-    <h1>Webbplatsens innehåll & struktur</h1>
+    <h1>Struktur och Navigation</h1>
   </div>
-  <span class="controls">
+  <div class="tools">
     <%= link_to "Skapa en ny sida", new_admin_page_path, :class => 'create' %>
     <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'create' if current_user.can_create?(PageCollection) %>
     <%= link_to "Sortera", sort_admin_nodes_path, :class => 'sort' %>
-  </span>
+  </div>
   <div id="content">
-    <div id="cb">
-      <div class="inner">
-      </div>
-    </div>
-    <div id="ca">
       <div class="inner">
         <% form_for :page, :url => admin_pages_path, :html => {:class => "tiny", :id => "new_page_form", :style => "display:none;"} do |f| %>
           <%= render :partial => 'admin/pages/form', :locals => {:f => f} %>
@@ -26,7 +21,7 @@
       <% if @root %>  
         <h2 class="label" id="root">
           <span class="name"><%= @root.name %></span>
-          <span class="tools">
+          <span class="edit">
             <%= link_to "Redigera", node_path(@root), :class => 'edit' %>
             <%= link_to "Inställningar", edit_admin_node_path(@root), :class => 'settings' %>
           </span>
