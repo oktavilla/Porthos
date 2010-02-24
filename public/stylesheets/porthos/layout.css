@@ -92,7 +92,7 @@ body {
 #wrap {}
 
 body.layout2 {
-  background:rgb(214,221,229) url(/graphics/bg_shadow.png) 0 0 repeat-y; }
+  background:rgb(214,221,229) url(/graphics/porthos/_new/layout2_bg_shadow.png) 0 0 repeat-y; }
 
 body.layout2 #wrap {
   padding-left:180px; }
@@ -107,7 +107,8 @@ body.layout2 #workspace {
   width:100%;
   background:#f2f2f2; }
 
-body.layout3 { background:rgb(214,221,229); }
+body.layout3 { 
+  background:rgb(214,221,229) url(/graphics/porthos/_new/layout3_bg_shadow.png) 100% 0 repeat-y; }
 
 body.layout3 #wrap {
   padding-right:250px; }
