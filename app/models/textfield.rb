@@ -17,4 +17,13 @@ class Textfield < ActiveRecord::Base
   
   named_scope :shared, :conditions => ["shared = ?", 1]
   
+  @@filters = %w(wymeditor html textile)
+  @@default_filter = 'wymeditor'
+  cattr_accessor :filters
+  cattr_accessor :default_filter
+  
+  def filter
+    @filter ||= read_attribute(:filter) || default_filter
+  end
+  
 end

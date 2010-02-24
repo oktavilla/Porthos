@@ -1,7 +1,6 @@
 class Admin::RegistrationsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'activities'
   
   def index
     @type = params[:type] || 'Registration'

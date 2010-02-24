@@ -1,7 +1,6 @@
 class Admin::ConversionsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'admin'
   
   def show
     page = params[:page] || 1

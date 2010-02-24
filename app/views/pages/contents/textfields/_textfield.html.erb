@@ -1,7 +1,16 @@
-<% if resource.shared? %>
+<% if resource.shared? -%>
 <%= resource.body %>
-<% else %>
+<% else -%>
 <div class="textfield">
-  <%= resource.body %>
+  <% case resource.filter
+      when 'wymeditor' -%>
+      <%= resource.body %>
+  <%  when 'html' -%>
+    <%= resource.body %>
+  <%  when 'textile' -%>
+    <%= textilize resource.body %>
+  <%  else -%>
+    <%= resource.body %>
+  <% end -%>
 </div>
-<% end %>
+<% end -%>

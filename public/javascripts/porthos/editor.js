@@ -147,9 +147,39 @@ dialogTableHtml:  "<body class='wym_dialog wym_dialog_table'"
   ]
 });
 
+Wymeditor.prototype.teardown = function() {
+  this.update();
+  Porthos.jQuery(this._box).remove();
+  Porthos.jQuery(this._element).show();
+  WYM_INSTANCES[this._index] = null;
+};
+
 Porthos.Editor.Initialize = function(selector, options) {
-  var selector = selector || '.wymeditor';
+  var selector = selector || '#editor';
   var options = Object.extend(Porthos.Editor.Options, options || {});
-  
-  Porthos.jQuery(selector).wymeditor(options);    
+  var editors = Porthos.jQuery(selector);
+  var filters = Porthos.jQuery('#resource_filter option').map(function() {
+    return Porthos.jQuery(this).val();
+  });
+  Porthos.jQuery('#resource_filter').change(function() {
+    var self = Porthos.jQuery(this);
+    self.blur();
+    var value = self.val();
+    var filter_string = ''
+    filters.each(function() {
+      filter_string += ' '+this;
+    });
+    editors.removeClass(filter_string)
+    .addClass(value);
+    switch(value) {
+      case 'wymeditor':
+        Porthos.jQuery(selector).wymeditor(options);
+      break;
+      default:
+        for(i=0; i < WYM_INSTANCES.length; i++) {
+          WYM_INSTANCES[i].teardown();
+        }
+    }
+  });
+  editors.filter('.wymeditor').wymeditor(options);
 };

@@ -3,8 +3,6 @@ class Admin::ContentsController < ApplicationController
   before_filter :login_required
   skip_after_filter :remember_uri
 
-  layout 'admin'
-  
   def show
     @content = Content.find(params[:id])
     respond_to do |format|

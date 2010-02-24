@@ -4,8 +4,6 @@ class Admin::TagCollectionsController < ApplicationController
   before_filter :login_required
   before_filter :find_page_collection
   
-  layout 'content'
-  
   def new
     @tag_collection = @page.tag_collections.build
     respond_to do |format|

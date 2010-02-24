@@ -1,7 +1,6 @@
 class Admin::ActivitiesController < ApplicationController
   include Porthos::Admin
   before_filter :login_required, :extract_periods
-  layout 'activities'
   def index
     respond_to do |format|
       format.html

@@ -1,7 +1,6 @@
 class Admin::MeasurePointsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'activities'
   
   # GET /measure_points
   # GET /measure_points.xml

@@ -1,7 +1,6 @@
 class Admin::UsersController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'users'
 
   def index
     admins

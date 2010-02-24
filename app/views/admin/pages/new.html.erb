@@ -1,19 +1,17 @@
 <% @page_class = "AB content" -%>
-<div id="content_header">
-  <h1>Ny sida</h1>
-</div>
-<div id="container">
+<div id="workspace">
+  <div class="header">
+    <h1>Skapa en ny sida</h1>
+  </div>
   <div id="content">
-    <div id="ca"><div id="ca2">
-      <%= error_messages_for :node %>
-      <%= error_messages_for :page %>
-      <% form_for :page, :url => admin_pages_path, :html => { :id => 'page', :class => 'new' } do |f| %>
-        <%= render :partial => 'form', :locals => {:f => f} %>
-        <div class="confirm">
-          <%= f.submit "Lägg till sida" %> eller <%= link_to "avbryt", previous_view_path(admin_nodes_path) %>
-        </div>
-      <% end %>
-    </div></div>
+    <%= error_messages_for :node %>
+    <%= error_messages_for :page %>
+    <% form_for :page, :url => admin_pages_path, :html => { :id => 'page', :class => 'new' } do |f| %>
+      <%= render :partial => 'form', :locals => {:f => f} %>
+      <div class="submit">
+        <%= f.submit "Skapa sidan" %> eller <%= link_to "avbryt", previous_view_path(admin_nodes_path) %>
+      </div>
+    <% end %>
   </div>
 </div>
 <%= javascript_include_tag 'named_routes' %>

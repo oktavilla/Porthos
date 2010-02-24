@@ -1,7 +1,6 @@
 class Admin::PaymentsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'activities'
   
   def index
     per_page = params[:per_page] || 25

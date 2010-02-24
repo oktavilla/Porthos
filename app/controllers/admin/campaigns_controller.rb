@@ -1,7 +1,6 @@
 class Admin::CampaignsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
-  layout 'activities'
 
   # GET /campaigns
   # GET /campaigns.xml

@@ -1,10 +1,10 @@
 <% @page_class = "AB navigation" -%>
 <% @page_id = "contents" -%>
-<% @page_title = "Innehållsstruktur" -%>
-<div id="content_header">
-  <h1>Webbplatsens innehåll & struktur</h1>
-</div>
-<div id="container">
+<% @page_title = "Navigation" -%>
+<div id="workspace">
+  <div class="header">
+    <h1>Webbplatsens innehåll & struktur</h1>
+  </div>
   <span class="controls">
     <%= link_to "Skapa en ny sida", new_admin_page_path, :class => 'create' %>
     <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'create' if current_user.can_create?(PageCollection) %>
