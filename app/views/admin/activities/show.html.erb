@@ -1,19 +1,14 @@
 <% @page_title = "Statistik" -%>
+<% @page_class = "layout3" -%>
+<div id="sub_nav">
+  <%= render :partial => 'activities_nav', :locals => {:type => @type} %>
+</div>
 <div id="workspace">
-  <div id="c_wrap" class="layout_2">
-    <div id="c_1">
   <% begin %>
     <%= render :partial => "admin/activities/types/#{@type.to_s.tableize}", :locals => { :type => @type, :first_period => @first_period, :second_period => @second_period } %>
   <% rescue %>
     <%= render :partial => "admin/activities/types/default", :locals => { :type => @type, :first_period => @first_period, :second_period => @second_period } %>
   <% end %>
-    </div>
-    <div id="c_2">
-      <div class="inner">
-        <%= render :partial => 'activities_nav', :locals => {:type => @type} %>
-      </div>
-    </div>
-  </div>
 </div>
 
 <%= javascript_include_tag 'named_routes' %>

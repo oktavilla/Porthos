@@ -209,12 +209,12 @@ ul.nav li.current a,
 ul.filter li.current a {
   background:#0093d0; 
   color:#fff; }
-ul.nav li,
 ul.filter li {margin-bottom:.5em;}
 
 
 ul.nav {}
   ul.nav li a {
+    display:block;
     margin:0;
     font-weight:bold; }
 
@@ -225,7 +225,6 @@ ul.filter {}
   ul.filter li.current {margin-left:-3px;}
   ul.filter li.current a {  
     padding:3px 6px 3px 6px; }
-
 
 ul.tags {}
   ul.tags li {

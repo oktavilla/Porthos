@@ -1,23 +1,20 @@
 <% @page_title = "Registreringar" -%>
+<% @page_class = "layout3" -%>
+<div id="sub_nav">
+  <%= render :partial => 'filters', :locals => { :type => @type, :current_filter => @filter } %>
+  <%= render :partial => 'nav', :locals => { :current_type => @type } %>
+</div>
 <div id="workspace">
-  <div id="c_wrap" class="layout_2">
-    <div id="c_1">
-      <div class="header">
-        <h1><%= @type.constantize.human_name %></h1>
-      </div>
-      <%= render :partial => 'filters', :locals => { :type => @type, :current_filter => @filter } %>
+  <div class="header">
+    <h1><%= @type.constantize.human_name %></h1>
+  </div>
+  <div id="content">
     <% if @registrations.any? -%>
       <%= render :partial => "table", :locals => { :registrations => @registrations } %>
       <%= will_paginate @registrations %>
     <% else -%>
       <p class="blank-slate">Det finns inga registreringar av den här typen</p>
     <% end -%>
-    </div>
-    <div id="c_2">
-      <div class="inner">
-        <%= render :partial => 'nav', :locals => { :current_type => @type } %>
-      </div>
-    </div>
   </div>
 </div>
 <%= javascript_include_tag 'named_routes' %>
