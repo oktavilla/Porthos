@@ -109,6 +109,7 @@ Porthos.Assets.Uploader = Class.create({
     if (!(this.form = $(form))) { return; }
 
     this.queue = $A();
+    this.uploaded_files = $A();
     this.bytes_transfered = 0;
     
     var placeholder =  $span({'id' : 'select_files'});
@@ -142,7 +143,7 @@ Porthos.Assets.Uploader = Class.create({
       button_window_mode           : SWFUpload.WINDOW_MODE.TRANSPARENT,
       button_cursor                : SWFUpload.CURSOR.HAND
     }, options || {});
-        
+            
     this.swfu = new SWFUpload(this.options);
     $('submit_container').hide();
     this.form.select('input[type=file]').invoke('hide');
@@ -223,6 +224,7 @@ Porthos.Assets.Uploader = Class.create({
   },
   
   uploadComplete: function(file, response) {
+    this.uploaded_files.push(response.evalJSON().first());
     $('file_queue_' + file.id).addClassName('complete').removeClassName('uploading');
     $('file_queue_' + file.id).select('span.progress').first().update('100%');
     this.removeFromInternalQueue(file);
@@ -231,8 +233,11 @@ Porthos.Assets.Uploader = Class.create({
   },
   
   queueComplete: function(num_files_uploaded) {
+    asset_params = this.uploaded_files.collect(function(f){
+      return 'assets[]='+f.id;
+    }).join('&');
     $('add_assets_to_queue').update('Alla filer är uppladdade!').addClassName('upload_complete');
-    view_new_assets_link = $a({ 'href' : Routing.incomplete_admin_assets_path() }, 'Beskriv och sätt nyckelord på filerna')
+    view_new_assets_link = $a({ 'href' : Routing.incomplete_admin_assets_path()+'?'+asset_params }, 'Beskriv och sätt nyckelord på filerna')
     Element.insert(this.form, {
       'before' : $p({
         'class' : 'next_steps'

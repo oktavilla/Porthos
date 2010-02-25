@@ -17,7 +17,7 @@ class Admin::AssetsController < ApplicationController
     @related_tags = @current_tags.any? ? @type.find_related_tags(@current_tags) : []
     @assets = unless @current_tags.any?
       @per_page = params[:per_page] || 20
-      @type.public.paginate(:page => params[:page], :per_page => @per_page.to_i, :order => 'created_at DESC', :conditions => 'incomplete = 0')
+      @type.public.paginate(:page => params[:page], :per_page => @per_page.to_i, :order => 'created_at DESC')
     else
       @type.public.find_tagged_with({:tags => params[:tags].join(' '), :order => 'created_at DESC'})
     end
@@ -83,21 +83,19 @@ class Admin::AssetsController < ApplicationController
   # POST /assets.xml
   def create
     if params[:asset]
-      @assets = [Asset.from_upload(params[:asset].merge({:created_by => current_user,  :incomplete => true }))]
+      @assets = [Asset.from_upload(params[:asset].merge({:created_by => current_user}))]
     else
       @assets = params[:files].collect do |upload|
-        Asset.from_upload(:file => upload, :created_by => current_user, :incomplete => true) unless upload.blank?
+        Asset.from_upload(:file => upload, :created_by => current_user) unless upload.blank?
       end.compact
     end
     @not_saved = @assets.collect{ |a| a.save }.include? false
     respond_to do |format|
       unless @not_saved
         flash[:notice] = t(:saved, :scope => [:app, :admin_assets])
-        format.html { redirect_to incomplete_admin_assets_url }
+        format.html { redirect_to incomplete_admin_assets_url(:assets => @assets.collect {|asset| asset.id }) }
         format.xml  { head :created, :location => asset_url(@asset) }
         format.json do
-          # empty file object because it messes up the json parser
-          @assets.first.file = nil
           render :text => @assets.collect{ |asset| asset.attributes_for_js }.to_json, :layout => false, :status => 200
         end
       else
@@ -108,13 +106,12 @@ class Admin::AssetsController < ApplicationController
   end
   
   def incomplete
-    @assets = Asset.find(:all, :conditions => ['incomplete = 1 AND created_by_id = ?', current_user.id])
+    @assets = Asset.find(params[:assets])
   end
 
   def update_multiple
     params[:assets].each do |asset|
       save_asset = Asset.find(asset[0])
-      save_asset.incomplete = 0
       save_asset.update_attributes(asset[1])
     end
     flash[:notice] = t(:saved, :scope => [:app, :admin_assets])
