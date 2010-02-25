@@ -51,7 +51,6 @@ protected
     asset.description = self.caption if asset.description.blank?
     asset.author = self.copyright if asset.author.blank?  
     if asset.changed?  
-      asset.incomplete = false
       asset.save 
     end
   end

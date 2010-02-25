@@ -244,9 +244,9 @@ module ApplicationHelper
     end
   end
   
-  def admin_assets_path_with_session_key
+  def admin_assets_path_with_session_key(arguments = {})
     session_key = ActionController::Base.session_options[:key]
-    admin_assets_path(session_key => cookies[session_key], request_forgery_protection_token => form_authenticity_token)
+    admin_assets_path({session_key => cookies[session_key], request_forgery_protection_token => form_authenticity_token}.merge(arguments))
   end
   
   def render_page_content(page, content, options = {})
