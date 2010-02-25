@@ -1,0 +1,30 @@
+<span class="title"><%= link_to page.title, admin_page_path(page) %></span>
+<span class="slug">
+  <% if page.node %>
+  /<%= page.node.slug %>
+  <% else %>
+  /<%= page.slug %>
+  <% end %>
+</span>
+<div class="description">
+  <% unless page.description.blank? %>
+  <%= page.description %>
+  <% else %>
+  <%= link_to "Ingen beskrivning. Skriv en ...", admin_page_path(page) %>
+  <% end %>
+</div>
+<% if page.tags.any? %>
+<span class="tags"><%= page.tags.collect { |tag| link_to(tag.name, admin_pages_path(:tags => [tag.name]))}.join(' ') %></span>
+<% end %>
+<span class="meta">
+  Publicerad <%= page.published_on.strftime("%d %b %Y") %>. Senast ändrad <%= page.updated_at.strftime("%d %b %Y") %>
+</span>
+<span class="edit">
+  <%= link_to "Ändra", admin_page_path(page) %>
+  <% if page.node  %>
+    <%= link_to "Inställningar", edit_admin_node_path(page.node)  %>
+    <%= link_to "Ta bort", admin_node_path(page.node), { :method => :delete, :src => "/graphics/porthos/icons/16_delete.png", :confirm => "Är du säker, detta går inte att ångra." } %>
+  <% else %>
+    <%= link_to "Ta bort", admin_page_path(page), { :method => :delete, :confirm => "Är du säker, detta går inte att ångra." } %>
+  <% end %>
+</span>

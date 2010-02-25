@@ -3,7 +3,7 @@
 <% tags = @current_tags.dup %>
   <div id="sub_nav">
     <% form_for :asset, :url => search_admin_assets_path(:type => params[:type]), :html => { :method => :get } do |f| %>
-      <div class="search">
+      <div class="search fullwidthinput">
         <%= text_field_tag :query, (@query || 'Sök'), :class => "search_query", :id=> "search_query" %>
         <%= submit_tag "Sök", :style => "display:none" %>
       </div>
@@ -28,10 +28,16 @@
     <% end -%>
   <% end -%>
   <% if @tags.any? -%>
-    <div class="label">Populära nyckelord</div>
-    <ul class="tags popular">
-    <% @tags.sort_by { |tag| tag.num_taggings }.each do |tag| -%>
-      <li><%= link_to "#{tag.name} <span class=\"taggings\">#{tag.num_taggings}</span>", admin_assets_path(:tags => [tag.name]), :class => "tag" -%></li>
+    <div class="label">Nyckelord</div>
+    <ul class="tags">
+    <% @tags.sort_by { |tag| tag.name }.each do |tag| -%>
+      <li><span class="letter">A</span>
+        <ul>
+          <% @tags.sort_by { |tag| tag.name }.each do |tag| -%>
+          <li><%= link_to "#{tag.name.downcase}", admin_assets_path(:tags => [tag.name]), :class => "tag" -%></li>
+          <% end %>
+        </ul>
+      </li>
     <% end -%>
     </ul>
   <% end -%>
@@ -53,7 +59,7 @@
     </div>
     <div id="content">
       <% if @assets.any? -%>
-      <ul class="items detailed">
+      <ul class="items thumbnails">
         <% @assets.each do |asset| -%>
         <li>
           <% if @content -%>
@@ -72,7 +78,7 @@
             <img src="/graphics/porthos/icons/filetypes/<%= asset.extname %>.png" alt="" width="100" height="100">
           <% end %>
           </a>
-          <h2 class="title"><%= link_to asset.title, edit_admin_asset_path(asset) %></h2>
+          <div class="title"><%= link_to asset.title, edit_admin_asset_path(asset) %></div>
           <div class="description<%= ' blank' if asset.description.blank? %>">
             <%= asset.description.blank? ? "<a href=\"#{edit_admin_asset_path(asset)}\">Ingen beskrivning. Skriv en ...</a>" : truncate(asset.description,200) %>
           </div>
@@ -85,8 +91,8 @@
             <span>av</span> <%= asset.created_by.name %>
             <% end -%>
           </div>
-          <div class="actions">
-            <%= link_to "Ändra", edit_admin_asset_path(asset), :class => 'edit' %>
+          <div class="edit">
+            <%= link_to "Ändra", edit_admin_asset_path(asset) %>
             <%= link_to "Ta bort", admin_asset_path(asset), :class => 'delete', :confirm => "Är du säker att du vill ta bort filen? Den kommer försvinna från alla sidor. Du kan INTE ångra dig.", :method => :delete %>
           </div>
         </li>

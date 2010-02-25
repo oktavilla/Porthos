@@ -1,23 +1,24 @@
+<% @page_title = 'Sidor' -%>
 <% @page_class = 'layout3' -%>
 <div id="sub_nav">
   <% form_for :asset, :url => search_admin_assets_path(:type => params[:type]), :html => { :method => :get } do |f| %>
-  <div class="search">
+  <div class="search fullwidthinput">
     <%= text_field_tag :query, (@query || 'Sök'), :class => "search_query", :id=> "search_query" %>
     <%= submit_tag "Sök", :style => "display:none" %>
   </div>
   <% end %>
-  <ul>
+  <ul class="filter">
     <li class="current"><a href="#">Alla</a></li>
     <li><a href="#">Nyheter</a></li>
     <li><a href="#">Pressmeddelanden</a></li>
   </ul>
   <div class="label">Sortering</div>
-  <ul>
+  <ul class="filter">
     <li class="current"><a href="#">Datum</a></li>
     <li><a href="#">A-Z</a></li>
   </ul>
   <div class="label">Senast ändrad av</div>
-  <ul class="tags popular">
+  <ul class="filter">
     <li class="current"><a href="#">Alla</a></li>
     <li><a href="#">Alexis Fellenius</a></li>
     <li><a href="#">Arvid Andersson</a></li>
@@ -42,11 +43,17 @@
   <% end -%>
 <% end -%>
 <% if @tags.any? -%>
-  <div class="label">Populära nyckelord</div>
-  <ul class="tags popular">
-  <% @tags.sort_by { |tag| tag.num_taggings }.each do |tag| %>
-    <li><%= link_to "#{tag.name} <span class=\"taggings\">#{tag.num_taggings}</span>", admin_pages_path(:tags => [tag.name]), :class => "tag" -%></li>
-  <% end %>
+  <div class="label">Nyckelord</div>
+  <ul class="tags">
+  <% @tags.sort_by { |tag| tag.name }.each do |tag| -%>
+    <li><span class="letter">A</span>
+      <ul>
+        <% @tags.sort_by { |tag| tag.name }.each do |tag| -%>
+        <li><%= link_to "#{tag.name.downcase}", admin_pages_path(:tags => [tag.name]), :class => "tag" -%></li>
+        <% end %>
+      </ul>
+    </li>
+  <% end -%>
   </ul>
 <% end -%>
 </div>
@@ -61,7 +68,13 @@
   <div id="content">
   <% if current_user.created_pages.any? %>
     <h2>Sidor du har skapat</h2>
-    <%= render :partial => 'list_of_pages', :locals => {:pages => current_user.created_pages} %>
+    <ul class="items">
+    <% current_user.created_pages.each do |page| %>
+      <li>
+      <%= render :partial => 'page', :locals => {:page => page} %>
+      </li>
+    <% end %>
+    </ul>
   <% end %>
   <% if current_user.updated_pages.any? %>
     <h2>Senaste sidor du har jobbat med</h2>

@@ -2,14 +2,25 @@
 <% pages.each do |page| %>
   <li>
     <span class="title"><%= page.title %></span>
+    <span class="slug">
+      <% if page.node %>
+      /<%= page.node.slug %>
+      <% else %>
+      /<%= page.slug %>
+      <% end %>
+    </span>
     <div class="description">
+      <% unless page.description.blank? %>
       <%= page.description %>
+      <% else %>
+      <%= link_to "Ingen beskrivning. Skriv en ...", admin_page_path(page) %>
+      <% end %>
     </div>
     <% if page.tags.any? %>
-    <span class="tags"><%= page.tags.collect { |tag| link_to(tag.name, admin_assets_path(:tags => [tag.name]))}.join(' ') %></span>
+    <span class="tags"><%= page.tags.collect { |tag| link_to(tag.name, admin_pages_path(:tags => [tag.name]))}.join(' ') %></span>
     <% end %>
-    <span class="slug">
-      <%= page.slug %>
+    <span class="meta">
+      Publicerad <%= page.published_on %>. Senast ändrad <%= page.updated_at %>
     </span>
     <span class="edit">
       <%= link_to "Ändra", admin_page_path(page) %>

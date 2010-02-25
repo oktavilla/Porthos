@@ -53,17 +53,18 @@ body {
     padding-top:42px; }
   #main_nav a:hover,
   #account_nav a:hover,
-  #groups .groups_index a,
-  #site-structure  .nodes_index a,
-  #registrations   .registrations_index a,
+  #site-structure .nodes_index a,
+  #registrations .registrations_index a,
   #users .users_index a,
   #assets .assets_index a,
   #pages .pages_index a,
   #link_lists .link_lists_index a {color:#fff;}
-    #main_nav .groups_index a     {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -50px no-repeat;}
-    #main_nav .assets_index a     {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -130px no-repeat;}
-    #main_nav .pages_index a      {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -200px no-repeat;}
-    #main_nav .nodes_index a      {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -280px no-repeat;}
+    #main_nav .groups_index a        {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -50px no-repeat;}
+    #main_nav .pages_index a         {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -200px no-repeat;}
+    #main_nav .nodes_index a         {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -280px no-repeat;}
+    #main_nav .assets_index a        {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -130px no-repeat;}
+    #main_nav .registrations_index a {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -459px no-repeat;}
+    #main_nav .users_index a         {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -358px no-repeat;}    
     #main_nav .link_lists_index a {
       padding-right:40px;
       border-right:1px dashed #444; }
@@ -82,11 +83,7 @@ body {
     background:#fff; }
 
 #accounts #nav ul li.account a,
-#users #nav ul li.user a,
-#themes #nav ul li.themes a,
-#theme_templates #nav ul li.themes a,
-#theme_assets #nav ul li.themes a,
-#invitations #nav ul li.invites a {
+#users #nav ul li.user a {
   text-decoration:none;
   font-weight:bold; 
   background:#222; 
@@ -114,14 +111,16 @@ body.layout3 {
   background:rgb(214,221,229) url(/graphics/porthos/_new/layout3_bg_shadow.png) 100% 0 repeat-y; }
 
 body.layout3 #wrap {
-  padding-right:250px; }
+  padding-right:300px; }
 
 body.layout3 #sub_nav {
   float:right; 
-  width:250px; 
-  margin-right:-250px; }
+  width:300px; 
+  margin-right:-300px; }
   body.layout3 #sub_nav form,
-  body.layout3 #sub_nav ul li a,
+  body.layout3 #sub_nav ul.filter,
+  body.layout3 #sub_nav ul.tags,
+  body.layout3 #sub_nav ul.nav li a,
   body.layout3 #sub_nav .label,
   body.layout3 #sub_nav .new a {
     padding:.5em 40px .45em 20px; }
@@ -143,16 +142,12 @@ body.layout3 #workspace {
     font-size:12px;
     padding:0 0 0 40px;
     color:#8598a4;}
-  #sub_nav ul {
-    list-style:none;
-    margin:0; }
-  #sub_nav ul li a,
   #sub_nav .label,
   #sub_nav .new a {
     display:block;
     margin-top:.3em;
     padding:.5em 20px .45em 40px; }
-  #sub_nav ul li {
+  #sub_nav ul.sortable li {
     position:relative;
     margin:0; }
     #sub_nav ul.sortable li:hover .drag_handle {
@@ -164,12 +159,6 @@ body.layout3 #workspace {
       height:25px; 
       width:20px;
       background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -790px no-repeat; }
-    #sub_nav ul li a {
-      margin:0;
-      font-weight:bold;}
-    #sub_nav ul li.current a {
-      background:#0093d0; 
-      color:#fff; }
   #sub_nav .label {
     margin:.5em 0 .5em 0;
     font-size:12px;
