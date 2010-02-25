@@ -195,6 +195,33 @@ textarea.file {
     display:block;
     font-size:12px; }
 
+.contents li {
+  list-style:none;
+  border-top:1px solid #ccc;
+  position:relative; }
+  .contents li > .edit {
+    position:absolute;
+    top:.9em;
+    right:30px; 
+    display:none; 
+    width:120px;} 
+  .contents li:hover > .edit,
+  .contents li:hover > .draghandle {display:block;}
+  .contents li .draghandle {
+    position:absolute;
+    top:.5em;
+    right:0;
+    display:block;
+    width:20px;
+    height:20px;
+    display:none; 
+    background:#fff url(/graphics/porthos/_new/ui_new.png) -2px -794px no-repeat; }
+  .contents .content_image,
+  .contents .content_movie {padding-left:90px;}
+    .contents .content_image img,
+    .contents .content_movie img {
+      float:left;
+      margin-left:-90px;}
 ul.nav,
 ul.tags,
 ul.filter {

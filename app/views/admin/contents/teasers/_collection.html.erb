@@ -1,5 +1,5 @@
 <% if !content.contents.any? %>
-  <div class="content textfield_content" id="content_<%= content.id %>">
+  <div id="content_<%= content.id %>">
     <p class="blank-slate">Det finns inga puffar i denna samling.</p>
     <span class="controls">
       <%= link_to "Ta bort", admin_content_path(:id => content), :method => :delete, :confirm => "Är du säker, detta går inte att ångra.", :class => 'delete' %>
@@ -12,9 +12,9 @@
     <span class="draghandle"></span>
     <span class="inactive_proxy"></span
     <%= image_tag(display_image_path(:size => "c70x70", :id => child.resource.images.primary, :format => child.resource.images.primary.extname), :alt => child.resource.images.primary.title ) if child.resource.images.primary %>
-    <h3><%= child.resource.title %></h3>
+    <div class="title"><%= child.resource.title %></div>
     <%= child.resource.body %>
-    <p class="meta">
+    <div class="meta">
       <span class="style <%= child.resource.css_class %>"></span>
       <span class="size"><span class="type">Storlek:</span>
       <span class="value">
@@ -26,9 +26,9 @@
         Stor
         <% end %>
       </span>
-    </p>
-    <span class="controls">
-      <%= link_to "Ändra", edit_admin_content_path(:id => child, :return_to => request.request_uri), :class => 'edit' %>
+    </div>
+    <span class="edit">
+      <%= link_to "Ändra", edit_admin_content_path(:id => child, :return_to => request.request_uri) %>
       <%= link_to child.active? ? 'Dölj' : 'Visa', toggle_admin_content_path(child), :method => :put, :class => 'visibility' %>
       <%= link_to "Ta bort", admin_content_path(:id => child), :method => :delete, :confirm => "Är du säker, detta går inte att ångra.", :class => 'delete' %>
     </span>
