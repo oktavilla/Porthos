@@ -1,6 +1,5 @@
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
-<div id="wrap">
   <div id="sub_nav">
     <%= render :partial => 'admin/shared/settings_sub_nav' %>
   </div>
@@ -8,11 +7,12 @@
     <div class="header">
       <h1>Formulär</h1>
     </div>
-    <% form_for :registration_form, :url => admin_registration_forms_path do |f| %>
-      <%= render :partial => 'form', :locals => {:f => f} %>
-      <div class="confirm">
-        <input type="submit" value="Lägg till formuläret"> eller <%= link_to "avbryt", admin_registration_forms_path %>
-      </div>
-    <% end %>
+    <div id="content">
+      <% form_for :registration_form, :url => admin_registration_forms_path do |f| %>
+        <%= render :partial => 'form', :locals => {:f => f} %>
+        <div class="confirm">
+          <input type="submit" value="Lägg till formuläret"> eller <%= link_to "avbryt", admin_registration_forms_path %>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>

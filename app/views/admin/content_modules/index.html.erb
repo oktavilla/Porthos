@@ -1,6 +1,5 @@
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
-<div id="wrap">
   <div id="sub_nav">
     <%= render :partial => 'admin/shared/settings_sub_nav' %>
   </div>
@@ -11,12 +10,13 @@
     <div class="tools">
       <%= link_to "Lägg till en modul", new_admin_content_module_path, :class => 'create' %>
     </div>
-    <% nested_list_of @content_modules, {}, :class => 'gl' do |content_module| %>
-      <%= content_module.name %>
-      <span class="controls general">
-        <%= link_to "Ändra", edit_admin_content_module_path(content_module), :class => 'edit' %>
-        <%= link_to "Ta bort", admin_content_module_path(content_module), :method => :delete, :confirm => "Är du säker? Detta kommer att ta bort denna modul från alla sidor där den förekommer.", :class => 'delete' %>
-      </span>
-    <% end %>
+    <div id="content">
+      <% nested_list_of @content_modules, {}, :class => 'gl' do |content_module| %>
+        <%= content_module.name %>
+        <span class="controls general">
+          <%= link_to "Ändra", edit_admin_content_module_path(content_module), :class => 'edit' %>
+          <%= link_to "Ta bort", admin_content_module_path(content_module), :method => :delete, :confirm => "Är du säker? Detta kommer att ta bort denna modul från alla sidor där den förekommer.", :class => 'delete' %>
+        </span>
+      <% end %>
+    </div>
   </div>
-</div>

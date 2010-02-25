@@ -1,6 +1,5 @@
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
-<div id="wrap">
   <div id="sub_nav">
     <%= render :partial => 'admin/shared/settings_sub_nav' %>
   </div>
@@ -8,22 +7,22 @@
     <div class="header">
       <h1>Ny layout</h1>
     </div>
-    <% form_for :page_layout, :url => admin_page_layouts_path do |f| %>
-      <%= error_messages_for :page_layout %>
-      <fieldset>
-        <legend>Attribut</legend>
-        <label for="page_layout_name">Namn</label>
-        <%= f.text_field :name %>
-        <label for="page_layout_name">Stilmalls-klass</label>
-        <%= f.text_field :css_id %>
-        <label for="page_columns">Antal kolumner</label>
-        <%= f.text_field :columns %>
-        <label for="page_main_content_column">Kolumn med huvudinnehåll</label>
-        <%= f.text_field :main_content_column %>
-      </fieldset>
-      <div class="submit">
-        <%= submit_tag 'Spara' %> eller <%= link_to "avbryt", previous_view_path(admin_page_layouts_path) %>
-      </div>
-    <% end %>
+    <div id="content">
+      <% form_for :page_layout, :url => admin_page_layouts_path do |f| %>
+        <%= error_messages_for :page_layout %>
+        <div>
+          <label for="page_layout_name">Namn</label>
+          <%= f.text_field :name %>
+          <label for="page_layout_name">Stilmalls-klass</label>
+          <%= f.text_field :css_id %>
+          <label for="page_columns">Antal kolumner</label>
+          <%= f.text_field :columns %>
+          <label for="page_main_content_column">Kolumn med huvudinnehåll</label>
+          <%= f.text_field :main_content_column %>
+        </div>
+        <div class="submit">
+          <%= submit_tag 'Spara' %> eller <%= link_to "avbryt", previous_view_path(admin_page_layouts_path) %>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>

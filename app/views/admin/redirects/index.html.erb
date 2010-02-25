@@ -1,6 +1,5 @@
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
-<div id="wrap">
   <div id="sub_nav">
     <%= render :partial => 'admin/shared/settings_sub_nav' %>
   </div>
@@ -11,20 +10,21 @@
     <div class="tools">
       <%= link_to "Skapa ny vidarebefordring", new_admin_redirect_path, :class => 'create' %>
     </div>
-    <% if @redirects %>  
-      <ul class="gl">
-      <% @redirects.each do |redirect| %>  
-        <li class="<%= cycle 'odd', 'even' %>">
-          <span class="path"><%= link_to redirect.path, redirect.path %></span> &rarr; <span class="target"><%= link_to redirect.target, redirect.target %></span>
-          <span class="controls general">
-            <%= link_to "Ändra", edit_admin_redirect_path(redirect), :class => 'edit' %>
-            <%= link_to "Radera", admin_redirect_path(redirect), :method => :delete, :class => 'delete', :confirm => 'Är du säker?' %>
-          </span>
-        </li>
+    <div id="content">
+      <% if @redirects %>  
+        <ul class="gl">
+        <% @redirects.each do |redirect| %>  
+          <li class="<%= cycle 'odd', 'even' %>">
+            <span class="path"><%= link_to redirect.path, redirect.path %></span> &rarr; <span class="target"><%= link_to redirect.target, redirect.target %></span>
+            <span class="controls general">
+              <%= link_to "Ändra", edit_admin_redirect_path(redirect), :class => 'edit' %>
+              <%= link_to "Radera", admin_redirect_path(redirect), :method => :delete, :class => 'delete', :confirm => 'Är du säker?' %>
+            </span>
+          </li>
+        <% end %>
+        </ul>
+      <% else %>
+        <p class="blank-slate">Det finns inga vidarebefordringar inlagda än.</p>
       <% end %>
-      </ul>
-    <% else %>
-      <p class="blank-slate">Det finns inga vidarebefordringar inlagda än.</p>
-    <% end %>
+    </div>
   </div>
-</div>

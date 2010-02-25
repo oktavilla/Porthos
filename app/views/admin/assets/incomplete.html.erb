@@ -3,7 +3,7 @@
   <div class="header">
     <h1>Beskriv de uppladdade filerna</h1>
   </div>
-  <div id="c_wrap">
+  <div id="content">
     <% form_for :asset, @assets, :url => update_multiple_admin_assets_path, :html => { :method => :put } do |f| %>
       <% @assets.each do |asset| -%>
       <div class="describe_asset">

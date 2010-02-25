@@ -1,6 +1,5 @@
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
-<div id="wrap">
   <div id="sub_nav">
     <%= render :partial => 'admin/shared/settings_sub_nav' %>
   </div>
@@ -8,14 +7,15 @@
     <div class="header">
       <h1>Innehållsmoduler</h1>
     </div>
-    <% form_for :content_module, @content_module, :url => admin_content_module_path(@content_module), :html => { :class => 'tiny', :method => :put } do |f| %>
-      <fieldset>
-        <legend>Ändra innehållsmodulen ”<%= @content_module.name %>”</legend>
-        <%= render :partial => 'form', :locals => { :f => f } %>
-      </fieldset>
-      <div class="confirm">
-        <%= submit_tag 'Spara', :class => 'button' %> eller <%= link_to "avbryt", previous_view_path(admin_content_modules_path) %>
-      </div>
-    <% end %>
+    <div id="content">
+      <% form_for :content_module, @content_module, :url => admin_content_module_path(@content_module), :html => { :class => 'tiny', :method => :put } do |f| %>
+        <fieldset>
+          <legend>Ändra innehållsmodulen ”<%= @content_module.name %>”</legend>
+          <%= render :partial => 'form', :locals => { :f => f } %>
+        </fieldset>
+        <div class="confirm">
+          <%= submit_tag 'Spara', :class => 'button' %> eller <%= link_to "avbryt", previous_view_path(admin_content_modules_path) %>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>

@@ -1,6 +1,5 @@
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
-<div id="wrap">
   <div id="sub_nav">
     <%= render :partial => 'admin/shared/settings_sub_nav' %>
   </div>
@@ -11,11 +10,12 @@
     <div class="tools">
       <%= link_to "Ny layout", new_admin_page_layout_path %>
     </div>
-    <% nested_list_of @page_layouts, {}, :class => 'gl' do |page_layout| %>
-      <%= page_layout.name %> 
-      <span class="controls general">
-        <%= link_to "Ändra", edit_admin_page_layout_path(page_layout), :class => 'edit' %>
-      </span>
-    <% end %>
+    <div id="content">
+      <% nested_list_of @page_layouts, {}, :class => 'gl' do |page_layout| %>
+        <%= page_layout.name %> 
+        <span class="controls general">
+          <%= link_to "Ändra", edit_admin_page_layout_path(page_layout), :class => 'edit' %>
+        </span>
+      <% end %>
+    </div>
   </div>
-</div>
