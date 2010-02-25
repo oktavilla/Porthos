@@ -9,6 +9,10 @@
       });
     });
   };
+  
+  Porthos.Pages.Edit = function() {
+    new Porthos.TagAutoCompletion($('page_tag_names'));
+  };
 
   Porthos.Pages.Page = Class.create({
     initialize: function() {
@@ -155,6 +159,8 @@
       var page = new Porthos.Pages.Page();
     } else if ($$("body#pages.new, body#pages.create").size() > 0) {
       var page = Porthos.Pages.New();
+    } else if ($$("body#pages.edit").size() > 0) {
+      var page = Porthos.Pages.Edit();
     }
   });
   
