@@ -1,8 +1,20 @@
-<div class="filter">
-  <%= link_to "Alla", admin_registrations_path({ :filter => '', :type => type }), :class => (current_filter == :confirmed_or_pending ? 'current' : '') %>
-  <%= link_to "Avklarade", admin_registrations_path({ :filter => 'confirmed', :type => type }), :class => (current_filter == :confirmed ? 'current' : '') %>
-  <%= link_to "Avvaktande (#{type.constantize.pending.count()})", admin_registrations_path({ :filter => 'pending', :type => type }), :class => (current_filter == :pending ? 'current' : '') %>
-  <%= link_to "Misslyckade", admin_registrations_path({ :filter => 'failed', :type => type }), :class => (current_filter == :failed ? 'current' : '') %>
-  <%= link_to "Dubblett/Spam", admin_registrations_path({ :filter => 'spam', :type => type }), :class => (current_filter == :spam ? 'current' : '') %>
-  <%= link_to "Bedrägeri", { :filter => 'fraud', :type => type }, :class => (current_filter == :fraud ? 'current' : '') %>
-</div>
+<ul class="filter">
+  <li<%= ' class="current"' if current_filter == :confirmed_or_pending %>>
+    <%= link_to "Alla", admin_registrations_path({ :filter => '', :type => type }) %>
+  </li>
+  <li<%= ' class="current"' if current_filter == :confirmed %>>
+    <%= link_to "Avklarade", admin_registrations_path({ :filter => 'confirmed', :type => type }) %>
+  </li>
+  <li<%= ' class="current"' if current_filter == :pending %>>
+    <%= link_to "Avvaktande (#{type.constantize.pending.count()})", admin_registrations_path({ :filter => 'pending', :type => type }) %>
+  </li>
+  <li<%= ' class="current"' if current_filter == :failed %>>
+    <%= link_to "Misslyckade", admin_registrations_path({ :filter => 'failed', :type => type }) %>
+  </li>
+  <li<%= ' class="current"' if current_filter == :spam %>>
+    <%= link_to "Dubblett/Spam", admin_registrations_path({ :filter => 'spam', :type => type }) %>
+  </li>
+  <li<%= ' class="current"' if current_filter == :fraud %>>
+    <%= link_to "Bedrägeri", { :filter => 'fraud', :type => type } %>
+  </li>
+</ul>

@@ -1,122 +1,119 @@
 <% @page_title = "Registrering: #{@type.constantize.human_name} #{@registration.id}" -%>
+<% @page_class = "layout3" -%>
+<div id="sub_nav">
+  <%= render :partial => 'nav', :locals => { :current_type => @type } %>
+</div>
 <div id="workspace">
-  <div id="c_wrap" class="layout_2">
-    <div id="c_1">
-      <div class="header">
-        <h1><%= link_to "Visa alla #{@registration.class.human_name.downcase}", admin_registrations_path(:type => @registration.type) %></h1>
-      </div>
-      <%= render :partial => "admin/registrations/meta", :locals => { :registration => @registration } %>
-      <div class="data">
-        <%= render :partial => "admin/registrations/org", :locals => { :registration => @registration } %>
-        <div class="details">
-          <h3>Kontaktuppgifter</h3>
-          <%= render :partial => "vcard", :locals => { :registration => @registration } %>
-        </div>
-        <%= render :partial => "admin/registrations/user", :locals => { :registration => @registration } %>
-        <%= render :partial => "admin/registrations/delivery_address", :locals => { :registration => @registration } %>
-        <% begin %>
-          <%= render :partial => "admin/registrations/types/#{@registration.class.to_s.tableize}", :locals => { :registration => @registration } %>
-        <% rescue ActionView::MissingTemplate %>
-          <%= render :partial => "admin/registrations/types/default", :locals => { :registration => @registration } %>
-        <% end %>
-        <% if @registration.payment -%>
-        <div id="payment" class="details">
-          <h3>Betalning</h3>
-          <span class="status <%= @registration.invoice_payment? ? 'invoice' : @registration.humanized_payment_status %>">
-            <%= number_to_currency(@registration.payment.amount) %>
-          </span>
-          <span class="payment_type"><%= @registration.payment.billing_method %></span>
-          <% if !@registration.payment.transaction_id.blank? && @registration.payment.transaction_id.to_i != 0 -%>
-          (<span class="payment_transaction_id"><%= @registration.payment.transaction_id %></span>)
-          <% end -%>
-          <% unless @registration.payment.response_message.blank? -%>
-            <div class="payment_response"><%= @registration.payment.response_message %></div>
-          <% end -%>
-        </div>
-        <% end -%>
-        <%= render :partial => 'admin/registrations/conversions', :locals => { :registration => @registration } %>
-      </div>
+  <div class="header">
+    <h1><%= link_to "Visa alla #{@registration.class.human_name.downcase}", admin_registrations_path(:type => @registration.type) %></h1>
+  </div>
+  <div id="content">
+    <%= render :partial => "admin/registrations/meta", :locals => { :registration => @registration } %>
+    <div class="data">
+      <%= render :partial => "admin/registrations/org", :locals => { :registration => @registration } %>
       <div class="details">
-        <h3>Status</h3>
-        <span class="status <%= @registration.humanized_status[:class] %>"><%= @registration.humanized_status[:name] %></span>
+        <h3>Kontaktuppgifter</h3>
+        <%= render :partial => "vcard", :locals => { :registration => @registration } %>
+      </div>
+      <%= render :partial => "admin/registrations/user", :locals => { :registration => @registration } %>
+      <%= render :partial => "admin/registrations/delivery_address", :locals => { :registration => @registration } %>
+      <% begin %>
+        <%= render :partial => "admin/registrations/types/#{@registration.class.to_s.tableize}", :locals => { :registration => @registration } %>
+      <% rescue ActionView::MissingTemplate %>
+        <%= render :partial => "admin/registrations/types/default", :locals => { :registration => @registration } %>
+      <% end %>
+      <% if @registration.payment -%>
+      <div id="payment" class="details">
+        <h3>Betalning</h3>
+        <span class="status <%= @registration.invoice_payment? ? 'invoice' : @registration.humanized_payment_status %>">
+          <%= number_to_currency(@registration.payment.amount) %>
+        </span>
+        <span class="payment_type"><%= @registration.payment.billing_method %></span>
+        <% if !@registration.payment.transaction_id.blank? && @registration.payment.transaction_id.to_i != 0 -%>
+        (<span class="payment_transaction_id"><%= @registration.payment.transaction_id %></span>)
+        <% end -%>
+        <% unless @registration.payment.response_message.blank? -%>
+          <div class="payment_response"><%= @registration.payment.response_message %></div>
+        <% end -%>
+      </div>
+      <% end -%>
+      <%= render :partial => 'admin/registrations/conversions', :locals => { :registration => @registration } %>
+    </div>
+    <div class="details">
+      <h3>Status</h3>
+      <span class="status <%= @registration.humanized_status[:class] %>"><%= @registration.humanized_status[:name] %></span>
 
-        <% if @registration.comments.any? %>
-          <ul class="comments">
-          <% @registration.comments.each do |comment| %>
-            <li>
-              <div class="meta">
-                <strong><%= comment.user.name %></strong> 
-                <% t = comment.created_at %>
-                <%= t.day  %>
-                <%= t.strftime("%b %Y %H:%M") %>
-                <% if comment.updated_registration  %>
-                  <span class="status_changed <%= comment.humanized_status[:class] %>"><%= comment.humanized_status[:name] %></span>
-                  <% if comment.fraud? %>
-                    <span class="status_changed fraud">Ev. bedrägeri</span>
-                  <% end %>
-                <% end %>
-                <% if comment.payments.any? %>
-                  <% comment.payments.each do |payment| %>
-                    <span class"status_changed refund">Återbetalat: <%= payment.transaction_id %></span>
-                  <% end %>
-                <% end %>
-              </div>
-              <div class="body">
-                <%= textilize(comment.body) %>
-              </div>
-            </li>
-          <% end %>
-          </ul>
-        <% end %>
-        <%= error_messages_for :registration_comment %>
-        <%= error_messages_for :registration %>
-        <% form_for :registration_comment, @registration_comment, :url => admin_comment_registration_path, :html => { :method => :post } do |f| %>
-          <%= f.hidden_field :registration_id, :value => @registration.id %>
-          <%= f.hidden_field :user_id, :value => current_user.id %>
-          <%= hidden_field_tag :return_to, request.path %>
-          <label for="registration_comment_body">Skriv en kommentar ...</label>
-          <div class="textfield_wrap">
-            <%= f.text_area :body, :rows => 3, :cols => 40 %>
-          </div>
-          <fieldset class="update_comment_status">
-            <div>Vill du uppdatera status samtidigt?</div>
-            <div class="comment_status">
-              <label for="registration_comment_status_1"><%= f.radio_button :status, '1' %> Avklarad</label>
-              <label for="registration_comment_status_0"><%= f.radio_button :status, '0' %> Avvaktande</label>
-              <label for="registration_comment_status_2"><%= f.radio_button :status, '2' %> Dubblett/skräp</label>
-            </div>
-            <% if @registration.payment %>
-            <div class="refund_fraud">
-              <div>Återbetald eller eventuellt bedrägeri?</div>
-              <% Payment.find(:all, :conditions => ['payable_id = ? AND status = ?', @registration.id, 'Completed']).each do |payment| %>
-                <label for="refunded_payments_<%= payment.id %>"><%= check_box_tag "registration_comment[refunded_payments][#{payment.id}]", "1", false, :id => "refunded_payments_#{payment.id}" %> Har återbetalat hos Dibs (#<%= payment.transaction_id %>)</label>
-              <% end %>
-              <label for="registration_comment_fraud"><%= f.check_box :fraud %> Eventuellt bedrägeri</label>
-            </div>
-            <% end %>
-            <%= f.submit "Spara status" %>
-          </fieldset>
-        <% end %>
-      </div>
-      <% if @registration.related_registrations.any? %>
-      <div class="details related_registrations">
-        <h3>Andra registreringar under samma besök</h3>
-        <ul>
-          <% @registration.related_registrations.each do |registration| %>
+      <% if @registration.comments.any? %>
+        <ul class="comments">
+        <% @registration.comments.each do |comment| %>
           <li>
-            <span class="status <%= registration.humanized_status[:class] %>"><%= link_to "#{registration.id}", formatted_admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></span>
-            <span class="type"><%= registration.class.human_name %></span>
+            <div class="meta">
+              <strong><%= comment.user.name %></strong> 
+              <% t = comment.created_at %>
+              <%= t.day  %>
+              <%= t.strftime("%b %Y %H:%M") %>
+              <% if comment.updated_registration  %>
+                <span class="status_changed <%= comment.humanized_status[:class] %>"><%= comment.humanized_status[:name] %></span>
+                <% if comment.fraud? %>
+                  <span class="status_changed fraud">Ev. bedrägeri</span>
+                <% end %>
+              <% end %>
+              <% if comment.payments.any? %>
+                <% comment.payments.each do |payment| %>
+                  <span class"status_changed refund">Återbetalat: <%= payment.transaction_id %></span>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="body">
+              <%= textilize(comment.body) %>
+            </div>
           </li>
-          <% end %>
+        <% end %>
         </ul>
-      </div>
+      <% end %>
+      <%= error_messages_for :registration_comment %>
+      <%= error_messages_for :registration %>
+      <% form_for :registration_comment, @registration_comment, :url => admin_comment_registration_path, :html => { :method => :post } do |f| %>
+        <%= f.hidden_field :registration_id, :value => @registration.id %>
+        <%= f.hidden_field :user_id, :value => current_user.id %>
+        <%= hidden_field_tag :return_to, request.path %>
+        <label for="registration_comment_body">Skriv en kommentar ...</label>
+        <div class="textfield_wrap">
+          <%= f.text_area :body, :rows => 3, :cols => 40 %>
+        </div>
+        <fieldset class="update_comment_status">
+          <div>Vill du uppdatera status samtidigt?</div>
+          <div class="comment_status">
+            <label for="registration_comment_status_1"><%= f.radio_button :status, '1' %> Avklarad</label>
+            <label for="registration_comment_status_0"><%= f.radio_button :status, '0' %> Avvaktande</label>
+            <label for="registration_comment_status_2"><%= f.radio_button :status, '2' %> Dubblett/skräp</label>
+          </div>
+          <% if @registration.payment %>
+          <div class="refund_fraud">
+            <div>Återbetald eller eventuellt bedrägeri?</div>
+            <% Payment.find(:all, :conditions => ['payable_id = ? AND status = ?', @registration.id, 'Completed']).each do |payment| %>
+              <label for="refunded_payments_<%= payment.id %>"><%= check_box_tag "registration_comment[refunded_payments][#{payment.id}]", "1", false, :id => "refunded_payments_#{payment.id}" %> Har återbetalat hos Dibs (#<%= payment.transaction_id %>)</label>
+            <% end %>
+            <label for="registration_comment_fraud"><%= f.check_box :fraud %> Eventuellt bedrägeri</label>
+          </div>
+          <% end %>
+          <%= f.submit "Spara status" %>
+        </fieldset>
       <% end %>
     </div>
-    <div id="c_2">
-      <div class="inner">
-        <%= render :partial => 'nav', :locals => { :current_type => @type } %>        
-      </div>
+    <% if @registration.related_registrations.any? %>
+    <div class="details related_registrations">
+      <h3>Andra registreringar under samma besök</h3>
+      <ul>
+        <% @registration.related_registrations.each do |registration| %>
+        <li>
+          <span class="status <%= registration.humanized_status[:class] %>"><%= link_to "#{registration.id}", formatted_admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></span>
+          <span class="type"><%= registration.class.human_name %></span>
+        </li>
+        <% end %>
+      </ul>
     </div>
+    <% end %>
   </div>
 </div>
 <%= javascript_include_tag 'named_routes' %>

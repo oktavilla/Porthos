@@ -1,44 +1,41 @@
 <% @page_title = "Statistik" -%>
+<% @page_class = "layout3" -%>
+<div id="sub_nav">
+  <%= render :partial => 'activities_nav', :locals => {:type => @type} %>
+</div>
 <div id="workspace">
-  <div id="c_wrap" class="layout_2">
-    <div id="c_1">
-      <div class="header">
-        <h1>Statistik</h1>
-      </div>
-      <% activity_table(@first_period, @second_period, {:export_links => false}) do %>
-        <tbody>
-        <tbody>
-          <tr class="totals">
-            <th scope="colgroup"><%= link_to "E-postadresser", admin_registration_activity_path(:type => 'newsletter_subscriptions') %></th>
-            <% num_first_period, num_second_period = Registration.with_period(@first_period).confirmed.with_opt_in.count, Registration.with_period(@second_period).confirmed.with_opt_in.count -%>
-            <% diff = num_first_period - num_second_period -%>
-            <td><%= num_second_period %> st</td>
-            <td><%= num_first_period %> st</td>
-            <td><%= '+' if diff > 0 %><%= diff %> st</td>
-          </tr>
-          <tr>
-            <th scope="row">Via anmälan</th>
-            <% num_direct_first_period, num_direct_second_period = NewsletterSubscription.with_period(@first_period).confirmed.count, NewsletterSubscription.with_period(@second_period).confirmed.count -%>
-            <% diff = num_direct_first_period - num_direct_second_period %>
-            <td><%= num_direct_second_period %> st</td>
-            <td><%= num_direct_first_period %> st</td>
-            <td><%= '+' if diff > 0 %><%= diff %> st</td>
-          </tr>
-          <tr>
-            <th scope="row">Via opt-in</th>
-            <% diff = (num_first_period - num_direct_first_period) - (num_second_period - num_direct_second_period) %>
-            <td><%= num_second_period - num_direct_second_period %> st</td>
-            <td><%= num_first_period - num_direct_first_period %> st</td>
-            <td><%= '+' if diff > 0 %><%= diff %> st</td>
-          </tr>
-        </tbody>
-      <% end %>
-    </div>
-    <div id="c_2">
-      <div class="inner">
-        <%= render :partial => 'activities_nav', :locals => {:type => @type} %>
-      </div>
-    </div>
+  <div class="header">
+    <h1>Statistik</h1>
+  </div>
+  <div id="content">
+  <% activity_table(@first_period, @second_period, {:export_links => false}) do %>
+    <tbody>
+    <tbody>
+      <tr class="totals">
+        <th scope="colgroup"><%= link_to "E-postadresser", admin_registration_activity_path(:type => 'newsletter_subscriptions') %></th>
+        <% num_first_period, num_second_period = Registration.with_period(@first_period).confirmed.with_opt_in.count, Registration.with_period(@second_period).confirmed.with_opt_in.count -%>
+        <% diff = num_first_period - num_second_period -%>
+        <td><%= num_second_period %> st</td>
+        <td><%= num_first_period %> st</td>
+        <td><%= '+' if diff > 0 %><%= diff %> st</td>
+      </tr>
+      <tr>
+        <th scope="row">Via anmälan</th>
+        <% num_direct_first_period, num_direct_second_period = NewsletterSubscription.with_period(@first_period).confirmed.count, NewsletterSubscription.with_period(@second_period).confirmed.count -%>
+        <% diff = num_direct_first_period - num_direct_second_period %>
+        <td><%= num_direct_second_period %> st</td>
+        <td><%= num_direct_first_period %> st</td>
+        <td><%= '+' if diff > 0 %><%= diff %> st</td>
+      </tr>
+      <tr>
+        <th scope="row">Via opt-in</th>
+        <% diff = (num_first_period - num_direct_first_period) - (num_second_period - num_direct_second_period) %>
+        <td><%= num_second_period - num_direct_second_period %> st</td>
+        <td><%= num_first_period - num_direct_first_period %> st</td>
+        <td><%= '+' if diff > 0 %><%= diff %> st</td>
+      </tr>
+    </tbody>
+  <% end %>
   </div>
 </div>
 
