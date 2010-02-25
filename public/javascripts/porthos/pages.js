@@ -1,16 +1,7 @@
 (function(){
   Porthos.namespace('Porthos.Pages');
 
-  Porthos.Pages.New = function() {
-    Porthos.Editor.Initialize();
-    $$('form#page.new').each(function(form) {
-      form.select('div.graphic').each(function(element) {
-        Porthos.Helpers.graphicLabel(element);
-      });
-    });
-  };
-  
-  Porthos.Pages.Edit = function() {
+  Porthos.Pages.SetupForm = function() {
     new Porthos.TagAutoCompletion($('page_tag_names'));
   };
 
@@ -157,10 +148,8 @@
   Event.onReady(function() {
     if ($$("body#pages.show").size() > 0) {
       var page = new Porthos.Pages.Page();
-    } else if ($$("body#pages.new, body#pages.create").size() > 0) {
-      var page = Porthos.Pages.New();
-    } else if ($$("body#pages.edit").size() > 0) {
-      var page = Porthos.Pages.Edit();
+    } else if ($$("body#pages.new, body#pages.edit").size() > 0) {
+      var page = Porthos.Pages.SetupForm();
     }
   });
   
