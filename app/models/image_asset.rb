@@ -33,6 +33,7 @@ class ImageAsset < Asset
   end
   
   IMAGE_VERSIONS_DIR = "#{RAILS_ROOT}/public/images"
+  RESIZE_SALT = '8i03d9ee7'
   
   def version_path(size)
     IMAGE_VERSIONS_DIR+'/'+size+'/'+full_name
@@ -117,6 +118,10 @@ class ImageAsset < Asset
     return width if new_height >= self.height
     factor = new_height.to_f / self.height.to_f
     (width * factor).ceil
+  end
+  
+  def resize_token(size)
+    Digest::SHA1.hexdigest([RESIZE_SALT, self.full_name, size].join('-'))[1..6]
   end
 
 protected
