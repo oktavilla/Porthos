@@ -1,46 +1,42 @@
-<% @page_class = 'A' -%>
-<div id="content_header">
-  <h1>Ny teaser</h1>
-</div>
-<div id="container">
+<% @page_title = 'Lägg till ny teaser' -%>
+<div id="workspace">
+  <div class="header">
+    <h1>Lägg till ny teaser</h1>
+  </div>
   <div id="content">
-    <div id="ca">
-    <div class="inner">
-      <%= error_messages_for :resource %>
-      <% form_for :content, :url => admin_contents_path(:collection => params[:collection]), :html => { :multipart => true }  do |f| %>
-        <%= f.hidden_field :context_id %>
-        <%= f.hidden_field :context_type %>
-        <%= f.hidden_field :parent_id, { :value => @content.id } %>
-        <%= f.hidden_field :column_position %>
-        <%= f.hidden_field :resource_type, { :value => 'Teaser' } %>
-        <% fields_for :resource do |resource| %>
-          <label for="content_<%= @content.id %>_resource_title">Rubrik</label>
-          <%= resource.text_field :title, :id => "content_#{@content.id}_resource_title" %>
-          <label for="content_<%= @content.id %>_resource_body">Text</label>
-          <%= resource.text_area :body, :id => "content_#{@content.id}_teaser_body", :class => 'wymeditor' %>
-          <div class="graphic size">
-            <h2>Storlek</h2>
-            <label for="resource_display_type_2"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:big] %> <img src="/graphics/porthos/icons/50_teaser_big.gif"> Stor</label>
-            <label for="resource_display_type_1"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:medium] %> <img src="/graphics/porthos/icons/50_teaser_medium.gif"> Mellan</label>
-            <label for="resource_display_type_0"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:small] %> <img src="/graphics/porthos/icons/50_teaser_small.gif"> Liten</label>
-          </div>
-          <div class="graphic color">
-            <h2>Färg</h2>
-            <% Teaser::CSS_CLASSES.each do |name, klass| -%>
-              <label for="resource_color_<%= !klass.blank? ? klass : 'none' %>">
-                <%= resource.radio_button :css_class, klass, :id => "resource_color_#{(!klass.blank? ? klass : 'none' )}" %>
-                <span class="teaser_color"><span class="<%= klass %>"></span></span>
-              </label>
-            <% end -%>
-          </div>  
-        <% end %>
-        <%= render :partial => 'admin/contents/restriction_settings', :locals => { :content => @content }%>
-        <div class="confirm">
-          <%= submit_tag 'Lägg till puff' %> eller <%= link_to "avbryt", previous_view_path %>
+    <%= error_messages_for :resource %>
+    <% form_for :content, :url => admin_contents_path(:collection => params[:collection]), :html => { :multipart => true }  do |f| %>
+      <%= f.hidden_field :context_id %>
+      <%= f.hidden_field :context_type %>
+      <%= f.hidden_field :parent_id, { :value => @content.id } %>
+      <%= f.hidden_field :column_position %>
+      <%= f.hidden_field :resource_type, { :value => 'Teaser' } %>
+      <% fields_for :resource do |resource| %>
+        <label for="content_<%= @content.id %>_resource_title">Rubrik</label>
+        <%= resource.text_field :title, :id => "content_#{@content.id}_resource_title", :class => 'title' %>
+        <label for="content_<%= @content.id %>_resource_body">Text</label>
+        <%= resource.text_area :body, :id => "content_#{@content.id}_teaser_body", :class => 'wymeditor', :rows => 5 %>
+        <div class="graphic size">
+          <h2>Storlek</h2>
+          <label for="resource_display_type_2"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:big] %> <img src="/graphics/porthos/icons/50_teaser_big.gif"> Stor</label>
+          <label for="resource_display_type_1"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:medium] %> <img src="/graphics/porthos/icons/50_teaser_medium.gif"> Mellan</label>
+          <label for="resource_display_type_0"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:small] %> <img src="/graphics/porthos/icons/50_teaser_small.gif"> Liten</label>
+        </div>
+        <div class="graphic color">
+          <h2>Färg</h2>
+          <% Teaser::CSS_CLASSES.each do |name, klass| -%>
+            <label for="resource_color_<%= !klass.blank? ? klass : 'none' %>">
+              <%= resource.radio_button :css_class, klass, :id => "resource_color_#{(!klass.blank? ? klass : 'none' )}" %>
+              <span class="teaser_color"><span class="<%= klass %>"></span></span>
+            </label>
+          <% end -%>
         </div>
       <% end %>
-    </div>
-    </div>
+      <%= render :partial => 'admin/contents/restriction_settings', :locals => { :content => @content }%>
+      <div class="submit">
+        <%= submit_tag 'Lägg till puff' %> eller <%= link_to "avbryt", previous_view_path %>
+      </div>
+    <% end %>
   </div>
 </div>
 <%= javascript_include_tag 'named_routes' %>

@@ -1,31 +1,26 @@
 <% @page_title = "Lägg till bild" %>
-<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
 <div id="workspace">
-  <div id="c_wrap" class="layout_2">
-    <div id="c_1">
-      <div class="header">
-        <h1>Lägg till bild</h1>
+  <div class="header">
+    <h1>Lägg till bild</h1>
+  </div>
+  <div id="content">
+    <%= image_tag display_image_path(:size => 'w290', :id => @content.resource.asset, :format => @content.resource.asset.extname), :width => 290 %>
+    <% form_for :resource, @content.resource, :url => admin_content_path(@content), :html => { :method => :put } do |f| %>
+      <%= f.hidden_field :image_asset_id, :value => @content.resource.asset.id %>
+      <label for="content_image_title">Alt. text</label>
+      <%= f.text_field :title, :value => @content.resource.title %>
+      <label for="content_image_caption">Bildtext</label>
+      <%= f.text_area :caption, :value => @content.resource.caption, :cols => 30, :rows => 5 %>    
+      <label for="content_image_title">Copyright / Fotograf</label>
+      <%= f.text_field :copyright, :value => @content.resource.copyright %>
+      <% if @content.parent_id.blank? -%>
+      <label for="content_image_format">Format</label>
+      <%= f.select :style, ContentImage.styles.collect { |s, klass| [s[:name], s[:class]] } %>
+      <% end -%>
+      <label for="content_image_downloadable"><%= f.check_box :downloadable %> Länka till orginal</label>
+      <div class="confirm">
+        <input type="submit" value="Spara bild"> eller <a href="<%= previous_view_path %>" class="back">avbryt</a>
       </div>
-      <% form_for :resource, @content.resource, :url => admin_content_path(@content), :html => { :method => :put } do |f| %>
-        <%= f.hidden_field :image_asset_id, :value => @content.resource.asset.id %>
-        <label for="content_image_title">Alt. text</label>
-        <%= f.text_field :title, :value => @content.resource.title %>
-        <label for="content_image_caption">Bildtext</label>
-        <%= f.text_area :caption, :value => @content.resource.caption, :cols => 30, :rows => 5 %>    
-        <label for="content_image_title">Copyright / Fotograf</label>
-        <%= f.text_field :copyright, :value => @content.resource.copyright %>
-        <% if @content.parent_id.blank? -%>
-        <label for="content_image_format">Format</label>
-        <%= f.select :style, ContentImage.styles.collect { |s, klass| [s[:name], s[:class]] } %>
-        <% end -%>
-        <label for="content_image_downloadable"><%= f.check_box :downloadable %> Länka till orginal</label>
-        <div class="confirm">
-          <input type="submit" value="Spara bild"> eller <a href="<%= previous_view_path %>" class="back">avbryt</a>
-        </div>
-      <% end %>
-    </div>
-    <div id="c_2">
-      <%= image_tag display_image_path(:size => 'w290', :id => @content.resource.asset, :format => @content.resource.asset.extname), :width => 290 %>
-    </div>
+    <% end %>
   </div>
 </div>

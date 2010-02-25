@@ -1,25 +1,19 @@
 <% @page_title = "Lägg till formulär" %>
 <div id="workspace">
-  <div id="c_wrap" class="layout_2">
-    <div id="c_1">
-      <div class="header">
-        <h1>Lägg till formulär</h1>
+  <div class="header">
+    <h1>Lägg till formulär</h1>
+  </div>
+  <div id="content">
+    <% form_for :content, :url => admin_contents_path do |f| %>
+      <%= f.hidden_field :context_id %>
+      <%= f.hidden_field :context_type %>
+      <%= f.hidden_field :column_position %>
+      <%= f.hidden_field :resource_type %>
+      <label for="content_resource_id">Välj formuläret du vill lägga till</label>
+      <%= f.select :resource_id, RegistrationForm.find(:all, :order => 'name ASC').collect { |t| [t.name, t.id] } %>
+      <div class="submit">
+        <%= submit_tag 'Lägg till' %> eller <%= link_to "avbryt", previous_view_path, :class => 'cancel' %>
       </div>
-      <% form_for :content, :url => admin_contents_path do |f| %>
-        <div class="column1">
-          <div class="inner form">
-            <%= f.hidden_field :context_id %>
-            <%= f.hidden_field :context_type %>
-            <%= f.hidden_field :column_position %>
-            <%= f.hidden_field :resource_type %>
-            <label for="content_resource_id">Välj formulär:</label>
-            <%= f.select :resource_id, RegistrationForm.find(:all, :order => 'name ASC').collect { |t| [t.name, t.id] } %>
-          </div>
-        </div>
-        <div class="confirm">
-          <%= submit_tag 'Lägg till' %> eller <%= link_to "avbryt", previous_view_path, :class => 'cancel' %>
-        </div>
-      <% end %>
-    </div>
+    <% end %>
   </div>
 </div>

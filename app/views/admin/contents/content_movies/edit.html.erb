@@ -1,28 +1,23 @@
-<% @page_title = "Lägg till bild" %>
-<style type="text/css">@import url(/stylesheets/porthos/new.css);</style>
+<% @page_title = "Ändra film" %>
 <div id="workspace">
-  <div id="c_wrap" class="layout_2">
-    <div id="c_1">
-      <div class="header">
-        <h1>Ändra film</h1>
-      </div>
-      <% form_for :content, @content.resource, :url => admin_content_path(@content), :html => { :method => :put } do |f| %>
-        <% fields_for :resource do |resource| %>
-          <%= resource.hidden_field :movie_asset_id, :value => @content.resource.asset.id %>
-          <label for="content_image_title">Titel</label>
-          <%= resource.text_field :title, :value => @content.resource.asset.title %>
-          <label for="content_image_caption">Beskrivning</label>
-          <%= resource.text_area :caption, :value => @content.resource.asset.description, :cols => 30, :rows => 5 %>    
-          <label for="content_image_title">Copyright</label>
-          <%= resource.text_field :copyright, :value => @content.resource.asset.author %>
-        <% end %>
-        <div class="confirm">
-          <input type="submit" value="Spara film"> eller <a href="<%= previous_view_path %>" class="back">avbryt</a>
-        </div>
+  <div class="header">
+    <h1>Ändra film</h1>
+  </div>
+  <div id="content">
+    <%= image_tag display_image_path(:size => 'w270', :id => @content.resource.asset.thumbnail, :format => @content.resource.asset.thumbnail.extname), :width => 270 %>
+    <% form_for :content, @content.resource, :url => admin_content_path(@content), :html => { :method => :put } do |f| %>
+      <% fields_for :resource do |resource| %>
+        <%= resource.hidden_field :movie_asset_id, :value => @content.resource.asset.id %>
+        <label for="content_image_title">Titel</label>
+        <%= resource.text_field :title, :value => @content.resource.asset.title %>
+        <label for="content_image_caption">Beskrivning</label>
+        <%= resource.text_area :caption, :value => @content.resource.asset.description, :cols => 30, :rows => 5 %>    
+        <label for="content_image_title">Copyright</label>
+        <%= resource.text_field :copyright, :value => @content.resource.asset.author %>
       <% end %>
-    </div>
-    <div id="c_2">
-      <%= image_tag display_image_path(:size => 'w270', :id => @content.resource.asset.thumbnail, :format => @content.resource.asset.thumbnail.extname), :width => 270 %>
-    </div>
+      <div class="confirm">
+        <input type="submit" value="Spara film"> eller <a href="<%= previous_view_path %>" class="back">avbryt</a>
+      </div>
+    <% end %>
   </div>
 </div>
