@@ -30,13 +30,10 @@
   <% if @tags.any? -%>
     <div class="label">Nyckelord</div>
     <ul class="tags">
-    <% @tags.sort_by { |tag| tag.name }.each do |tag| -%>
-      <li><span class="letter">A</span>
-        <ul>
-          <% @tags.sort_by { |tag| tag.name }.each do |tag| -%>
-          <li><%= link_to "#{tag.name.downcase}", admin_assets_path(:tags => [tag.name]), :class => "tag" -%></li>
-          <% end %>
-        </ul>
+    <% @tags.sort_by(&:name).group_by { |tag| tag.name[0...1].upcase }.each do |first_letter, tags| -%>
+      <li>
+        <span class="letter"><%= first_letter %></span>
+        <%= tags.collect { |tag| link_to("#{tag.name.downcase}", admin_assets_path(:tags => [tag.name]), :class => "tag") }.join(', ') -%>
       </li>
     <% end -%>
     </ul>
