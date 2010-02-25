@@ -32,12 +32,15 @@ protected
 
   def send_image(image, size)
     path = image.version_path(size)
-    image.resize(:size => size, :quality => 95) unless File.exists?(path)
-    if File.exists?(path)
-      send_file(path, :filename => image.full_name, :disposition => 'inline', :type => image.mime_type)
-    else
-      return head(:not_found)
+    unless File.exists?(path)
+      if (params[:token] && image.resize_token(size) == params[:token]) || logged_in?
+        image.resize(:size => size, :quality => 95) 
+        if File.exists?(path)
+          send_file(path, :filename => image.full_name, :disposition => 'inline', :type => image.mime_type) and return
+        end
+      end
     end
+    return head(:not_found)
   end
 
   def send_movie(movie)
