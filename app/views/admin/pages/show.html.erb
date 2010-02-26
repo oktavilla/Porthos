@@ -31,10 +31,6 @@
         <div class="inner">
           <span class="sort_contents controls">
             <a class="add" href="#">Lägg till innehåll</a>
-          <% if @page.contents.any? -%>
-            <%= link_to("Sortera innehåll", sort_admin_contents_path, :class => 'sort fr') %>
-            <%= display_indicator :id => 'page_contents_indicator' %>
-          <% end -%>
           </span>
           <div class="sub_controls" style="display:none;">
             <ul>

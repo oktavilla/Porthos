@@ -1,8 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 
 <html lang="en">
-<head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="<%= request_forgery_protection_token %>" id="authenticity-token" content="<%= form_authenticity_token %>">
   <title><%= @page_title if @page_title %></title>
   <%= stylesheet_link_tag 'porthos/elements', 'porthos/layout', 'porthos/registrations_campaigns', 'porthos/wymeditor', :cache => 'porthos' %>
   <%= installation_specific_stylesheet_link_tag %>
