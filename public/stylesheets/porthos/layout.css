@@ -188,9 +188,7 @@ body.layout3 #workspace {
         font-weight:normal; 
         color:#666;
         text-transform:uppercase; }
-    #workspace .header .edit_settings,
-    #workspace .header .private,
-    #workspace .header .public_link {
+    #workspace .header a {
       margin-left:1.5em;
       padding:5px 0 5px 18px;
       font-size:.8571em; 
@@ -201,9 +199,8 @@ body.layout3 #workspace {
     #workspace .header .edit_settings {
       background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -680px no-repeat; }
     #workspace .header .public_link {
-      float:right;
-      margin-top:-1px;
       background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -630px no-repeat; }
+    #workspace .header .away { float:right; }
   #workspace .tools,
   #workspace .adding {
     padding:10px 40px;
