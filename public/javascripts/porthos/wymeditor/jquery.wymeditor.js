@@ -288,13 +288,6 @@ jQuery.extend(WYMeditor, {
         this._options.jQueryPath = this._options.jQueryPath
         || this.computeJqueryPath();
 
-        //event handlers references
-        this._eventHandlers = {
-          updateEventHandler : function() {
-            wym.update();
-          }
-        };
-
         //initialize the editor instance
         this.init();
 	
@@ -518,7 +511,7 @@ jQuery.fn.wymeditor = function(options) {
     dialogPreviewSelector: ".wym_dialog_preview",
     
     updateSelector:    ".wymupdate",
-    updateEvent:       "click",
+    updateEvent:       "click.wym_update",
     
     dialogFeatures:    "menubar=no,titlebar=no,toolbar=no,resizable=no"
                       + ",width=560,height=300,top=0,left=0",
@@ -881,7 +874,9 @@ WYMeditor.editor.prototype.bindEvents = function() {
   
   //handle event on update element
   jQuery(this._options.updateSelector)
-    .bind(this._options.updateEvent, this._eventHandlers.updateEventHandler);
+    .bind(this._options.updateEvent, function() {
+      wym.update();
+  });
 };
 
 WYMeditor.editor.prototype.ready = function() {
@@ -1290,8 +1285,7 @@ WYMeditor.editor.prototype.destroy = function() {
   this.update();
 
   //unbinds the handler on update element
-  jQuery(this._options.updateSelector)
-    .unbind(this._options.updateEvent, this._eventHandlers.updateEventHandler);
+  jQuery(this._options.updateSelector).unbind(this._options.updateEvent);
   jQuery(this._box).remove();
   jQuery(this._element).show();
   delete this;
