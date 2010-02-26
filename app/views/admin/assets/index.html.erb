@@ -1,44 +1,6 @@
 <% @page_title = "Bilder, filmer, ljud och dokument" %>
 <% @page_class = 'layout3' %>
-<% tags = @current_tags.dup %>
-  <div id="sub_nav">
-    <% form_for :asset, :url => search_admin_assets_path(:type => params[:type]), :html => { :method => :get } do |f| %>
-      <div class="search fullwidthinput">
-        <%= text_field_tag :query, (@query || 'Sök'), :class => "search_query", :id=> "search_query" %>
-        <%= submit_tag "Sök", :style => "display:none" %>
-      </div>
-    <% end %>
-    <ul class="filter">
-      <%= asset_filter_links(:current => @type).join(' ') %>
-    </ul>
-  <% if @current_tags.any? -%>
-    <div class="label">Valda nyckelord</div>
-      <ul class="tags current">
-      <% @current_tags.each do |current_tag| -%>
-        <li><span class="tag"><%= current_tag %></span> <%= link_to "Ta bort", admin_assets_path(:tags => @current_tags - [current_tag]) %></li>
-      <% end -%>
-      </ul>
-    <% if @related_tags.any? -%>
-    <div class="label">Relaterade nyckelord</div>
-    <ul class="tags">
-      <% @related_tags.each do |tag| %>
-      <li><%= link_to tag.name, admin_assets_path(:tags => @current_tags + [tag.name]), :class => "tag" %></li>
-      <% end %>
-    </ul>
-    <% end -%>
-  <% end -%>
-  <% if @tags.any? -%>
-    <div class="label">Nyckelord</div>
-    <ul class="tags">
-    <% @tags.sort_by(&:name).group_by { |tag| tag.name[0...1].upcase }.each do |first_letter, tags| -%>
-      <li>
-        <span class="letter"><%= first_letter %></span>
-        <%= tags.collect { |tag| link_to("#{tag.name.downcase}", admin_assets_path(:tags => [tag.name]), :class => "tag") }.join(', ') -%>
-      </li>
-    <% end -%>
-    </ul>
-  <% end -%>
-  </div>
+  <%= render :partial => 'admin/assets/sub_nav' %>
   <div id="workspace">
     <% unless @content -%>
     <div class="header">

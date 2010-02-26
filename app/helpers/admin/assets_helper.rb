@@ -1,20 +1,20 @@
 module Admin::AssetsHelper
-  def asset_filter_links(options = {})
-    options = {
-      :current => 'Asset'
-    }.merge(options.symbolize_keys!)
+  def asset_filter_links(filters)
     asset_links = [
-      { :name => 'Alla filer', :class => 'Asset' },
       { :name => 'Bilder',     :class => 'ImageAsset' },
       { :name => 'Filmer',     :class => 'MovieAsset' },
       { :name => 'Ljud',       :class => 'SoundAsset' }
-    ]
-    asset_links.collect do |link|
+    ].collect do |link|
       content_tag('li', content_tag('a', link[:name], {
-        :href => admin_assets_path(:type => link[:class])
+        :href => admin_assets_path(:filters => filters.merge(:by_type => link[:class]))
       }), {
-        :class => "#{options[:current].to_s == link[:class] ? 'current' : ''}"
+        :class => "#{filters[:by_type] == link[:class] ? 'current' : ''}"
       })
     end
+    asset_links.unshift(content_tag('li', content_tag('a', 'Alla filer', {
+      :href => admin_assets_path(:filters => filters.without(:by_type))
+    }), {
+      :class => (filters[:by_type].nil? ? 'current' : '')
+    }))
   end
 end

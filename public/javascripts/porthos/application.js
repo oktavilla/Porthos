@@ -71,6 +71,39 @@ Porthos.extractId = function(string) {
   return string.replace(Porthos.extract_id,'');
 };
 
+
+Object.extend(Porthos, {
+  
+  authenticityTokenParameter: function(){
+    return this.authenticity().key + '=' + encodeURIComponent(this.authenticity().token);
+  },
+  
+  authenticity: function() {
+    if (!this._authenticity) {
+      this._authenticity = $('authenticity-token');
+    }
+    return {
+      key : this._authenticity.name,
+      token : this._authenticity.content
+    }
+  }
+
+});
+
+Ajax.Base.prototype.initialize = Ajax.Base.prototype.initialize.wrap(function() {
+  var args = $A(arguments), proceed = args.shift();
+  var options = args[0];
+  if (Object.isString(options.parameters)) {
+    options.parameters += '&' + Porthos.authenticityTokenParameter();
+  } else if (Object.isHash(options.parameters)) {
+    options.parameters = this.options.parameters.toObject();
+    options.parameters[Porthos.authenticity().key] = Porthos.authenticity().token;
+  } else if (options.parameters != undefined) {
+    options.parameters[Porthos.authenticity().key] = Porthos.authenticity().token;
+  }
+  proceed.apply(null, args);
+});
+
 /*
   parseUri 1.2.1
   (c) 2007 Steven Levithan <stevenlevithan.com>

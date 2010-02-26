@@ -1,10 +1,6 @@
 <span class="title"><%= link_to page.title, admin_page_path(page) %></span>
 <span class="slug">
-  <% if page.node %>
-  /<%= page.node.slug %>
-  <% else %>
-  /<%= page.slug %>
-  <% end %>
+  /<%= page.full_slug %>
 </span>
 <div class="description">
   <% unless page.description.blank? %>

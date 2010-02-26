@@ -3,11 +3,14 @@
   <div class="header">
     <h1><%= @page.title %></h1>
     <%= link_to "Redigera", edit_admin_page_path(:id => @page, :return_to => request.request_uri), :class => 'edit_settings' %>
-    <% unless @page.is_a? PageCollection %>
-      <%= link_to 'Förhandsgranska', preview_page_path(@page.id), :class => 'public_link' %>
-    <% else %>
-      <%= link_to "Lägg till / redigera sidor", admin_page_collection_path(@page) %>
-    <% end %>
+    <span class="away">
+      <%= link_to("Alla #{@page.parent.title.downcase}", admin_pages_path(:filters => { :with_parent => @page.parent.id })) if @page.child? %>
+      <% unless @page.is_a? PageCollection %>
+        <%= link_to 'Förhandsgranska', preview_page_path(@page.id), :class => 'public_link' %>
+      <% else %>
+        <%= link_to "Lägg till / redigera sidor", admin_page_collection_path(@page) %>
+      <% end %>
+    </span>
   </div>
   <span class="controls">
     <% if @page.comments.any? %>
@@ -28,10 +31,6 @@
         <div class="inner">
           <span class="sort_contents controls">
             <a class="add" href="#">Lägg till innehåll</a>
-          <% if @page.contents.any? -%>
-            <%= link_to("Sortera innehåll", sort_admin_contents_path, :class => 'sort fr') %>
-            <%= display_indicator :id => 'page_contents_indicator' %>
-          <% end -%>
           </span>
           <div class="sub_controls" style="display:none;">
             <ul>

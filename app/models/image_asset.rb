@@ -1,28 +1,8 @@
-# == Schema Information
-# Schema version: 76
-#
-# Table name: assets
-#
-#  id          :integer(11)   not null, primary key
-#  type        :string(255)   
-#  title       :string(255)   
-#  file_name   :string(255)   
-#  mime_type   :string(255)   
-#  extname     :string(255)   
-#  width       :integer(11)   
-#  height      :integer(11)   
-#  size        :integer(11)   
-#  created_at  :datetime      
-#  updated_at  :datetime      
-#  author      :text          
-#  description :text          
-#  created_by  :integer(11)   
-#  incomplete  :integer(11)   default(0)
-#
-
-require 'RMagick'
 class ImageAsset < Asset
   belongs_to :parent, :foreign_key => 'parent_id', :class_name => 'Asset'
+
+  IMAGE_VERSIONS_DIR = "#{RAILS_ROOT}/public/images"
+  RESIZE_SALT = '8i03d9ee7'
   
   def landscape?
     width > height
@@ -32,72 +12,96 @@ class ImageAsset < Asset
     not landscape?
   end
   
-  IMAGE_VERSIONS_DIR = "#{RAILS_ROOT}/public/images"
-  RESIZE_SALT = '8i03d9ee7'
-  
-  def version_path(size)
-    IMAGE_VERSIONS_DIR+'/'+size+'/'+full_name
-  end
-    
   def resize(options = {})
-    return false unless image = magick_instance
-
     options = {
-      :size => nil,
-      :quality => 100,
-      :scale => false,
-      :remove_color_profiles => true
+      :quality         => 100,
+      :remove_profiles => false
     }.merge!(options)
-    
+  
     options[:crop] ||= (options[:size] and options[:size].include?("c"))
     
-    if options[:remove_color_profiles]
-      # delete color profiles and comments to make the output image smaller
-      image.color_profile = nil
-      image.iptc_profile  = nil
-    end
-  
-    resize_parameters = if format_string = options[:size].match(/([a-z])([0-9]*)(x|)([0-9]*)(g\-|)([a-z]{1,2}|)/)
+    size = options[:size].gsub(/[^0-9a-z\-]/,'')
+
+    Dir.mkdir images_dir unless File.exists? IMAGE_VERSIONS_DIR
+    Dir.mkdir version_dir(size) unless File.exists? version_dir(size)
+    
+    magick_image.strip if options[:remove_profiles]
+    
+    format = if format_string = size.match(/^([0-9]*)x([0-9]*)$/)
+      box_width = ($1.to_i > self.width) ? self.width : $1.to_i
+      box_height = ($2.to_i > self.height) ? self.height : $2.to_i
+      { :width => box_width, :height => box_height, :method => "resize" }
+    elsif format_string = size.match(/^([a-z])([0-9]*)(x|)([0-9]*)(g\-|)([a-z]{1,2}|)$/)
       case format_string[1]
-      when "c" then { :width  => $2.to_i, :height => $4.to_i, :method => "crop" }
-      when "w" then { :width  => $2.to_i, :method => "resize" }
-      when "h" then { :height => $2.to_i, :method => "resize" }
+      when "c" then { :width => $2.to_i,                   :height => $4.to_i,                   :method => "crop",  :gravity => gravity_from_size($6) }
+      when "w" then { :width => $2.to_i,                   :height => height_for_width($2.to_i), :method => "resize" }
+      when "h" then { :width => width_for_height($2.to_i), :height => $2.to_i,                   :method => "resize" }
       end
     else
-      { :width => options[:size].to_i, :height => calculate_height_for_width(options[:size].to_i), :method => "resize" }
-    end
-    resize_parameters[:gravity] = gravity_from_size($6)
-  
-    resize_parameters[:width]  = self.width  if resize_parameters[:width].to_i >= self.width
-    resize_parameters[:height] = self.height if resize_parameters[:height].to_i >= self.height
-    
-    Dir.mkdir(IMAGE_VERSIONS_DIR) unless File.exists?(IMAGE_VERSIONS_DIR)
-    save_path = "#{IMAGE_VERSIONS_DIR}/#{options[:size]}"
-    Dir.mkdir(save_path) unless File.exists?(save_path)
-    # Generate the resized image
-    image = case resize_parameters[:method]
-    when 'resize'
-      if not resize_parameters[:width] or not resize_parameters[:height]
-        scale_factor = 1
-        scale_factor = (resize_parameters[:width].to_f  / image.columns.to_f) if resize_parameters[:width]
-        scale_factor = (resize_parameters[:height].to_f / image.rows.to_f)    if resize_parameters[:height]
-        scale_factor = 1 if scale_factor > 1
-        image.scale(scale_factor)
+      if landscape?
+        { :width => size.to_i, :height => height_for_width(size.to_i), :method => "resize" }
       else
-        image.scale(resize_parameters[:width], resize_parameters[:height])
+        { :height => size.to_i, :width => width_for_height(size.to_i), :method => "resize" }
       end
-    when 'crop'
-      image.crop_resized(resize_parameters[:width], resize_parameters[:height], resize_parameters[:gravity])
     end
 
-    # Set rgb so we can atleast see the images in the browser even tho colors may (will) get scewed
-    image.colorspace = Magick::RGBColorspace if image.colorspace != Magick::RGBColorspace
-    image.write("#{save_path}/#{self.full_name}") do
-      self.quality    = options[:quality]
+    magick_image.format('jpg') unless browser_compatible_format?
+
+    unless format[:width] > self.width || format[:height] > self.height
+      magick_image.combine_options do |i|
+        case format[:method]
+        when "crop"
+          if height_for_width(format[:width]) > format[:height]
+            i.resize( [ format[:width], height_for_width(format[:width]) ].join("x"))
+          else
+            i.resize( [ width_for_height(format[:height]), format[:height] ].join("x"))
+          end
+          i.crop([ format[:width], format[:height] ].join("x") + "+0+0")
+          i.gravity format[:gravity]
+        when "resize"
+          i.resize([ format[:width], format[:height] ].join("x"))
+        end
+        i.quality options[:quality]
+      end
+      magick_image.write version_path(size)
+    else
+      if browser_compatible_format?
+        FileUtils.copy(self.path, version_path(size))
+      else
+        magick_image.write version_path(size)
+      end
     end
-    logger.info "Stored new version of #{self.full_name} with width: #{image.columns}, height: #{image.rows}, scale factor: #{scale_factor} and quality: #{options[:quality]}"
-    FileUtils.chmod_R(0755, "#{save_path}/")
-    image                                                                                                                                                                                                
+    FileUtils.chmod_R(0755, version_dir(size))
+    magick_image.destroy
+    @magick_image = nil
+  end
+
+  def height_for_width(new_width)
+    unless new_width >= self.width
+      (height.to_f * (new_width.to_f / self.width.to_f)).ceil
+    else
+      height
+    end
+  end
+
+  def width_for_height(new_height)
+    unless new_height >= self.height
+      (width.to_f * (new_height.to_f / self.height.to_f)).ceil
+    else
+      width
+    end
+  end
+  
+  def version_dir(size)
+    File.join(IMAGE_VERSIONS_DIR, size)
+  end
+  
+  def version_path(size)
+    File.join(version_dir(size), version_full_name)
+  end
+  
+  def version_full_name
+    @version_full_name ||= browser_compatible_format? ? full_name : "#{file_name}.jpg"
   end
 
   def self.thumbnail_flag
@@ -108,22 +112,10 @@ class ImageAsset < Asset
     self.class.thumbnail_flag
   end
 
-  def calculate_height_for_width(new_width)
-    return height if new_width >= self.width
-    factor = new_width.to_f / self.width.to_f
-    (height * factor).ceil
-  end
-
-  def calculate_width_for_height(new_height)
-    return width if new_height >= self.height
-    factor = new_height.to_f / self.height.to_f
-    (width * factor).ceil
-  end
-  
   def resize_token(size)
     Digest::SHA1.hexdigest([RESIZE_SALT, self.full_name, size].join('-'))[1..6]
   end
-
+  
 protected
 
   def gravity_from_size(key)
@@ -132,30 +124,38 @@ protected
 
   def gravities
     {
-      'nw' => Magick::NorthWestGravity,
-      'n'  => Magick::NorthGravity,
-      'ne' => Magick::NorthEastGravity,
-      'w'  => Magick::WestGravity,
-      'c'  => Magick::CenterGravity,
-      'e'  => Magick::EastGravity,
-      'e'  => Magick::EastGravity,
-      'e'  => Magick::EastGravity,
-      'sw' => Magick::SouthWestGravity,
-      's'  => Magick::SouthGravity,
-      'sw' => Magick::SouthEastGravity
+      'nw' => 'NorthWest',
+      'n'  => 'North',
+      'ne' => 'NorthEast',
+      'w'  => 'West',
+      'c'  => 'Center',
+      'e'  => 'East',
+      'sw' => 'SouthWest',
+      's'  => 'South',
+      'se' => 'SouthEast'
     }
+  end
+  
+  def magick_image(file_path = nil)
+    @magick_image ||= MiniMagick::Image.from_file(file_path || path)
+  end
+  
+  def browser_compatible_format?
+    %w(jpg jpeg png gif).include?(read_attribute(:extension))
   end
 
   def validate_on_create  
-    image = magick_instance(@file.path)
+    image = magick_image(@file.path)
     return errors.add(:file, t(:unknown_format, :scope => [:app, :image_asset])) unless image
   end
 
   # before create
   def process
     super
-    image = magick_instance(path)
-    self.width, self.height = image.columns, image.rows if image
+    self.width, self.height = magick_image[:width], magick_image[:height]
+    # Garbage collect the generated minimagic tempfile
+    magick_image.destroy
+    @magick_image = nil
   end
     
   # after destroy
@@ -164,10 +164,6 @@ protected
     Dir["#{RAILS_ROOT}/public/images/*/*"].each do |file| 
       File.unlink(file) if File.basename(file) == full_name
     end
-  end
-
-  def magick_instance(file = nil)
-    @magick_image ||= Magick::Image.read(file || path).first rescue false
   end
   
 end
