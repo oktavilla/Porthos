@@ -1,25 +1,3 @@
-# == Schema Information
-# Schema version: 76
-#
-# Table name: pages
-#
-#  id                      :integer(11)   not null, primary key
-#  title                   :string(255)   
-#  description             :text          
-#  page_layout_id          :integer(11)   
-#  layout_class            :string(255)   
-#  column_count            :integer(11)   
-#  published_on            :datetime      
-#  created_at              :datetime      
-#  updated_at              :datetime      
-#  slug                    :string(255)   
-#  type                    :string(255)   
-#  position                :integer(11)   
-#  parent_id               :integer(11)   
-#  parent_type             :string(255)   
-#  default_child_layout_id :integer(11)   
-#
-
 class PageCollection < Page
   
   has_many :tag_collections
@@ -151,6 +129,10 @@ class PageCollection < Page
       end
       [year, months.collect { |month| Time.mktime(year, month) } ]
     end
+  end
+  
+  def slug_for_child(child)
+    [node.slug, child.published_on.strftime('%Y/%m/%d'), child.slug].join('/')
   end
 
   class << self

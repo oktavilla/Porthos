@@ -105,6 +105,24 @@ class Page < ActiveRecord::Base
   def part_of_collection?
     child? and parent_type == 'Page'
   end
+  
+  def full_slug
+    if child?
+      if parent.respond_to?(:slug_for_child)
+        parent.slug_for_child(self)
+      elsif parent.respond_to?(:node)
+        parent.node.slug+'/'+self.slug
+      elsif parent.respond_to?(:slug)
+        parent.slug+'/'+self.slug
+      end
+    else
+      if node
+        node.slug
+      else
+        slug
+      end
+    end
+  end
 
   class << self
     def available_filters
