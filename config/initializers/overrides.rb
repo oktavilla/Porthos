@@ -254,3 +254,17 @@ module Defensio
     end
   end
 end
+
+module MiniMagick
+  class Image
+    def write(output_path)
+      FileUtils.move @path, output_path
+      run_command "identify", output_path # Verify that we have a good image
+    end
+    
+    def destroy
+      File.unlink(@path) if File.exists?(@path)
+      @tempfile = nil
+    end
+  end
+end
