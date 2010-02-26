@@ -18,15 +18,12 @@ class Admin::AssetsController < ApplicationController
       :per_page => (params[:per_page] || 20)
     }))
     
-    @type = params[:type] ? params[:type].classify.constantize : Asset
-
     @assets = unless @current_tags.any?
       @per_page = @filters[:per_page]
-      @type.find_with_filter(@filters)
+      Asset.find_with_filter(@filters)
     else
-      @type.public.find_tagged_with({:tags => params[:tags].join(' '), :order => 'created_at DESC'})
+      Asset.public.find_tagged_with({:tags => params[:tags].join(' '), :order => 'created_at DESC'})
     end
-    @asset = Asset.new
     respond_to do |format|
       format.html
       format.xml { render :xml => @assets.to_xml }

@@ -6,7 +6,8 @@
     </div>
   <% end %>
   <ul class="filter">
-    <%= asset_filter_links(:current => @type).join(' ') %>
+    <% %w()%>
+    <%= asset_filter_links(@filters).join(' ') %>
   </ul>
   <div class="label">Uppladdade av</div>
   <ul class="filter">
