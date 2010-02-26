@@ -154,7 +154,9 @@ Porthos.Editor.Initialize = function(selector, options) {
   var filters = Porthos.jQuery('#resource_filter option').map(function() {
     return Porthos.jQuery(this).val();
   });
-  Porthos.jQuery('#resource_filter').change(function() {
+  var filter_select = Porthos.jQuery('#resource_filter');
+  filter_select.data('old_value', filter_select.val());
+  filter_select.change(function() {
     var self = Porthos.jQuery(this);
     self.blur();
     var value = self.val();
@@ -164,16 +166,49 @@ Porthos.Editor.Initialize = function(selector, options) {
     });
     editors.removeClass(filter_string)
     .addClass(value);
-    switch(value) {
+        
+    // Teardowns
+    switch(self.data('old_value')) {
       case 'wymeditor':
-        Porthos.jQuery(selector).wymeditor(options);
-      break;
-      default:
         for(i=0; i < WYMeditor.INSTANCES.length; i++) {
           WYMeditor.INSTANCES[i].destroy();
         }
-        Porthos.jQuery(selector).focus();
+        break;
+      case 'html':
+        Porthos.jQuery(selector).val(Porthos.Editor.code_mirror.getCode()).show();
+        jQuery('.CodeMirror-wrapping').remove();
+        delete Porthos.Editor.code_mirror;
+        break;
     }
+
+    switch(value) {
+      case 'wymeditor':
+        Porthos.jQuery(selector).wymeditor(options);
+        break;
+      case 'html':
+        Porthos.Editor.code_mirror = CodeMirror.fromTextArea(Porthos.jQuery(selector).get(0), {
+          height: "350px",
+          parserfile: "parsexml.js",
+          stylesheet: "/stylesheets/porthos/codemirror.css",
+          path: "/javascripts/porthos/codemirror/",
+          continuousScanning: 500,
+          lineNumbers: true
+        });
+        break;
+      default:
+        Porthos.jQuery(selector).blur();
+    }
+    self.data('old_value', value);
   });
   editors.filter('.wymeditor').wymeditor(options);
+  editors.filter('.html').each(function() {
+    Porthos.Editor.code_mirror = CodeMirror.fromTextArea(this, {
+      height: "350px",
+      parserfile: "parsexml.js",
+      stylesheet: "/stylesheets/porthos/codemirror.css",
+      path: "/javascripts/porthos/codemirror/",
+      continuousScanning: 500,
+      lineNumbers: true
+    });
+  });
 };
