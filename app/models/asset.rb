@@ -29,6 +29,9 @@ class Asset < ActiveRecord::Base
   has_one :child, :class_name => 'Asset', :foreign_key => 'parent_id', :dependent => :destroy
   
   named_scope :public, :conditions => { :private => false }
+  named_scope :filter_created_by, lambda { |user_id|
+    { :conditions => ["created_by_id = ?", user_id] }
+  }
   
   is_indexed :fields => ['type', 'title', 'extname', 'author', 'description'], :concatenate => [{
     :class_name => 'Tag', :field => 'name', :as => 'tags', 
@@ -36,7 +39,8 @@ class Asset < ActiveRecord::Base
   }], :conditions => 'private = 0'
   
   acts_as_taggable
-
+  acts_as_filterable
+  
   SAVE_DIR = "#{RAILS_ROOT}/assets"
   IMAGE_FORMATS = [:jpg, :jpeg, :png, :gif]
   MOVIE_FORMATS = [:flv, :mov, :qt, :mpg, :avi, :mp4]

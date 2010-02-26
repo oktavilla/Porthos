@@ -2,8 +2,9 @@ class Admin::AssetsController < ApplicationController
   include Porthos::Admin
   
   before_filter :login_required
-  skip_before_filter :clear_content_context
   before_filter :set_content_context, :only => :index
+  before_filter :find_tags, :only => [:index, :new]
+  skip_before_filter :clear_content_context
   skip_before_filter :remember_uri, :only => [:index, :show, :create, :search]
   
   protect_from_forgery :only => :create
@@ -11,13 +12,17 @@ class Admin::AssetsController < ApplicationController
   # GET /assets
   # GET /assets.xml
   def index
+    
+    @filters = Porthos::Filter.new((params[:filters] || {}).merge({
+      :page     => (params[:page] || 1),
+      :per_page => (params[:per_page] || 20)
+    }))
+    
     @type = params[:type] ? params[:type].classify.constantize : Asset
-    @tags = Tag.on('Asset').popular.find(:all, :limit => 30)
-    @current_tags = params[:tags] || []
-    @related_tags = @current_tags.any? ? @type.find_related_tags(@current_tags) : []
+
     @assets = unless @current_tags.any?
-      @per_page = params[:per_page] || 20
-      @type.public.paginate(:page => params[:page], :per_page => @per_page.to_i, :order => 'created_at DESC')
+      @per_page = @filters[:per_page]
+      @type.find_with_filter(@filters)
     else
       @type.public.find_tagged_with({:tags => params[:tags].join(' '), :order => 'created_at DESC'})
     end
@@ -64,6 +69,7 @@ class Admin::AssetsController < ApplicationController
 
   # GET /assets/new
   def new
+    @filters = Porthos::Filter.new
     @asset = Asset.new
     respond_to do |format|
       format.html
@@ -153,6 +159,12 @@ class Admin::AssetsController < ApplicationController
   end
 
 protected
+
+  def find_tags
+    @tags = Tag.on('Asset').popular.find(:all, :limit => 30)
+    @current_tags = params[:tags] || []
+    @related_tags = @current_tags.any? ? Asset.find_related_tags(@current_tags) : []
+  end
 
   def set_content_context
     @content = session[:content] ||= params[:content]

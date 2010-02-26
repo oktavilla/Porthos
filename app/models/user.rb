@@ -38,6 +38,14 @@ class User < ActiveRecord::Base
     :group  => 'pages.updated_by_id'
   }
   
+  named_scope :recent_uploaders, {
+    :select => 'DISTINCT users.*',
+    :from   => 'assets',
+    :joins  => 'LEFT JOIN users ON users.id = assets.created_by_id',
+    :conditions => 'assets.created_by_id IS NOT NULL',
+    :group => 'assets.created_by_id'
+  }
+  
   is_indexed :fields => ['first_name', 'last_name', 'email']
   
   def validate
