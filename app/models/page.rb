@@ -43,6 +43,16 @@ class Page < ActiveRecord::Base
   named_scope :created_latest, :order => 'created_at DESC'
   named_scope :updated_latest, :conditions => 'changed_at > created_at', :order => 'changed_at DESC'
 
+  named_scope :filter_created_by, lambda { |user_id|
+    { :conditions => ["created_by_id = ?", user_id] }
+  }
+  named_scope :filter_updated_by, lambda { |user_id|
+    { :conditions => ["updated_by_id = ?", user_id] }
+  }
+  named_scope :filter_with_parent, lambda { |parent_id|
+    { :conditions => ["parent_id = ? ", parent_id] }
+  }
+
   before_validation_on_create :set_default_layout, :set_inactive
 
   before_create :set_published_on
@@ -52,8 +62,8 @@ class Page < ActiveRecord::Base
   after_create  :insert_default_contents
 
   acts_as_list :scope => 'parent_id = \'#{parent_id}\' and parent_type = \'#{parent_type}\''
-
   acts_as_taggable
+  acts_as_filterable  
   
   #acts_as_defensio_article :fields => { :title => :title, :content => :body }
   
@@ -94,6 +104,14 @@ class Page < ActiveRecord::Base
 
   def part_of_collection?
     child? and parent_type == 'Page'
+  end
+
+  class << self
+    def available_filters
+      self.scopes.keys.map { |m| m.to_s }.select do |m|
+        m =~ /^filter_/
+      end.map { |m| m[7..-1].to_sym }
+    end
   end
 
 private

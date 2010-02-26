@@ -8,9 +8,10 @@
   </div>
   <% end %>
   <ul class="filter">
-    <li class="current"><a href="#">Alla</a></li>
-    <li><a href="#">Nyheter</a></li>
-    <li><a href="#">Pressmeddelanden</a></li>
+    <li<%= ' class="current"' unless @filters[:with_parent] %>><%= link_to "Alla", admin_pages_path(:filters => @filters.without(:with_parent)) %></a></li>
+    <% PageCollection.all.each do |page_collection| -%>
+    <li<%= ' class="current"' if @filters[:with_parent].to_i == page_collection.id %>><%= link_to page_collection.title, admin_pages_path(:filters => @filters.merge(:with_parent => page_collection.id)) %></li>
+    <% end -%>
   </ul>
   <div class="label">Sortering</div>
   <ul class="filter">
@@ -19,10 +20,14 @@
   </ul>
   <div class="label">Senast ändrad av</div>
   <ul class="filter">
-    <li class="current"><a href="#">Alla</a></li>
-    <li><a href="#">Alexis Fellenius</a></li>
-    <li><a href="#">Arvid Andersson</a></li>
-    <li><a href="#">Joel Junström</a></li>
+    <li<%= ' class="current"' unless @filters[:updated_by] %>>
+      <%= link_to "Alla", admin_pages_path(:filters => @filters.without(:updated_by)) %>
+    </li>
+    <% User.recent_contributers.each do |user| -%>
+      <li<%= ' class="current"' if @filters[:updated_by].to_i == user.id %>>
+        <%= link_to user.name, admin_pages_path(:filters => @filters.merge(:updated_by => user.id)) %>
+      </li>
+    <% end -%>
   </ul>
 <% if @current_tags.any? -%>
   <div class="label">Valda nyckelord</div>
@@ -44,17 +49,7 @@
 <% end -%>
 <% if @tags.any? -%>
   <div class="label">Nyckelord</div>
-  <ul class="tags">
-  <% @tags.sort_by { |tag| tag.name }.each do |tag| -%>
-    <li><span class="letter">A</span>
-      <ul>
-        <% @tags.sort_by { |tag| tag.name }.each do |tag| -%>
-        <li><%= link_to "#{tag.name.downcase}", admin_pages_path(:tags => [tag.name]), :class => "tag" -%></li>
-        <% end %>
-      </ul>
-    </li>
-  <% end -%>
-  </ul>
+  <%= render :partial => 'admin/tags/list_by_letter', :locals => { :tags => @tags } %>
 <% end -%>
 </div>
 <div id="workspace">
@@ -62,36 +57,16 @@
     <h1>Dina sidor</h1>
   </div>
   <div class="tools">
-    <%= link_to "Skapa en ny sida", new_admin_page_path, :class => 'create' %>
+    <%= link_to "Skapa en ny sida", (!@filters[:with_parent] ? new_admin_page_path : new_admin_page_path(:page => { :parent_id => @filters[:with_parent], :parent_type => 'Page' })), :class => 'create' %>
     <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'create' if current_user.can_create?(PageCollection) %>
   </div>
   <div id="content">
-  <% if current_user.created_pages.any? %>
-    <h2>Sidor du har skapat</h2>
     <ul class="items">
-    <% current_user.created_pages.each do |page| %>
+    <% @pages.each do |page| %>
       <li>
       <%= render :partial => 'page', :locals => {:page => page} %>
       </li>
     <% end %>
     </ul>
-  <% end %>
-  <% if current_user.updated_pages.any? %>
-    <h2>Senaste sidor du har jobbat med</h2>
-    <%= render :partial => 'list_of_pages', :locals => {:pages => current_user.updated_pages} %>
-  <% end %>
-  <% unless @current_tags.any? %>
-    <% if latest_updated_pages = Page.updated_latest.find(:all, :limit => 10) %>
-      <h2>Senaste uppdaterade sidor</h2>
-      <%= render :partial => 'list_of_pages', :locals => {:pages => latest_updated_pages} %>
-    <% end %>
-  <% else %>
-    <h2>Sidor som matchar din nyckelordssökning</h2>
-    <% if not @tagged_pages.any? %>
-      <p>Inga sidor hittades</p>
-    <% else %>
-      <%= render :partial => 'list_of_pages', :locals => {:pages => @tagged_pages, :current_tags => @current_tags} %>
-    <% end %>
-  <% end %>
   </div>
 </div>

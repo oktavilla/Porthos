@@ -29,6 +29,15 @@ class User < ActiveRecord::Base
   
   before_save :encrypt_password, :save_avatar
   
+  named_scope :recent_contributers, {
+    :select => 'DISTINCT users.*',
+    :from   => 'pages',
+    :joins  => 'LEFT JOIN users ON users.id = pages.updated_by_id',
+    :conditions => "pages.updated_by_id IS NOT NULL",
+    :order  => "pages.updated_by_id DESC",
+    :group  => 'pages.updated_by_id'
+  }
+  
   is_indexed :fields => ['first_name', 'last_name', 'email']
   
   def validate

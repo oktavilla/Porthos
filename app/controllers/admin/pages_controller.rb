@@ -3,6 +3,11 @@ class Admin::PagesController < ApplicationController
   before_filter :login_required
 
   def index
+    
+    @filters = Porthos::Filter.new(params[:filters] || {})
+    
+    @pages = Page.find_with_filter(@filters)
+        
     @tags = Tag.on('Page').popular.find(:all, :limit => 30)
     @current_tags = params[:tags] || []
     @related_tags = @current_tags.any? ? Page.find_related_tags(@current_tags) : []

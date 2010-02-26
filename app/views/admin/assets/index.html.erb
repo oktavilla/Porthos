@@ -80,7 +80,7 @@
             <%= asset.description.blank? ? "<a href=\"#{edit_admin_asset_path(asset)}\">Ingen beskrivning. Skriv en ...</a>" : truncate(asset.description,200) %>
           </div>
           <% unless asset.tag_names.blank? %>
-          <div class="tags"><%= asset.tags.collect { |tag| @current_tags.include?(tag.name) ? link_to(tag.name, admin_assets_path(:tags => [tag.name])) : link_to(tag.name, admin_assets_path(:tags => [tag.name])) }.join(' ') -%></div>
+          <div class="tags"><%= asset.tags.collect { |tag| @current_tags.include?(tag.name) ? tag.name : link_to(tag.name, admin_assets_path(:tags => [tag.name])) }.join(', ') -%></div>
           <% end %>
           <div class="meta">
             <span>Uppladdad</span> den <%= asset.created_at.strftime("%d %b %Y") %>
