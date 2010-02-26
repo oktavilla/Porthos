@@ -54,7 +54,7 @@
 </div>
 <div id="workspace">
   <div class="header">
-    <h1>Dina sidor</h1>
+    <h1>Sidor</h1>
   </div>
   <div class="tools">
     <%= link_to "Skapa en ny sida", (!@filters[:with_parent] ? new_admin_page_path : new_admin_page_path(:page => { :parent_id => @filters[:with_parent], :parent_type => 'Page' })), :class => 'create' %>
