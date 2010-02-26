@@ -16,9 +16,22 @@
           element  : div.select('ul.contents')[0]
         }
       });
+      this.columns.each(function(column) {
+        column.container.select('a.add').invoke('observe', 'click', function(event) {
+          element = event.element();
+          if (!element.hasClassName('active')) {
+            element.addClassName('active');
+          } else {
+            element.removeClassName('active');
+          }
+          column.container.select('div.sub_controls').invoke('toggle');
+          event.stop();
+        }.bind(this));
+
+      }.bind(this));
       this.setupSorting();
     },
-    
+     
     setupSorting: function() {
       this.sortables = this.columns_container.select('ul.sortable');
       this.teaserCollections = this.columns_container.select('ul.teasers');
