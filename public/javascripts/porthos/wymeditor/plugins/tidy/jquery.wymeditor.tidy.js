@@ -1,6 +1,6 @@
-﻿/*
+/*
  * WYMeditor : what you see is What You Mean web-based editor
- * Copyright (C) 2007 H.O.net - http://www.honet.be/
+ * Copyright (c) 2005 - 2009 Jean-Francois Hovinne, http://www.wymeditor.org/
  * Dual licensed under the MIT (MIT-license.txt)
  * and GPL (GPL-license.txt) licenses.
  *
@@ -12,11 +12,11 @@
  *        HTML Tidy plugin for WYMeditor
  *
  * File Authors:
- *        Jean-Francois Hovinne (jf.hovinne@wymeditor.org)
+ *        Jean-Francois Hovinne (jf.hovinne a-t wymeditor dotorg)
  */
 
 //Extend WYMeditor
-Wymeditor.prototype.tidy = function(options) {
+WYMeditor.editor.prototype.tidy = function(options) {
   var tidy = new WymTidy(options, this);
   return(tidy);
 };

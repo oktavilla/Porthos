@@ -15,7 +15,7 @@ Object.extend(Porthos.Editor.Options, {
               + " 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>"
               + "<html><head>"
               + "<title>"
-              + WYM_DIALOG_TITLE
+              + WYMeditor.DIALOG_TITLE
               + "</title>"
               + "<link rel='stylesheet' type='text/css' href='/stylesheets/porthos/clearing.css' />"
               + "<link rel='stylesheet' type='text/css' href='/stylesheets/porthos/general.css' />"
@@ -24,11 +24,11 @@ Object.extend(Porthos.Editor.Options, {
               + "<link rel='stylesheet' type='text/css' href='/stylesheets/porthos/assets.css' />"
               + "<link rel='stylesheet' type='text/css' href='/stylesheets/porthos/proxys.css' />"
               + "</head>"
-              + WYM_DIALOG_BODY
+              + WYMeditor.DIALOG_BODY
               + "</html>",
 
   dialogLinkHtml:  "<body class='wym_dialog wym_dialog_link A'"
-                   + " onload='WYM_INIT_DIALOG(" + WYM_INDEX + ")'"
+                   + " onload='WYMeditor.INIT_DIALOG(" + WYMeditor.INDEX + ")'"
                    + ">"
                    + "<div class='action_dialog_container'>"
                    + "<div class='dialog_content'>"
@@ -55,15 +55,15 @@ Object.extend(Porthos.Editor.Options, {
                    + "  </div></div>"
                    + "</div>"
                    + "</div>"
-                   + "<script type='text/javascript' src='/javascripts/porthos/jquery-1.1.4.js'></script>"
-                   + "<script type='text/javascript' src='/javascripts/porthos/wymeditor/jquery.wymeditor.js'></script>"
+                   + "<script type='text/javascript' src='/javascripts/porthos/jquery/jquery.js'></script>"
+                   + "<script type='text/javascript' src='/javascripts/porthos/wymeditor/jquery.wymeditor.min.js'></script>"
                    + "<script type='text/javascript' src='/javascripts/named_routes.js'></script>"
-                   + "<script type='text/javascript' src='/javascripts/porthos/jquery.wymeditor.porthos-linking.js'></script>"
-                   + "<script type='text/javascript' src='/javascripts/porthos/jquery.form.js'></script>"
+                   + "<script type='text/javascript' src='/javascripts/porthos/jquery/jquery.wymeditor.porthos-linking.js'></script>"
+                   + "<script type='text/javascript' src='/javascripts/porthos/jquery/jquery.form.js'></script>"
                    + "</body>",
 
  dialogPasteHtml:  "<body class='wym_dialog wym_dialog_paste'"
-            + " onload='WYM_INIT_DIALOG(" + WYM_INDEX + ")'"
+            + " onload='WYMeditor.INIT_DIALOG(" + WYMeditor.INDEX + ")'"
             + ">"
             + "<div class='action_dialog_container'>"
             + "<div class='dialog_content'>"
@@ -78,12 +78,12 @@ Object.extend(Porthos.Editor.Options, {
             + "  </form>"
             + "</div>"
             + "</div>"
-      + "<script type='text/javascript' src='/javascripts/porthos/jquery-1.1.4.js'></script>"
-      + "<script type='text/javascript' src='/javascripts/porthos/wymeditor/jquery.wymeditor.js'></script>"
+      + "<script type='text/javascript' src='/javascripts/porthos/jquery/jquery.js'></script>"
+      + "<script type='text/javascript' src='/javascripts/porthos/wymeditor/jquery.wymeditor.min.js'></script>"
             + "</body>",
 
 dialogTableHtml:  "<body class='wym_dialog wym_dialog_table'"
-           + " onload='WYM_INIT_DIALOG(" + WYM_INDEX + ")'"
+           + " onload='WYMeditor.INIT_DIALOG(" + WYMeditor.INDEX + ")'"
            + ">"
            + "<div class='action_dialog_container'>"
            + "<div class='dialog_content'>"
@@ -103,8 +103,8 @@ dialogTableHtml:  "<body class='wym_dialog wym_dialog_table'"
            + "  </form>"
            + "</div>"
            + "</div>"
-     + "<script type='text/javascript' src='/javascripts/porthos/jquery-1.1.4.js'></script>"
-     + "<script type='text/javascript' src='/javascripts/porthos/wymeditor/jquery.wymeditor.js'></script>"
+     + "<script type='text/javascript' src='/javascripts/porthos/jquery/jquery.js'></script>"
+     + "<script type='text/javascript' src='/javascripts/porthos/wymeditor/jquery.wymeditor.min.js'></script>"
      + "</body>",
 
   //options
@@ -147,13 +147,6 @@ dialogTableHtml:  "<body class='wym_dialog wym_dialog_table'"
   ]
 });
 
-Wymeditor.prototype.teardown = function() {
-  this.update();
-  Porthos.jQuery(this._box).remove();
-  Porthos.jQuery(this._element).show();
-  WYM_INSTANCES[this._index] = null;
-};
-
 Porthos.Editor.Initialize = function(selector, options) {
   var selector = selector || '#editor';
   var options = Object.extend(Porthos.Editor.Options, options || {});
@@ -176,9 +169,10 @@ Porthos.Editor.Initialize = function(selector, options) {
         Porthos.jQuery(selector).wymeditor(options);
       break;
       default:
-        for(i=0; i < WYM_INSTANCES.length; i++) {
-          WYM_INSTANCES[i].teardown();
+        for(i=0; i < WYMeditor.INSTANCES.length; i++) {
+          WYMeditor.INSTANCES[i].destroy();
         }
+        Porthos.jQuery(selector).focus();
     }
   });
   editors.filter('.wymeditor').wymeditor(options);
