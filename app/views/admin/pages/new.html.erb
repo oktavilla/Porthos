@@ -1,7 +1,11 @@
 <% @page_class = "AB content" -%>
 <div id="workspace">
   <div class="header">
+    <% unless @page.child? -%>
     <h1>Skapa en ny sida</h1>
+    <% else -%>
+    <h1>Skapa ny sida under ”<%= @page.parent.title.downcase %>”</h1>
+    <% end -%>
   </div>
   <div id="content">
     <%= error_messages_for :node %>
