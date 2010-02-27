@@ -34,8 +34,8 @@
     </span>
   </li>
 <% end -%>
-  <li class="sub_content create">
-    <%= link_to("Lägg till puff", new_admin_content_path(:return_to => request.request_uri, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'Teaser', :parent_id => content, :column_position => content.column_position }), :class => 'new_content Teaser') %>
+  <li class="sub_content add">
+    <%= link_to("Lägg till puff", new_admin_content_path(:return_to => request.request_uri, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'Teaser', :parent_id => content, :column_position => content.column_position }), :class => 'new') %>
   </li>
 </ul>
 <% else %>

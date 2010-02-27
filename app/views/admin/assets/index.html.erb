@@ -21,13 +21,6 @@
       <ul class="items thumbnails">
         <% @assets.each do |asset| -%>
         <li>
-          <% if @content -%>
-            <% if asset.image? %>
-            <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :image_asset_id => asset.id }}.merge(@context_params)) %>
-            <% elsif asset.movie? %>
-            <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :movie_asset_id => asset.id }}.merge(@context_params)) %>
-            <% end %>
-          <% end %>
           <a href="<%= edit_admin_asset_path(asset) %>">
           <% if asset.image? %>
             <%= image_tag display_image_path(:size => 'c100x100', :id => asset, :format => asset.extname), :id => "asset_#{asset.id}", :width => 100, :height => 100 %>
@@ -54,6 +47,15 @@
             <%= link_to "Ändra", edit_admin_asset_path(asset) %>
             <%= link_to "Ta bort", admin_asset_path(asset), :class => 'delete', :confirm => "Är du säker att du vill ta bort filen? Den kommer försvinna från alla sidor. Du kan INTE ångra dig.", :method => :delete %>
           </div>
+          <% if @content -%>
+          <div class="add">
+            <% if asset.image? %>
+            <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :image_asset_id => asset.id }}.merge(@context_params)), :class => 'new' %>
+            <% elsif asset.movie? %>
+            <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :movie_asset_id => asset.id }}.merge(@context_params)), :class => 'new' %>
+            <% end %>
+          </div>
+          <% end %>
         </li>
         <% end %>
       </ul>

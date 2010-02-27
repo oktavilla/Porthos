@@ -3,6 +3,7 @@
 #wrap:after,
 #workspace .groups:after,
 .items li:after,
+.add:after,
 #uploader li:after,
 #uploader .totals:after,
 #workspace .tools:after,
@@ -16,7 +17,7 @@
   clear:both; 
   visibility:hidden; }
 body {  
-  background: #f2f2f2; }
+  background: #fff; }
 
 #nav {
   position:relative;
@@ -106,8 +107,7 @@ body.layout2 #sub_nav {
 
 body.layout2 #workspace {
   float:left; 
-  width:100%;
-  background:#f2f2f2; }
+  width:100%; }
 
 body.layout3 { 
   background:rgb(214,221,229) url(/graphics/porthos/_new/layout3_bg_shadow.png) 100% 0 repeat-y; }
@@ -122,8 +122,7 @@ body.layout3 #sub_nav {
 
 body.layout3 #workspace {
   float:left; 
-  width:100%;
-  background:#f2f2f2; }
+  width:100%; }
 
 #sub_nav {
   border-top:10px solid #000; 
@@ -175,11 +174,11 @@ body.layout3 #workspace {
     
 #workspace {
   margin:0 0 0 0;
-  background:transparent; }
+  background:#fff; }
   #workspace .header {
     padding:20px 40px 20px 40px;
-    border-bottom:1px solid #e1e1e1; 
-    background:#fff; }
+    border-bottom:1px solid #e1e1e1;
+    background:rgba(55,128,199,.08); }
     #workspace .header h1 {display:inline;}
       #workspace .header h1 img.cover {
         margin:-10px 8px -14px 0;}
@@ -212,28 +211,8 @@ body.layout3 #workspace {
       text-decoration:none; }
     #workspace .tools .add {
       float:left; 
-      color:#999; 
-      padding-right:3.5em; }
-      #workspace .tools .add .new {
-        float:left;
-        margin-right:.5em;
-        padding:6px 10px 5px 10px;
-        color:rgba(0,0,0,.85);
-        background:rgb(240,240,240) url(/graphics/porthos/_new/button_grey_bg.png) 0 0 repeat-x; 
-        border:1px solid rgb(215,215,215);
-        text-shadow:1px 1px 1px rgb(255,255,255);
-        /*
-        green style
-        color:rgba(0,0,0,.7);
-        background:rgb(116,176,15); 
-        border:1px solid rgb(90,160,45);
-        text-shadow:1px 1px 1px rgb(166,206,66); */
-        -webkit-border-radius:5px; 
-        font-weight:bold; }
-        #workspace .tools .add .new:active {
-          background:rgb(250,250,250);
-          color:rgba(0,0,0,.95);}
-        #workspace .tools .add .new:hover {border-color:rgb(180,180,180);}
+      padding-right:3.5em; 
+      margin:0; }
       #workspace .tools .add .from_library {
         float:left;
         margin:7px 0 0 .5em; }
@@ -280,7 +259,9 @@ body.layout3 #workspace {
     display:inline; 
     margin:0; 
     line-height:1;}
-  #workspace #content {padding:20px 40px;}
+  #workspace #content {
+    background:#fff;
+    padding:20px 40px;}
     #workspace #c_1 {
       float:right;
       width:330px;
