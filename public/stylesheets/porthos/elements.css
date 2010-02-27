@@ -271,6 +271,31 @@ ul.tags {}
     font-weight:normal;
     font-size:12px; }
 
+.tags {}
+  .tags.autocomplete {
+    position:absolute;
+    width:250px !important; }
+  .tags.autocomplete ul {  
+    margin:0;
+    padding:0;
+    list-style-type:none;
+    background-color:white;
+    border:1px solid #ddd;
+    border-bottom:none; }
+  .tags.autocomplete li {margin:0;}
+  .tags.autocomplete li {
+    border-bottom: 1px solid #ddd;
+    display:block;
+    margin:0;
+    padding:5px 10px; }
+    .tags.autocomplete li.selected,
+    .tags.autocomplete li.selected a {
+      background-color: rgb(0, 147, 208);
+      color:white; }
+  .tags.autocomplete li {
+    padding:5px;
+    cursor:pointer;}
+
 .search .search_query {
   color:#999; }
   .search .search_query:focus {color:#000;}
