@@ -8,7 +8,9 @@
       <h1>Formulär</h1>
     </div>
     <div class="tools">
-      <%= link_to "Skapa ett nytt formulär", new_admin_registration_form_path, :class => 'create' %>
+      <div class="add">
+        <%= link_to "Skapa ett nytt formulär", new_admin_registration_form_path, :class => 'new' %>
+      </div>
     </div>
     <div id="content">
       <% nested_list_of @registration_forms, {}, :class => 'gl' do |form| %>

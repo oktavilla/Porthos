@@ -3,8 +3,12 @@
   <div class="header">
     <h1>Redaktörer</h1>
   </div>
+  <div class="tools">
+    <div class="add">
+      <%= link_to "Lägg till ny redaktör", new_admin_user_path, :class => "new" %>
+    </div>
+  </div>
   <div id="content">
-    <%= link_to "Lägg till ny redaktör", new_admin_user_path %>
     <% form_tag search_admin_users_path, :method => 'get' do %>
     <div class="search">
       <div class="fullwidthinput">

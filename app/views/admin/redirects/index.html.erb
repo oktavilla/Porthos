@@ -8,7 +8,9 @@
       <h1>Vidarebefordringar</h1>
     </div>
     <div class="tools">
-      <%= link_to "Skapa ny vidarebefordring", new_admin_redirect_path, :class => 'create' %>
+      <div class="add">
+        <%= link_to "Skapa ny vidarebefordring", new_admin_redirect_path, :class => 'new' %>
+      </div>
     </div>
     <div id="content">
       <% if @redirects %>  

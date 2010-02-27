@@ -5,10 +5,12 @@
   </div>
   <div id="workspace">
     <div class="header">
-      <h1>Alla layouter</h1>
+      <h1>Layouter</h1>
     </div>
     <div class="tools">
-      <%= link_to "Ny layout", new_admin_page_layout_path %>
+      <div class="add">
+        <%= link_to "Skapa ny layout", new_admin_page_layout_path, :class => "new" %>
+      </div>
     </div>
     <div id="content">
       <% nested_list_of @page_layouts, {}, :class => 'gl' do |page_layout| %>

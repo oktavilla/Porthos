@@ -57,8 +57,10 @@
     <h1>Sidor</h1>
   </div>
   <div class="tools">
-    <%= link_to "Skapa en ny sida", (!@filters[:with_parent] ? new_admin_page_path : new_admin_page_path(:page => { :parent_id => @filters[:with_parent], :parent_type => 'Page' })), :class => 'create' %>
-    <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'create' if current_user.can_create?(PageCollection) %>
+    <div class="add">
+      <%= link_to "Skapa en ny sida", (!@filters[:with_parent] ? new_admin_page_path : new_admin_page_path(:page => { :parent_id => @filters[:with_parent], :parent_type => 'Page' })), :class => 'new' %>
+      <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'new' if current_user.can_create?(PageCollection) %>
+    </div>
   </div>
   <div id="content">
     <ul class="items">

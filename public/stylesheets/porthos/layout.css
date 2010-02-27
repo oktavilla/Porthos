@@ -216,23 +216,24 @@ body.layout3 #workspace {
       padding-right:3.5em; }
       #workspace .tools .add .new {
         float:left;
-        height:28px;
         margin-right:.5em;
-        text-indent:-9999px; 
-        padding:0; }
-      #workspace .tools .add .new_set {
-        width:153px;
-        background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -360px no-repeat; }
-      #workspace .tools .add .new_page {
-        width:164px;
-        background:transparent url(/graphics/porthos/_new/ui_new.png) -180px -360px no-repeat; }
-      #workspace .tools .add .upload {
-        width:96px;
-        background:transparent url(/graphics/porthos/_new/ui_new.png) -360px -360px no-repeat; }
-      #workspace .tools .add .new_link_list {
-        width:220px;
-        background:transparent url(/graphics/porthos/_new/ui_new.png) -460px -360px no-repeat; }
-
+        padding:6px 10px 5px 10px;
+        color:rgba(0,0,0,.85);
+        background:rgb(240,240,240) url(/graphics/porthos/_new/button_grey_bg.png) 0 0 repeat-x; 
+        border:1px solid rgb(215,215,215);
+        text-shadow:1px 1px 1px rgb(255,255,255);
+        /*
+        green style
+        color:rgba(0,0,0,.7);
+        background:rgb(116,176,15); 
+        border:1px solid rgb(90,160,45);
+        text-shadow:1px 1px 1px rgb(166,206,66); */
+        -webkit-border-radius:5px; 
+        font-weight:bold; }
+        #workspace .tools .add .new:active {
+          background:rgb(250,250,250);
+          color:rgba(0,0,0,.95);}
+        #workspace .tools .add .new:hover {border-color:rgb(180,180,180);}
       #workspace .tools .add .from_library {
         float:left;
         margin:7px 0 0 .5em; }
