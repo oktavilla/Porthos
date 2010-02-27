@@ -49,12 +49,23 @@
 <% end -%>
 <% if @tags.any? -%>
   <div class="label">Nyckelord</div>
-  <%= render :partial => 'admin/tags/list_by_letter', :locals => { :tags => @tags } %>
+  <ul class="tags">
+  <% @tags.sort_by(&:name).group_by { |tag| tag.name[0...1].upcase }.each do |first_letter, _tags| -%>
+    <li>
+      <span class="letter"><%= first_letter %></span>
+      <%= _tags.collect { |tag| link_to("#{tag.name.downcase}", admin_pages_path(:tags => [tag.name]), :class => "tag") }.join(', ') -%>
+    </li>
+  <% end -%>
+  </ul>
 <% end -%>
 </div>
 <div id="workspace">
   <div class="header">
-    <h1>Dina sidor</h1>
+    <% if @current_tags.any? -%>
+    <h1>Sidor märkta med: <%= @current_tags.join(', ')%></h1>
+    <% else %>
+    <h1>Sidor</h1>
+    <% end %>
   </div>
   <div class="tools">
     <%= link_to "Skapa en ny sida", (!@filters[:with_parent] ? new_admin_page_path : new_admin_page_path(:page => { :parent_id => @filters[:with_parent], :parent_type => 'Page' })), :class => 'create' %>

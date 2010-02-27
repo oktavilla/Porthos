@@ -1,8 +1,0 @@
-<ul class="tags">
-<% tags.sort_by(&:name).group_by { |tag| tag.name[0...1].upcase }.each do |first_letter, _tags| -%>
-  <li>
-    <span class="letter"><%= first_letter %></span>
-    <%= _tags.collect { |tag| link_to("#{tag.name.downcase}", admin_assets_path(:tags => [tag.name]), :class => "tag") }.join(', ') -%>
-  </li>
-<% end -%>
-</ul>

@@ -4,7 +4,11 @@
   <div id="workspace">
     <% unless @content -%>
     <div class="header">
+      <% if @current_tags.any? %>
+      <h1>Filer märkta med: <%= @current_tags.join(', ') %></h1>  
+      <% else %>
       <h1>Bilder, filmer, ljud och dokument</h1>
+      <% end %>
     </div>
     <% else -%>
     <div class="header">
