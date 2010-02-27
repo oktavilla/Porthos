@@ -10,10 +10,13 @@
   <% end %>
 </div>
 <% if page.tags.any? %>
-<span class="tags"><%= page.tags.collect { |tag| link_to(tag.name, admin_pages_path(:tags => [tag.name]))}.join(' ') %></span>
+<span class="tags"><%= page.tags.collect { |tag| link_to(tag.name, admin_pages_path(:tags => [tag.name]))}.join(', ') %></span>
 <% end %>
 <span class="meta">
-  Senast ändrad <%= page.updated_at.strftime("%d %b %Y") %>. Publicerad <%= page.published_on.strftime("%d %b %Y") %>.
+  <% unless page.updated_at == page.published_on -%>
+  Senast ändrad <%= page.updated_at.strftime("%d %b %Y") %>. 
+  <% end -%>
+  Publicerad <%= page.published_on.strftime("%d %b %Y") %>.
 </span>
 <span class="edit">
   <%= link_to "Ändra", admin_page_path(page) %>
