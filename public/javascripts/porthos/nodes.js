@@ -1,9 +1,11 @@
 (function(){
   Porthos.namespace('Porthos.Nodes');
 
-  Porthos.Nodes.init = function(element) {
+  Porthos.Nodes.init = function(element, options) {
     this.element = $(element);
-
+    this.options = Object.extend({
+      sortable : true
+    }, options || {});
     sortable = function(element) {
       Sortable.create(element, {
         containment: element,
@@ -17,33 +19,37 @@
     };
     
     this.destroySortables = function() {
+      if (!this.options.sortable) { return; }
       this.element.select('ul').reverse().each(function(list) {
         Sortable.destroy(list);
       });
-    }
+    };
     
     this.setupSortables = function() {
+      if (!this.options.sortable) { return; }
       this.element.select('ul').reverse().each(function(list) {
         sortable($(list).identify());
       });
+    };
+    
+    if (this.options.sortable) {
+      this.setupSortables();
     }
     
-    this.setupSortables();
-    
-    this.element.select('a.toggle_handle').invoke('observe', 'click', function(event) {
+    this.observeToggle = function(event) {
       event.stop();
 
       var handle = event.element();
-      
+
       parent = function() {
         return handle.up('li', 0);
       };
-      
+
       children = function() {
         var _children = this._children = parent().down('ul', 0);
         return ((typeof _children != 'undefined') ? _children : false);
       };
-      
+
       switch(handle.textContent.strip()) {
         case '+':
           handle.update('-');
@@ -56,6 +62,7 @@
                 parent.insert({ 'bottom' : response.responseText });
                 this.destroySortables();
                 this.setupSortables();
+                children().select('a.toggle_handle').invoke('observe', 'click', this.observeToggle.bindAsEventListener(this));
               }.bind(this)
             });
           } else {
@@ -67,9 +74,11 @@
           children().hide();
           break;
       }
-    }.bind(this));
+    };
+    
+    this.element.select('a.toggle_handle').invoke('observe', 'click', this.observeToggle.bindAsEventListener(this));
   };
-
+  
   document.observe('dom:loaded', function() {
     Porthos.Nodes.init('navigation');
   });

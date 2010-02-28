@@ -476,6 +476,7 @@ body#link_lists .link_list {margin-bottom:1.5em;}
     padding-left:115px; }
   #sessions.new .flash {margin-bottom:1em;}
 
+.page_layout .column .contents { min-height:40px; }
 
 /* CodeMirror */
 .CodeMirror-line-numbers {

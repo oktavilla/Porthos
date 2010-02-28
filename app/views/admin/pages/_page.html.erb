@@ -3,15 +3,15 @@
   /<%= page.full_slug %>
 </span>
 <div class="description">
-  <% unless page.description.blank? %>
+  <% unless page.description.blank? -%>
   <%= truncate(page.description,:length => 200) %>
-  <% else %>
-  <%= link_to "Ingen beskrivning. Skriv en ...", edit_admin_page_path(page) %>
-  <% end %>
+  <% else -%>
+  <%= link_to "Lägg till en beskrivning av sidan", edit_admin_page_path(page) %>
+  <% end -%>
 </div>
-<% if page.tags.any? %>
+<% if page.tags.any? -%>
 <span class="tags"><%= page.tags.collect { |tag| link_to(tag.name, admin_pages_path(:tags => [tag.name]))}.join(', ') %></span>
-<% end %>
+<% end -%>
 <span class="meta">
   <% if page.changed_at && page.changed_at != page.published_on -%>
   Senast ändrad <%= page.changed_at.strftime("%d %b %Y") %>. 
@@ -20,10 +20,10 @@
 </span>
 <span class="edit">
   <%= link_to "Ändra", admin_page_path(page) %>
-  <% if page.node  %>
+  <% if page.node -%>
     <%= link_to "Inställningar", edit_admin_node_path(page.node)  %>
     <%= link_to "Ta bort", admin_node_path(page.node), { :method => :delete, :src => "/graphics/porthos/icons/16_delete.png", :confirm => "Är du säker, detta går inte att ångra." } %>
   <% else %>
     <%= link_to "Ta bort", admin_page_path(page), { :method => :delete, :confirm => "Är du säker, detta går inte att ångra." } %>
-  <% end %>
+  <% end -%>
 </span>
