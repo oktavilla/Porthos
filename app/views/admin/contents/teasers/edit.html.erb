@@ -9,8 +9,12 @@
       <fieldset>
         <label for="content_<%= @content.id %>_resource_title">Rubrik</label>
         <%= resource.text_field :title, :id => "content_#{@content.id}_resource_title", :class => 'title' %>
+        <label for="resource_filter">
+          Filter: 
+          <%= resource.select :filter, Teaser.filters %>
+        </label>
         <label for="content_<%= @content.id %>_resource_body">Text</label>
-        <%= resource.text_area :body, :id => "content_#{@content.id}_resource_body", :rows => 6 %>
+        <%= resource.text_area :body, :id => "editor", :class => @content.resource.filter, :rows => 6 %>
   
         <label for="resource_display_type">Typ</label>
         <label for="resource_display_type_0"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:small] %> Liten</label>
@@ -25,7 +29,18 @@
       </fieldset>
       <% end %>
       <%= render :partial => 'admin/contents/restriction_settings', :locals => { :content => @content }%>        <div class="submit">
-      <%= submit_tag 'Lägg till puff', :class => 'button' %> eller <%= link_to "Avbryt", previous_view_path %>
+      <%= submit_tag 'Spara', :class => 'commit button' %> eller <%= link_to "avbryt", previous_view_path %>
     <% end %>
   </div>
 </div>
+<%= javascript_include_tag 'named_routes' %>
+<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', 'porthos/safari_search', :cache => 'admin' %>
+<%= javascript_include_tag 'porthos/jquery/jquery' %>
+<%= javascript_include_tag 'porthos/wymeditor/jquery.wymeditor.min', 'porthos/wymeditor/lang/sv', 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools', 'porthos/wymeditor/plugins/tidy/jquery.wymeditor.tidy' %>
+<%= javascript_include_tag 'porthos/wymeditor/lang/sv' %>
+<%= javascript_include_tag 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools' %>
+<%= javascript_include_tag 'porthos/codemirror/codemirror' %>
+<%= javascript_include_tag 'porthos/editor' %>
+<script type="text/javascript">
+  Porthos.Editor.Initialize();
+</script>

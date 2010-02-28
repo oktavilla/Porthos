@@ -19,6 +19,15 @@ class Teaser < ActiveRecord::Base
   validates_presence_of :title, :body
   
   attr_accessor :files
+
+  @@filters = %w(wymeditor html textile)
+  @@default_filter = 'wymeditor'
+  cattr_accessor :filters
+  cattr_accessor :default_filter
+  
+  def filter
+    @filter ||= read_attribute(:filter) || default_filter
+  end
   
   DISPLAY_TYPES       = { :small => '0', :medium => '1', :big => '2' }
   IMAGE_DISPLAY_TYPES = { :only_first_image => 0, :slideshow => 1 }
@@ -50,7 +59,7 @@ class Teaser < ActiveRecord::Base
   def has_slideshow?
     images.size > 1 and images_display_type == IMAGE_DISPLAY_TYPES[:slideshow]
   end
-  
+
 protected
   # after save
   def save_files
