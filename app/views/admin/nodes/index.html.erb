@@ -5,6 +5,10 @@
   <div class="header">
     <h1>Struktur och Navigation</h1>
   </div>
+  <div class="tools">
+    <%= link_to "Skapa en ny sida", new_admin_page_path, :class => 'create' %>
+    <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'create' if current_user.can_create?(PageCollection) %>
+  </div>
   <div id="content">
     <div class="inner">
       <% form_for :page, :url => admin_pages_path, :html => {:class => "tiny", :id => "new_page_form", :style => "display:none;"} do |f| %>

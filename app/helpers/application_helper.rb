@@ -10,13 +10,13 @@ module ApplicationHelper
       :node_cycle_name   => 'nested_list_of',
       :node_class     => collection.first.class.to_s.underscore,
       :end_points     => [],
-      :trail          => []
+      :trail          => [],
+      :except         => []
     }.merge(options)
     
     html_options = {
       :id => collection.first.class.to_s.underscore.pluralize
     }.merge(html_options)
-    
     
     first_level = options.delete(:first_level)
     if first_level
@@ -31,6 +31,7 @@ module ApplicationHelper
     
     ret = collection.collect do |item|
       next if (item.respond_to?(:access_status) and item.access_status == 'inactive') and not options[:allow_inactive] == true
+      next if item == options[:except] || (options[:except].respond_to?(:include?) && options[:except].include?(item))
       in_trail = options[:trail].include?(item)
       rendered_item = capture(item, &block)
       if (options[:expand_all] and item.children.any?) or ( in_trail and item.children.any? )
