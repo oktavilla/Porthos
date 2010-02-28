@@ -28,7 +28,7 @@ class Asset < ActiveRecord::Base
   
   has_one :child, :class_name => 'Asset', :foreign_key => 'parent_id', :dependent => :destroy
   
-  named_scope :public, :conditions => { :private => false }
+  named_scope :is_public, :conditions => { :private => false }
   named_scope :filter_created_by, lambda { |user_id|
     { :conditions => ["created_by_id = ?", user_id] }
   }
