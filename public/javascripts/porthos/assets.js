@@ -536,7 +536,12 @@ Porthos.Assets.NewView = Class.create({
   }
 });
 
-Event.onReady(function() {
+document.observe('dom:loaded', function() {
+  $$('#filters_order_by_submit').invoke('hide');
+  $$('#filters_order_by').invoke('observe', 'change', function(event) {
+    this.form.submit();
+  });
+
   var body = $(document.getElementsByTagName('body')[0]);
   if (body.id == 'assets' ){
     if (body.hasClassName('index')){

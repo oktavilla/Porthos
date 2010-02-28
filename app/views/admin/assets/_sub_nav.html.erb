@@ -8,6 +8,16 @@
   <ul class="filter">
     <%= asset_filter_links(@filters).join(' ') %>
   </ul>
+  <div class="label">Sortering</div>
+  <% form_tag admin_assets_path, :method => :get do |f| %>
+    <% @filters.without(:order_by).each do |filter, value| -%>
+      <%= hidden_field_tag "filters[#{filter}]", value %>
+    <% end -%>
+    <div>
+      <%= select_tag 'filters[order_by]', options_for_select({ 'Datum' => 'created_at desc', 'A-Z' => 'title asc', 'Storlek' => 'size' }, @filters[:order_by]) %>
+      <input type="submit" value="Välj" id="filters_order_by_submit">
+    </div>
+  <% end %>
   <div class="label">Uppladdad av</div>
   <ul class="filter">
     <li<%= ' class="current"' unless @filters[:created_by] %>>

@@ -35,6 +35,10 @@ class Asset < ActiveRecord::Base
   named_scope :filter_by_type, lambda { |type|
     { :conditions => ["type = ?", type] }
   }
+  named_scope :filter_order_by, lambda { |order|
+    { :order => order }
+  }
+
   is_indexed :fields => ['type', 'title', 'extname', 'author', 'description'], :concatenate => [{
     :class_name => 'Tag', :field => 'name', :as => 'tags', 
     :association_sql => "LEFT OUTER JOIN taggings ON (assets.id = taggings.taggable_id AND taggings.taggable_type = 'Asset') LEFT OUTER JOIN tags ON (tags.id = taggings.tag_id)"
