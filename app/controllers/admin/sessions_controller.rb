@@ -2,7 +2,7 @@
 class Admin::SessionsController < ApplicationController
   include Porthos::Admin
 
-  layout 'sessions'
+  layout 'admin/sessions'
 
   def index
     redirect_to admin_dashboard_path

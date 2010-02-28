@@ -1,14 +1,17 @@
-<h1>Logga in med dina uppgifter</h1>
 <% form_tag admin_sessions_path do -%>
-  <span class="container">
+  <fieldset class="compact">
     <label for="login">Användarnamn</label>
-    <%= text_field_tag 'login' %>
+    <div class="fullwidthinput">
+      <%= text_field_tag 'login' %>
+    </div>
     <label for="password">Lösenord</label>
-    <%= password_field_tag 'password' %>
-    <label class="info" for="remember_me">
-      <%= check_box_tag 'remember_me' %>
-      kom ihåg mig på den här datorn
-    </label>
-  </span>
-  <div class="confirm"><%= submit_tag 'Logga in' %></div>
+    <div class="fullwidthinput">
+      <%= password_field_tag 'password' %>
+    </div>
+  </fieldset>
+  <label class="remember_me" for="remember_me">
+    <%= check_box_tag 'remember_me' %>
+    kom ihåg mig på den här datorn
+  </label>
+  <fieldset class="submit"><%= submit_tag 'Logga in' %></fieldset>
 <% end -%>

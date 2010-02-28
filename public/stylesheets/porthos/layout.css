@@ -453,6 +453,29 @@ body#link_lists .link_list {margin-bottom:1.5em;}
     margin:0 0 1em 0;
     padding:0; }
 
+#sessions.new {
+  background:#f2f2f2; }
+  #sessions.new #wrap {
+    margin:30px auto;
+    padding:30px;
+    background:#fff;
+    width:500px; }
+  #sessions.new .remember_me {
+    margin:-1em 115px 1em 115px; }
+  #sessions.new fieldset {
+    border-bottom:0;
+    padding:15px 115px 15px 115px; }
+  #sessions.new .submit {
+    padding-top:0;
+    padding-bottom:1em;
+    border-top:none;
+    border-bottom:1px solid #ddd; }
+  #sessions.new .forgot {
+    margin:2em 0 0 0;
+    font-size:.95em;
+    padding-left:115px; }
+  #sessions.new .flash {margin-bottom:1em;}
+
 .page_layout .column .contents { min-height:40px; }
 
 /* CodeMirror */
