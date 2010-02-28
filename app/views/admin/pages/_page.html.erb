@@ -4,9 +4,9 @@
 </span>
 <div class="description">
   <% unless page.description.blank? -%>
-  <%= truncate(page.description,200) %>
+  <%= truncate(page.description,:length => 200) %>
   <% else -%>
-  <%= link_to "Ingen beskrivning. Skriv en ...", edit_admin_page_path(page) %>
+  <%= link_to "Lägg till en beskrivning av sidan", edit_admin_page_path(page) %>
   <% end -%>
 </div>
 <% if page.tags.any? -%>
