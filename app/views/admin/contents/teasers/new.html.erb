@@ -6,41 +6,7 @@
   <div id="content">
     <%= error_messages_for :resource %>
     <% form_for :content, :url => admin_contents_path(:collection => params[:collection]), :html => { :multipart => true }  do |f| %>
-      <%= f.hidden_field :context_id %>
-      <%= f.hidden_field :context_type %>
-      <%= f.hidden_field :parent_id, { :value => @content.id } %>
-      <%= f.hidden_field :column_position %>
-      <%= f.hidden_field :resource_type, { :value => 'Teaser' } %>
-      <% fields_for :resource do |resource| %>
-        <label for="content_<%= @content.id %>_resource_title">Rubrik</label>
-        <label for="resource_filter">
-          Filter: 
-          <%= resource.select :filter, Teaser.filters %>
-        </label>
-        <div class="fullwidthinput">
-          <%= resource.text_field :title, :id => "content_#{@content.id}_resource_title", :class => 'title' %>
-        </div>
-        <label for="content_<%= @content.id %>_resource_body">Text</label>
-        <div class="fullwidthinput">
-          <%= resource.text_area :body, :id => "editor", :class => @content.resource.filter, :rows => 5 %>
-        </div>
-        <div class="graphic size">
-          <h2>Storlek</h2>
-          <label for="resource_display_type_2"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:big] %> <img src="/graphics/porthos/icons/50_teaser_big.gif"> Stor</label>
-          <label for="resource_display_type_1"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:medium] %> <img src="/graphics/porthos/icons/50_teaser_medium.gif"> Mellan</label>
-          <label for="resource_display_type_0"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:small] %> <img src="/graphics/porthos/icons/50_teaser_small.gif"> Liten</label>
-        </div>
-        <div class="graphic color">
-          <h2>Färg</h2>
-          <% Teaser::CSS_CLASSES.each do |name, klass| -%>
-            <label for="resource_color_<%= !klass.blank? ? klass : 'none' %>">
-              <%= resource.radio_button :css_class, klass, :id => "resource_color_#{(!klass.blank? ? klass : 'none' )}" %>
-              <span class="teaser_color"><span class="<%= klass %>"></span></span>
-            </label>
-          <% end -%>
-        </div>
-      <% end %>
-      <%= render :partial => 'admin/contents/restriction_settings', :locals => { :content => @content }%>
+      <%= render :partial => 'admin/contents/teasers/form', :locals => { :content => @content, :f => f } %>
       <div class="submit">
         <%= submit_tag 'Lägg till puff', :class => 'commit button' %> eller <%= link_to "avbryt", previous_view_path %>
       </div>

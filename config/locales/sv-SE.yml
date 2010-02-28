@@ -388,6 +388,11 @@
     admin_redirects:
       saved: Vidarebefordring sparad
       deleted: Vidarebefordring raderad
+    teasers:
+      types:
+        big: Stor
+        medium: Mellan
+        small: Liten
     measure_point:
       link_types: 
         text_link: Text-länk
