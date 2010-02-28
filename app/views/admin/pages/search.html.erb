@@ -1,0 +1,26 @@
+<% @page_title = 'Sidor' -%>
+<% @page_class = 'layout3' -%>
+<%= render :partial => 'admin/pages/sub_nav' %>
+<div id="workspace">
+  <div class="header">
+    <h1>Sökresultat för ”<%= @query %>”</h1>
+  </div>
+  <div class="tools">
+    <div class="add">
+      <%= link_to "Skapa en ny sida", (!@filters[:with_parent] ? new_admin_page_path : new_admin_page_path(:page => { :parent_id => @filters[:with_parent], :parent_type => 'Page' })), :class => 'new' %>
+      <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'new' if current_user.can_create?(PageCollection) %>
+    </div>
+  </div>
+  <div id="content">
+    <ul class="items">
+    <% @pages.each do |page| %>
+      <li>
+      <%= render :partial => 'page', :locals => {:page => page} %>
+      </li>
+    <% end %>
+    </ul>
+  </div>
+</div>
+<%= javascript_include_tag 'named_routes' %>
+<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', 'porthos/safari_search', :cache => 'admin' %>
+<%= javascript_include_tag 'porthos/action_dialog', 'porthos/assets', 'porthos/asset_usages', 'porthos/pages', :cache => 'pages' %>
