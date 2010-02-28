@@ -19,19 +19,23 @@
       <div class="add">
         <a href="<%= new_admin_asset_path %>" class="new">Ladda upp filer</a>
       </div>
+      <% form_tag admin_assets_path, :method => :get do |f| %>
+      <div class="sort">
+        <label for="filters_order_by">Sortering</label>
+        <% @filters.without(:order_by).each do |filter, value| -%>
+          <%= hidden_field_tag "filters[#{filter}]", value %>
+        <% end -%>
+          <%= select_tag 'filters[order_by]', options_for_select({ 'Datum' => 'created_at desc', 'A-Z' => 'title asc', 'Storlek' => 'size' }, @filters[:order_by]) %>
+          <input type="submit" value="Välj" id="filters_order_by_submit" style="display:none">
+      </div>
+      <% end %>
+      
     </div>
     <div id="content">
       <% if @assets.any? -%>
       <ul class="items thumbnails">
         <% @assets.each do |asset| -%>
         <li>
-          <% if @content -%>
-            <% if asset.image? %>
-            <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :image_asset_id => asset.id }}.merge(@context_params)) %>
-            <% elsif asset.movie? %>
-            <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :movie_asset_id => asset.id }}.merge(@context_params)) %>
-            <% end %>
-          <% end %>
           <a href="<%= edit_admin_asset_path(asset) %>">
           <% if asset.image? %>
             <%= image_tag display_image_path(:size => 'c100x100', :id => asset, :format => asset.extname), :id => "asset_#{asset.id}", :width => 100, :height => 100 %>
@@ -43,7 +47,7 @@
           </a>
           <div class="title"><%= link_to asset.title, edit_admin_asset_path(asset) %></div>
           <div class="description<%= ' blank' if asset.description.blank? %>">
-            <%= asset.description.blank? ? "<a href=\"#{edit_admin_asset_path(asset)}\">Ingen beskrivning. Skriv en ...</a>" : truncate(asset.description,200) %>
+            <%= asset.description.blank? ? "<a href=\"#{edit_admin_asset_path(asset)}\">Ingen beskrivning. Skriv en ...</a>" : truncate(asset.description, :length => 200) %>
           </div>
           <% unless asset.tag_names.blank? %>
           <div class="tags"><%= asset.tags.collect { |tag| @current_tags.include?(tag.name) ? tag.name : link_to(tag.name, admin_assets_path(:tags => [tag.name])) }.join(', ') -%></div>
@@ -58,6 +62,15 @@
             <%= link_to "Ändra", edit_admin_asset_path(asset) %>
             <%= link_to "Ta bort", admin_asset_path(asset), :class => 'delete', :confirm => "Är du säker att du vill ta bort filen? Den kommer försvinna från alla sidor. Du kan INTE ångra dig.", :method => :delete %>
           </div>
+          <% if @content -%>
+          <div class="add">
+            <% if asset.image? %>
+            <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :image_asset_id => asset.id }}.merge(@context_params)), :class => 'new' %>
+            <% elsif asset.movie? %>
+            <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :movie_asset_id => asset.id }}.merge(@context_params)), :class => 'new' %>
+            <% end %>
+          </div>
+          <% end %>
         </li>
         <% end %>
       </ul>

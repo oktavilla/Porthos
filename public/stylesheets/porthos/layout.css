@@ -3,6 +3,7 @@
 #wrap:after,
 #workspace .groups:after,
 .items li:after,
+.add:after,
 #uploader li:after,
 #uploader .totals:after,
 #workspace .tools:after,
@@ -16,7 +17,7 @@
   clear:both; 
   visibility:hidden; }
 body {  
-  background: #f2f2f2; }
+  background: #fff; }
 
 #nav {
   position:relative;
@@ -106,8 +107,7 @@ body.layout2 #sub_nav {
 
 body.layout2 #workspace {
   float:left; 
-  width:100%;
-  background:#f2f2f2; }
+  width:100%; }
 
 body.layout3 { 
   background:rgb(214,221,229) url(/graphics/porthos/_new/layout3_bg_shadow.png) 100% 0 repeat-y; }
@@ -122,8 +122,7 @@ body.layout3 #sub_nav {
 
 body.layout3 #workspace {
   float:left; 
-  width:100%;
-  background:#f2f2f2; }
+  width:100%; }
 
 #sub_nav {
   border-top:10px solid #000; 
@@ -175,11 +174,11 @@ body.layout3 #workspace {
     
 #workspace {
   margin:0 0 0 0;
-  background:transparent; }
+  background:#fff; }
   #workspace .header {
     padding:20px 40px 20px 40px;
-    border-bottom:1px solid #e1e1e1; 
-    background:#fff; }
+    border-bottom:1px solid #e1e1e1;
+    background:rgba(55,128,199,.05); }
     #workspace .header h1 {display:inline;}
       #workspace .header h1 img.cover {
         margin:-10px 8px -14px 0;}
@@ -212,27 +211,8 @@ body.layout3 #workspace {
       text-decoration:none; }
     #workspace .tools .add {
       float:left; 
-      color:#999; 
-      padding-right:3.5em; }
-      #workspace .tools .add .new {
-        float:left;
-        height:28px;
-        margin-right:.5em;
-        text-indent:-9999px; 
-        padding:0; }
-      #workspace .tools .add .new_set {
-        width:153px;
-        background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -360px no-repeat; }
-      #workspace .tools .add .new_page {
-        width:164px;
-        background:transparent url(/graphics/porthos/_new/ui_new.png) -180px -360px no-repeat; }
-      #workspace .tools .add .upload {
-        width:96px;
-        background:transparent url(/graphics/porthos/_new/ui_new.png) -360px -360px no-repeat; }
-      #workspace .tools .add .new_link_list {
-        width:220px;
-        background:transparent url(/graphics/porthos/_new/ui_new.png) -460px -360px no-repeat; }
-
+      padding-right:3.5em; 
+      margin:0; }
       #workspace .tools .add .from_library {
         float:left;
         margin:7px 0 0 .5em; }
@@ -279,7 +259,9 @@ body.layout3 #workspace {
     display:inline; 
     margin:0; 
     line-height:1;}
-  #workspace #content {padding:20px 40px;}
+  #workspace #content {
+    background:#fff;
+    padding:20px 40px;}
     #workspace #c_1 {
       float:right;
       width:330px;
@@ -471,6 +453,30 @@ body#link_lists .link_list {margin-bottom:1.5em;}
     margin:0 0 1em 0;
     padding:0; }
 
+#sessions.new {
+  background:#f2f2f2; }
+  #sessions.new #wrap {
+    margin:30px auto;
+    padding:30px;
+    background:#fff;
+    width:500px; }
+  #sessions.new .remember_me {
+    margin:-1em 115px 1em 115px; }
+  #sessions.new fieldset {
+    border-bottom:0;
+    padding:15px 115px 15px 115px; }
+  #sessions.new .submit {
+    padding-top:0;
+    padding-bottom:1em;
+    border-top:none;
+    border-bottom:1px solid #ddd; }
+  #sessions.new .forgot {
+    margin:2em 0 0 0;
+    font-size:.95em;
+    padding-left:115px; }
+  #sessions.new .flash {margin-bottom:1em;}
+
+.page_layout .column .contents { min-height:40px; }
 
 /* CodeMirror */
 .CodeMirror-line-numbers {

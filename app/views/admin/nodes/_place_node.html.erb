@@ -6,6 +6,6 @@
       <%= link_to "+", admin_nodes_path(:nodes => [node.id], :place => true), :class => 'jax toggle_handle' %>
     <% end -%>
   <% end %>
-  <%= radio_button_tag('node[parent_id]', node.id, (node.id == trail.first.id), :id => "node_parent_id_#{node.id}") %>
+  <%= radio_button_tag('node[parent_id]', node.id, false, :id => "node_parent_id_#{node.id}") %>
   <span class="name"><%= node.name %></span>
 </div>

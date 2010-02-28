@@ -8,7 +8,7 @@ class Admin::NodesController < ApplicationController
         @root  = Node.root
         @nodes = @root ? @root.children : []
         @open_nodes = params[:nodes] ? Node.find_all_by_id(params[:nodes]) : Node.find_all_by_id(cookies[:last_opened_node])
-        @trail = @open_nodes ? @open_nodes.collect{ |node| (node.ancestors || []) << node }.flatten : []
+        @trail = @open_nodes ? @open_nodes.collect { |node| (node.ancestors || []) << node }.flatten : []
       end
       format.js do
         @node = params[:nodes] ? Node.find(params[:nodes].first, :include => :children) : Node.root
@@ -46,7 +46,9 @@ class Admin::NodesController < ApplicationController
   def place
     @node = Node.find(params[:id])
     @nodes = [Node.root]
-    @trail = []
+    ancestors = @node.ancestors
+    ancestors.shift
+    @trail = @node.ancestors << @node
     respond_to do |format|
       format.html do
         redirect_to admin_nodes_path unless Node.count > 1
@@ -67,11 +69,7 @@ class Admin::NodesController < ApplicationController
     respond_to do |format|
       if @node.update_attributes(params[:node])
         format.html do
-          if params[:place] and @node.controller == 'pages'
-            redirect_to admin_page_path(@node.resource_id)
-          else
-            redirect_to admin_nodes_path(:nodes => @node) 
-          end
+          redirect_to admin_nodes_path(:nodes => @node) 
         end
       else
         format.html do
@@ -96,29 +94,14 @@ class Admin::NodesController < ApplicationController
   end
   
   def sort
-    sort_nodes(params[:nodes])
-    @root  = Node.root
-    @nodes = @root.children
-    @open_nodes = Node.find_all_by_id(params[:open_nodes]) if params[:open_nodes]
-    @trail = @open_nodes ? @open_nodes.collect{ |node| (node.ancestors || []) << node }.flatten : []
+    params[:nodes].each_with_index do |id, position|
+      Node.update(id, {
+        :position => position+1
+      })
+    end
     respond_to do |format|
-      format.js { render :partial => 'nodes_tree.html.erb', :locals => { :nodes => @nodes, :open_nodes => @open_nodes, :trail => @trail, :place => false } }
+      format.js { render :nothing => true }
     end
   end
   
-protected
-  def sort_nodes(nodes_hash)
-    parent_id = nodes_hash[:id].to_i != 0 ? nodes_hash[:id] : Node.root.id
-    nodes_hash.each do |key, value|
-      # We want to skip non-children entry
-      next if key == 'id'
-      Node.update(value[:id], {
-        :parent_id => parent_id,
-        :position  => key.to_i+1
-      })
-      # Recursive step
-      sort_nodes value
-    end
-    
-  end
 end

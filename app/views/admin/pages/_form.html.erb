@@ -1,13 +1,14 @@
 <%= f.hidden_field :parent_id %>
 <%= f.hidden_field :parent_type %>
 
-<label for="page_title">Titel</label>
+<label for="page_title">Skriv en beskrivande titel</label>
+<div class="form_help">En bra titel kan läsas ur sitt sammanhang och ändå förstås. Det är titeln som visas på Googles sökresultatsida.</div>
 <div class="fullwidthinput">
   <%= f.text_field :title, :class => "title" %>
 </div>
 <label for="page_layout">Välj layout</label>
 <%= f.select :page_layout_id, PageLayout.find(:all).collect { |layout| [layout.name, layout.id] } %>
-<label for="page_description">Kort beskrivning</label>
+<label for="page_description">Skriv en sammanfattning av innehållet på sidan</label>
 <div class="fullwidthinput">
   <%= f.text_area :description, :rows => 3, :class => 'wymeditor' %>
 </div>

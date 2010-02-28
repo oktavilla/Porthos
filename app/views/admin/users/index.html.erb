@@ -1,49 +1,29 @@
 <% @page_title = "Användare" -%>
+<% @page_class = 'layout3' %>
+<div id="sub_nav">
+  <% form_tag search_admin_users_path, :method => 'get' do %>
+  <div class="search">
+    <div class="fullwidthinput">
+      <%= text_field_tag :query, (@query ? @query : 'Sök användare ...'), :class => "search_query", :id=> "ref_search_query" %>
+    </div>
+    <%= submit_tag "Sök", :style => "display:none" %>
+  </div>
+  <% end %>
+</div>
 <div id="workspace">
   <div class="header">
     <h1>Redaktörer</h1>
   </div>
-  <div id="content">
-    <%= link_to "Lägg till ny redaktör", new_admin_user_path %>
-    <% form_tag search_admin_users_path, :method => 'get' do %>
-    <div class="search">
-      <div class="fullwidthinput">
-        <%= text_field_tag :query, (@query ? @query : 'Sök användare ...'), :class => "search_query", :id=> "ref_search_query" %>
-      </div>
-      <%= submit_tag "Sök", :style => "display:none" %>
+  <div class="tools">
+    <div class="add">
+      <%= link_to "Lägg till ny redaktör", new_admin_user_path, :class => "new" %>
     </div>
-    <% end %>
+  </div>
+  <div id="content">
     <ul id="userslist">
     <% @users.each do |user| -%>
       <li>
-        <div class="vcard main">
-          <% if user.avatar %>
-            <%= image_tag(display_image_path(:size => 'c48x48', :id => user.avatar, :format => user.avatar.extname), :class => "avatar", :width => "48", :height => "48") %>
-          <% else %>
-            <img src="/graphics/porthos/_new/icons/avatar.png" alt="" width="48" height="48" class="avatar">
-          <% end %>
-          <span class="fn"><%= user.name %></span>
-          <a class="email" title="Skicka e-post till <%= user.name %>" href="mailto:<%= user.email %>"><%= user.email %></a>
-          <% unless user.phone.blank? and user.cell_phone.blank? -%>
-          <span class="tel">
-            <% unless user.phone.blank? -%>
-            <span class="work">
-              <span class="type">T:</span>
-              <span class="value"><%= user.phone %></span>
-            </span>
-            <% end -%>
-            <% unless user.cell_phone.blank? -%>
-            <span class="cell">
-              <span class="type">M:</span>
-              <span class="value"><%= user.cell_phone %></span>
-            </span>
-            <% end -%>
-          </span>
-          <% end %>
-          <span class="edit">
-            <%= link_to "Ändra", edit_admin_user_path(user) %>
-          </span>
-        </div>
+        <%= render :partial => 'user', :locals => {:user => user} %>
       </li>
     <% end -%>
     </ul>

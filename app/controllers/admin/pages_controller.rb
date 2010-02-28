@@ -10,7 +10,6 @@ class Admin::PagesController < ApplicationController
     @current_tags = params[:tags] || []
     @related_tags = @current_tags.any? ? Page.find_related_tags(@current_tags) : []
     
-    
     @pages = unless @current_tags.any?
       Page.find_with_filter(@filters)
     else

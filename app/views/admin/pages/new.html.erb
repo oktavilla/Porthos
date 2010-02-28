@@ -1,3 +1,4 @@
+<% @page_title = "Skapa en ny sida" %>
 <% @page_class = "AB content" -%>
 <div id="workspace">
   <div class="header">
@@ -13,7 +14,7 @@
     <% form_for :page, :url => admin_pages_path, :html => { :id => 'page', :class => 'new' } do |f| %>
       <%= render :partial => 'form', :locals => {:f => f} %>
       <div class="submit">
-        <%= f.submit "Skapa sidan" %> eller <%= link_to "avbryt", previous_view_path(admin_nodes_path) %>
+        <%= f.submit "Skapa sidan" %> eller <%= link_to "avbryt", previous_view_path(admin_pages_path) %>
       </div>
     <% end %>
   </div>

@@ -8,7 +8,9 @@
       <h1>Innehållsmoduler</h1>
     </div>
     <div class="tools">
-      <%= link_to "Lägg till en modul", new_admin_content_module_path, :class => 'create' %>
+      <div class="add">
+        <%= link_to "Lägg till modul", new_admin_content_module_path, :class => 'new' %>
+      </div>
     </div>
     <div id="content">
       <% nested_list_of @content_modules, {}, :class => 'gl' do |content_module| %>

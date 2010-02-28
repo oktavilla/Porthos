@@ -81,12 +81,19 @@
     }
   });
   
-  Event.onReady(function() {
+  
+  document.observe('dom:loaded', function() {
+    $$('#filters_order_by_submit').invoke('hide');
+    $$('#filters_order_by').invoke('observe', 'change', function(event) {
+      this.form.submit();
+    });
+    
     if ($$("body#pages.show").size() > 0) {
       var page = new Porthos.Pages.Page();
     } else if ($$("body#pages.new, body#pages.edit").size() > 0) {
       var page = Porthos.Pages.SetupForm();
     }
+    
   });
   
 })();

@@ -12,11 +12,12 @@
   <% end -%>
   <span class="edit">
     <% if node.resource_class_name == 'PageCollection' -%>
-    <%= link_to "Lägg till / redigera sidor", admin_page_collection_path(node.resource_id), :class => 'edit' %>
-    <%= link_to "Redigera huvudsida", admin_page_path(node.resource_id), :class => 'edit' %>
+    <%= link_to "Alla sidor", admin_pages_path(:filters => { :with_parent => node.resource_id }), :class => 'edit' %>
+    <%= link_to "Redigera", admin_page_path(node.resource_id), :class => 'edit' %>
     <% else -%>
     <%= link_to "Redigera", node_path(node), :class => 'edit' %>
     <% end -%>
+    <%= link_to "Flytta", place_admin_node_path(node) %>
     <%= link_to "Inställningar", edit_admin_node_path(node), :class => 'settings' %>
     <%= link_to "Ta bort", admin_node_path(node), { :method => :delete, :class => "delete", :confirm => "Är du säker, detta går inte att ångra." } %>
   </span>
