@@ -52,6 +52,9 @@ class Page < ActiveRecord::Base
   named_scope :filter_with_parent, lambda { |parent_id|
     { :conditions => ["parent_id = ? ", parent_id] }
   }
+  named_scope :filter_order_by, lambda { |order|
+    { :order => "#{order} desc" }
+  }
 
   before_validation_on_create :set_default_layout, :set_inactive
 
