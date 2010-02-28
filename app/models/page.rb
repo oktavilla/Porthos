@@ -52,7 +52,7 @@ class Page < ActiveRecord::Base
     { :conditions => ["parent_id = ? ", parent_id] }
   }
   named_scope :filter_order_by, lambda { |order|
-    { :order => "#{order} desc" }
+    { :order => order }
   }
   named_scope :filter_active, lambda { |active|
     { :conditions => ["active = ?", active] }
