@@ -35,7 +35,10 @@
     <% end -%>
     <div id="content">
       <% if @content -%>
-      <p><span style="background:#ffb">Välj vilken bild/film du vill använda eller ladda upp en ny.</span></p>
+      <p>
+        <span style="background:#ffb">Välj vilken bild/film du vill använda eller ladda upp en ny.</span>
+        <%= link_to "Avbryt", previous_view_path %> 
+      </p>
       <% end -%>
       <% if @assets.any? -%>
       <ul class="items thumbnails">
