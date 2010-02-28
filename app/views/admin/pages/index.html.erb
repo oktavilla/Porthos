@@ -55,7 +55,11 @@
 </div>
 <div id="workspace">
   <div class="header">
+    <% if @current_tags.any? -%>
+    <h1>Sidor märkta med: <%= @current_tags.join(', ')%></h1>
+    <% else %>
     <h1>Sidor</h1>
+    <% end %>
   </div>
   <div class="tools">
     <div class="add">
