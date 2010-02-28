@@ -30,24 +30,6 @@
       </li>
     <% end -%>
   </ul>
-<% if @current_tags.any? -%>
-  <div class="label">Valda nyckelord</div>
-  <ul class="tags current">
-  <% @current_tags.each do |current_tag| %>
-    <li>
-      <span class="tag"><%= current_tag %></span> <%= link_to "Ta bort", admin_pages_path(:tags => @current_tags - [current_tag]) %>
-    </li>
-  <% end -%>
-  </ul>
-  <% if @related_tags.any? -%>
-  <div class="label">Relaterade nyckelord</div>
-  <ul class="tags">
-  <% @related_tags.each do |tag| -%>
-    <li><%= link_to tag.name, admin_pages_path(:tags => @current_tags + [tag.name]), :class => "tag" %></li>
-  <% end -%>
-  </ul>
-  <% end -%>
-<% end -%>
 <% if @tags.any? -%>
   <div class="label">Nyckelord</div>
   <ul class="tags">
@@ -60,12 +42,20 @@
   </ul><% end -%>
 </div>
 <div id="workspace">
+  <% if @current_tags.any? -%>
   <div class="header">
-    <% if @current_tags.any? -%>
     <h1>Sidor märkta med: <%= @current_tags.join(', ')%></h1>
-    <% else %>
+    <% if @current_tags.any? and @related_tags.any? -%>
+    <div class="related_tags">
+    <% @related_tags.each do |tag| -%>
+      <span class="tag"><%= link_to tag.name, admin_pages_path(:tags => @current_tags + [tag.name]), :class => "tag" %></span>
+    <% end -%>
+    </div>
+    <% end -%>
+  </div>
+  <% else %>
+  <div class="header">
     <h1>Sidor</h1>
-    <% end %>
   </div>
   <div class="tools">
     <div class="add">
@@ -83,6 +73,7 @@
     </div>
     <% end %>
   </div>
+  <% end %>
   <div id="content">
     <ul class="items">
     <% @pages.each do |page| %>

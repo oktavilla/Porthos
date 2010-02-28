@@ -19,22 +19,6 @@
       </li>
     <% end -%>
   </ul>
-<% if @current_tags && @current_tags.any? -%>
-  <div class="label">Valda nyckelord</div>
-    <ul class="tags current">
-    <% @current_tags.each do |current_tag| -%>
-      <li><span class="tag"><%= current_tag %></span> <%= link_to "Ta bort", admin_assets_path(:tags => @current_tags - [current_tag]) %></li>
-    <% end -%>
-    </ul>
-  <% if @related_tags && @related_tags.any? -%>
-  <div class="label">Relaterade nyckelord</div>
-  <ul class="tags">
-    <% @related_tags.each do |tag| %>
-    <li><%= link_to tag.name, admin_assets_path(:tags => @current_tags + [tag.name]), :class => "tag" %></li>
-    <% end %>
-  </ul>
-  <% end -%>
-<% end -%>
 <% if @tags && @tags.any? -%>
   <div class="label">Nyckelord</div>
   <ul class="tags">
