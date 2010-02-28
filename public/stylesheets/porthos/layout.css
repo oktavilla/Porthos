@@ -178,7 +178,7 @@ body.layout3 #workspace {
   #workspace .header {
     padding:20px 40px 20px 40px;
     border-bottom:1px solid #e1e1e1;
-    background:rgba(55,128,199,.08); }
+    background:rgba(55,128,199,.05); }
     #workspace .header h1 {display:inline;}
       #workspace .header h1 img.cover {
         margin:-10px 8px -14px 0;}
