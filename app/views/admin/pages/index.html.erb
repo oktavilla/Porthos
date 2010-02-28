@@ -15,9 +15,15 @@
   </ul>
   <div class="label">Status</div>
   <ul class="filter">
-    <li class="current"><a href="#">Alla</a></li>
-    <li><a href="#">Utkast</a></li>
-    <li><a href="#">Opublicerade ändringar</a></li>
+    <li<%= ' class="current"' if !@filters[:active] && !@filters[:with_unpublished_changes] %>>
+      <%= link_to "Alla", admin_pages_path(:filters => @filters.without(:active).without(:with_unpublished_changes)) %>
+    </li>
+    <li<%= ' class="current"' if @filters[:active]%>>
+      <%= link_to "Utkast", admin_pages_path(:filters => @filters.without(:with_unpublished_changes).merge(:active => 0)) %>
+    </li>
+    <li<%= ' class="current"' if @filters[:with_unpublished_changes]%>>
+      <%= link_to "Opublicerade ändringar", admin_pages_path(:filters => @filters.without(:active).merge(:with_unpublished_changes => '')) %>
+    </li>
   </ul>
   <div class="label">Senast ändrad av</div>
   <ul class="filter">

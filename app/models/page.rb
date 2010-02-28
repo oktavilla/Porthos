@@ -38,8 +38,7 @@ class Page < ActiveRecord::Base
       restricted
     ]
   }}
-  named_scope :with_unpublished_changes, :conditions => ["changed_at > changes_published_at AND rendered_body IS NOT NULL"]
-  
+
   named_scope :created_latest, :order => 'created_at DESC'
   named_scope :updated_latest, :conditions => 'changed_at > created_at', :order => 'changed_at DESC'
 
@@ -55,7 +54,11 @@ class Page < ActiveRecord::Base
   named_scope :filter_order_by, lambda { |order|
     { :order => "#{order} desc" }
   }
-
+  named_scope :filter_active, lambda { |active|
+    { :conditions => ["active = ?", active] }
+  }
+  named_scope :filter_with_unpublished_changes, :conditions => ["changed_at > changes_published_at AND rendered_body IS NOT NULL"]
+  
   before_validation_on_create :set_default_layout, :set_inactive
 
   before_create :set_published_on

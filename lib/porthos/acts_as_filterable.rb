@@ -3,9 +3,9 @@ module Porthos
   class Filter < HashWithIndifferentAccess
   
     def without(key)
-      returning(self.dup) do |hash|
-        hash.delete(key)
-      end
+      new_filter = Filter.new(self.dup)
+      new_filter.delete(key)
+      new_filter
     end
     
   end
@@ -39,7 +39,7 @@ module Porthos
         per_page = filters.delete(:per_page) || 10
         
         filters.each do |name, value|
-          filter_scopes << ["filter_#{name}".to_sym, value] if available_filters.include?(name.to_sym) && !value.nil?
+          filter_scopes << ["filter_#{name}".to_sym, value] if available_filters.include?(name.to_sym)
         end
         
         filter_scopes.inject(eval(self.to_s)) do |model, scope|
