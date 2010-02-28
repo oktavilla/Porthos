@@ -31,10 +31,11 @@
           <input type="submit" value="Välj" id="filters_order_by_submit" style="display:none">
       </div>
       <% end %>
+    </div>
     <% end -%>
     <div id="content">
       <% if @content -%>
-      <p>Välj vilken bild/film du vill använda.</p>
+      <p><span style="background:#ffb">Välj vilken bild/film du vill använda eller ladda upp en ny.</span></p>
       <% end -%>
       <% if @assets.any? -%>
       <ul class="items thumbnails">
