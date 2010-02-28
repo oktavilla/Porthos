@@ -1,6 +1,15 @@
 <% unless content.shared? -%>
 <div class="textfield">
-  <%= resource.body %>
+  <% case resource.filter
+      when 'wymeditor' -%>
+      <%= resource.body %>
+  <%  when 'html' -%>
+    <%= resource.body %>
+  <%  when 'textile' -%>
+    <%= textilize resource.body %>
+  <%  else -%>
+    <%= resource.body %>
+  <% end -%>
 </div>
 <% else -%>
   <%= resource.title %> <span class="notice">Delat innehåll</span>

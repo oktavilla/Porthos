@@ -18,5 +18,6 @@ Rails::Initializer.run do |config|
 
   config.active_record.observers = :registration_observer, :node_observer
   
-  config.gem 'mini_magick', :version => '= 1.2.5'
+  config.gem 'RedCloth'
+  config.gem 'mini_magick', :version => '=1.2.5'
 end
