@@ -96,29 +96,14 @@ class Admin::NodesController < ApplicationController
   end
   
   def sort
-    sort_nodes(params[:nodes])
-    @root  = Node.root
-    @nodes = @root.children
-    @open_nodes = Node.find_all_by_id(params[:open_nodes]) if params[:open_nodes]
-    @trail = @open_nodes ? @open_nodes.collect{ |node| (node.ancestors || []) << node }.flatten : []
+    params[:nodes].each_with_index do |id, position|
+      Node.update(id, {
+        :position => position+1
+      })
+    end
     respond_to do |format|
-      format.js { render :partial => 'nodes_tree.html.erb', :locals => { :nodes => @nodes, :open_nodes => @open_nodes, :trail => @trail, :place => false } }
+      format.js { render :nothing => true }
     end
   end
   
-protected
-  def sort_nodes(nodes_hash)
-    parent_id = nodes_hash[:id].to_i != 0 ? nodes_hash[:id] : Node.root.id
-    nodes_hash.each do |key, value|
-      # We want to skip non-children entry
-      next if key == 'id'
-      Node.update(value[:id], {
-        :parent_id => parent_id,
-        :position  => key.to_i+1
-      })
-      # Recursive step
-      sort_nodes value
-    end
-    
-  end
 end

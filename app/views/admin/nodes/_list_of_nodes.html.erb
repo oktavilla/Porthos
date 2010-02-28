@@ -1,3 +1,4 @@
+<ul class="nodes">
 <% nodes.each do |node| %>
   <li id="node_<%= node.id %>" class="<%= cycle("odd", "even") %> node">
     <% if place %>
@@ -7,3 +8,4 @@
     <% end %>
   </li>
 <% end %>
+</ul>
