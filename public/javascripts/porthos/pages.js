@@ -57,7 +57,6 @@
           scroll      : window,
           handle      : 'draghandle',
           only        : 'sortable',
-          constraint  : false,
           onUpdate    : this.sort.bindAsEventListener(this)
         });
       }.bind(this));
