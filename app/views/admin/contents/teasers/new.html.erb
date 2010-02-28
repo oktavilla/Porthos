@@ -13,9 +13,13 @@
       <%= f.hidden_field :resource_type, { :value => 'Teaser' } %>
       <% fields_for :resource do |resource| %>
         <label for="content_<%= @content.id %>_resource_title">Rubrik</label>
-        <%= resource.text_field :title, :id => "content_#{@content.id}_resource_title", :class => 'title' %>
+        <div class="fullwidthinput">
+          <%= resource.text_field :title, :id => "content_#{@content.id}_resource_title", :class => 'title' %>
+        </div>
         <label for="content_<%= @content.id %>_resource_body">Text</label>
-        <%= resource.text_area :body, :id => "content_#{@content.id}_teaser_body", :class => 'wymeditor', :rows => 5 %>
+        <div class="fullwidthinput">
+          <%= resource.text_area :body, :id => "content_#{@content.id}_teaser_body", :class => 'wymeditor', :rows => 5 %>
+        </div>
         <div class="graphic size">
           <h2>Storlek</h2>
           <label for="resource_display_type_2"><%= resource.radio_button :display_type, Teaser::DISPLAY_TYPES[:big] %> <img src="/graphics/porthos/icons/50_teaser_big.gif"> Stor</label>

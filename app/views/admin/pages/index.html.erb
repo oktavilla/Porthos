@@ -13,6 +13,12 @@
     <li<%= ' class="current"' if @filters[:with_parent].to_i == page_collection.id %>><%= link_to page_collection.title, admin_pages_path(:filters => @filters.merge(:with_parent => page_collection.id)) %></li>
     <% end -%>
   </ul>
+  <div class="label">Status</div>
+  <ul class="filter">
+    <li class="current"><a href="#">Alla</a></li>
+    <li><a href="#">Utkast</a></li>
+    <li><a href="#">Opublicerade ändringar</a></li>
+  </ul>
   <div class="label">Senast ändrad av</div>
   <ul class="filter">
     <li<%= ' class="current"' unless @filters[:updated_by] %>>

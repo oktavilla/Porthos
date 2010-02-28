@@ -1,26 +1,30 @@
 <% @page_title = "Lägg till bild" %>
 <div id="workspace">
   <div class="header">
-    <h1>Lägg till bild</h1>
+    <h1>Ändra bild</h1>
   </div>
   <div id="content">
-    <%= image_tag display_image_path(:size => 'w290', :id => @content.resource.asset, :format => @content.resource.asset.extname), :width => 290 %>
+    <div id="c_1">
+      <%= image_tag display_image_path(:size => '320', :id => @content.resource.asset, :format => @content.resource.asset.extname), :width => 290 %>
+    </div>
+    <div id="c_2">
     <% form_for :resource, @content.resource, :url => admin_content_path(@content), :html => { :method => :put } do |f| %>
       <%= f.hidden_field :image_asset_id, :value => @content.resource.asset.id %>
-      <label for="content_image_title">Alt. text</label>
-      <%= f.text_field :title, :value => @content.resource.title %>
+      <label for="content_image_title">Beskriv vad bilden föreställer</label>
+      <div class="fullwidthinput"><%= f.text_field :title, :value => @content.resource.title %></div>
       <label for="content_image_caption">Bildtext</label>
-      <%= f.text_area :caption, :value => @content.resource.caption, :cols => 30, :rows => 5 %>    
+      <div class="fullwidthinput"><%= f.text_area :caption, :value => @content.resource.caption, :cols => 30, :rows => 5 %></div>
       <label for="content_image_title">Copyright / Fotograf</label>
-      <%= f.text_field :copyright, :value => @content.resource.copyright %>
+      <div class="fullwidthinput"><%= f.text_field :copyright, :value => @content.resource.copyright %></div>
       <% if @content.parent_id.blank? -%>
       <label for="content_image_format">Format</label>
       <%= f.select :style, ContentImage.styles.collect { |s, klass| [s[:name], s[:class]] } %>
       <% end -%>
       <label for="content_image_downloadable"><%= f.check_box :downloadable %> Länka till orginal</label>
-      <div class="confirm">
+      <div class="submit">
         <input type="submit" value="Spara bild"> eller <a href="<%= previous_view_path %>" class="back">avbryt</a>
       </div>
     <% end %>
+    </div>
   </div>
 </div>

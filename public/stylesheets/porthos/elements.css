@@ -234,6 +234,7 @@ textarea.file {
   padding:1em 1em 1em 100px;
   min-height:40px;
   border-top:1px solid #ddd; }
+  .contents li.content .title {margin:0;}
   .contents li.content.inactive {
     height:40px;
     overflow:hidden;
@@ -243,7 +244,7 @@ textarea.file {
     top:13px;
     left:30px; 
     display:none; 
-    width:120px; }
+    width:70px; }
     .contents li.content > .edit a {
       display:block; }
   .contents li.content:hover > .edit,
@@ -269,7 +270,7 @@ textarea.file {
     list-style:none; }
     .contents ul.content_images .sub_content,
     .contents ul.teasers .sub_content {
-      margin:0;
+      margin:0 0 -1em 0;
       margin-left:100px;}
   
 
@@ -284,7 +285,8 @@ ul.filter {
   ul.filter li {margin:0;}
 
 ul.nav li.current a,
-ul.filter li.current a {
+ul.filter li.current a,
+ul.tags li a.current {
   background:#0093d0; 
   color:#fff; }
 ul.filter li {margin-bottom:.5em;}
@@ -314,12 +316,8 @@ ul.tags {
     margin-top:2px;
     color:rgba(0,0,0,.7);
     margin-left:-20px; }
-  ul.tags ul li,
-  ul.tags ul li a {
-    display:inline;
-    border:none;
-    margin:0; 
-    padding:1px;
+  ul.tags .tag {
+    padding:2px;
     font-weight:normal;
     font-size:12px; }
 
