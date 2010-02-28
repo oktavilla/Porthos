@@ -4,7 +4,9 @@ class Admin::PagesController < ApplicationController
 
   def index
     
-    @filters = Porthos::Filter.new(params[:filters] || {})
+    @filters = Porthos::Filter.new({
+      :order_by => 'changed_at'
+    }.merge(params[:filters] || {}))
 
     @tags = Tag.on('Page').popular.find(:all, :limit => 30)
     @current_tags = params[:tags] || []
