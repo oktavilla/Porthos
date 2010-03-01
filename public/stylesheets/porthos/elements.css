@@ -31,6 +31,18 @@ a:hover {color:#005e96;}
 a img { border:none; }
 a:focus { outline:none }
 p {}
+table {
+  margin-bottom:10px;
+  border-collapse:collapse;
+  font-size:12px;
+  border-bottom:1px solid #ddd; }
+th, td {
+  vertical-align:top;
+  text-align:left;
+  padding:5px 10px; }
+th {font-weight:normal;}
+td {
+  border-top:1px solid #ddd; }
 
 strong {font-weight:bold;color:#000;}
 
