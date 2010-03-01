@@ -5,8 +5,12 @@ class Admin::CampaignsController < ApplicationController
   # GET /campaigns
   # GET /campaigns.xml
   def index
+    @filters = Porthos::Filter.new({
+      :active => 1,
+      :per_page => 100
+    }.merge(params[:filters] || {}))
     @campaign = Campaign.new
-    @campaigns = Campaign.find(:all)
+    @campaigns = Campaign.find_with_filter(@filters)
 
     respond_to do |format|
       format.html # index.html.erb

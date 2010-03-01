@@ -29,8 +29,14 @@ class Campaign < ActiveRecord::Base
 
   named_scope :active,   :conditions => 'active = 1'
   named_scope :archived, :conditions => 'active = 0'
+  named_scope :filter_active, lambda { |active|
+    { :conditions => ["active = ?", active] }
+  }
+  
   
   validates_presence_of :name
+  
+  acts_as_filterable
   
   is_indexed :fields => ['name', 'dp_buyer_code', 'dp_donor_code'],
                          :concatenate => [{:association_name => 'measure_points', :field => 'name', :as => 'measure_points'}, 

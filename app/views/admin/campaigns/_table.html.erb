@@ -1,4 +1,4 @@
-<table class="campaigns">
+<table class="campaigns simple">
   <tr>
     <th class="name">Kampanj</th>
     <th class="total_clicks">Klick</th>
@@ -12,9 +12,9 @@
     </td>
     <% total_clicks = campaign.measure_points.sum(:num_clicks) -%>
     <% total_conversions = campaign.total_conversions -%>
-    <td class="total_clicks"><%= total_clicks %></td>
-    <td class="total_conversions"><%= total_conversions %></td>
-    <td class="total_roi"><%= number_to_percentage((total_conversions.to_f / total_clicks.to_f)*100, :precision => 2) if total_clicks.to_i > 0 %></td>
+    <td class="num"><%= total_clicks %></td>
+    <td class="num"><%= total_conversions %></td>
+    <td class="num"><%= number_to_percentage((total_conversions.to_f / total_clicks.to_f)*100, :precision => 2) if total_clicks.to_i > 0 %></td>
   </tr>
 <% end %>
 </table>

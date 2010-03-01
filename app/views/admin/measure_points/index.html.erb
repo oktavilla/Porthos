@@ -1,6 +1,6 @@
 <h1>Listing measure_points</h1>
 
-<table>
+<table class="simple">
   <tr>
     <th>Name</th>
     <th>Type</th>
@@ -9,22 +9,19 @@
     <th>Public</th>
     <th>Num clicks</th>
   </tr>
-
-<% for measure_point in @measure_points %>
+<% for measure_point in @measure_points -%>
   <tr>
     <td><%=h measure_point.name %></td>
     <td><%=h measure_point.type %></td>
     <td><%=h measure_point.target %></td>
     <td><%=h measure_point.cost %></td>
     <td><%=h measure_point.public_id %></td>
-    <td><%=h measure_point.num_clicks %></td>
+    <td class="num"><%=h measure_point.num_clicks %></td>
     <td><%= link_to 'Show', measure_point %></td>
     <td><%= link_to 'Edit', edit_measure_point_path(measure_point) %></td>
     <td><%= link_to 'Destroy', measure_point, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
-
-<br />
 
 <%= link_to 'New measure_point', new_measure_point_path %>

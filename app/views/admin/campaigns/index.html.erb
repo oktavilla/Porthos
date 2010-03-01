@@ -7,6 +7,15 @@
     <%= submit_tag "Sök", :style => "display:none" %>
   </div>
   <% end %>
+  <div class="label">Status</div>
+  <ul class="filter">
+    <li<%= ' class="current"' if @filters[:active].to_i == 1 %>>
+      <%= link_to "Aktiva", admin_campaigns_path(:filters => @filters.merge(:active => 1)) %>
+    </li>
+    <li<%= ' class="current"' if @filters[:active].to_i == 0%>>
+      <%= link_to "Arkiverade", admin_campaigns_path(:filters => @filters.merge(:active => 0)) %>
+    </li>
+  </ul>
   <%= link_to 'Exportera alla mätpunkter', formatted_admin_measure_points_path(:format => 'csv') %>
 </div>
 <div id="workspace">
@@ -20,12 +29,7 @@
   </div>
   <div id="content">
     <% if @campaigns.any? %>
-      <%= render :partial => 'table', :locals => {:campaigns => Campaign.active} %>
-
-      <% if Campaign.archived.count != 0  %>
-        <h2>Arkiverade kampanjer</h2>
-        <%= render :partial => 'table', :locals => {:campaigns => Campaign.archived}  %>
-      <% end %>
+      <%= render :partial => 'table', :locals => { :campaigns => @campaigns } %>
     <% end -%>
   </div>
 </div>

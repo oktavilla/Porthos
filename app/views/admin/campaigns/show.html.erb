@@ -48,7 +48,6 @@
       
       <% if @campaign.conversions.any? %>
       <h2>Omvandlingar totalt</h2>
-      
       <div class="conversions">
         <ul>
         <% @campaign.conversions.count(:group => 'registration_type').each do |result| %> 
@@ -73,13 +72,13 @@
       
       <h2>Mätpunkter och omvandlingar</h2>
 
-      <table class="measure_points">
+      <table class="measure_points simple">
         <tr>
           <th class="details">Detaljer</th>
           <th class="description">Beskrivning/omvandlingar</th>
-          <th class="total_clicks">Klick</th>
-          <th class="total_conversions">Avslut</th>
-          <th class="total_roi">Frekvens</th>
+          <th class="total_clicks num">Klick</th>
+          <th class="total_conversions num">Avslut</th>
+          <th class="total_roi num">Frekvens</th>
         </tr>
       <% @campaign.measure_points.each do |point| -%>
         <tr id="measure_point_<%= point.id %>">
@@ -103,7 +102,9 @@
           </td>
           <td>
             <div class="description"><%= point.name %></div>
+            <% unless point.target_name.blank? -%>
             <div class="audience"><span class="type">Målgrup:</span> <span class="value"><%= point.target_name %></span></div>
+            <% end -%>
             <div class="conversions">
               <% if point.conversions.confirmed.any? %>
               <span class="type"><%= link_to "Omvandlingar", admin_registrations_path(:filter => 'confirmed', :measure_point_id => point.id) %></span>
@@ -130,9 +131,9 @@
               <% end -%>
             </div>
           </td>
-          <td class="total_clicks"><%= point.num_clicks %></td>
-          <td class="total_conversions"><%= point.conversions_count %></td>
-          <td class="total_roi"><%= number_to_percentage(((point.conversions_count.to_f / point.num_clicks.to_f)*100), :precision => 2) if point.num_clicks > 0%></td>
+          <td class="total_clicks num"><%= point.num_clicks %></td>
+          <td class="total_conversions num"><%= point.conversions_count %></td>
+          <td class="total_roi num"><%= number_to_percentage(((point.conversions_count.to_f / point.num_clicks.to_f)*100), :precision => 2) if point.num_clicks > 0%></td>
         </tr>
       <% end -%>
       </table>
