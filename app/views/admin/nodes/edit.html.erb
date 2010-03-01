@@ -5,7 +5,7 @@
   </div>
   <div id="content">
     <%= error_messages_for :node %>
-    <% form_for :node, :url => admin_node_path(@node), :html => { :method => :put, :class => "tiny" } do |f| %>
+    <% form_for :node, :url => admin_node_path(@node, :return_to => params[:return_to]), :html => { :method => :put, :class => "tiny" } do |f| %>
       <label for="node_name">Namn i navigationen</label>
       <%= f.text_field :name, :class => "title" %>
       <label for="node_restricted" class="contains-input">
@@ -31,6 +31,11 @@
           </label>
         </li>
       </ul>
+      <% if @node.resource and @node.resource.is_a?(Page) %>
+        <% f.fields_for :resource, @node.resource do |resource_fields| %>
+          <%= render :partial => 'admin/pages/form', :locals => {:f => resource_fields} %>
+        <% end %>
+      <% end %>
       <div class="submit">
         <%= submit_tag 'Spara ändringar' %> eller <%= link_to "avbryt", previous_view_path(admin_nodes_path(:nodes => @node)) %>
       </div>

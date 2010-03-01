@@ -69,7 +69,7 @@ class Admin::NodesController < ApplicationController
     respond_to do |format|
       if @node.update_attributes(params[:node])
         format.html do
-          redirect_to admin_nodes_path(:nodes => @node) 
+          redirect_to (params[:return_to] || admin_nodes_path(:nodes => @node))
         end
       else
         format.html do
