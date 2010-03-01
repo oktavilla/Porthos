@@ -7,7 +7,7 @@
   <% registrations.each do |registration| -%>
   <tr class="<%= cycle('odd','even') %>">
     <td class="details">
-      <span class="status <%= registration.humanized_status[:class] %>"><%= link_to registration.id, formatted_admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></span>
+      <span class="status <%= registration.humanized_status[:class] %>"><%= link_to registration.id, admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></span>
       <span class="created_at">
         <% t = registration.created_at %>
         <%= t.day  %>

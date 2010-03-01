@@ -27,9 +27,10 @@ class Payment < ActiveRecord::Base
   validates_presence_of :payable_id, :billing_method, :amount, :on => :create
   validates_presence_of :first_name, :last_name, :on => :create, :if => Proc.new { |payment| payment.creditcard_payment? }
   
-  composed_of :amount, :class_name => "Money", :mapping => %w(amount cents), :converter => Proc.new { |amount|
-    amount.to_money
-  }
+  composed_of :amount,
+              :class_name => "Money",
+              :mapping => %w(amount cents),
+              :converter => Proc.new { |amount| amount.to_money }
   
   after_update :update_payable
   

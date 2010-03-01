@@ -19,9 +19,10 @@ class Conversion < ActiveRecord::Base
   named_scope :by_type, lambda { |type| { :conditions => ["registration_type = ?", type] } }
   named_scope :confirmed, :conditions => 'status = 1', :joins => 'LEFT JOIN registrations ON registrations.id = conversions.registration_id'
 
-  composed_of :amount, :class_name => "Money", :mapping => %w(amount cents) do |amount|
-    amount.to_money
-  end
+  composed_of :amount,
+              :class_name => "Money",
+              :mapping => %w(amount cents),
+              :converter => Proc.new { |amount| amount.to_money }
  
   class << self
     def from_click(measure_point_id, registration)
