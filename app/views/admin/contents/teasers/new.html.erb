@@ -6,6 +6,11 @@
   <div id="content">
     <%= error_messages_for :resource %>
     <% form_for :content, :url => admin_contents_path(:collection => params[:collection]), :html => { :multipart => true }  do |f| %>
+      <%= f.hidden_field :context_id %>
+      <%= f.hidden_field :context_type %>
+      <%= f.hidden_field :parent_id, { :value => @content.id } %>
+      <%= f.hidden_field :column_position %>
+      <%= f.hidden_field :resource_type, { :value => 'Teaser' } %>
       <%= render :partial => 'admin/contents/teasers/form', :locals => { :content => @content, :f => f } %>
       <div class="submit">
         <%= submit_tag 'Lägg till puff', :class => 'commit button' %> eller <%= link_to "avbryt", previous_view_path %>

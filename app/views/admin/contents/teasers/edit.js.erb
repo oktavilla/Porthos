@@ -30,7 +30,7 @@
 
         <div style="padding-bottom:65px;width:55%" class="graphic color">
           <h2>Färg</h2>
-          <% Teaser::CSS_CLASSES.each do |name, klass| -%>
+          <% Teaser.css_classes.each do |name, klass| -%>
             <label for="resource_color_<%= !klass.blank? ? klass : 'none' %>"<%= ' class="checked"' if klass == @content.resource.css_class %>>
               <%= f.radio_button :css_class, klass, :id => "resource_color_#{(!klass.blank? ? klass : 'none' )}" %>
               <span class="teaser_color"><span class="<%= klass %>"></span></span>

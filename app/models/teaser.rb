@@ -21,41 +21,43 @@ class Teaser < ActiveRecord::Base
   attr_accessor :files
 
   @@filters = %w(wymeditor html textile)
-  @@default_filter = 'wymeditor'
   cattr_accessor :filters
+
+  @@default_filter = 'wymeditor'
   cattr_accessor :default_filter
   
   def filter
     @filter ||= read_attribute(:filter) || default_filter
   end
   
-  DISPLAY_TYPES       = { :small => '0', :medium => '1', :big => '2' }
-  IMAGE_DISPLAY_TYPES = { :only_first_image => 0, :slideshow => 1 }
-  CSS_CLASSES = [
-    ['Ingen', ''],
-    ['Ljusmagenta', 'light_magenta'],
-    ['Ljuscyan', 'light_cyan'],
-    ['Ljusgrön', 'light_green'],
-    ['Magenta', 'magenta'],
-    ['Cyan', 'cyan'],
-    ['Grön', 'green'],
-    ['Röd', 'red']
+  @@display_types = [
+    { :key => 'small',  :image_size => 100 },
+    { :key => 'medium', :image_size => 200 },
+    { :key => 'big',    :image_size => 300 }
   ]
+  cattr_accessor :display_types
   
+  self.class_eval do
+    
+    define_method(:image_size) do
+      self.display_types[read_attribute(:display_type).to_i][:image_size]
+    end
+    
+    display_types.each do |_type|
+      define_method("#{_type[:key]}?".to_sym) do
+        self.display_types[read_attribute(:display_type).to_i][:key] == _type[:key]
+      end
+    end
+  end
+    
+  @@css_classes = ['light_magenta', 'light_cyan', 'light_green',
+                   'magenta', 'cyan', 'green', 'red']
+  cattr_accessor :css_classes
+
+  IMAGE_DISPLAY_TYPES = { :only_first_image => 0, :slideshow => 1 }
+
   after_save :save_files
-  
-  def small?
-    display_type == DISPLAY_TYPES[:small]
-  end
-  
-  def medium?
-    display_type == DISPLAY_TYPES[:medium]
-  end
-  
-  def big?
-    display_type == DISPLAY_TYPES[:big]
-  end
-  
+    
   def has_slideshow?
     images.size > 1 and images_display_type == IMAGE_DISPLAY_TYPES[:slideshow]
   end

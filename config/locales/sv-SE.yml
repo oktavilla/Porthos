@@ -353,6 +353,14 @@
       password_has_been_sent: Ett nytt lösenord har skapats och skickats till din e-postadress 
       unable_to_find_user: Det gick inte att hitta någon användare med den e-postadressen
       flash_is_needed: Du behöver flash för att se den här delen av sidan
+    colors:
+      light_magenta: Ljusmagenta
+      light_cyan: Ljuscyan
+      light_green: Ljusgrön
+      magenta: Magenta
+      cyan: Cyan
+      green: Grön
+      red: Röd
     cart_item:
       exceeds_available_products: överstiger antalet tillgängliga produkter
       require_positive_number: måste vara ett tal större än noll

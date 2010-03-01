@@ -3,27 +3,16 @@
   classes += " #{content.resource.css_class}" unless content.resource.css_class.blank?
   classes += " type_#{(content.resource.display_type || 0)}"
   classes += ' slideshow' if content.resource.has_slideshow?
-  if content.resource.mega?
-    teaser_image_size = "c470x260"
-  elsif content.resource.big?
-    teaser_image_size = "c310x230"
-  elsif content.resource.medium?
-    teaser_image_size = "c210x120"
-  elsif content.resource.small?
-    teaser_image_size = "c70x70"
-  else
-    teaser_image_size = "c70x70"
-  end
 -%>
 <div class="teaser <%= classes %>" id="teaser_<%= content.resource.id %>">
   <div class="content<%= " #{content.resource.css_class}" %>">
     <% if content.resource.images.any? -%>
     <div class="images">
-      <%= image_tag(display_image_path(:size => "#{teaser_image_size}g-#{content.resource.images.first.gravity}", :id => content.resource.images.first, :format => content.resource.images.first.extname), :alt => content.resource.images.first.title ) %>
+      <%= image_tag(display_image_path(:size => "#{content.resource.image_size}g-#{content.resource.images.first.gravity}", :id => content.resource.images.first, :format => content.resource.images.first.extname), :alt => content.resource.images.first.title ) %>
       <% if content.resource.has_slideshow? -%>
         <% content.resource.images.each do |image| -%>
           <% if image != content.resource.images.first -%>
-            <%= image_tag(display_image_path(:size => "#{teaser_image_size}g-#{image.gravity}", :id => image, :format => image.extname), :alt => image.title, :style => "display:none") %>
+            <%= image_tag(display_image_path(:size => "#{content.resource.image_size}g-#{image.gravity}", :id => image, :format => image.extname), :alt => image.title, :style => "display:none") %>
           <% end -%>
         <% end -%>
       <% end -%>
