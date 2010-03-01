@@ -43,21 +43,26 @@ class Registration < ActiveRecord::Base
   
   delegate :send_email_response?, :replyable_email?, :reply_to_email, :email_subject, :email_body, :parsed_email_body, :contact_person, :notification_person, :to => :registration_form
 
-  composed_of :total_sum, :class_name => "Money", :mapping => %w(total_sum cents), :converter => Proc.new { |total_sum|
-    total_sum.to_money rescue 0.to_money
-  }
-  composed_of :total_vat, :class_name => "Money", :mapping => %w(total_vat cents), :converter => Proc.new { |total_vat| 
-    total_vat.to_money rescue 0.to_money
-  }
-  composed_of :shipment_price, :class_name => "Money", :mapping => %w(shipment_price cents), :converter => Proc.new { |shipment_price|
-    shipment_price.to_money rescue 0.to_money
-  }
-  composed_of :shipment_vat, :class_name => "Money", :mapping => %w(shipment_vat cents), :converter => Proc.new { |shipment_vat|
-    shipment_vat.to_money rescue 0.to_money
-  }
-  composed_of :donation, :class_name => "Money", :mapping => %w(donation cents), :converter => Proc.new { |donation|
-    donation.to_money rescue 0.to_money
-  }
+  composed_of :total_sum,
+              :class_name => "Money",
+              :mapping => %w(total_sum cents),
+              :converter => Proc.new { |total_sum| total_sum.to_money rescue 0.to_money }
+  composed_of :total_vat,
+              :class_name => "Money",
+              :mapping => %w(total_vat cents),
+              :converter => Proc.new { |total_vat| total_vat.to_money rescue 0.to_money }
+  composed_of :shipment_price,
+              :class_name => "Money",
+              :mapping => %w(shipment_price cents),
+              :converter => Proc.new { |shipment_price| shipment_price.to_money rescue 0.to_money }
+  composed_of :shipment_vat,
+              :class_name => "Money",
+              :mapping => %w(shipment_vat cents),
+              :converter => Proc.new { |shipment_vat| shipment_vat.to_money rescue 0.to_money }
+  composed_of :donation,
+              :class_name => "Money",
+              :mapping => %w(donation cents),
+              :converter => Proc.new { |donation| donation.to_money rescue 0.to_money }
   
   is_indexed({
     :fields => ['public_id', 'payment_transaction_id', 'dispatch_id'],

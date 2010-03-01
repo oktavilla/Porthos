@@ -58,7 +58,7 @@ class Admin::RegistrationsController < ApplicationController
     @registration_comment = RegistrationComment.new(params[:registration_comment])
     respond_to do |format|
       if @registration_comment.save
-        format.html { redirect_to formatted_admin_registration_path(:id => @registration_comment.registration, :type => @registration_comment.registration.type, :format => 'html') }
+        format.html { redirect_to admin_registration_path(:id => @registration_comment.registration, :type => @registration_comment.registration.type, :format => 'html') }
       else
         @type = @registration_comment.registration.class.to_s
         @registration = @registration_comment.registration
