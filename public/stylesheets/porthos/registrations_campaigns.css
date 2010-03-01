@@ -203,3 +203,93 @@
     div.conversions .average {
       display:block; 
       color:#999; }
+
+table.activities {
+  width: 100%;
+  border:none;
+  border-bottom:1px solid #ccc;
+  border-collapse:collapse; }
+  table.activities caption {
+    padding:10px 0 10px 0;
+    font-size:1em;
+    text-align:left;
+    background:#def; 
+    margin-bottom: 10px; }
+    table.activities caption > span {font-weight:bold; color:#000;}
+      table.activities caption .start_date {padding-left:1.1em;}
+    table.activities caption > a {
+      float:right;
+      margin-right:1.1em;}
+      table.activities form.tiny {
+        margin-top: 10px;
+        padding: 10px 0 0 10px;
+        display:block;
+        border-top:2px solid #fff;
+        color:#363636; }
+        table.activities form.tiny legend { 
+          font-size: 1.2em;
+          padding: 0 0 10px 0;
+          background: transparent;}
+        table.activities form.tiny label { display: inline; font-weight: normal;}
+          table.activities form.tiny select { padding: 2px;}
+            table.activities form.tiny select option {padding-right: 10px;}
+
+        table.activities form.tiny div.submit { padding: 0; }
+
+  table.activities col {background:#ffffcd url(/graphics/spacer.gif) 0 0 repeat-y;}
+  table.activities col.first_period {background-color:#fff588;}
+  table.activities col.whats {background:transparent; }
+  table.activities thead th {
+    text-align:center;
+    border-top:none;
+    padding:0;
+    border-bottom:3px solid #363636;
+    white-space:nowrap;
+    background:transparent url(/graphics/tabletop.gif) 0 0 no-repeat; }
+    table.activities thead th:first-child {background:transparent;}
+    table.activities thead th .period {
+      display:block;
+      padding:.5em 20px;
+      background:transparent url(/graphics/tabletop_end.gif) 100% 0 no-repeat; }
+    table.activities thead th.even {background-image:url(/graphics/tabletop_even.gif);}
+    table.activities thead th.even .period {background-image:url(/graphics/tabletop_even_end.gif);}
+  table.activities th,
+  table.activities td {
+    padding:.2em 1em;
+    vertical-align:top;
+    border-top:1px solid #ddd;}
+  table.activities tbody th {
+    text-align: left;
+    font-weight:normal;
+    padding:.4em 10px .4em 15px; }
+  table.activities th.sub { padding-left: 25px; }
+  table.activities th.sub_level_2 { padding-left: 35px; }
+  table.activities tbody td {
+    width:9em;
+    text-align:right;
+    padding:.4em 20px .4em 0; }
+  table.activities tbody tr.totals th,
+  table.activities tbody tr.totals td {
+    padding:.2em 10px .2em 15px;
+    border-top: 1px solid #000;
+    font-weight:bold;
+    font-size:1.5em; }
+  table.activities .extra_stats td {
+    text-align:left;
+    padding-left:15px; }
+  table.activities tbody a {text-decoration:none;}
+    table.activities tbody a:hover {text-decoration:underline;}
+
+body#activities ul#exports {
+  list-style:none; }
+  body#activities ul#exports h3 {
+    font-size: .9em;
+    padding-left: 5px;}
+  body#activities ul#exports > li {
+    padding: 10px;}
+    body#activities ul#exports li > a {
+      padding: 4px 0 0 29px;
+      display: block;
+      font-size: 0.9em;
+      background:transparent url(/graphics/porthos/icons/16_export.png) 6px 5px no-repeat; }
+      body#activities ul#exports li ul li {padding-left: 15px;}
