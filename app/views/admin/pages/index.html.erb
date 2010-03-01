@@ -74,7 +74,7 @@
       <% @filters.without(:order_by).each do |filter, value| -%>
         <%= hidden_field_tag "filters[#{filter}]", value %>
       <% end -%>
-        <%= select_tag 'filters[order_by]', options_for_select({ 'Senast ändrad' => 'changed_at', 'Publicerad' => 'published_on', 'A-Z' => 'title asc' }, @filters[:order_by]) %>
+        <%= select_tag 'filters[order_by]', options_for_select({ 'Senast ändrad' => 'changed_at desc', 'Publicerad' => 'published_on', 'A-Z' => 'title asc' }, @filters[:order_by]) %>
         <input type="submit" value="Välj" style="display:none;" id="filters_order_by_submit">
     </div>
     <% end %>
