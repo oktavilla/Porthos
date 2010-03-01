@@ -1,11 +1,10 @@
 <% @page_class = "AB measure-point" -%>
-<h1>Mätpunkt ”<%= @measure_point.name %>” - <%= @measure_point.link_type_name %>
-  <span class="controls"><%= link_to "Ändra", edit_admin_measure_point_path(@measure_point) %></span>
-</h1>
-<div id="content">
-  <div id="c-b">
+<div id="workspace">
+  <div class="header">
+    <h1>Mätpunkt ”<%= @measure_point.name %>” - <%= @measure_point.link_type_name %></h1>
+    <%= link_to "Ändra", edit_admin_measure_point_path(@measure_point), :class => "edit_settings" %>
   </div>
-  <div di="c-a">
+  <div id="content">
     <span class="controls"><%= link_to "Tillbaka till #{@measure_point.campaign.name}", admin_campaign_path(@measure_point.campaign) %></span>
     <table>
       <tr>

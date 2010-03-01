@@ -59,6 +59,8 @@ body {
   #users .users_index a,
   #assets .assets_index a,
   #pages .pages_index a,
+  #campaigns .campaigns_index a,
+  #measure_points .campaigns_index a,
   #activities .activities_index a,
   #link_lists .link_lists_index a {color:#fff;}
     #main_nav .groups_index a        {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -50px no-repeat;}
@@ -66,6 +68,7 @@ body {
     #main_nav .nodes_index a         {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -280px no-repeat;}
     #main_nav .assets_index a        {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -130px no-repeat;}
     #main_nav .registrations_index a {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -519px no-repeat;}
+    #main_nav .campaigns_index a     {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -579px no-repeat;}
     #main_nav .activities_index a    {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -459px no-repeat;}
     #main_nav .users_index a         {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -358px no-repeat;}    
     #main_nav .link_lists_index a {

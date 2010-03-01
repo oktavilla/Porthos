@@ -1,17 +1,16 @@
+<%  %>
 <% @page_title = "Skapa en ny kampanj" -%>
 <div id="workspace">
-  <div id="c_wrap" class="layout_2">
-    <div id="c_1">
-      <div class="header">
-        <h1>Skapa en ny kampanj</h1>
+  <div class="header">
+    <h1>Skapa en ny kampanj</h1>
+  </div>
+  <div id="content">
+    <% form_for(:campaign, @campaign, :url => admin_campaigns_path) do |f| %>
+      <%= error_messages_for :campaign %>
+      <%= render :partial => 'form', :locals => {:f => f}  %>
+      <div class="submit">
+        <%= f.submit "Skapa kampanj" %> eller <%= link_to "Avbryt", previous_view_path(admin_campaigns_path) %>
       </div>
-      <% form_for(:campaign, @campaign, :url => admin_campaigns_path) do |f| %>
-        <%= error_messages_for :campaign %>
-        <%= render :partial => 'form', :locals => {:f => f}  %>
-        <div class="submit">
-          <%= f.submit "Skapa kampanj" %> eller <%= link_to "Avbryt", previous_view_path(admin_campaigns_path) %>
-        </div>
-      <% end %>
-    </div>
+    <% end %>
   </div>
 </div>
