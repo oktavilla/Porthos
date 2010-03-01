@@ -166,9 +166,7 @@
   #campaigns.show #c_1 > div.conversions {margin-left:10px;}
 
 .measure_points {
-  color:#666; 
   width:100%; }
-  .measure_points td {padding:10px;}
   .measure_points .details .ref_nr {
     display:block;
     font-weight:bold;
@@ -178,10 +176,6 @@
   .measure_points .details .created_at,
   .measure_points .details .created_by,
   .measure_points .details .updated_at {display:block;}
-  .measure_points .total_clicks,
-  .measure_points .total_conversions,
-  .measure_points .total_roi {
-    text-align:right; }
   .measure_points td.total_clicks,
   .measure_points td.total_conversions,
   .measure_points td.total_roi {
