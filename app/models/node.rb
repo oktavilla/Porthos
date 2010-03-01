@@ -20,9 +20,22 @@
 
 class Node < ActiveRecord::Base
   belongs_to :resource, :polymorphic => true
+  
+  accepts_nested_attributes_for :resource
 
   def resource_type=(r_type)
      super(r_type.to_s.classify.constantize.base_class.to_s)
+  end
+  
+  # Hack to make nested attributes for polymorphic relations
+  def resource=(in_resource)
+    if in_resource.is_a?(HashWithIndifferentAccess)
+      in_resource.each do |key, value|
+        self.resource[key] = value
+      end
+    else
+      super(in_resource)
+    end
   end
 
   validates_presence_of :name, :controller, :action
