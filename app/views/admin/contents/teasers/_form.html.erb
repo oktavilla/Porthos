@@ -1,14 +1,24 @@
+<%= f.hidden_field :context_id %>
+<%= f.hidden_field :context_type %>
 <%= f.hidden_field :parent_id, { :value => content.id } %>
+<%= f.hidden_field :column_position %>
 <%= f.hidden_field :resource_type, { :value => 'Teaser' } %>
-<% fields_for :teaser do |teaser| %>
-  <label for="content_<%= content.id %>_teaser_title">Rubrik</label>
-  <%= teaser.text_field :title, :id => "content_#{content.id}_teaser_title" %>
-  <label for="content_<%= content.id %>_teaser_body">Text</label>
-  <%= teaser.text_area :body, :id => "content_#{content.id}_teaser_body" %>
-  <label for="content_<%= content.id %>_display_type">Typ</label>
-  <%= teaser.select :display_type, Teaser::DISPLAY_TYPES %>
-  <label for="content_<%= content.id %>_css_class">CSS-klass</label>
-  <%= teaser.text_field :css_class %>
-  <label for="content_<%= content.id %>_file">Bild</label>
-  <%= teaser.file_field :file, :size => "15", :class => "file" %>
+<% fields_for :resource do |resource| %>
+  <label for="content_<%= content.id %>_resource_title">Rubrik</label>
+  <div class="fullwidthinput">
+    <%= resource.text_field :title, :id => "content_#{content.id}_resource_title", :class => 'title' %>
+  </div>
+  <label for="content_<%= content.id %>_resource_body">Text</label>
+  <label for="resource_filter">
+    Filter: 
+    <%= resource.select :filter, Teaser.filters %>
+  </label>
+  <div class="fullwidthinput">
+    <%= resource.text_area :body, :id => "editor", :class => content.resource.filter, :rows => 5 %>
+  </div>
+  <label for="resource_display_type">Typ</label>
+  <%= resource.select :display_type, Teaser::DISPLAY_TYPES.collect { |key, value| [t(key, :scope => [:app, :teasers, :types]), value] } %>
+  <label for="resource_css_class">CSS-klass</label>
+  <%= resource.select :css_class, Teaser::CSS_CLASSES %>
 <% end %>
+<%= render :partial => 'admin/contents/restriction_settings', :locals => { :content => content }%>

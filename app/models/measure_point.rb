@@ -27,9 +27,10 @@ class MeasurePoint < ActiveRecord::Base
   
   before_create :create_public_id
   
-  composed_of :cost, :class_name => "Money", :mapping => %w(cost cents) do |cost|
-    cost.to_money
-  end
+  composed_of :cost,
+              :class_name => "Money",
+              :mapping => %w(cost cents),
+              :converter => Proc.new { |cost| cost.to_money }
   
   def link_type_name
     t(LINK_TYPES.index(link_type), :scope => [:app, :measure_point, :link_types] ) rescue ''

@@ -52,7 +52,7 @@ class Page < ActiveRecord::Base
     { :conditions => ["parent_id = ? ", parent_id] }
   }
   named_scope :filter_order_by, lambda { |order|
-    { :order => "#{order} desc" }
+    { :order => order }
   }
   named_scope :filter_active, lambda { |active|
     { :conditions => ["active = ?", active] }
@@ -74,15 +74,16 @@ class Page < ActiveRecord::Base
   #acts_as_defensio_article :fields => { :title => :title, :content => :body }
   
   is_indexed({
-    :fields => ['title', 'description', 'slug', 'type'],
+    :fields => ['title', 'description', 'slug', 'type', 'rendered_body'],
     :concatenate => [{
-      :class_name => 'Textfield', :field => 'body', :as => 'body', 
-      :association_sql => "LEFT OUTER JOIN contents ON (pages.id = contents.page_id AND contents.active = 1) LEFT OUTER JOIN textfields ON (textfields.id = contents.resource_id AND contents.resource_type = 'Textfield')"
+      :class_name => 'Tag', :field => 'name', :as => 'tags', 
+      :association_sql => "LEFT OUTER JOIN taggings ON (pages.id = taggings.taggable_id AND taggings.taggable_type = 'Page') LEFT OUTER JOIN tags ON (tags.id = taggings.tag_id)"
     }],
     :include => [{
       :association_name => 'node', :field => 'status', :as => 'node_status', 
       :association_sql => "LEFT OUTER JOIN nodes AS node ON (pages.id = node.resource_id AND node.resource_type = 'Page')"
-    }], :conditions => "pages.active = 1 AND node.status != -1"
+    }],
+    :conditions => "pages.active = 1 AND node.status != -1"
   })
   
   

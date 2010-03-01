@@ -2,38 +2,15 @@
 <% @page_class = 'layout3' -%>
 <%= render :partial => 'admin/pages/sub_nav' %>
 <div id="workspace">
-  <% if @current_tags.any? -%>
   <div class="header">
-    <h1>Sidor märkta med: <%= @current_tags.join(', ')%></h1>
-    <% if @current_tags.any? and @related_tags.any? -%>
-    <div class="related_tags">
-    <% @related_tags.each do |tag| -%>
-      <span class="tag"><%= link_to tag.name, admin_pages_path(:tags => @current_tags + [tag.name]), :class => "tag" %></span>
-    <% end -%>
-    </div>
-    <% end -%>
-  </div>
-  <% else %>
-  <div class="header">
-    <h1>Sidor</h1>
+    <h1>Sökresultat för ”<%= @query %>”</h1>
   </div>
   <div class="tools">
     <div class="add">
       <%= link_to "Skapa en ny sida", (!@filters[:with_parent] ? new_admin_page_path : new_admin_page_path(:page => { :parent_id => @filters[:with_parent], :parent_type => 'Page' })), :class => 'new' %>
       <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'new' if current_user.can_create?(PageCollection) %>
     </div>
-    <% form_tag admin_pages_path, :method => :get do |f| %>
-    <div class="sort">
-      <label for="filters_order_by">Sortering:</label>
-      <% @filters.without(:order_by).each do |filter, value| -%>
-        <%= hidden_field_tag "filters[#{filter}]", value %>
-      <% end -%>
-        <%= select_tag 'filters[order_by]', options_for_select({ 'Senast ändrad' => 'changed_at', 'Publicerad' => 'published_on', 'A-Z' => 'title asc' }, @filters[:order_by]) %>
-        <input type="submit" value="Välj" style="display:none;" id="filters_order_by_submit">
-    </div>
-    <% end %>
   </div>
-  <% end %>
   <div id="content">
     <ul class="items">
     <% @pages.each do |page| %>

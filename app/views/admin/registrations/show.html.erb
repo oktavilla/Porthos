@@ -107,7 +107,7 @@
       <ul>
         <% @registration.related_registrations.each do |registration| %>
         <li>
-          <span class="status <%= registration.humanized_status[:class] %>"><%= link_to "#{registration.id}", formatted_admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></span>
+          <span class="status <%= registration.humanized_status[:class] %>"><%= link_to "#{registration.id}", admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></span>
           <span class="type"><%= registration.class.human_name %></span>
         </li>
         <% end %>
