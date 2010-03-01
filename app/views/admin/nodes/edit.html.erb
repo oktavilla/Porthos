@@ -5,7 +5,7 @@
   </div>
   <div id="content">
     <%= error_messages_for :node %>
-    <% form_for :node, :url => admin_node_path(@node, :return_to => params[:return_to]), :html => { :method => :put, :class => "tiny" } do |f| %>
+    <% form_for :node, :url => admin_node_path(@node), :html => { :method => :put, :class => "tiny" } do |f| %>
       <label for="node_name">Namn i navigationen</label>
       <%= f.text_field :name, :class => "title" %>
       <label for="node_restricted" class="contains-input">
