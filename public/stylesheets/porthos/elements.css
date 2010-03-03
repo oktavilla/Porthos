@@ -32,24 +32,24 @@ a img { border:none; }
 a:focus { outline:none }
 p {}
 
-table.simple {
+table {
   margin-bottom:10px;
   border-collapse:collapse;
   font-size:12px; }
-  .simple th,
-  .simple td {
+  th,
+  td {
     vertical-align:top;
     text-align:left;
     padding:7px 10px; }
-  .simple th {
+  th {
     background:rgba(55, 128, 199, 0.046875);
     font-weight:bold; }
-  .simple td {}
-  .simple tr:nth-child(odd) td {
+  td {}
+  tr:nth-child(odd) td {
     background:rgb(248, 249, 249); }
-  .simple tr:hover td {
+  tr:hover td {
     background:rgba(55, 128, 199, 0.046875); }
-  .simple .num { text-align:right; }
+  tr .num { text-align:right; }
 
 strong {
   font-weight:bold;

@@ -18,6 +18,16 @@ Rails::Initializer.run do |config|
 
   config.active_record.observers = :registration_observer, :node_observer
   
+  config.gem 'mime-types',
+              :lib => 'mime/types'
+  config.gem 'chronic'
   config.gem 'RedCloth'
-  config.gem 'mini_magick', :version => '=1.2.5'
+  config.gem 'mini_magick',
+              :version => '=1.2.5'
+  config.gem 'chardet',
+              :lib => 'UniversalDetector'
+  config.gem 'money'
+  config.gem 'will_paginate',
+              :version => '~> 2.3.11',
+              :source => 'http://gemcutter.org'
 end

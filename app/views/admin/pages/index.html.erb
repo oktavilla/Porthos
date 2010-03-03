@@ -41,6 +41,7 @@
       <%= render :partial => 'page', :locals => {:page => page} %>
       </li>
     <% end %>
+    <%= will_paginate @pages %>
     </ul>
   </div>
 </div>
