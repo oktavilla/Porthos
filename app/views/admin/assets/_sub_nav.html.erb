@@ -11,7 +11,7 @@
   <div class="label">Uppladdad av</div>
   <ul class="filter">
     <li<%= ' class="current"' unless @filters[:created_by] %>>
-      <%= link_to "Alla", admin_assets_path(:filters => @filters.without(:created_by)) %>
+      <%= link_to "Alla", admin_assets_path(:filters => @filters.except(:created_by)) %>
     </li>
     <% User.recent_uploaders.each do |user| -%>
       <li<%= ' class="current"' if @filters[:created_by].to_i == user.id %>>

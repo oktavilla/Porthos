@@ -59,7 +59,6 @@ module ActiveRecord
           Tag.find_by_sql(sql)
         end
       
-      private
         def tag_list_from_string(string)
           tag_list = []
           [/\s*#{Tag.delimiter}\s*(['"])(.*?)\1\s*/, /^\s*(['"])(.*?)\1\s*#{Tag.delimiter}?/].each do |exp|
@@ -75,9 +74,9 @@ module ActiveRecord
           tags.collect {|t| t.name }.join(Tag.delimiter)
         end
         
-        def tag_names=(new_tags)
+        def tag_names=(tag_string)
           self.taggings.clear
-          self.class.tag_list_from_string(new_tag).collect(&:strip).each do |name|
+          self.class.tag_list_from_string(tag_string).collect(&:strip).each do |name|
             new_tag = Tag.find_or_create_by_name(name.downcase.strip)
             self.new_record? ? self.taggings.build(:tag_id => new_tag.id) : self.taggings.create(:tag_id => new_tag.id)
           end
