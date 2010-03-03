@@ -75,14 +75,9 @@ class Admin::PagesController < ApplicationController
 
   def create
     @page = Page.new(params[:page])
-    @node = Node.for_page(@page) unless @page.child?
     respond_to do |format|
       if @page.save
-        if @node
-          format.html { @node.save ? redirect_to(place_admin_node_path(@node)) : render(:action => :new) }
-        else
-          format.html { redirect_to admin_page_path(@page) }
-        end
+        format.html { redirect_to admin_page_path(@page) }
       else
         format.html { render :action => :new }
       end

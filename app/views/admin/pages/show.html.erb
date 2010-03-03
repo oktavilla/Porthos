@@ -2,9 +2,10 @@
 <div id="workspace">
   <div class="header">
     <h1><%= @page.title %></h1>
-    <% if not @page.node.nil? %>
+    <% unless @page.node.nil? %>
       <%= link_to "Redigera", edit_admin_node_path(:id => @node, :return_to => request.request_uri), :class => 'edit_settings' %>
     <% else %>
+      <%= link_to "Placera i navigationen", new_admin_node_path(:resource_id => @page.id) %>
       <%= link_to "Redigera", edit_admin_page_path(:id => @page, :return_to => request.request_uri), :class => 'edit_settings' %>
     <% end %>
     <span class="away">
