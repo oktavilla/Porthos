@@ -17,11 +17,13 @@ module Porthos
       session[:last_viewed] = params[:return_to] || request.request_uri
     end
 
-    def previous_view_path(path = '/')
-      if session[:last_viewed] and session[:last_viewed] != request.request_uri
+    def previous_view_path(default_path = '/')
+      if params[:return_to]
+        params[:return_to]
+      elsif session[:last_viewed] and session[:last_viewed] != request.request_uri
         session[:last_viewed]
       else
-        path
+        default_path
       end
     end
 
