@@ -49,10 +49,12 @@ module ActiveRecord
                   in ( select taggings.taggable_id
                        from taggings, tags t
                        where taggings.tag_id = t.id and (LOWER(t.name) IN ( '#{ tag_names.join("','") }' )) 
+                      
                        group by taggings.taggable_id 
                        having count(taggings.taggable_id) = #{ tag_names.size } ) 
                   and t.id = taggings.tag_id 
                   and LOWER(t.name) not in ( '#{ tag_names.join("','") }' )
+                   and taggings.taggable_type = '#{self.class_name}'
                   group by taggings.tag_id 
                   order by #{ options[:order] || 'count desc' }"
           Tag.find_by_sql(sql)
