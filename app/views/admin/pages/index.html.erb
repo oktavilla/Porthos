@@ -41,7 +41,7 @@
       <%= render :partial => 'page', :locals => {:page => page} %>
       </li>
     <% end %>
-    <%= will_paginate @pages %>
+    <%= will_paginate @pages, :prev_label => "« Föregående", :next_label => "Nästa »" unless @current_tags.any? %>
     </ul>
   </div>
 </div>
