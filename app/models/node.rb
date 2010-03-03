@@ -34,7 +34,7 @@ class Node < ActiveRecord::Base
         self.resource[key] = value
       end
     else
-      super(in_resource)
+      resource = in_resource
     end
   end
 
