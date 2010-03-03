@@ -23,7 +23,7 @@ class Admin::AssetsController < ApplicationController
       @per_page = @filters[:per_page]
       Asset.is_public.find_with_filter(@filters)
     else
-      Asset.is_public.find_tagged_with({:tags => params[:tags].join(' '), :order => 'created_at DESC'})
+      Asset.is_public.find_tagged_with({:tags => params[:tags], :order => 'created_at DESC'})
     end
     respond_to do |format|
       format.html

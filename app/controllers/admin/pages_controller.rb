@@ -17,7 +17,7 @@ class Admin::PagesController < ApplicationController
     @pages = unless @current_tags.any?
       Page.find_with_filter(@filters)
     else
-      Page.find_tagged_with({:tags => params[:tags].join(' '), :order => 'created_at DESC'})
+      Page.find_tagged_with({:tags => params[:tags], :order => 'created_at DESC'})
     end
     
     respond_to do |format|
