@@ -24,7 +24,7 @@
       <% form_tag admin_assets_path, :method => :get do |f| %>
       <div class="sort">
         <label for="filters_order_by">Sortering</label>
-        <% @filters.without(:order_by).each do |filter, value| -%>
+        <% @filters.except(:order_by).each do |filter, value| -%>
           <%= hidden_field_tag "filters[#{filter}]", value %>
         <% end -%>
           <%= select_tag 'filters[order_by]', options_for_select({ 'Datum' => 'created_at desc', 'A-Z' => 'title asc', 'Storlek' => 'size' }, @filters[:order_by]) %>

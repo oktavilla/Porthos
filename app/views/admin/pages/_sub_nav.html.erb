@@ -6,7 +6,7 @@
   </div>
   <% end %>
   <ul class="filter">
-    <li<%= ' class="current"' unless @filters[:with_parent] %>><%= link_to "Alla", admin_pages_path(:filters => @filters.without(:with_parent)) %></li>
+    <li<%= ' class="current"' unless @filters[:with_parent] %>><%= link_to "Alla", admin_pages_path(:filters => @filters.except(:with_parent)) %></li>
     <% PageCollection.all.each do |page_collection| -%>
     <li<%= ' class="current"' if @filters[:with_parent].to_i == page_collection.id %>><%= link_to page_collection.title, admin_pages_path(:filters => @filters.merge(:with_parent => page_collection.id)) %></li>
     <% end -%>
@@ -14,19 +14,19 @@
   <div class="label">Status</div>
   <ul class="filter">
     <li<%= ' class="current"' if !@filters[:active] && !@filters[:with_unpublished_changes] %>>
-      <%= link_to "Alla", admin_pages_path(:filters => @filters.without(:active).without(:with_unpublished_changes)) %>
+      <%= link_to "Alla", admin_pages_path(:filters => @filters.except(:active).except(:with_unpublished_changes)) %>
     </li>
     <li<%= ' class="current"' if @filters[:active]%>>
-      <%= link_to "Utkast", admin_pages_path(:filters => @filters.without(:with_unpublished_changes).merge(:active => 0)) %> (<%= Page.inactive.count %>)
+      <%= link_to "Utkast", admin_pages_path(:filters => @filters.except(:with_unpublished_changes).merge(:active => 0)) %> (<%= Page.inactive.count %>)
     </li>
     <li<%= ' class="current"' if @filters[:with_unpublished_changes]%>>
-      <%= link_to "Opublicerade ändringar", admin_pages_path(:filters => @filters.without(:active).merge(:with_unpublished_changes => '')) %> (<%= Page.filter_with_unpublished_changes.count %>)
+      <%= link_to "Opublicerade ändringar", admin_pages_path(:filters => @filters.except(:active).merge(:with_unpublished_changes => '')) %> (<%= Page.filter_with_unpublished_changes.count %>)
     </li>
   </ul>
   <div class="label">Senast ändrad av</div>
   <ul class="filter">
     <li<%= ' class="current"' unless @filters[:updated_by] %>>
-      <%= link_to "Alla", admin_pages_path(:filters => @filters.without(:updated_by)) %>
+      <%= link_to "Alla", admin_pages_path(:filters => @filters.except(:updated_by)) %>
     </li>
     <% User.recent_contributers.each do |user| -%>
       <li<%= ' class="current"' if @filters[:updated_by].to_i == user.id %>>
@@ -37,11 +37,13 @@
 <% if @tags && @tags.any? -%>
   <div class="label">Nyckelord</div>
   <ul class="tags">
-  <% @tags.sort_by(&:name).group_by { |tag| tag.name[0...1].upcase }.each do |first_letter, tags| -%>
-    <li>
-      <span class="letter"><%= first_letter %></span>
-      <%= tags.collect { |tag| link_to("#{tag.name.downcase}", admin_pages_path(:tags => [tag.name]), :class => "tag#{ ' current' if @current && @current_tags.include?(tag.name)}") }.join(', ') -%>
-    </li>
-  <% end -%>
+    <% @tags.sort_by(&:name).group_by { |tag| tag.name[0...1].upcase }.each do |first_letter, tags| -%>
+      <li>
+        <span class="letter"><%= first_letter %></span>
+        <% tags.each do |tag| -%>
+          <%= !@current_tags.include?(tag.name) ? link_to("#{tag.name.downcase}", admin_pages_path(:tags => (params[:tags] || []).dup.push(tag.name)), :class => 'tag') : link_to("#{tag.name.downcase}", admin_pages_path(:tags => (params[:tags].dup - [tag.name])), :class => 'tag current') -%><%= ', ' unless tag == tags.last -%>
+        <% end -%>
+      </li>
+    <% end -%>
   </ul><% end -%>
 </div>

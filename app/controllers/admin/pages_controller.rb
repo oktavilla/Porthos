@@ -4,11 +4,11 @@ class Admin::PagesController < ApplicationController
 
   def index
     
-    @filters = Porthos::Filter.new({
+    @filters = {
       :order_by => 'changed_at desc',
       :page     => (params[:page] || 1),
       :per_page => (params[:per_page] || 25)
-    }.merge(params[:filters] || {}))
+    }.merge(params[:filters] || {}).to_options
 
     @tags = Tag.on('Page').popular.find(:all, :limit => 30)
     @current_tags = params[:tags] || []
@@ -26,9 +26,9 @@ class Admin::PagesController < ApplicationController
   end
 
   def search
-    @filters = Porthos::Filter.new({
+    @filters = {
       :order_by => 'changed_at'
-    }.merge(params[:filters] || {}))
+    }.merge(params[:filters] || {}).to_options
     
     @query = params[:query] 
     @page  = params[:page] || 1

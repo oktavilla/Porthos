@@ -12,7 +12,7 @@ module Admin::AssetsHelper
       })
     end
     asset_links.unshift(content_tag('li', content_tag('a', 'Alla filer', {
-      :href => admin_assets_path(:filters => filters.without(:by_type))
+      :href => admin_assets_path(:filters => filters.except(:by_type))
     }), {
       :class => (filters[:by_type].nil? ? 'current' : '')
     }))
