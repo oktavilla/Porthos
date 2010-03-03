@@ -32,10 +32,13 @@
         </li>
       </ul>
       <% if @node.resource and @node.resource.is_a?(Page) %>
-        <% f.fields_for :resource, @node.resource do |resource_fields| %>
-          <%= render :partial => 'admin/pages/form', :locals => {:f => resource_fields} %>
+      <fieldset>
+        <% f.fields_for :resource_attributes, @node.resource do |resource| %>
+          <%= resource.hidden_field :id %>
+          <%= render :partial => 'admin/pages/form', :locals => {:f => resource} %>
         <% end %>
       <% end %>
+      </fieldset>
       <div class="submit">
         <%= submit_tag 'Spara ändringar' %> eller <%= link_to "avbryt", previous_view_path(admin_nodes_path(:nodes => @node)) %>
       </div>
