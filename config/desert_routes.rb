@@ -34,7 +34,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.login  '/login',  :controller => 'admin/sessions', :action => 'new'
     admin.logout '/logout', :controller => 'admin/sessions', :action => 'destroy'
     admin.resources :sessions, :collection => { :token => :get }
-    admin.dashboard '/', :controller => 'nodes'
+    admin.dashboard '/', :controller => 'pages'
 
     admin.resources :users, :collection => { :admins => :get, :public => :get, :new_public => :get, :search => :get }
 
