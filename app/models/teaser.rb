@@ -37,17 +37,18 @@ class Teaser < ActiveRecord::Base
   ]
   cattr_accessor :display_types
   
+  def image_size
+    @image_size ||= display_types[display_type.to_i][:image_size]
+  end
+  
   self.class_eval do
-    
-    define_method(:image_size) do
-      self.display_types[read_attribute(:display_type).to_i][:image_size]
-    end
-    
+        
     display_types.each do |_type|
       define_method("#{_type[:key]}?".to_sym) do
         self.display_types[read_attribute(:display_type).to_i][:key] == _type[:key]
       end
     end
+    
   end
     
   @@css_classes = ['light_magenta', 'light_cyan', 'light_green',

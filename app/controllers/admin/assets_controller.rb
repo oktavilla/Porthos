@@ -13,17 +13,17 @@ class Admin::AssetsController < ApplicationController
   # GET /assets.xml
   def index
     
-    @filters = Porthos::Filter.new({
+    @filters = {
       :order_by => 'created_at desc',
       :page     => (params[:page] || 1),
       :per_page => (params[:per_page] || 20)
-    }.merge(params[:filters] || {}))
+    }.merge(params[:filters] || {}).to_options
     
     @assets = unless @current_tags.any?
       @per_page = @filters[:per_page]
       Asset.is_public.find_with_filter(@filters)
     else
-      Asset.is_public.find_tagged_with({:tags => params[:tags].join(' '), :order => 'created_at DESC'})
+      Asset.is_public.find_tagged_with({:tags => params[:tags], :order => 'created_at DESC'})
     end
     respond_to do |format|
       format.html
@@ -67,7 +67,7 @@ class Admin::AssetsController < ApplicationController
 
   # GET /assets/new
   def new
-    @filters = Porthos::Filter.new
+    @filters = {}
     @asset = Asset.new
     respond_to do |format|
       format.html

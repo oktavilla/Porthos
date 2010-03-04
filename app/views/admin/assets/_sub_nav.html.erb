@@ -11,7 +11,7 @@
   <div class="label">Uppladdad av</div>
   <ul class="filter">
     <li<%= ' class="current"' unless @filters[:created_by] %>>
-      <%= link_to "Alla", admin_assets_path(:filters => @filters.without(:created_by)) %>
+      <%= link_to "Alla", admin_assets_path(:filters => @filters.except(:created_by)) %>
     </li>
     <% User.recent_uploaders.each do |user| -%>
       <li<%= ' class="current"' if @filters[:created_by].to_i == user.id %>>
@@ -25,7 +25,9 @@
   <% @tags.sort_by(&:name).group_by { |tag| tag.name[0...1].upcase }.each do |first_letter, tags| -%>
     <li>
       <span class="letter"><%= first_letter %></span>
-      <%= tags.collect { |tag| link_to("#{tag.name.downcase}", admin_assets_path(:tags => [tag.name]), :class => "tag#{ ' current' if @current_tags.include?(tag.name)}") }.join(', ') -%>
+      <% tags.each do |tag| -%>
+        <%= !@current_tags.include?(tag.name) ? link_to("#{tag.name.downcase}", admin_assets_path(:tags => (params[:tags] || []).dup.push(tag.name)), :class => 'tag') : link_to("#{tag.name.downcase}", admin_assets_path(:tags => (params[:tags].dup - [tag.name])), :class => 'tag current') -%><%= ', ' unless tag == tags.last -%>
+      <% end -%>
     </li>
   <% end -%>
   </ul>

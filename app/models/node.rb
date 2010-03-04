@@ -27,17 +27,6 @@ class Node < ActiveRecord::Base
      super(r_type.to_s.classify.constantize.base_class.to_s)
   end
   
-  # Hack to make nested attributes for polymorphic relations
-  def resource=(in_resource)
-    if in_resource.is_a?(HashWithIndifferentAccess)
-      in_resource.each do |key, value|
-        self.resource[key] = value
-      end
-    else
-      resource = in_resource
-    end
-  end
-
   validates_presence_of :name, :controller, :action
 
   acts_as_tree :order => 'position', :counter_cache => :children_count

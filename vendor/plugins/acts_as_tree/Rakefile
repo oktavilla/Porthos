@@ -1,22 +1,56 @@
+require 'rubygems'
 require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
 
-desc 'Default: run unit tests.'
-task :default => :test
-
-desc 'Test acts_as_tree plugin.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gem|
+    gem.name = "acts_as_tree"
+    gem.summary = %Q{acts_as_tree as a gem}
+    gem.description = %Q{acts_as_tree as a gem}
+    gem.email = "jim@saturnflyer.com"
+    gem.homepage = "http://github.com/saturnflyer/acts_as_tree"
+    gem.authors = ["David Heinemeier Hansson",'and others']
+    # gem.add_development_dependency "thoughtbot-shoulda"
+    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+  end
+rescue LoadError
+  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
 
-desc 'Generate documentation for acts_as_tree plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
+require 'rake/testtask'
+Rake::TestTask.new(:test) do |test|
+  test.libs << 'lib' << 'test'
+  test.pattern = 'test/**/*_test.rb'
+  test.verbose = true
+end
+
+begin
+  require 'rcov/rcovtask'
+  Rcov::RcovTask.new do |test|
+    test.libs << 'test'
+    test.pattern = 'test/**/*_test.rb'
+    test.verbose = true
+  end
+rescue LoadError
+  task :rcov do
+    abort "RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov"
+  end
+end
+
+task :test => :check_dependencies
+
+task :default => :test
+
+require 'rake/rdoctask'
+Rake::RDocTask.new do |rdoc|
+  if File.exist?('VERSION')
+    version = File.read('VERSION')
+  else
+    version = ""
+  end
+
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'acts_as_tree'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README')
+  rdoc.title = "acts_as_tree #{version}"
+  rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

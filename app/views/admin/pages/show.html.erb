@@ -2,9 +2,10 @@
 <div id="workspace">
   <div class="header">
     <h1><%= @page.title %></h1>
-    <% if not @page.node.nil? %>
+    <% unless @page.node.nil? %>
       <%= link_to "Redigera", edit_admin_node_path(:id => @node, :return_to => request.request_uri), :class => 'edit_settings' %>
     <% else %>
+      <%= link_to "Placera i navigationen", new_admin_node_path(:resource_id => @page.id) %>
       <%= link_to "Redigera", edit_admin_page_path(:id => @page, :return_to => request.request_uri), :class => 'edit_settings' %>
     <% end %>
     <span class="away">
@@ -14,22 +15,26 @@
       <% else %>
         <%= link_to "Lägg till / redigera sidor", admin_page_collection_path(@page) %>
       <% end %>
+      <% if @page.comments.any? -%>
+        <%= link_to 'Kommentarer', comments_admin_page_path(:id => @page), :class => 'comments' %>
+      <% end -%>
     </span>
   </div>
   <% if not @page.active? -%>
   <div class="tools">
     <div class="add">
-      Sida är inte publicerad och syns inte på webbplatsen än. <%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put, :class => 'new' %>
+      Sida är inte publicerad och syns inte på webbplatsen än.
+      <%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put, :class => 'new' %>
     </div>
   </div>
   <% elsif @page.unpublished_changes? -%>
   <div class="tools">
-    <div class="add">Det finns ändringar som inte är publicerade. <%= link_to "Publicera ändringar", publish_admin_page_path(@page), :method => :put, :class => 'new' %></div>
+    <div class="add" id="publish_changes">
+      Det finns ändringar som inte är publicerade.
+      <%= link_to "Publicera ändringar", publish_admin_page_path(@page), :method => :put, :class => 'new publish' %>
+    </div>
   </div>
   <% end -%>
-  <% if @page.comments.any? %>
-    <%= link_to 'Kommentarer', comments_admin_page_path(:id => @page), :class => 'comments' %>
-  <% end %>
   <div id="content">
     <div id="page_<%= @page.id %>" class="page_layout <%= @page.layout_class %>">
     <% (1..@page.column_count).each do |column| -%>

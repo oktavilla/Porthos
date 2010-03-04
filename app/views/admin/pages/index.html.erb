@@ -25,7 +25,7 @@
     <% form_tag admin_pages_path, :method => :get do |f| %>
     <div class="sort">
       <label for="filters_order_by">Sortering:</label>
-      <% @filters.without(:order_by).each do |filter, value| -%>
+      <% @filters.except(:order_by).each do |filter, value| -%>
         <%= hidden_field_tag "filters[#{filter}]", value %>
       <% end -%>
         <%= select_tag 'filters[order_by]', options_for_select({ 'Senast ändrad' => 'changed_at desc', 'Publicerad' => 'published_on', 'A-Z' => 'title asc' }, @filters[:order_by]) %>
@@ -41,7 +41,7 @@
       <%= render :partial => 'page', :locals => {:page => page} %>
       </li>
     <% end %>
-    <%= will_paginate @pages, :prev_label => "« Föregående", :next_label => "Nästa »" unless @current_tags.any? %>
+    <%= will_paginate(@pages) if @pages.respond_to?(:total_pages) %>
     </ul>
   </div>
 </div>

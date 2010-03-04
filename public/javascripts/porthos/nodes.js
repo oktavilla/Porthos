@@ -1,7 +1,5 @@
 (function(){
-  Porthos.namespace('Porthos.Nodes');
-
-  Porthos.Nodes.init = function(element, options) {
+  Porthos.nodes = function(element, options) {
     this.element = $(element);
     this.options = Object.extend({
       sortable : true
@@ -76,10 +74,11 @@
       }
     };
     
-    this.element.select('a.toggle_handle').invoke('observe', 'click', this.observeToggle.bindAsEventListener(this));
+    this.element.select('a.toggle_handle')
+    .invoke('observe', 'click', this.observeToggle.bindAsEventListener(this));
   };
   
   document.observe('dom:loaded', function() {
-    Porthos.Nodes.init('navigation');
+    Porthos.nodes('navigation');
   });
 })();

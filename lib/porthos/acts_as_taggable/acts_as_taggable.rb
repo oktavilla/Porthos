@@ -17,8 +17,8 @@ module ActiveRecord
       module SingletonMethods
       
         def find_tagged_with(options = {})
-          tag_list = options.delete(:tags)
-          tag_list = tag_list.split(Tag.delimiter)
+          tags = options.delete(:tags)
+          tag_list = tags.is_a?(String) ? tag_list_from_string(options.delete(:tags)) : tags
           find(:all, options.merge({
             :select => "#{table_name}.*, count(tags.id) AS count",
             :from   => "taggings",
@@ -49,7 +49,6 @@ module ActiveRecord
                   in ( select taggings.taggable_id
                        from taggings, tags t
                        where taggings.tag_id = t.id and (LOWER(t.name) IN ( '#{ tag_names.join("','") }' )) 
-                      
                        group by taggings.taggable_id 
                        having count(taggings.taggable_id) = #{ tag_names.size } ) 
                   and t.id = taggings.tag_id 
@@ -60,23 +59,30 @@ module ActiveRecord
           Tag.find_by_sql(sql)
         end
       
+        def tag_list_from_string(string)
+          tag_list = []
+          [/\s*#{Tag.delimiter}\s*(['"])(.*?)\1\s*/, /^\s*(['"])(.*?)\1\s*#{Tag.delimiter}?/].each do |exp|
+            string.gsub!(exp) { tag_list << $2; "" }
+          end
+          tag_list += string.strip.split(Tag.delimiter).uniq.compact
+        end
       end
       
       module InstanceMethods
+        
         def tag_names
           tags.collect {|t| t.name }.join(Tag.delimiter)
         end
         
-        def tag_names=(new_tags)
+        def tag_names=(tag_string)
           self.taggings.clear
-          new_tags.strip.split(Tag.delimiter).uniq.each do |name|
-            unless name.blank?
-              new_tag = Tag.find_or_create_by_name(name.downcase.strip)
-              self.new_record? ? self.taggings.build(:tag_id => new_tag.id) : self.taggings.create(:tag_id => new_tag.id)
-            end
+          self.class.tag_list_from_string(tag_string).collect(&:strip).each do |name|
+            new_tag = Tag.find_or_create_by_name(name.downcase.strip)
+            self.new_record? ? self.taggings.build(:tag_id => new_tag.id) : self.taggings.create(:tag_id => new_tag.id)
           end
           tags.reload
         end
+        
       end
     end
   end

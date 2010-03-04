@@ -26,7 +26,9 @@ class Admin::NodesController < ApplicationController
   end
 
   def new
-    @node = Node.new
+    @resource = Page.find(params[:resource_id]) if params[:resource_id]
+    @node = @resource ? Node.for_page(@resource) : Node.new
+    @nodes = [Node.root]
     respond_to do |format|
       format.html
     end
@@ -36,7 +38,7 @@ class Admin::NodesController < ApplicationController
     @node = Node.new(params[:node])
     respond_to do |format|
       if @node.save
-        format.html { redirect_to place_admin_node_path(@node) }
+        format.html { redirect_to admin_nodes_path(:nodes => @node) }
       else
         format.html { render :action => 'new' }
       end

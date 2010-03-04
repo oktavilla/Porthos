@@ -4,11 +4,11 @@ class Admin::PagesController < ApplicationController
 
   def index
     
-    @filters = Porthos::Filter.new({
+    @filters = {
       :order_by => 'changed_at desc',
       :page     => (params[:page] || 1),
       :per_page => (params[:per_page] || 25)
-    }.merge(params[:filters] || {}))
+    }.merge(params[:filters] || {}).to_options
 
     @tags = Tag.on('Page').popular.find(:all, :limit => 30)
     @current_tags = params[:tags] || []
@@ -17,7 +17,7 @@ class Admin::PagesController < ApplicationController
     @pages = unless @current_tags.any?
       Page.find_with_filter(@filters)
     else
-      Page.find_tagged_with({:tags => params[:tags].join(' '), :order => 'created_at DESC'})
+      Page.find_tagged_with({:tags => params[:tags], :order => 'created_at DESC'})
     end
     
     respond_to do |format|
@@ -26,9 +26,9 @@ class Admin::PagesController < ApplicationController
   end
 
   def search
-    @filters = Porthos::Filter.new({
+    @filters = {
       :order_by => 'changed_at'
-    }.merge(params[:filters] || {}))
+    }.merge(params[:filters] || {}).to_options
     
     @query = params[:query] 
     @page  = params[:page] || 1
@@ -75,14 +75,9 @@ class Admin::PagesController < ApplicationController
 
   def create
     @page = Page.new(params[:page])
-    @node = Node.for_page(@page) unless @page.child?
     respond_to do |format|
       if @page.save
-        if @node
-          format.html { @node.save ? redirect_to(place_admin_node_path(@node)) : render(:action => :new) }
-        else
-          format.html { redirect_to admin_page_path(@page) }
-        end
+        format.html { redirect_to admin_page_path(@page) }
       else
         format.html { render :action => :new }
       end

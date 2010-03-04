@@ -19,7 +19,7 @@ class Test::Unit::TestCase
   end
 end
 
-ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :dbfile => ":memory:")
+ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 
 # AR keeps printing annoying schema statements
 $stdout = StringIO.new
@@ -30,6 +30,7 @@ def setup_db
     create_table :mixins do |t|
       t.column :type, :string
       t.column :parent_id, :integer
+      t.column :children_count, :integer, :default => 0
     end
   end
 end
@@ -47,6 +48,10 @@ class TreeMixin < Mixin
   acts_as_tree :foreign_key => "parent_id", :order => "id"
 end
 
+class TreeMixinWithCounterCache < Mixin
+  acts_as_tree :foreign_key => "parent_id", :order => "id", :counter_cache => :children_count
+end
+
 class TreeMixinWithoutOrder < Mixin
   acts_as_tree :foreign_key => "parent_id"
 end
@@ -54,6 +59,10 @@ end
 class RecursivelyCascadedTreeMixin < Mixin
   acts_as_tree :foreign_key => "parent_id"
   has_one :first_child, :class_name => 'RecursivelyCascadedTreeMixin', :foreign_key => :parent_id
+end
+
+class TreeMixinNullify < Mixin
+  acts_as_tree :foreign_key => "parent_id", :order => "id", :dependent => :nullify
 end
 
 class TreeTest < Test::Unit::TestCase
@@ -73,16 +82,26 @@ class TreeTest < Test::Unit::TestCase
   end
 
   def test_children
-    assert_equal @root1.children, [@root_child1, @root_child2]
-    assert_equal @root_child1.children, [@child1_child]
-    assert_equal @child1_child.children, []
-    assert_equal @root_child2.children, []
+    assert_equal @root1.reload.children, [@root_child1, @root_child2]
+    assert_equal @root_child1.reload.children, [@child1_child]
+    assert_equal @child1_child.reload.children, []
+    assert_equal @root_child2.reload.children, []
   end
 
   def test_parent
     assert_equal @root_child1.parent, @root1
     assert_equal @root_child1.parent, @root_child2.parent
     assert_nil @root1.parent
+  end
+
+  def test_nullify
+    root4 = TreeMixinNullify.create!
+    root4_child = TreeMixinNullify.create! :parent_id => root4.id
+    assert_equal 2, TreeMixinNullify.count
+    assert_equal root4.id, root4_child.parent_id
+    root4.destroy
+    assert_equal 1, TreeMixinNullify.count
+    assert_nil root4_child.reload.parent_id
   end
 
   def test_delete
@@ -101,7 +120,7 @@ class TreeTest < Test::Unit::TestCase
 
     assert_equal @extra.parent, @root1
 
-    assert_equal 3, @root1.children.size
+    assert_equal 3, @root1.reload.children.count
     assert @root1.children.include?(@extra)
     assert @root1.children.include?(@root_child1)
     assert @root1.children.include?(@root_child2)
@@ -146,8 +165,37 @@ class TreeTest < Test::Unit::TestCase
     assert_equal [@root_child1, @root_child2], @root_child2.self_and_siblings
     assert_equal [@root1, @root2, @root3], @root2.self_and_siblings
     assert_equal [@root1, @root2, @root3], @root3.self_and_siblings
-  end           
+  end
+  
 end
+
+class TreeTestWithCounterCache < Test::Unit::TestCase
+  def setup
+    teardown_db
+    setup_db
+    @root = TreeMixinWithCounterCache.create!
+    @child1 = TreeMixinWithCounterCache.create! :parent_id => @root.id
+    @child1_child1 = TreeMixinWithCounterCache.create! :parent_id => @child1.id
+    @child2 = TreeMixinWithCounterCache.create! :parent_id => @root.id
+  end
+  
+  def teardown
+    teardown_db
+  end
+  
+  def test_counter_cache
+    assert_equal 2, @root.reload.children_count
+    assert_equal 1, @child1.reload.children_count
+  end
+  
+  def test_update_parents_counter_cache
+    @child1_child1.update_attributes(:parent_id => @root.id)
+    assert_equal 3, @root.reload.children_count
+    assert_equal 0, @child1.reload.children_count
+  end
+  
+end
+
 
 class TreeTestWithEagerLoading < Test::Unit::TestCase
   
@@ -175,9 +223,9 @@ class TreeTestWithEagerLoading < Test::Unit::TestCase
     roots = TreeMixin.find(:all, :include => :children, :conditions => "mixins.parent_id IS NULL", :order => "mixins.id")
     assert_equal [@root1, @root2, @root3], roots                     
     assert_no_queries do
-      assert_equal 2, roots[0].children.size
-      assert_equal 0, roots[1].children.size
-      assert_equal 0, roots[2].children.size
+      assert_equal 2, roots[0].children.count
+      assert_equal 0, roots[1].children.count
+      assert_equal 0, roots[2].children.count
     end   
   end
   

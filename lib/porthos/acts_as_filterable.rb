@@ -1,15 +1,5 @@
 module Porthos
 
-  class Filter < HashWithIndifferentAccess
-  
-    def without(key)
-      new_filter = Filter.new(self.dup)
-      new_filter.delete(key)
-      new_filter
-    end
-    
-  end
-
   module ActsAsFilterable
 
     def self.included(base)
