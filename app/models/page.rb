@@ -101,7 +101,7 @@ class Page < ActiveRecord::Base
     if !changes_published_at.nil? && !changed_at.nil?
       changed_at > changes_published_at
     else
-      true
+      !changed_at.nil?
     end
   end
 
