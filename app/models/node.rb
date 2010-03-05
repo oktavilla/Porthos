@@ -27,12 +27,13 @@ class Node < ActiveRecord::Base
      super(r_type.to_s.classify.constantize.base_class.to_s)
   end
   
+  before_validation :generate_slug
+  validates_uniqueness_of :slug
   validates_presence_of :name, :controller, :action
 
   acts_as_tree :order => 'position', :counter_cache => :children_count
   acts_as_list :scope => 'parent_id', :column => 'position', :order => 'position'
 
-  before_save :generate_slug
   after_save  :generate_slug_for_children
   after_destroy :destroy_children, :destroy_resource
   

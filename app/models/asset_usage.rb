@@ -1,17 +1,3 @@
-# == Schema Information
-# Schema version: 76
-#
-# Table name: asset_usages
-#
-#  id            :integer(11)   not null, primary key
-#  asset_id      :integer(11)   
-#  resource_id   :integer(11)   
-#  resource_type :string(255)   
-#  position      :integer(11)   
-#  created_at    :datetime      
-#  updated_at    :datetime      
-#
-
 class AssetUsage < ActiveRecord::Base
   belongs_to :parent, :polymorphic => true
   belongs_to :asset

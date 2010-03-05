@@ -20,7 +20,6 @@ class Admin::SessionsController < ApplicationController
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
       redirect_back_or_default('/admin')
-      flash[:notice] = t(:logged_in, :scope => [:app, :admin_general])
     else
       flash[:notice] = t(:login_failed, :scope => [:app, :admin_general])
       render :action => 'new'

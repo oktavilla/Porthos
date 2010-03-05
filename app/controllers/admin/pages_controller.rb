@@ -3,14 +3,14 @@ class Admin::PagesController < ApplicationController
   before_filter :login_required
 
   def index
-    
     @filters = {
       :order_by => 'changed_at desc',
       :page     => (params[:page] || 1),
-      :per_page => (params[:per_page] || 25)
-    }.merge(params[:filters] || {}).to_options
+      :per_page => (params[:per_page] || 25),
+      :with_parent => ''
+    }.merge((params[:filters] || {}).to_options).to_options
 
-    @tags = Tag.on('Page').popular.find(:all, :limit => 30)
+    @tags = Tag.on('Page')
     @current_tags = params[:tags] || []
     @related_tags = @current_tags.any? ? Page.find_related_tags(@current_tags) : []
     
@@ -19,7 +19,6 @@ class Admin::PagesController < ApplicationController
     else
       Page.find_tagged_with({:tags => params[:tags], :order => 'created_at DESC'})
     end
-    
     respond_to do |format|
       format.html
     end

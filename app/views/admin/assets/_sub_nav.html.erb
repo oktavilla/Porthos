@@ -13,9 +13,9 @@
     <li<%= ' class="current"' unless @filters[:created_by] %>>
       <%= link_to "Alla", admin_assets_path(:filters => @filters.except(:created_by)) %>
     </li>
-    <% User.recent_uploaders.each do |user| -%>
+    <% User.recent_uploaders.sort_by(&:first_name).each do |user| -%>
       <li<%= ' class="current"' if @filters[:created_by].to_i == user.id %>>
-        <%= link_to user.name, admin_assets_path(:filters => @filters.merge(:created_by => user.id)) %>
+        <%= link_to user.short_name, admin_assets_path(:filters => @filters.merge(:created_by => user.id)) %>
       </li>
     <% end -%>
   </ul>

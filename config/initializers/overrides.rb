@@ -111,7 +111,7 @@ class Money
   # 
   # Alternativly you can use the convinience methods like 
   # Money.ca_dollar and Money.us_dollar 
-  def initialize(cents, currency = default_currency)
+  def initialize(cents, currency = Money.default_currency)
     @cents    = cents.to_f.round
     @currency = currency
   end
