@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
   end
   
   def short_name
-    "#{first_name} #{last_name[0...1]}."
+    "#{first_name} #{!last_name.blank? ? last_name[0...1]+'.' : ''}"
   end
   
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
