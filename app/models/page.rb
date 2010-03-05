@@ -51,8 +51,12 @@ class Page < ActiveRecord::Base
     ]
   }}
 
-  named_scope :created_latest, :order => 'created_at DESC'
-  named_scope :updated_latest, :conditions => 'changed_at > created_at', :order => 'changed_at DESC'
+  
+  named_scope :created_latest, 
+              :order => 'created_at DESC'
+  named_scope :updated_latest, 
+              :conditions => 'changed_at > created_at', 
+              :order => 'changed_at DESC'
 
   named_scope :filter_created_by, lambda { |user_id| {
     :conditions => ["created_by_id = ?", user_id]
@@ -60,9 +64,9 @@ class Page < ActiveRecord::Base
   named_scope :filter_updated_by, lambda { |user_id| {
     :conditions => ["updated_by_id = ?", user_id]
   }}
-  named_scope :filter_with_parent, lambda { |parent_id| {
-    :conditions => ["parent_id = ? ", parent_id]
-  }}
+  named_scope :filter_with_parent, lambda { |parent_id|
+    !parent_id.blank? ? { :conditions => ["parent_id = ? ", parent_id] } : { :conditions => ["parent_id IS NULL"] }
+  }
   named_scope :filter_order_by, lambda { |order| {
     :order => order
   }}
