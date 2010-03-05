@@ -60,6 +60,10 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
   
+  def short_name
+    "#{first_name} #{last_name[0...1]}."
+  end
+  
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(login, password)
     u = find(:first, :conditions => ["login = ? or email = ?", login, login]) # need to get the salt
