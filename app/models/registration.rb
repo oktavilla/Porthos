@@ -66,29 +66,29 @@ class Registration < ActiveRecord::Base
   
   is_indexed({
     :fields => ['public_id', 'payment_transaction_id', 'dispatch_id'],
-    :concatenate => [
-      {
-        :fields => [
-          'first_name', 'last_name', 'civic_number', 'customer_number',
-          'email', 'phone', 'cell_phone',
-          'address', 'co_address', 'post_code', 'locality', 'country',
-          'shipping_first_name', 'shipping_last_name',
-          'shipping_address', 'shipping_co_address', 'shipping_post_code', 'shipping_locality', 'shipping_country'
-        ],
-        :as => 'person'
-      }, {
-        :fields => [
-          'organization',
-          'department',
-          'organization_number',
-          'school'
-        ],
-        :as => 'organization'
-      }, {
+    :concatenate => [{
+      :fields => [
+        'first_name', 'last_name', 'civic_number', 'customer_number',
+        'email', 'phone', 'cell_phone',
+        'address', 'co_address', 'post_code', 'locality', 'country',
+        'shipping_first_name', 'shipping_last_name',
+        'shipping_address', 'shipping_co_address', 'shipping_post_code', 'shipping_locality', 'shipping_country'
+      ],
+      :as => 'person'
+    }, {
+      :fields => [
+        'organization',
+        'department',
+        'organization_number',
+        'school'
+      ],
+      :as => 'organization'
+    }, {
       :association_name => 'conversion',
       :field => 'measure_point_id',
       :as => 'campaign_measure_point_id'
-    }]
+    }],
+    :delta => true
   })
                          
   

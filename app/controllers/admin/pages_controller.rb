@@ -10,7 +10,7 @@ class Admin::PagesController < ApplicationController
       :per_page => (params[:per_page] || 25)
     }.merge(params[:filters] || {}).to_options
 
-    @tags = Tag.on('Page').popular.find(:all, :limit => 30)
+    @tags = Tag.on('Page')
     @current_tags = params[:tags] || []
     @related_tags = @current_tags.any? ? Page.find_related_tags(@current_tags) : []
     

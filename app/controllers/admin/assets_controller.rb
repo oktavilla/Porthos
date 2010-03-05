@@ -159,7 +159,7 @@ class Admin::AssetsController < ApplicationController
 protected
 
   def find_tags
-    @tags = Tag.on('Asset').popular.find(:all, :limit => 30)
+    @tags = Tag.on('Asset')
     @current_tags = params[:tags] || []
     @related_tags = @current_tags.any? ? Asset.find_related_tags(@current_tags) : []
   end
