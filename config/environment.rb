@@ -22,6 +22,7 @@ Rails::Initializer.run do |config|
               :lib => 'mime/types'
   config.gem 'chronic'
   config.gem 'RedCloth'
+  config.gem 'hpricot'
   config.gem 'mini_magick',
               :version => '=1.2.5'
   config.gem 'chardet',
