@@ -88,25 +88,14 @@ class Page < ActiveRecord::Base
   #acts_as_defensio_article :fields => { :title => :title, :content => :body }
   
   is_indexed({
-    :fields => ['title', 'description', 'slug', 'type', 'rendered_body'],
+    :fields => ['title', 'description', 'rendered_body'],
     :concatenate => [{
       :class_name => 'Tag', :field => 'name', :as => 'tags', 
       :association_sql => "LEFT OUTER JOIN taggings ON (pages.id = taggings.taggable_id AND taggings.taggable_type = 'Page') LEFT OUTER JOIN tags ON (tags.id = taggings.tag_id)"
     }],
-    :include => [{
-      :association_name => 'node', :field => 'status', :as => 'node_status', 
-      :association_sql => "LEFT OUTER JOIN nodes AS node ON (pages.id = node.resource_id AND node.resource_type = 'Page')"
-    }],
-    :conditions => "pages.active = 1 AND node.status != -1"
+    :delta => { :field => 'changed_at' }
   })
-  
-  
-  attr_accessor :preset_id
-  
-  def body
-    contents.collect {|c| c.resource.body if c.resource_type == 'Textfield' }.join
-  end
-  
+    
   def published?
     published_on <= Time.now.end_of_day
   end
@@ -142,14 +131,6 @@ class Page < ActiveRecord::Base
       else
         slug
       end
-    end
-  end
-
-  class << self
-    def available_filters
-      self.scopes.keys.map { |m| m.to_s }.select do |m|
-        m =~ /^filter_/
-      end.map { |m| m[7..-1].to_sym }
     end
   end
 
