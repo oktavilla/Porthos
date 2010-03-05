@@ -8,7 +8,7 @@ class Admin::PagesController < ApplicationController
       :page     => (params[:page] || 1),
       :per_page => (params[:per_page] || 25),
       :with_parent => ''
-    }.merge(params[:filters].to_options || {}).to_options
+    }.merge((params[:filters] || {}).to_options).to_options
 
     @tags = Tag.on('Page')
     @current_tags = params[:tags] || []
