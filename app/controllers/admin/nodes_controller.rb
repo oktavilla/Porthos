@@ -40,6 +40,9 @@ class Admin::NodesController < ApplicationController
       if @node.save
         format.html { redirect_to admin_nodes_path(:nodes => @node) }
       else
+        @resource = @node.resource
+        @nodes = [Node.root]
+        @open_nodes = [@node]
         format.html { render :action => 'new' }
       end
     end
