@@ -263,7 +263,7 @@ module ApplicationHelper
           :full_render => options[:full_render]
         })
       else
-        "<"+"%= render(:partial => #{content.public_template}, :locals => { :page => @page, :content => Content.find(#{content.id}) }) %"+">"
+        "<"+"%= render(:partial => '#{content.public_template}', :locals => { :page => @page, :content => Content.find(#{content.id}) }) %"+">"
       end
     end
   end

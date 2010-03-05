@@ -54,6 +54,8 @@ class Content < ActiveRecord::Base
       "/pages/contents/#{resource_type.underscore.pluralize}/collection"
     elsif form?
       "/pages/contents/registration_forms/#{resource.template}"
+    elsif module?
+      "/pages/contents/modules/#{resource.template}/content.html.erb"
     else
       "/pages/contents/#{resource_type.underscore.pluralize}/#{resource_type.underscore}"
     end

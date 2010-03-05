@@ -6,7 +6,7 @@
   </div>
   <% end %>
   <ul class="filter">
-    <li<%= ' class="current"' unless @filters[:with_parent] %>><%= link_to "Alla", admin_pages_path(:filters => @filters.except(:with_parent)) %></li>
+    <li<%= ' class="current"' if @filters[:with_parent].blank? %>><%= link_to "Alla", admin_pages_path(:filters => @filters.merge(:with_parent => '')) %></li>
     <% PageCollection.all.each do |page_collection| -%>
     <li<%= ' class="current"' if @filters[:with_parent].to_i == page_collection.id %>><%= link_to page_collection.title, admin_pages_path(:filters => @filters.merge(:with_parent => page_collection.id)) %></li>
     <% end -%>
