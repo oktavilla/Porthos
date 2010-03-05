@@ -5,13 +5,6 @@
   <% if @current_tags.any? -%>
   <div class="header">
     <h1>Sidor märkta med: <%= @current_tags.join(', ')%></h1>
-    <% if @current_tags.any? and @related_tags.any? -%>
-    <div class="related_tags">
-    <% @related_tags.each do |tag| -%>
-      <span class="tag"><%= link_to tag.name, admin_pages_path(:tags => @current_tags + [tag.name]), :class => "tag" %></span>
-    <% end -%>
-    </div>
-    <% end -%>
   </div>
   <% else %>
   <div class="header">
