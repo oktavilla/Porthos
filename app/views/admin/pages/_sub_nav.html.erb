@@ -28,7 +28,7 @@
     <li<%= ' class="current"' unless @filters[:updated_by] %>>
       <%= link_to "Alla", admin_pages_path(:filters => @filters.except(:updated_by)) %>
     </li>
-    <% User.recent_contributers.each do |user| -%>
+    <% User.recent_contributers.sort_by(&:first_name).each do |user| -%>
       <li<%= ' class="current"' if @filters[:updated_by].to_i == user.id %>>
         <%= link_to user.short_name, admin_pages_path(:filters => @filters.merge(:updated_by => user.id)) %>
       </li>
