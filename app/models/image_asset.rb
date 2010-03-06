@@ -13,11 +13,12 @@ class ImageAsset < Asset
   end
   
   def resize(options = {})
+    return false unless magick_image
     options = {
       :quality         => 100,
       :remove_profiles => false
     }.merge!(options)
-  
+
     options[:crop] ||= (options[:size] and options[:size].include?("c"))
     
     size = options[:size].gsub(/[^0-9a-z\-]/,'')
@@ -138,6 +139,8 @@ protected
   
   def magick_image(file_path = nil)
     @magick_image ||= MiniMagick::Image.from_file(file_path || path)
+    rescue Errno::ENOENT
+      return false 
   end
   
   def browser_compatible_format?
