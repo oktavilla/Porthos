@@ -7,6 +7,7 @@ class Tag < ActiveRecord::Base
               :group => "tags.id"
   named_scope :on, lambda { |taggable_type|
     {
+      :group => 'name',
       :conditions => ["taggings.taggable_type = ?", taggable_type.to_s.classify],
       :joins => "LEFT OUTER JOIN taggings ON taggings.tag_id = tags.id"
     }
