@@ -1,18 +1,9 @@
 <% @page_title = "Användare" -%>
 <% @page_class = 'layout3' %>
-<div id="sub_nav">
-  <% form_tag search_admin_users_path, :method => 'get' do %>
-  <div class="search">
-    <div class="fullwidthinput">
-      <%= text_field_tag :query, (@query ? @query : 'Sök användare ...'), :class => "search_query", :id=> "ref_search_query" %>
-    </div>
-    <%= submit_tag "Sök", :style => "display:none" %>
-  </div>
-  <% end %>
-</div>
+<%= render :partial => 'sub_nav' %>
 <div id="workspace">
   <div class="header">
-    <h1>Redaktörer</h1>
+    <h1>Användare</h1>
   </div>
   <div class="tools">
     <div class="add">
