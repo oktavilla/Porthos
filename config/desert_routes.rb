@@ -55,6 +55,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :content_modules
     admin.resources :registration_forms
     admin.resources :textfields, :collection => { :shared => :get }
+    admin.resources :content_lists
 
     admin.resources :teasers, :collection => { :sort => :put }
     

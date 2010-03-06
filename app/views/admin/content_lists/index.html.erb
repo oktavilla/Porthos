@@ -1,0 +1,22 @@
+<% @page_class = 'layout2' -%>
+<% @page_id = 'site-settings' -%>
+<div id="sub_nav">
+  <%= render :partial => 'admin/shared/settings_sub_nav' %>
+</div>
+<div id="workspace">
+  <div class="header">
+    <h1>Innehållslistor</h1>
+  </div>
+  <div id="content">
+    <% @content_lists.each do |content_list| %>
+    <div class="content_list" id="content_list_<%= content_list.id %>">
+      <h2>
+        <%= link_to content_list.name || "Inget namn angivet", admin_content_list_path(content_list) %>
+        <%= link_to("Ändra", edit_admin_content_list_path(content_list)) %>
+        <span class="handle"><%= content_list.handle %></span>          
+      </h2>
+      <!-- <%= link_to "Lägg till text", new_admin_content_path(:content => { :context_id => content_list.id, :context_type => content_list.class.to_s, :resource_type => 'Textfield' }) %> -->
+    </div>
+    <% end %>
+  </div>
+</div>
