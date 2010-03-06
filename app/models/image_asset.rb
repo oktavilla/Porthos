@@ -144,7 +144,7 @@ protected
   end
   
   def browser_compatible_format?
-    %w(jpg jpeg png gif).include?(read_attribute(:extension))
+    %w(jpg jpeg png gif).include?(read_attribute(:extname))
   end
 
   def validate_on_create  
