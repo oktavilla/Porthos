@@ -48,6 +48,8 @@ class ImageAsset < Asset
 
     magick_image.format('jpg') unless browser_compatible_format?
 
+    format[:width]  = self.width  if format[:width].to_i >= self.width
+    format[:height] = self.height if format[:height].to_i >= self.height
     unless format[:width] > self.width || format[:height] > self.height
       magick_image.combine_options do |i|
         case format[:method]

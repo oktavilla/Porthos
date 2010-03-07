@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
     :select => 'DISTINCT users.*',
     :from   => 'pages',
     :joins  => 'LEFT JOIN users ON users.id = pages.updated_by_id',
-    :conditions => "pages.updated_by_id IS NOT NULL",
+    :conditions => "pages.updated_by_id IS NOT NULL AND users.id IS NOT NULL",
     :order  => "pages.updated_by_id DESC",
     :group  => 'pages.updated_by_id'
   }
@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
     :select => 'DISTINCT users.*',
     :from   => 'assets',
     :joins  => 'LEFT JOIN users ON users.id = assets.created_by_id',
-    :conditions => 'assets.created_by_id IS NOT NULL',
+    :conditions => 'assets.created_by_id IS NOT NULL AND users.id IS NOT NULL',
     :group => 'assets.created_by_id'
   }
   

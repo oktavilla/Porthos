@@ -254,7 +254,14 @@ module ApplicationHelper
     options = {
       :full_render => false
     }.merge(options)
-    if !options[:full_render] || (!content.restricted? || content.viewable_by(current_user))
+    if options[:full_render] and (!content.restricted? || content.viewable_by(current_user))
+      render(:partial => content.public_template, :locals => {
+        :page     => page,
+        :content  => content,
+        :resource => content.resource,
+        :full_render => options[:full_render]
+      })
+    elsif !options[:full_render] and !content.restricted?
       unless content.module?
         render(:partial => content.public_template, :locals => {
           :page     => page,

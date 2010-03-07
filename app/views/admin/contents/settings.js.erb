@@ -1,9 +1,0 @@
-<h1>Inställningar: <%= @content.resource.name %></h1>
-<% form_for :module, :url => admin_page_content_path(@page, @content), :html => { :method => :put } do |f| %>
-<div class="inner">
-  <%= render :partial => File.join('pages/contents/modules', @content.resource.template, 'settings.html.erb'), :locals => { :content => @content, :form => f }  %>
-</div>
-<div class="submit">
-  <input type="submit" value="Spara" class="commit button">
-</div>
-<% end %>
