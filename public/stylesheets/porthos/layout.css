@@ -73,6 +73,7 @@ body {
     #main_nav .campaigns_index a     {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -579px no-repeat;}
     #main_nav .activities_index a    {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -459px no-repeat;}
     #main_nav .users_index a         {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -358px no-repeat;}    
+    #main_nav .comments_index a      {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -667px no-repeat;}    
     #main_nav .link_lists_index a {
       padding-right:40px;
       border-right:1px dashed #444; }
@@ -401,7 +402,7 @@ body#link_lists .link_list {margin-bottom:1.5em;}
       padding-top:.5em;
       border-top:1px dashed #ccc; }
 
-ul#nodes {
+ul#nodes, ul#nodes ul {
   list-style:none; 
   margin:0; }
   ul#nodes li {
