@@ -18,7 +18,7 @@ module ActiveRecord
       
         def find_tagged_with(options = {})
           tags = options.delete(:tags)
-          tag_list = tags.is_a?(String) ? tag_list_from_string(options.delete(:tags)) : tags
+          tag_list = tags.is_a?(String) ? tag_list_from_string(tags) : tags
           find(:all, options.merge({
             :select => "#{table_name}.*, count(tags.id) AS count",
             :from   => "taggings",
