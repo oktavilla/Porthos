@@ -47,29 +47,31 @@ namespace :ultrasphinx do
     desc "Start the search daemon"
     task :start => [:_environment] do
       FileUtils.mkdir_p File.dirname(Ultrasphinx::DAEMON_SETTINGS["log"]) rescue nil
-      raise Ultrasphinx::DaemonError, "Already running" if ultrasphinx_daemon_running?
-      system "searchd --config '#{Ultrasphinx::CONF_PATH}'"
-      sleep(4) # give daemon a chance to write the pid file
-      if ultrasphinx_daemon_running?
-        say "started successfully"
-      else
-        say "failed to start"
+      if not ultrasphinx_daemon_running?
+        system "searchd --config '#{Ultrasphinx::CONF_PATH}'"
+        sleep(4) # give daemon a chance to write the pid file
+        if ultrasphinx_daemon_running?
+          say "started successfully"
+        else
+          say "failed to start"
+        end
       end
     end
     
     desc "Stop the search daemon"
     task :stop => [:_environment] do
-      raise Ultrasphinx::DaemonError, "Doesn't seem to be running" unless ultrasphinx_daemon_running?
-      system "kill #{pid = ultrasphinx_daemon_pid}"
-      sleep(1)
       if ultrasphinx_daemon_running?
-        system "kill -9 #{pid}"  
+        system "kill #{pid = ultrasphinx_daemon_pid}"
         sleep(1)
-      end
-      if ultrasphinx_daemon_running?
-        say "#{pid} could not be stopped"
-      else
-        say "stopped #{pid}"
+        if ultrasphinx_daemon_running?
+          system "kill -9 #{pid}"  
+          sleep(1)
+        end
+        if ultrasphinx_daemon_running?
+          say "#{pid} could not be stopped"
+        else
+          say "stopped #{pid}"
+        end
       end
     end
 
@@ -77,7 +79,7 @@ namespace :ultrasphinx do
     task :restart => [:_environment] do
       Rake::Task["ultrasphinx:daemon:stop"].invoke if ultrasphinx_daemon_running?
       sleep(3)
-      Rake::Task["ultrasphinx:daemon:start"].invoke
+      Rake::Task["ultrasphinx:daemon:start"].invoke if not ultrasphinx_daemon_running?
     end
     
     desc "Check if the search daemon is running"
@@ -203,4 +205,3 @@ end
 def say msg
   Ultrasphinx.say msg
 end
-  
