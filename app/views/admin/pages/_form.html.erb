@@ -12,7 +12,7 @@
 </div>
 <label for="page_tag_names">Nyckelord <span class="form_help">separera nyckelord med mellanslag</label>
 <div class="fullwidth">
-  <%= f.text_field :tag_names %>
+  <%= f.text_field :tag_names, :id => 'page_tag_names' %>
 </div>
 <label for="page_layout">Välj layout: <%= f.select :page_layout_id, PageLayout.find(:all).collect { |layout| [layout.name, layout.id] } %></label>
 <% if not defined?(in_nodes_edit) %>

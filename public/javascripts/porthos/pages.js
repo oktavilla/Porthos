@@ -127,7 +127,7 @@
     
     if ($$("body#pages.show").size() > 0) {
       var page = new Porthos.Pages.Page();
-    } else if ($$("body#pages.new, body#pages.edit").size() > 0) {
+    } else if ($$("body#pages.new, body#pages.edit, body#nodes.edit").size() > 0) {
       var page = Porthos.Pages.SetupForm();
     }
     
