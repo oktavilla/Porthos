@@ -31,7 +31,7 @@ class Admin::SessionsController < ApplicationController
     cookies.delete :auth_token
     reset_session
     flash[:notice] = t(:logged_out, :scope => [:app, :admin_general])
-    redirect_back_or_default(admin_login_path)
+    redirect_to admin_login_path
   end
 
 end

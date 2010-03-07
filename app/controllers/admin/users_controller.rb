@@ -3,24 +3,14 @@ class Admin::UsersController < ApplicationController
   before_filter :login_required
 
   def index
-    admins
-  end
-  
-  def admins
-    @role = Role.find_or_create_by_name('Admin')
-    @users = @role.users.find(:all, :order => "last_name, first_name")
+    @filters = {
+      :page     => (params[:page] || 1),
+      :per_page => (params[:per_page] || 25),
+      :role     => 'Admin'
+    }.merge((params[:filters] || {}).to_options).to_options
+    @users = User.find_with_filter(@filters)
     respond_to do |format|
-      format.html { render :action => 'index' }
-    end
-  end
-  
-  def public
-    page = params[:page] || 1
-    per_page = params[:per_page] || 30
-    @role = Role.find_or_create_by_name('Public')
-    @users = @role.users.paginate({:page => page, :per_page => per_page, :order => "last_name, first_name"})
-    respond_to do |format|
-      format.html { }
+      format.html 
     end
   end
   
