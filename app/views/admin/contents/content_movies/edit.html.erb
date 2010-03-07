@@ -15,7 +15,7 @@
         <label for="content_image_title">Copyright</label>
         <%= resource.text_field :copyright, :value => @content.resource.asset.author %>
       <% end %>
-      <div class="confirm">
+      <div class="submit">
         <input type="submit" value="Spara film"> eller <a href="<%= previous_view_path %>" class="back">avbryt</a>
       </div>
     <% end %>

@@ -66,27 +66,42 @@ legend {
   color:#000; }
 label {
   display:block;
+  margin:1.5em 0 .3em 0;
   font-size:14px;
   color:#000; 
   font-weight:bold; }
+  input[type="hidden"] + label,
+  legend + label  {margin-top:.5em;}
 fieldset {margin:.5em 0 1em 0;}
 fieldset.compact {
-  padding-top:.5em;
+  padding-top:1.5em;
   padding-left:115px;
   border-top:1px solid #ddd;
   border-bottom:1px solid #ddd; }
   fieldset.compact label {
     float:left;
-    padding-top:1em;
+    margin:0;
+    padding-top:.5em;
     margin-left:-115px;
     font-weight:normal;
     font-size:12px;
     width:100px; 
     text-align:right; }
+  fieldset.compact .fullwidth {
+    width:300px;
+    margin-bottom:1em;}
   fieldset.compact .submit {
     padding-left:115px; }
 
-input[type="text"], input[type="password"], textarea, select { margin:.5em 0 1em 0; }
+.multiple_choice {
+  list-style:none;
+  margin:1.5em 0 1.5em 0;}
+  .multiple_choice li {margin:0;}
+  .multiple_choice li label {margin-top:.5em;}
+
+input.title {font-size:18px;font-weight:bold;}
+
+input[type="text"], input[type="password"], textarea, select { margin:0; }
 input[type="text"], input[type="password"], textarea { padding:4px; }
 
 .errorExplanation {
@@ -101,26 +116,26 @@ input[type="text"], input[type="password"], textarea { padding:4px; }
 p.fieldset_help {margin-top:0;}
 
 .form_help {
+  margin:.5em 0 .5em 0;
   font-size:12px; 
   line-height:14px; 
   color:#666; }
-  p.form_help {margin:.4em 0 0 0;}
   label .form_help {
     margin-left:.5em;
     font-weight:normal; }
 
-input + p.form_help {margin:-.8em 0 1.5em 0;}
+label + .form_help {margin-top:-.3em;}
 
-.fullwidthinput {padding-right:10px;}
-  .fullwidthinput input {width:100%;}
-  .fullwidthinput textarea {width:100%;}
+.fullwidth {padding-right:10px;}
+  .fullwidth input {width:100%;}
+  .fullwidth textarea {width:100%;}
 
-.submit input {
-  cursor:pointer;
-  font-size:16px;
-  font-weight:bold; }
-
-input.title {font-size:18px;font-weight:bold;}
+.submit {
+  margin-top:1.5em; }
+  .submit input {
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold; }
 
 div.uri {
   margin-top:.5em;
@@ -135,7 +150,17 @@ div.uri {
 
 textarea.file {
   font:normal 12px/16px monaco; }
-  
+
+form .avatar {
+  margin-top:1.5em;
+  padding-top:1em; }
+  form .avatar label {margin:0;}
+  form .avatar img {
+    float:left;
+    margin-top:-1em;
+    margin-right:1em; 
+    border:2px solid #ddd;}
+
 .drag_handle { display:none; }
 
 .pagination {

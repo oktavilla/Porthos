@@ -13,7 +13,7 @@
           <legend>Ändra innehållsmodulen ”<%= @content_module.name %>”</legend>
           <%= render :partial => 'form', :locals => { :f => f } %>
         </fieldset>
-        <div class="confirm">
+        <div class="submit">
           <%= submit_tag 'Spara', :class => 'button' %> eller <%= link_to "avbryt", previous_view_path(admin_content_modules_path) %>
         </div>
       <% end %>

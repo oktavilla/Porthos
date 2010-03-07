@@ -10,7 +10,8 @@
 #workspace .tools:after,
 #workspace .tools .add:after,
 .theme:after,
-.batch_edit .asset:after {
+.batch_edit .asset:after,
+form .avatar:after {
   content:".";
   display:block;
   height:0;
@@ -400,12 +401,12 @@ body#link_lists .link_list {margin-bottom:1.5em;}
       padding-top:.5em;
       border-top:1px dashed #ccc; }
 
-#nodes, #nodes ul {
+ul#nodes {
   list-style:none; 
   margin:0; }
-  #nodes li {
+  ul#nodes li {
     margin:0; }
-  #nodes li .toggle_handle {
+  ul#nodes li .toggle_handle {
     float:left;
     margin:0 0 0 -30px; 
     padding:6px 4px 4px 4px;
@@ -415,38 +416,38 @@ body#link_lists .link_list {margin-bottom:1.5em;}
     border:1px solid #ddd;
     -webkit-border-radius:4px;
     font-weight:bold; }
-    #nodes li .toggle_handle:hover {
+    ul#nodes li .toggle_handle:hover {
       border:1px solid #ccc;
       background:#f7f7f7;}
-  #nodes li > div,
+  ul#nodes li > div,
   #root {
     border-top:1px solid #ddd;
     padding:.8em 0 .8em 40px; }
-    #nodes li > div:hover,
+    ul#nodes li > div:hover,
     #root:hover {background:#fff;}
-  #nodes li > div.active .name {
+  ul#nodes li > div.active .name {
     color:#000;
     font-weight:bold; }
-  #nodes li > div.inactive .name {
+  ul#nodes li > div.inactive .name {
     font-style:italic;
     color:#a00;}
-  #nodes li .name,
+  ul#nodes li .name,
   #root .name {
     display:inline-block;
     width:300px; }
-  #nodes li .edit,
+  ul#nodes li .edit,
   #root .edit {
     display:none;
     font-size:12px; 
     margin-left:1em; }
-    #nodes li .edit a,
+    ul#nodes li .edit a,
     #root .edit a {margin-left:.5em;}
-  #nodes li div:hover .edit,
+  ul#nodes li div:hover .edit,
   #root:hover .edit {display:inline;}
-  #nodes ul.placeholder,
+  ul#nodes ul.placeholder,
   #root ul.placeholder {display:none;}
-  #nodes ul li {margin-left:3em;}
-  #nodes ul li > div {border-top:0;}
+  ul#nodes ul li {margin-left:3em;}
+  ul#nodes ul li > div {border-top:0;}
 
 #userslist {}
   #userslist li {
@@ -457,28 +458,28 @@ body#link_lists .link_list {margin-bottom:1.5em;}
     margin:0 0 1em 0;
     padding:0; }
 
-#sessions.new {
+#sessions {
   background:#f2f2f2; }
-  #sessions.new #wrap {
+  #sessions #wrap {
     margin:30px auto;
     padding:30px;
     background:#fff;
     width:500px; }
-  #sessions.new .remember_me {
+  #sessions .remember_me {
     margin:-1em 115px 1em 115px; }
-  #sessions.new fieldset {
+  #sessions fieldset {
     border-bottom:0;
     padding:15px 115px 15px 115px; }
-  #sessions.new .submit {
+  #sessions .submit {
     padding-top:0;
     padding-bottom:1em;
     border-top:none;
     border-bottom:1px solid #ddd; }
-  #sessions.new .forgot {
+  #sessions .forgot {
     margin:2em 0 0 0;
     font-size:.95em;
     padding-left:115px; }
-  #sessions.new .flash {margin-bottom:1em;}
+  #sessions .flash {margin-bottom:1em;}
 
 .page_layout .column .contents { min-height:40px; }
 

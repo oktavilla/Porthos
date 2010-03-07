@@ -1,3 +1,4 @@
+<% @page_title = "Formulär > Nytt" %>
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
 <div id="sub_nav">
@@ -5,12 +6,12 @@
 </div>
 <div id="workspace">
   <div class="header">
-    <h1>Formulär</h1>
+    <h1>Skapa ett nytt formulär</h1>
   </div>
   <div id="content">
     <% form_for :registration_form, :url => admin_registration_forms_path do |f| %>
       <%= render :partial => 'form', :locals => {:f => f} %>
-      <div class="confirm">
+      <div class="submit">
         <input type="submit" value="Lägg till formuläret"> eller <%= link_to "avbryt", admin_registration_forms_path %>
       </div>
     <% end %>

@@ -2,7 +2,7 @@
 <fieldset>
   <legend style="display:none">Namn och mall</legend>
   <label for="registration_form_name">Ge formuläret ett beskrivande namn</label>
-  <%= f.text_field :name %>
+  <%= f.text_field :name, :class => "title" %>
   <label for="registration_form_template">Välj vilket formulär du vill använda</label>
   <%= f.select :template, @registration_form.available_templates.collect { |template| [template.humanize, template]} %>
   <label for="registration_form_notification_person_id">Skicka e-post om ny registrering till:</label>

@@ -3,19 +3,18 @@
 
 <label for="page_title">Skriv en beskrivande titel</label>
 <div class="form_help">En bra titel kan läsas ur sitt sammanhang och ändå förstås. Det är titeln som visas på Googles sökresultatsida.</div>
-<div class="fullwidthinput">
+<div class="fullwidth">
   <%= f.text_field :title, :class => "title" %>
 </div>
-<label for="page_layout">Välj layout</label>
-<%= f.select :page_layout_id, PageLayout.find(:all).collect { |layout| [layout.name, layout.id] } %>
 <label for="page_description">Skriv en sammanfattning av innehållet på sidan</label>
-<div class="fullwidthinput">
+<div class="fullwidth">
   <%= f.text_area :description, :rows => 3, :class => 'wymeditor' %>
 </div>
 <label for="page_tag_names">Nyckelord <span class="form_help">separera nyckelord med mellanslag</label>
-<div class="fullwidthinput">
+<div class="fullwidth">
   <%= f.text_field :tag_names %>
 </div>
+<label for="page_layout">Välj layout: <%= f.select :page_layout_id, PageLayout.find(:all).collect { |layout| [layout.name, layout.id] } %></label>
 <label for="page_restricted" class="contains-input">
   <%= f.check_box :restricted %> Kräv inloggning
 </label>

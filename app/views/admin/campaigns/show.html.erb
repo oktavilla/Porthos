@@ -2,7 +2,7 @@
 <% @page_title = "Kampanj: #{@campaign.name}" -%>
 <div id="sub_nav">
   <% form_tag search_admin_campaigns_path, :method => 'get' do %>
-  <div id="search" class="fullwidthinput">
+  <div id="search" class="fullwidth">
     <%= text_field_tag :query, (@query || 'Sök'), :class => "query", :id=> "search_query" %>
     <%= submit_tag "Sök", :style => "display:none" %>
   </div>

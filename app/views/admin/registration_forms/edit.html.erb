@@ -1,3 +1,4 @@
+<% @page_title = "Formulär > #{@registration_form.name}" %>
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
   <div id="sub_nav">
@@ -5,11 +6,13 @@
   </div>
   <div id="workspace">
     <div class="header">
-      <h1>Ändra formuläret ”<%= @registration_form.name %>”</h1>
+      <h1><span class="pre">Ändra</span> <%= @registration_form.name %></h1>
     </div>
     <% if @registration_form.page -%>
     <div class="tools">
-      <span class="controls"><%= link_to "Redigera tacksidan", admin_page_path(@registration_form.page), :class => 'edit' %></span>
+      <div class="add">
+        <%= link_to "Ändra tacksidan", admin_page_path(@registration_form.page), :class => 'new' %>
+      </div>
     </div>
     <% end -%>
     <div id="content">
@@ -25,7 +28,7 @@
             <label for="page_page_layout_id">Välj layout</label>
             <%= f.select :page_layout_id, PageLayout.find(:all).collect { |l| [l.name, l.id] } %>
           </fieldset>
-          <div class="confirm">
+          <div class="submit">
             <input type="submit" value="Skapa tacksidan"> eller <a href="#" class="cancel">Avbryt</a>
           </div>
         <% end %>
@@ -33,7 +36,7 @@
       <% end -%>
       <% form_for :registration_form, :url => admin_registration_form_path(@registration_form), :html => { :method => :put } do |f| %>
         <%= render :partial => 'form', :locals => {:f => f} %>
-        <div class="confirm">
+        <div class="submit">
           <input type="submit" value="Spara formuläret ”<%= @registration_form.name %>”"> eller <%= link_to "avbryt", admin_registration_forms_path %>
         </div>
       <% end %>

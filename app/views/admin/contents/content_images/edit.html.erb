@@ -11,11 +11,11 @@
     <% form_for :resource, @content.resource, :url => admin_content_path(@content), :html => { :method => :put } do |f| %>
       <%= f.hidden_field :image_asset_id, :value => @content.resource.asset.id %>
       <label for="content_image_title">Beskriv vad bilden föreställer</label>
-      <div class="fullwidthinput"><%= f.text_field :title, :value => @content.resource.title %></div>
+      <div class="fullwidth"><%= f.text_field :title, :value => @content.resource.title %></div>
       <label for="content_image_caption">Bildtext</label>
-      <div class="fullwidthinput"><%= f.text_area :caption, :value => @content.resource.caption, :cols => 30, :rows => 5 %></div>
+      <div class="fullwidth"><%= f.text_area :caption, :value => @content.resource.caption, :cols => 30, :rows => 5 %></div>
       <label for="content_image_title">Copyright / Fotograf</label>
-      <div class="fullwidthinput"><%= f.text_field :copyright, :value => @content.resource.copyright %></div>
+      <div class="fullwidth"><%= f.text_field :copyright, :value => @content.resource.copyright %></div>
       <% if @content.parent_id.blank? -%>
       <label for="content_image_format">Format</label>
       <%= f.select :style, ContentImage.styles.collect { |s, klass| [s[:name], s[:class]] } %>

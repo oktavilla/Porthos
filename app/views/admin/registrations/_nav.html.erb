@@ -1,11 +1,11 @@
 <% form_tag search_admin_registrations_path, :method => 'get' do %>
-<div class="search fullwidthinput">
+<div class="search fullwidth">
   <%= text_field_tag :query, (@query || 'Sök'), :class => "search_query", :id=> "search_query" %>
   <%= submit_tag "Sök", :style => "display:none" %>
 </div>
 <% end %>
 <% form_tag admin_show_registration_path, :method => 'get' do %>
-<div class="search fullwidthinput">
+<div class="search fullwidth">
   <%= text_field_tag :id, (@registration ? @registration.id : 'Hitta registrering med ref# ...'), :class => "search_query", :id=> "ref_search_query" %>
   <%= submit_tag "Visa", :style => "display:none" %>
 </div>

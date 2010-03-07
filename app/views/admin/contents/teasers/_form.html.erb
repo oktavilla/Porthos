@@ -1,6 +1,6 @@
 <% fields_for :resource do |resource| %>
   <label for="content_<%= content.id %>_resource_title">Rubrik</label>
-  <div class="fullwidthinput">
+  <div class="fullwidth">
     <%= resource.text_field :title, :id => "content_#{content.id}_resource_title", :class => 'title' %>
   </div>
   <label for="resource_filter">
@@ -8,7 +8,7 @@
     <%= resource.select :filter, Teaser.filters %>
   </label>
   <label for="content_<%= content.id %>_resource_body">Text</label>
-  <div class="fullwidthinput">
+  <div class="fullwidth">
     <%= resource.text_area :body, :id => "editor", :class => content.resource.filter, :rows => 5 %>
   </div>
   <label for="resource_display_type">Typ</label>

@@ -10,7 +10,7 @@
       <%= f.text_field "author", :size => 50 %>
       <label for="asset_tags">Nyckelord <span class="info">Separera flera nyckelord med komma</span></label>
       <%= f.text_area :tag_names, :value => @asset.tag_names, :id => 'asset_tags', :rows => 2 %>
-      <div class="confirm absolute">
+      <div class="submit">
         <%= submit_tag 'Spara ändringar' %> eller <%= link_to "avbryt", previous_view_path(admin_assets_path), :class => 'cancel' %>
       </div>
     <% end %>
