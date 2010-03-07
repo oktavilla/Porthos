@@ -5,7 +5,7 @@ class Admin::UsersController < ApplicationController
   def index
     @filters = {
       :page     => (params[:page] || 1),
-      :per_page => (params[:per_page] || 25),
+      :per_page => (params[:per_page] || 90),
       :role     => 'Admin'
     }.merge((params[:filters] || {}).to_options).to_options
     @users = User.find_with_filter(@filters)
