@@ -1,6 +1,4 @@
-<% @page_class = 'A' -%>
 <style type="text/css">
-  body#comments .inner {padding: 10px;}
   .comments {
     width:100%;
     margin-bottom:10px;
@@ -40,26 +38,24 @@
         color: #f00;
         font-weight: bold;}
 </style>
-<div id="content_header">
-  <h1>Kommentarer</h1>
-</div>
-<div id="container">
+<div id="workspace">
+  <div class="header">
+    <h1>Kommentarer</h1>
+  </div>
+  <div class="tools">
+    <% if @show_spam %>
+      <%= link_to "Göm spam", admin_comments_path(:spam => 0) %>
+      <%= link_to "Radera all spam", destroy_all_spam_admin_comments_path(:return_to => admin_comments_path(:page => @comments.current_page)), :method => 'delete', :confirm => 'Är du säker på att du vill radera all spam?' %>
+    <% else %>
+      <%= link_to "Visa spam", admin_comments_path(:spam => 1) %>
+    <% end %>
+  </div>
   <div id="content">
-    <div id="ca"><div class="inner">
-    <div class="controls">
-      <% if @show_spam %>
-        <%= link_to "Göm spam", admin_comments_path(:spam => 0) %>
-        <%= link_to "Radera all spam", destroy_all_spam_admin_comments_path(:return_to => admin_comments_path(:page => @comments.current_page)), :method => 'delete', :confirm => 'Är du säker på att du vill radera all spam?' %>
-      <% else %>
-        <%= link_to "Visa spam", admin_comments_path(:spam => 1) %>
-      <% end %>
-    </div>
     <% if @comments.any? -%>
       <%= render :partial => "table", :locals => { :comments => @comments, :return_to => admin_comments_path(:page => @comments.current_page) } %>
     <% else -%>
       <p class="blank-slate">Det finns inga kommentarer</p>
     <% end -%>
-      <%= will_paginate @comments %>
-    </div></div>
+    <%= will_paginate @comments %>
   </div>
 </div>
