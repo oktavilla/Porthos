@@ -11,7 +11,7 @@
       <fieldset>
         <% f.fields_for :resource_attributes, @node.resource do |resource| %>
           <%= resource.hidden_field :id %>
-          <%= render :partial => 'admin/pages/form', :locals => {:f => resource} %>
+          <%= render :partial => 'admin/pages/form', :locals => {:f => resource, :in_nodes_edit => true} %>
         <% end %>
       <% end %>
       <label for="node_name">Namn i navigationen</label>

@@ -15,6 +15,8 @@
   <%= f.text_field :tag_names %>
 </div>
 <label for="page_layout">Välj layout: <%= f.select :page_layout_id, PageLayout.find(:all).collect { |layout| [layout.name, layout.id] } %></label>
+<% if not defined?(in_nodes_edit) %>
 <label for="page_restricted" class="contains-input">
   <%= f.check_box :restricted %> Kräv inloggning
 </label>
+<% end %>
