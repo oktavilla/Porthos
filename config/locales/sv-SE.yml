@@ -370,6 +370,16 @@
     image_asset:
       unknown_format: gick inte att läsa filtypen
       must_be_rgb: måste vara en bild i RGB-format
+      gravities:
+        nw: Övre vänstra hörnet
+        n: Övre delen
+        ne: Övre högra hörnet
+        w: Mitten till vänster
+        c: Mitten
+        e: Mitten till höger
+        sw: Nedre vänstra hörnet
+        s: Nedre delen
+        se: Nedre högra hörnet
     carts:
       unknown_product: kunde inte hitta produkten
     print_settings:
