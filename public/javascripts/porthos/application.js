@@ -289,25 +289,23 @@ Porthos.TagAutoCompletion = Class.create({
   }
 });
 
-Porthos.SearchFieldAutoClear = Class.create({
-  initialize: function () {
-    $$('input.search_query').each(function(input) {
-      input.observe('focus', function(ev) {
-        if(!input.orginal_value){
-          input.orginal_value = input.value;
-        }
-        if(input.value == input.orginal_value) {
-          input.value = '';
-        }
-      });
-      input.observe('blur', function(ev) {
-        if (input.value == '') {
-          input.value = input.orginal_value;
-        }  
-      });
+Porthos.SearchFieldAutoClear = function() {
+  $$('input.search_query').each(function(input) {
+    input.observe('focus', function(ev) {
+      if (!input.orginal_value) {
+        input.orginal_value = input.value;
+      }
+      if (input.value == input.orginal_value) {
+        input.value = '';
+      }
     });
-  }
-});
-Event.onReady(function() {
-  new Porthos.SearchFieldAutoClear;
+    input.observe('blur', function(ev) {
+      if (input.value == '') {
+        input.value = input.orginal_value;
+      }  
+    });
+  });
+};
+document.observe('dom:loaded', function() {
+  Porthos.SearchFieldAutoClear();
 });
