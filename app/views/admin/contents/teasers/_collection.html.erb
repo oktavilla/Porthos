@@ -29,6 +29,7 @@
     </div>
     <span class="edit">
       <%= link_to "Ändra", edit_admin_content_path(:id => child, :return_to => request.request_uri) %>
+      <%= link_to "Lägg till bild", admin_assets_path(:asset_usage => { :parent_id => child.resource.id, :parent_type => child.resource.class.name }, :context_params => { :return_to => admin_page_path(:id => @page, :anchor => "content_#{child.id}") }) %>
       <%= link_to child.active? ? 'Dölj' : 'Visa', toggle_admin_content_path(child), :method => :put, :class => 'visibility' %>
       <%= link_to "Ta bort", admin_content_path(:id => child), :method => :delete, :confirm => "Är du säker, detta går inte att ångra.", :class => 'delete' %>
     </span>

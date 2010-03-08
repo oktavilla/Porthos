@@ -95,9 +95,9 @@
           <% end %>
           <% unless content.collection? -%>
             <span class="edit">
-              <% if content.module? and content.resource.has_settings? %>
-                <%= link_to("Inställningar", settings_admin_content_path(content), :class => (!content.collection? ? 'settings' : 'settings')) %>
-              <% end %>
+            <% if content.module? and content.resource.has_settings? -%>
+              <%= link_to("Inställningar", settings_admin_content_path(content), :class => (!content.collection? ? 'settings' : 'settings')) %>
+            <% end -%>
               <%= link_to("Ändra", edit_admin_content_path(content)) if not content.module? %>
               <%= link_to content.active? ? 'Dölj' : 'Visa', toggle_admin_content_path(content), :method => :put, :class => 'visibility' %>
               <%= link_to "Ta bort", admin_content_path(content), :method => :delete, :confirm => "Är du säker? Detta går inte att ångra.", :class => 'delete' %>

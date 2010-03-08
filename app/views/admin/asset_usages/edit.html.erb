@@ -1,0 +1,14 @@
+<% @page_class = 'layout1' %>
+<div id="workspace">
+  <div class="header">
+    <h1></h1>
+  </div>
+  <div class="content">
+    <% form_for :asset_usage, :url => admin_asset_usage_path(@asset_usage), :html => { :method => :put } do |f| %>
+      <%= render :partial => 'form', :locals => { :f => f } %>
+      <div class="submit">
+        <%= submit_tag 'Spara' %> eller <%= link_to "avbryt", previous_view_path, :class => 'cancel' %>
+      </div>
+    <% end %>
+  </div>
+</div>
