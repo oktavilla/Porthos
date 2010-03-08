@@ -22,8 +22,9 @@
     font-weight: bold;}
 </style>
 <div id="workspace">
-  <div class="head">
-    <h1>Kommentarer för sidan ”<%= link_to @page.title, admin_page_path(:id => @page) %>”</h1>
+  <div class="header">
+    <h1>Kommentarer för sidan ”<%= @page.title %>”</h1>
+    <%= link_to "Redigera sidan", admin_page_path(:id => @page) %>
   </div>
   <div id="content">
     <%= render :partial => "admin/comments/table", :locals => { :comments => @page.comments.find(:all, :order => 'created_at DESC'), :return_to => comments_admin_page_path(@page) } %>
