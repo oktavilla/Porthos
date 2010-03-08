@@ -41,18 +41,11 @@
         color: #f00;
         font-weight: bold;}
 </style>
-<div id="content_header">
-  <h1>Kommentarer för sidan ”<%= @page.title %>”</h1>
-  <span class="controls">
-    <%= link_to "Redigera sidan", admin_page_path(:id => @page) %>
-  </span>
-</div>
-<div id="container">
+<div id="workspace">
+  <div class="head">
+    <h1>Kommentarer för sidan ”<%= link_to @page.title, admin_page_path(:id => @page) %>”</h1>
+  </div>
   <div id="content">
-    <div id="ca">
-      <div class="inner">
-        <%= render :partial => "admin/comments/table", :locals => { :comments => @page.comments.find(:all, :order => 'created_at DESC'), :return_to => comments_admin_page_path(@page) } %>
-      </div>
-    </div>
+    <%= render :partial => "admin/comments/table", :locals => { :comments => @page.comments.find(:all, :order => 'created_at DESC'), :return_to => comments_admin_page_path(@page) } %>
   </div>
 </div>
