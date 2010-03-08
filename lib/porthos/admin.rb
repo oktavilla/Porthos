@@ -13,10 +13,9 @@ module Porthos
 
     def clear_content_context
       unless params[:content]
-        session[:content] = nil
-        @content = nil
-        session[:context_params] = nil
-        @context_params = nil
+        session[:content], @content = nil unless params[:content]
+        session[:asset_usage], @asset_usage = nil unless params[:asset_usage]
+        session[:context_params], @context_params = nil unless params[:context_params]
       end
     end
 

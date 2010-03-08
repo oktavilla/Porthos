@@ -3,6 +3,13 @@ class Admin::AssetUsagesController < ApplicationController
   before_filter :login_required
   skip_after_filter :remember_uri, :only => [:create, :update, :destroy]
 
+  def new
+    @asset_usage = AssetUsage.new(params[:asset_usage])
+    respond_to do |format|
+      format.html
+    end
+  end
+
   def create
     @asset_usage = AssetUsage.new(params[:asset_usage])
     respond_to do |format|

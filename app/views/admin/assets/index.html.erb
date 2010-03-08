@@ -27,10 +27,10 @@
     </div>
     <% end -%>
     <div id="content">
-      <% if @content -%>
+      <% if @content || @asset_usage -%>
       <p>
         <span style="background:#ffb">Välj vilken bild/film du vill använda eller ladda upp en ny.</span>
-        <%= link_to "Avbryt", previous_view_path %> 
+        <%= link_to "Avbryt", previous_view_path(@context_params[:return_to]) %> 
       </p>
       <% end -%>
       <% if @assets.any? -%>
@@ -65,10 +65,14 @@
           <% if @content -%>
           <div class="add">
             <% if asset.image? %>
-            <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :image_asset_id => asset.id }}.merge(@context_params)), :class => 'new' %>
+            <%= link_to "Välj", new_admin_content_path({ :content => @content, :resource => { :image_asset_id => asset.id }}.merge(@context_params)), :class => 'new' %>
             <% elsif asset.movie? %>
-            <%= link_to "Välj", new_admin_content_path({:content => @content, :resource => { :movie_asset_id => asset.id }}.merge(@context_params)), :class => 'new' %>
+            <%= link_to "Välj", new_admin_content_path({ :content => @content, :resource => { :movie_asset_id => asset.id }}.merge(@context_params)), :class => 'new' %>
             <% end %>
+          </div>
+          <% elsif @asset_usage %>
+          <div class="add">
+            <%= link_to "Välj", new_admin_asset_usage_path({ :asset_usage => @asset_usage.merge({ :asset_id => asset.id }) }.merge(@context_params)), :class => 'new' %>
           </div>
           <% end -%>
         </div></li>

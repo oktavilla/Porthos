@@ -4,10 +4,22 @@
     <h1>Ändra puff</h1>
   </div>
   <div id="content">
-    <% form_for :content, :url => admin_content_path(@content), :html => { :multipart => true, :method => :put }  do |f| %>
-      <%= render :partial => 'admin/contents/teasers/form', :locals => { :content => @content, :f => f } %>
-      <%= submit_tag 'Spara', :class => 'commit button' %> eller <%= link_to "avbryt", previous_view_path %>
-    <% end %>
+    <div id="c_1">
+      <div id="asset_usages">
+      <% @content.resource.asset_usages.each do |asset_usage| %>
+        <%= image_tag display_image_path(:id => asset_usage.asset, :size => 'c100x100', :format => asset_usage.asset.extname), :id => "asset_usage_#{asset_usage.id}" %>
+      <% end %>
+      </div>
+      <div class="new">
+        <%= link_to "Lägg till bild", admin_assets_path(:asset_usage => { :parent_id => @content.resource.id, :parent_type => @content.resource.class.name }, :context_params => { :return_to => request.request_uri }) %>
+      </div>
+    </div>
+    <div id="c_2">
+      <% form_for :content, :url => admin_content_path(@content), :html => { :multipart => true, :method => :put } do |f| %>
+        <%= render :partial => 'admin/contents/teasers/form', :locals => { :content => @content, :f => f } %>
+        <%= submit_tag 'Spara', :class => 'commit button' %> eller <%= link_to "avbryt", previous_view_path %>
+      <% end %>
+    </div>
   </div>
 </div>
 <%= javascript_include_tag 'named_routes' %>
@@ -20,4 +32,17 @@
 <%= javascript_include_tag 'porthos/editor' %>
 <script type="text/javascript">
   Porthos.Editor.Initialize();
+  $$('#asset_usages').each(function(element) {
+    Sortable.create(element, {
+      overlap: 'horizontal',
+      constraint: 'false',
+      tag: 'img',
+      onUpdate: function() {
+        new Ajax.Request(Routing.sort_admin_asset_usages_path(), {
+          method: 'put',
+          parameters: Sortable.serialize(element)
+        });
+      }
+    })
+  });
 </script>

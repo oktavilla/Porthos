@@ -11,7 +11,8 @@
 #workspace .tools .add:after,
 .theme:after,
 .batch_edit .asset:after,
-form .avatar:after {
+form .avatar:after,
+#asset_usages:after {
   content:".";
   display:block;
   height:0;
@@ -459,6 +460,8 @@ ul#nodes, ul#nodes ul {
     margin:0 0 1em 0;
     padding:0; }
 
+#asset_usages {}
+  #asset_usages img {float:left;}
 #sessions {
   background:#f2f2f2; }
   #sessions #wrap {

@@ -166,6 +166,7 @@ protected
 
   def set_content_context
     @content = session[:content] ||= params[:content]
+    @asset_usage = session[:asset_usage] ||= params[:asset_usage]
     @context_params = session[:context_params] ||= params[:context_params] ||= {}
   end
 
