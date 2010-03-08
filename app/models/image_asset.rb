@@ -1,6 +1,19 @@
 class ImageAsset < Asset
   belongs_to :parent, :foreign_key => 'parent_id', :class_name => 'Asset'
 
+  @@gravities = {
+    'nw' => 'NorthWest',
+    'n'  => 'North',
+    'ne' => 'NorthEast',
+    'w'  => 'West',
+    'c'  => 'Center',
+    'e'  => 'East',
+    'sw' => 'SouthWest',
+    's'  => 'South',
+    'se' => 'SouthEast'
+  }
+  cattr_accessor :gravities
+
   IMAGE_VERSIONS_DIR = "#{RAILS_ROOT}/public/images"
   RESIZE_SALT = '8i03d9ee7'
   
@@ -123,20 +136,6 @@ protected
 
   def gravity_from_size(key)
     gravities.keys.include?(key.to_s) ? gravities[key] : gravities['c']
-  end
-
-  def gravities
-    {
-      'nw' => 'NorthWest',
-      'n'  => 'North',
-      'ne' => 'NorthEast',
-      'w'  => 'West',
-      'c'  => 'Center',
-      'e'  => 'East',
-      'sw' => 'SouthWest',
-      's'  => 'South',
-      'se' => 'SouthEast'
-    }
   end
   
   def magick_image(file_path = nil)
