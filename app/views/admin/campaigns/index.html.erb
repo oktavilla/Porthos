@@ -16,7 +16,7 @@
       <%= link_to "Arkiverade", admin_campaigns_path(:filters => @filters.merge(:active => 0)) %>
     </li>
   </ul>
-  <%= link_to 'Exportera alla mätpunkter', formatted_admin_measure_points_path(:format => 'csv') %>
+  <%= link_to 'Exportera alla mätpunkter', admin_measure_points_path(:format => 'csv') %>
 </div>
 <div id="workspace">
   <div class="header">
@@ -33,3 +33,5 @@
     <% end -%>
   </div>
 </div>
+<%= javascript_include_tag 'named_routes' %>
+<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', :cache => 'admin' %>

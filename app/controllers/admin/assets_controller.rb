@@ -17,7 +17,7 @@ class Admin::AssetsController < ApplicationController
       :order_by => 'created_at desc',
       :page     => (params[:page] || 1),
       :per_page => (params[:per_page] || 20)
-    }.merge(params[:filters] || {}).to_options
+    }.merge((params[:filters] || {}).to_options)
     
     @assets = unless @current_tags.any?
       @per_page = @filters[:per_page]
@@ -133,7 +133,7 @@ class Admin::AssetsController < ApplicationController
     respond_to do |format|
       if @asset.update_attributes(params[:asset])
         flash[:notice] = "#{@asset.full_name} #{t(:saved, :scope => [:app, :admin_general])}"
-        format.html { redirect_to previous_view_path(admin_assets_url) }
+        format.html { redirect_to previous_view_path(admin_asset_url(@asset)) }
         format.js   { render :layout => false }
         format.xml  { head :ok }
       else

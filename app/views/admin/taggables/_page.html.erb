@@ -1,0 +1,12 @@
+<span class="title"><%= link_to taggable.title, admin_page_path(taggable) %></span>
+<% unless taggable.full_slug.blank? -%>
+<span class="slug">
+  /<%= taggable.full_slug %>
+</span>
+<% end -%>
+<span class="meta">
+  <% if taggable.changed_at && taggable.changed_at != taggable.published_on -%>
+  Senast ändrad <%= taggable.changed_at.strftime("%d %b %Y") %>. 
+  <% end -%>
+  Publicerad <%= taggable.published_on.strftime("%d %b %Y") %>.
+</span>

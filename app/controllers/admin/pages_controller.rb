@@ -8,7 +8,7 @@ class Admin::PagesController < ApplicationController
       :page     => (params[:page] || 1),
       :per_page => (params[:per_page] || 25),
       :with_parent => ''
-    }.merge((params[:filters] || {}).to_options).to_options
+    }.merge((params[:filters] || {}).to_options)
 
     @tags = Tag.on('Page')
     @current_tags = params[:tags] || []
@@ -27,7 +27,7 @@ class Admin::PagesController < ApplicationController
   def search
     @filters = {
       :order_by => 'changed_at'
-    }.merge(params[:filters] || {}).to_options
+    }.merge((params[:filters] || {}).to_options)
     
     @query = params[:query] 
     @page  = params[:page] || 1

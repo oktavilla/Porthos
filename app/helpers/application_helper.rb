@@ -140,6 +140,11 @@ module ApplicationHelper
   
     form_method = method.to_s == 'get' ? 'get' : 'post'
   
+    request_token_tag = ''
+    if form_method == 'post' && protect_against_forgery?
+      request_token_tag = tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token)
+    end
+
     if confirm = html_options.delete("confirm")
       html_options["onclick"] = "return #{confirm_javascript_function(confirm)};"
     end
@@ -151,7 +156,7 @@ module ApplicationHelper
     html_options.merge!("type" => type, "value" => name)
     
     "<form method=\"#{form_method}\" action=\"#{escape_once url}\" class=\"button_to\"><div>" + 
-      method_tag + tag("input", html_options) + "</div></form>"
+      method_tag + tag("input", html_options) + request_token_tag + "</div></form>"
   end
 
   # Awesome truncate

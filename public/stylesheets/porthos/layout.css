@@ -12,7 +12,8 @@
 .theme:after,
 .batch_edit .asset:after,
 form .avatar:after,
-#asset_usages:after {
+#asset_usages:after,
+#tags .taggable:after {
   content:".";
   display:block;
   height:0;
@@ -178,7 +179,24 @@ body.layout3 #workspace {
     font-weight:normal;
     font-size:12px; 
     background:transparent url(/graphics/porthos/_new/ui_new.png) 20px -730px no-repeat;}
-    
+
+
+#tags .taggables {
+  list-style:none; }
+  #tags .taggables li {margin:0 0 1em 0;}
+  #tags .taggables .tags,
+  #tags .taggable.page .meta {
+    font-size:12px; 
+    line-height:14px; 
+    color:#666; }
+  #tags .taggable.page .title,
+  #tags .taggable.page .meta {display:block;}
+  #tags .taggable.asset {
+    padding-left:70px; }
+    #tags .taggable.asset img {
+      margin:0 0 0 -70px;
+      float:left;}
+  
 #workspace {
   margin:0 0 0 0;
   background:#fff; }
@@ -461,7 +479,16 @@ ul#nodes, ul#nodes ul {
     padding:0; }
 
 #asset_usages {}
-  #asset_usages img {float:left;}
+  #asset_usages div {float:left;}
+  #asset_usages .button_to {
+    display:none;
+    position:absolute;
+    top:5px;
+    right:5px;
+    width:10px;
+    height:11px; }
+  #asset_usages div:hover .button_to {display:block;}
+  
 #sessions {
   background:#f2f2f2; }
   #sessions #wrap {
