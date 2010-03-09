@@ -1,6 +1,8 @@
-<span class="title"><%= content.resource.name %></span>
+<div class="actual_content module">
+  <span class="title"><%= content.resource.name %></span>
 <% if content.resource.has_preview?  %>
-<div class="module_preview">
-<%= render(:partial => File.join('pages/contents/modules', content.resource.template, 'preview.html.erb'), :locals => {:content => content }) %>
-</div>
+  <div class="module_preview">
+  <%= render(:partial => File.join('pages/contents/modules', content.resource.template, 'preview.html.erb'), :locals => {:content => content }) %>
+  </div>
 <% end %>
+</div>

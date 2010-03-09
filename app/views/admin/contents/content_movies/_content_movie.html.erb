@@ -1,16 +1,14 @@
-<% if content.resource %>
-<div class="content_movie">
-  <% if content.resource.asset %>
+<div class="actual_content video">
+  <% if content.resource %>
+    <% if content.resource.asset %>
   <div class="thumbnail">
-    <%= image_tag(display_image_path(:id => content.resource.asset.thumbnail, :size => 'c80x80', :format => content.resource.asset.thumbnail.extname)) %>
+      <%= image_tag(display_image_path(:id => content.resource.asset.thumbnail, :size => 'c80x80', :format => content.resource.asset.thumbnail.extname)) %>
   </div>
-  <% end %>
+    <% end %>
   <span class="title"><%= content.resource.title %></span>
   <div class="description"><%= content.resource.caption %></div>
   <span class="meta"><%= content.resource.copyright %></span>
+  <% else %>
+  <span class="error">Film saknas</div>
+  <% end %>
 </div>
-<% else %>
-<div class="error">
-  Film saknas
-</div>
-<% end %>

@@ -272,6 +272,7 @@ form .avatar {
     font-size:12px; }
 
 .column {
+  margin-bottom:3em;
   padding-top:.5em;
   border-top:5px solid #000;}
   .column > .title {
@@ -282,48 +283,91 @@ form .avatar {
   position:relative;
   list-style:none;
   margin:0;
-  padding:1em 1em 1em 100px;
-  min-height:40px;
-  border-top:1px solid #ddd; }
-  .contents li.content .title {margin:0;}
-  .contents li.content.inactive {
-    height:40px;
-    overflow:hidden;
-    opacity:.5;}
+  padding:1em 250px 1em 2em;
+  border-top:1px solid #ddd; 
+  background:#fff; }
   .contents li.content > .edit {
     position:absolute;
-    top:13px;
-    left:30px; 
-    display:none; 
-    width:70px; }
+    top:.5em;
+    right:.5em;
+    background:rgba(255,255,255,.8); 
+    display:none; }
     .contents li.content > .edit a {
-      display:block; }
-  .contents li.content:hover > .edit,
-  .contents li.content:hover > .draghandle {display:block;}
-  .contents li.content .draghandle {
+      display:inline-block;
+      padding:10px 5px; 
+      vertical-align:middle; }
+  .contents li.content > .draghandle {
     position:absolute;
-    top:10px;
-    left:5px;
-    display:block;
-    width:20px;
-    height:20px;
-    display:none; 
-    background:#fff url(/graphics/porthos/_new/ui_new.png) -2px -794px no-repeat; }
-  .contents .content_image,
-  .contents .content_movie {padding-left:90px;}
-    .contents .content_image img,
-    .contents .content_movie img {
+    top:.7em;
+    left:0;
+    vertical-align:middle;
+    width:2em;
+    height:2em;
+    cursor:move;
+    background:transparent url(/graphics/porthos/_new/ui_new.png) 1px -790px no-repeat; 
+    display:none; }
+  .contents li.content:hover > .draghandle,
+  .contents li.content:hover > .edit {display:block;}
+
+  .contents .actual_content {}
+    .contents .actual_content .title {margin:0;}
+    .contents .actual_content h1 {
+      font-size:2em;
+      margin:0; }
+    .contents .actual_content h2 {
+      font-size:1.5em;
+      margin:0; }
+    .contents .actual_content p + h1,
+    .contents .actual_content p + h2 {
+      margin-top:1em; }
+    .contents .actual_content h3,
+    .contents .actual_content h4,
+    .contents .actual_content h5,
+    .contents .actual_content h6 {
+      margin:0;
+      font-size:1em;
+      font-weight:bold; 
+      color:#000; }
+    .contents .actual_content p,
+    .contents .actual_content ul {margin:.8em 0 .8em 0;}
+      .contents .actual_content ul li {
+        margin:0 0 .5em 1.5em;
+        padding:0; }
+    .contents .actual_content *:first-child {margin-top:0;}
+    
+    .contents .actual_content p {}
+    .contents .inactive {
+      max-height:40px;
+      overflow:hidden; }
+      .contents .inactive .actual_content {
+        opacity:.3; }
+  .contents .actual_content.teaser,
+  .contents .actual_content.image,
+  .contents .actual_content.video {padding-left:90px;}
+    .contents .actual_content.teaser img,
+    .contents .actual_content.image img,
+    .contents .actual_content.video img {
       float:left;
-      margin-left:-90px;}
-  .contents li.collection ul {margin:0;}
-  .contents ul.content_images,
-  .contents ul.teasers {
-    list-style:none; }
-    .contents ul.content_images .sub_content,
-    .contents ul.teasers .sub_content {
-      margin:0 0 -1em 0;
-      margin-left:100px;}
-  
+      margin-left:-90px; }
+
+  .contents .actual_content.module .title,
+  .contents .actual_content.registration_form .title,
+  .contents .actual_content.video .title {
+    padding-left:20px;
+    background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -1050px no-repeat; }
+  .contents .actual_content.registration_form .title { background-position:0 -1080px; }
+  .contents .actual_content.video .title {background-position:0 -1120px;}
+
+  .contents li.collection {
+    margin:0; 
+    padding:0; }
+    .contents li.collection ul {
+      list-style:none;
+      margin:0;}
+    .contents li.collection ul .add {
+      margin:0;
+      padding-left:2em;
+      border-top: 1px solid rgb(221, 221, 221); }
 
 ul.nav,
 ul.tags,
