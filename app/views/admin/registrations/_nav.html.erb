@@ -11,6 +11,28 @@
 </div>
 <% end %>
 
+<div class="label">Status</div>
+<ul class="filter">
+  <li<%= ' class="current"' if current_filter == :confirmed_or_pending %>>
+    <%= link_to "Alla", admin_registrations_path({ :filter => '', :type => type }) %>
+  </li>
+  <li<%= ' class="current"' if current_filter == :confirmed %>>
+    <%= link_to "Avklarade", admin_registrations_path({ :filter => 'confirmed', :type => type }) %>
+  </li>
+  <li<%= ' class="current"' if current_filter == :pending %>>
+    <%= link_to "Avvaktande", admin_registrations_path({ :filter => 'pending', :type => type }) %>
+  </li>
+  <li<%= ' class="current"' if current_filter == :failed %>>
+    <%= link_to "Misslyckade", admin_registrations_path({ :filter => 'failed', :type => type }) %>
+  </li>
+  <li<%= ' class="current"' if current_filter == :spam %>>
+    <%= link_to "Dubblett/Spam", admin_registrations_path({ :filter => 'spam', :type => type }) %>
+  </li>
+  <li<%= ' class="current"' if current_filter == :fraud %>>
+    <%= link_to "Bedrägeri", { :filter => 'fraud', :type => type } %>
+  </li>
+</ul>
+
 <div class="label">Registreringstyper</div>
 <ul class="filter">
   <li<%= ' class="current"' if current_type == 'Registration' %>>
