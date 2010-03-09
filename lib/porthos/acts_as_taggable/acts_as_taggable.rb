@@ -7,8 +7,11 @@ module ActiveRecord
 
       module ClassMethods
         def acts_as_taggable(options = {})
-          has_many :taggings, :as => :taggable, :dependent => :destroy
-          has_many :tags, :through => :taggings
+          has_many :taggings,
+                   :as => :taggable,
+                   :dependent => :destroy
+          has_many :tags,
+                   :through => :taggings
           include ActiveRecord::Acts::Taggable::InstanceMethods
           extend ActiveRecord::Acts::Taggable::SingletonMethods
         end
@@ -26,7 +29,7 @@ module ActiveRecord
                         #{"AND taggings.taggable_type = '#{self.name}'"}
                         LEFT OUTER JOIN tags ON tags.id = taggings.tag_id
                         AND LOWER(tags.name) IN ('#{tag_list.join("','")}')",
-            :group  => "#{table_name}.#{primary_key} #{"HAVING count = #{tag_list.length}"}",
+            :group  => "#{table_name}.#{primary_key} HAVING count = #{tag_list.length}",
             :order  => options[:order] || "#{table_name}.#{primary_key}"
           }))
         end

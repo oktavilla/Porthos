@@ -68,7 +68,8 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :assets, :collection => { :search => :get, :incomplete => :get, :update_multiple => :put }
     admin.resources :asset_usages,
                     :collection => { :sort => :put }
-    admin.resources :tags, :collection => { :search => :get }
+    admin.resources :tags,
+                    :collection => { :search => :get }
     
     admin.resources :page_collections do |page_collections|
       page_collections.resources :tag_collections
