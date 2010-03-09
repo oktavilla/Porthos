@@ -65,7 +65,7 @@ class Registration < ActiveRecord::Base
               :converter => Proc.new { |donation| donation.to_money rescue 0.to_money }
   
   is_indexed({
-    :fields => ['public_id', 'payment_transaction_id', 'dispatch_id'],
+    :fields => ['public_id', 'payment_transaction_id', 'dispatch_id', 'created_at'],
     :concatenate => [{
       :fields => [
         'first_name', 'last_name', 'civic_number', 'customer_number',
