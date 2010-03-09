@@ -7,7 +7,10 @@
     <div id="c_1">
       <div id="asset_usages">
       <% @content.resource.asset_usages.each do |asset_usage| %>
-        <%= image_tag display_image_path(:id => asset_usage.asset, :size => 'c100x100', :format => asset_usage.asset.extname), :id => "asset_usage_#{asset_usage.id}" %>
+        <div id="asset_usage_<%= asset_usage.id %>">
+          <%= image_tag display_image_path(:id => asset_usage.asset, :size => 'c100x100', :format => asset_usage.asset.extname) %>
+          <%= button_to "Ta bort", admin_asset_usage_path(:id => asset_usage, :return_to => request.request_uri), :method => :delete, :src => '/graphics/porthos/icons/trash.gif', :confirm => "Är du helt säker på att du vill ta bort bilden?" %>
+        </div>
       <% end %>
       </div>
       <div class="new">
@@ -36,7 +39,7 @@
     Sortable.create(element, {
       overlap: 'horizontal',
       constraint: 'false',
-      tag: 'img',
+      tag: 'div',
       onUpdate: function() {
         new Ajax.Request(Routing.sort_admin_asset_usages_path(), {
           method: 'put',

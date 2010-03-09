@@ -461,7 +461,16 @@ ul#nodes, ul#nodes ul {
     padding:0; }
 
 #asset_usages {}
-  #asset_usages img {float:left;}
+  #asset_usages div {float:left;}
+  #asset_usages .button_to {
+    display:none;
+    position:absolute;
+    top:5px;
+    right:5px;
+    width:10px;
+    height:11px; }
+  #asset_usages div:hover .button_to {display:block;}
+  
 #sessions {
   background:#f2f2f2; }
   #sessions #wrap {
