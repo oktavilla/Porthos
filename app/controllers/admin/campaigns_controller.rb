@@ -8,7 +8,7 @@ class Admin::CampaignsController < ApplicationController
     @filters = {
       :active => 1,
       :per_page => 100
-    }.merge(params[:filters] || {})
+    }.merge((params[:filters] || {}).to_options)
     @campaign = Campaign.new
     @campaigns = Campaign.find_with_filter(@filters)
 

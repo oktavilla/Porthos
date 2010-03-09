@@ -17,7 +17,7 @@ class Admin::AssetsController < ApplicationController
       :order_by => 'created_at desc',
       :page     => (params[:page] || 1),
       :per_page => (params[:per_page] || 20)
-    }.merge(params[:filters] || {}).to_options
+    }.merge((params[:filters] || {}).to_options)
     
     @assets = unless @current_tags.any?
       @per_page = @filters[:per_page]
