@@ -341,15 +341,26 @@ form .avatar {
       overflow:hidden; }
       .contents .inactive .actual_content {
         opacity:.3; }
+
   .contents .actual_content.teaser,
   .contents .actual_content.image,
-  .contents .actual_content.video {padding-left:90px;}
-    .contents .actual_content.teaser img,
+  .contents .actual_content.video {padding-left:95px;}
+    .contents .actual_content.teaser .thumbnail,
+    .contents .actual_content.teaser .no_image,
     .contents .actual_content.image img,
     .contents .actual_content.video img {
       float:left;
-      margin-left:-90px; }
-
+      width:80px;
+      height:80px;
+      margin-left:-95px;
+      font-size:12px;
+      text-align:center;
+      border:1px solid #eee;  }
+      .contents .actual_content.teaser .no_image:hover {border-color:#ccc;}
+      .contents .actual_content.teaser .no_image span {
+        display:block;
+        margin-top:25px; }
+      
   .contents .actual_content.module .title,
   .contents .actual_content.registration_form .title,
   .contents .actual_content.video .title {

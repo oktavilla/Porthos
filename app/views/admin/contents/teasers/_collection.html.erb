@@ -11,7 +11,14 @@
   <li id="content_<%= child.id %>" class="content sortable <%= child.active? ? '' : ' inactive' %>">
     <span class="draghandle"></span>
     <div class="actual_content teaser">
-      <%= image_tag(display_image_path(:size => "c70x70", :id => child.resource.images.primary, :format => child.resource.images.primary.extname), :alt => child.resource.images.primary.title ) if child.resource.images.primary %>
+      <% if child.resource.images.primary %>
+      <div class="thumbnail">
+        <%= image_tag(display_image_path(:size => "c80x80", :id => child.resource.images.primary, :format => child.resource.images.primary.extname), :alt => child.resource.images.primary.title ) %>
+        <%= link_to "Lägg till bild", admin_assets_path(:asset_usage => { :parent_id => child.resource.id, :parent_type => child.resource.class.name }, :context_params => { :return_to => admin_page_path(:id => @page, :anchor => "content_#{child.id}") }) %>
+      </div>
+      <% else %>
+        <%= link_to "<span>Lägg till<br>bild</span>", admin_assets_path(:asset_usage => { :parent_id => child.resource.id, :parent_type => child.resource.class.name }, :context_params => { :return_to => admin_page_path(:id => @page, :anchor => "content_#{child.id}") }), :class => "no_image" %>
+      <% end %>
       <div class="title"><%= child.resource.title %></div>
       <%= child.resource.body %>
       <div class="meta">
@@ -29,7 +36,6 @@
     </div>
     <div class="edit">
       <%= link_to "Ändra", edit_admin_content_path(:id => child, :return_to => request.request_uri) %>
-      <%= link_to "Lägg till bild", admin_assets_path(:asset_usage => { :parent_id => child.resource.id, :parent_type => child.resource.class.name }, :context_params => { :return_to => admin_page_path(:id => @page, :anchor => "content_#{child.id}") }) %>
       <%= link_to child.active? ? 'Dölj' : 'Visa', toggle_admin_content_path(child), :method => :put, :class => 'visibility' %>
       <%= link_to "Ta bort", admin_content_path(:id => child), :method => :delete, :confirm => "Är du säker, detta går inte att ångra.", :class => 'delete' %>
     </div>
