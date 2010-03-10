@@ -12,7 +12,7 @@
     <%= resource.text_area :body, :id => "editor", :class => content.resource.filter, :rows => 5 %>
   </div>
   <label for="resource_display_type">Typ</label>
-  <%= resource.select :display_type, Teaser.display_types.enum_with_index.map { |type, i| [t(type[:key], :scope => [:app, :teasers, :types]), i] } %>
+  <%= resource.select :display_type, Teaser.display_types.enum_with_index.map { |type, i| [t(type[:key], :scope => [:app, :teasers, :types]), i.to_s] } %>
   <label for="resource_css_class">CSS-klass</label>
   <%= resource.select :css_class, Teaser.css_classes.collect { |css_class| [t(css_class, :scope => [:app, :colors]), css_class] }.unshift(['Ingen', '']) %>
 <% end %>
