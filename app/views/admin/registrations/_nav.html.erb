@@ -14,22 +14,22 @@
 <div class="label">Status</div>
 <ul class="filter">
   <li<%= ' class="current"' if current_filter == :confirmed_or_pending %>>
-    <%= link_to "Alla", admin_registrations_path({ :filter => '', :type => type }) %>
+    <%= link_to "Alla", admin_registrations_path({ :filter => '', :type => current_type }) %>
   </li>
   <li<%= ' class="current"' if current_filter == :confirmed %>>
-    <%= link_to "Avklarade", admin_registrations_path({ :filter => 'confirmed', :type => type }) %>
+    <%= link_to "Avklarade", admin_registrations_path({ :filter => 'confirmed', :type => current_type }) %>
   </li>
   <li<%= ' class="current"' if current_filter == :pending %>>
-    <%= link_to "Avvaktande", admin_registrations_path({ :filter => 'pending', :type => type }) %>
+    <%= link_to "Avvaktande", admin_registrations_path({ :filter => 'pending', :type => current_type }) %>
   </li>
   <li<%= ' class="current"' if current_filter == :failed %>>
-    <%= link_to "Misslyckade", admin_registrations_path({ :filter => 'failed', :type => type }) %>
+    <%= link_to "Misslyckade", admin_registrations_path({ :filter => 'failed', :type => current_type }) %>
   </li>
   <li<%= ' class="current"' if current_filter == :spam %>>
-    <%= link_to "Dubblett/Spam", admin_registrations_path({ :filter => 'spam', :type => type }) %>
+    <%= link_to "Dubblett/Spam", admin_registrations_path({ :filter => 'spam', :type => current_type }) %>
   </li>
   <li<%= ' class="current"' if current_filter == :fraud %>>
-    <%= link_to "Bedrägeri", { :filter => 'fraud', :type => type } %>
+    <%= link_to "Bedrägeri", { :filter => 'fraud', :type => current_type } %>
   </li>
 </ul>
 
