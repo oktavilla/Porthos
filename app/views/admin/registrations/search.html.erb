@@ -1,22 +1,20 @@
 <% @page_title = "Din sökning på #{@query} gav #{@search.total_entries}" -%>
+<% @page_class = "layout3" -%>
+<div id="sub_nav">
+  <%= render :partial => 'filters', :locals => { :type => @type, :current_filter => @filter } %>
+  <%= render :partial => 'nav', :locals => { :current_type => @type } %>
+</div>
 <div id="workspace">
-  <div id="c_wrap" class="layout_2">
-    <div id="c_1">
-      <div class="header">
-        <h1><%= @type.constantize.human_name %></h1>
-      </div>
-      <% if @search.total_entries != 0 -%>
-        <h2>Din sökning på <strong><%= @query %></strong> gav <strong><%= @search.total_entries %></strong> resultat</h2>
-        <%= render :partial => "table", :locals => { :registrations => @search.results } %>
-      <% else -%>
-        <p class="blank-slate info">Inga träffar hittades på sökningen ”<%= @query %>”</p>
-      <% end -%>
-      <%= will_paginate @search %>
-    </div>
-    <div id="c_2">
-      <div class="inner">
-        <%= render :partial => 'nav', :locals => { :current_type => @type } %>        
-      </div>
-    </div>
+  <div class="header">
+    <h1><%= @type.constantize.human_name %></h1>
+  </div>
+  <div id="content">
+    <% if @search.total_entries != 0 -%>
+      <h2>Din sökning på <strong><%= @query %></strong> gav <strong><%= @search.total_entries %></strong> resultat</h2>
+      <%= render :partial => "table", :locals => { :registrations => @search.results } %>
+    <% else -%>
+      <p class="blank-slate info">Inga träffar hittades på sökningen ”<%= @query %>”</p>
+    <% end -%>
+    <%= will_paginate @search %>
   </div>
 </div>
