@@ -13,7 +13,7 @@
 .batch_edit .asset:after,
 form .avatar:after,
 #asset_usages:after,
-#tags .taggable:after {
+#tags_view .taggable:after {
   content:".";
   display:block;
   height:0;
@@ -58,15 +58,15 @@ body {
     padding-top:42px; }
   #main_nav a:hover,
   #account_nav a:hover,
-  #site-structure .nodes_index a,
-  #registrations .registrations_index a,
-  #users .users_index a,
-  #assets .assets_index a,
-  #pages .pages_index a,
-  #campaigns .campaigns_index a,
-  #measure_points .campaigns_index a,
-  #activities .activities_index a,
-  #link_lists .link_lists_index a {color:#fff;}
+  #site-structure_view .nodes_index a,
+  #registrations_view .registrations_index a,
+  #users_view .users_index a,
+  #assets_view .assets_index a,
+  #pages_view .pages_index a,
+  #campaigns_view .campaigns_index a,
+  #measure_points_view .campaigns_index a,
+  #activities_view .activities_index a,
+  #link_lists_view .link_lists_index a {color:#fff;}
     #main_nav .groups_index a        {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -50px no-repeat;}
     #main_nav .pages_index a         {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -200px no-repeat;}
     #main_nav .nodes_index a         {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -280px no-repeat;}
@@ -93,8 +93,7 @@ body {
     color:#000;
     background:#fff; }
 
-#accounts #nav ul li.account a,
-#users #nav ul li.user a {
+#users_view #nav ul li.user a {
   text-decoration:none;
   font-weight:bold; 
   background:#222; 
@@ -181,19 +180,19 @@ body.layout3 #workspace {
     background:transparent url(/graphics/porthos/_new/ui_new.png) 20px -730px no-repeat;}
 
 
-#tags .taggables {
+#tags_view .taggables {
   list-style:none; }
-  #tags .taggables li {margin:0 0 1em 0;}
-  #tags .taggables .tags,
-  #tags .taggable.page .meta {
+  #tags_view .taggables li {margin:0 0 1em 0;}
+  #tags_view .taggables .tags,
+  #tags_view .taggable.page .meta {
     font-size:12px; 
     line-height:14px; 
     color:#666; }
-  #tags .taggable.page .title,
-  #tags .taggable.page .meta {display:block;}
-  #tags .taggable.asset {
+  #tags_view .taggable.page .title,
+  #tags_view .taggable.page .meta {display:block;}
+  #tags_view .taggable.asset {
     padding-left:70px; }
-    #tags .taggable.asset img {
+    #tags_view .taggable.asset img {
       margin:0 0 0 -70px;
       float:left;}
   
@@ -357,69 +356,16 @@ body.layout3 #workspace {
     background:transparent url(/graphics/ui.png) -19px -366px no-repeat; }
 .swfupload { position:absolute; }
 
-body#groups.index .emptyPlaceMarker {
-  margin-bottom:-3px;
-  border-top:3px solid #000; }
-body#groups.show .emptyPlaceMarker {border-right:3px solid #000;}
-
-body#pages #pages_list {list-style:none;}
-  body#pages #pages_list li {
+body#pages_view #pages_list {list-style:none;}
+  body#pages_view #pages_list li {
     margin:0; }
-  body#pages #pages_list .title {font-size:16px;}
-  body#pages #pages_list .updated_at {
+  body#pages_view #pages_list .title {font-size:16px;}
+  body#pages_view #pages_list .updated_at {
     display:block;
     margin:0 0 1em 1em;
     font-size:12px; 
     color:#666; }
 
-body#link_lists .link_list {margin-bottom:1.5em;}
-  body#link_lists .link_list .list_header {
-    padding-bottom:.5em;
-    border-bottom:1px dashed #ccc;}
-    body#link_lists .link_list h2 {display:inline;}
-  body#link_lists .link_list ul {margin:.5em 0;}
-    body#link_lists .link_list li { 
-      position: relative;
-      list-style: none; 
-      margin:0 0 0 -25px;
-      padding-left:25px;
-      height:30px;
-      line-height:2.2em; }
-      body#link_lists .link_list li .goes_to {margin:0 1em;}
-      body#link_lists .link_list li .drag_handle {
-        cursor:move;
-        float:left;
-        height:28px; 
-        width:25px;
-        margin-left:-25px;
-        background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -790px no-repeat; }
-      body#link_lists .remove {
-        margin-left:20px;
-        padding:2px 5px 2px 14px;
-        font-size:12px;
-        background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -850px no-repeat;
-        display:none; }
-      body#link_lists .link_list.sortable li:hover .drag_handle {display:block;}
-      body#link_lists .link_list li:hover .remove {display:inline;}
-      body#link_lists .list_header:hover .remove {display:inline;}
-  body#link_lists .link_list .add {
-    display:block; 
-    margin-top:.5em;
-    padding:.5em .5em .5em 17px;
-    border-top:1px dashed #ccc;
-    font-size:12px;
-    background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -733px no-repeat;}
-  body#link_lists .link_list .new_link {
-    padding:10px;
-    background:rgb(214,221,229); }
-    body#link_lists .link_list .new_link label,
-    body#link_lists .link_list .new_link input,
-    body#link_lists .link_list .new_link .submit {font-size:12px;}
-    body#link_lists .link_list .new_link input {margin-top:2px;padding:2px;}
-    body#link_lists .link_list .new_link select {margin-top:2px;}
-    body#link_lists .link_list .new_link .submit {
-      padding-top:.5em;
-      border-top:1px dashed #ccc; }
 
 ul#nodes, ul#nodes ul {
   list-style:none; 
@@ -489,43 +435,43 @@ ul#nodes, ul#nodes ul {
     height:11px; }
   #asset_usages div:hover .button_to {display:block;}
   
-#sessions {
+#sessions_view {
   background:#f2f2f2; }
-  #sessions #wrap {
+  #sessions_view #wrap {
     margin:30px auto;
     padding:30px;
     background:#fff;
     width:500px; }
-  #sessions .remember_me {
+  #sessions_view .remember_me {
     margin:-1em 115px 1em 115px; }
-  #sessions fieldset {
+  #sessions_view fieldset {
     border-bottom:0;
     padding:15px 115px 15px 115px; }
-  #sessions .submit {
+  #sessions_view .submit {
     padding-top:0;
     padding-bottom:1em;
     border-top:none;
     border-bottom:1px solid #ddd; }
-  #sessions .forgot {
+  #sessions_view .forgot {
     margin:2em 0 0 0;
     font-size:.95em;
     padding-left:115px; }
-  #sessions .flash {margin-bottom:1em;}
+  #sessions_view .flash {margin-bottom:1em;}
 
 .page_layout .column .contents { min-height:40px; }
 
 
-#assets .items {
+#assets_view .items {
   width:100%;
   overflow:hidden; }
-#assets .items li {
+#assets_view .items li {
   display:inline-block;
   vertical-align:top;
   min-height:100px;
   width:47%;
   margin-right:20px;
   padding-left:0; }
-  #assets .items div.inner { padding-left:115px; }
+  #assets_view .items div.inner { padding-left:115px; }
 
 /* CodeMirror */
 .CodeMirror-line-numbers {
@@ -536,8 +482,8 @@ ul#nodes, ul#nodes ul {
   padding-right: .3em;
   font-size: 10pt;
   font-family: monospace;
-  padding-top: .4em;
-}
+  padding-top: .4em; }
+
 .CodeMirror-wrapping { 
   background: #fff; 
   border: 1px solid #ccc;

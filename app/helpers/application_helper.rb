@@ -77,7 +77,7 @@ module ApplicationHelper
   
   def page_id
     @page_id ||= controller.class.to_s.underscore.gsub(/_controller$/, '').gsub(/admin\//, '')
-    ' id="'+@page_id+'"'
+    ' id="'+@page_id+'_view"'
   end
   
   def public_page_id
