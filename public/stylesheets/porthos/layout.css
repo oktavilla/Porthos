@@ -291,7 +291,7 @@ body.layout3 #workspace {
       width:330px;
       margin-bottom:30px;}
     #workspace #c_2 {
-      margin-right:350px; 
+      float:left;
       padding-right:40px;
       border-right:1px dashed #ccc; }
     #workspace #c_3 {
