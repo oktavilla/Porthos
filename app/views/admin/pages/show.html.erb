@@ -25,14 +25,14 @@
       Sida är inte publicerad och syns inte på webbplatsen än.
       <%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put, :class => 'new' %>
     </div>
-    <% if !@page.child? && !@page.node -%>
-    <div class="add">
-      <%= link_to "Placera i navigationen", new_admin_node_path(:resource_id => @page.id), :class => 'new' %>
-    </div>
-    <% end -%>
     <% elsif @page.unpublished_changes? -%>
     <div class="add" id="publish_changes">
       <%= link_to "Publicera ändringar", publish_admin_page_path(@page), :method => :put, :class => 'new publish' %>
+    </div>
+    <% end -%>
+    <% if !@page.child? && !@page.node -%>
+    <div class="add">
+      <%= link_to "Placera i navigationen", new_admin_node_path(:resource_id => @page.id), :class => 'new' %>
     </div>
     <% end -%>
   </div>
