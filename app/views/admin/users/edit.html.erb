@@ -4,20 +4,31 @@
     <h1><span class="pre">Ändra</span> <%= @user.name %></h1>
   </div>
   <div id="content">
-    <% form_for :user, @user, :url => admin_user_path(@user), :html => { :method => :put, :multipart => true, :autocomplete => "off" } do |f| %>
-      <%= render :partial => "#{@user.roles.first.name.downcase}_form", :locals => { :f => f } %>
-      <div class="submit">
-        <%= f.submit "Spara ändringar" %> eller <%= link_to "Avbryt", previous_view_path(admin_users_path) %>
-      </div>
-    <% end %>
-    <div id="c_2">
+    <div id="c_1">
       <% if @user.registrations.any? %>
-        <h1>Registreringar</h1>
-        <ul>
-        <% @user.registrations.each do |registration| %>
-          <li><%= link_to "#{registration.class.human_name} ##{registration.id}", admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></li>
-        <% end %>
-        </ul>
+        <table>
+          <caption>Registreringar</caption>
+          <tr>
+            <th>Id</th>
+            <th>Typ</th>
+            <th>Datum</th>
+          </tr>
+          <% @user.registrations.each do |registration| -%>
+          <tr>
+            <td><%= link_to registration.id, admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></td>
+            <td><%= registration.class.human_name %></td>
+            <td class="date"><%= registration.created_at.day %> <%= registration.created_at.strftime("%b %Y") %></td>
+          </tr>
+          <% end -%>
+        </table>
+      <% end %>
+    </div>
+    <div id="c_2">
+      <% form_for :user, @user, :url => admin_user_path(@user), :html => { :method => :put, :multipart => true, :autocomplete => "off" } do |f| %>
+        <%= render :partial => "#{@user.roles.first.name.downcase}_form", :locals => { :f => f } %>
+        <div class="submit">
+          <%= f.submit "Spara ändringar" %> eller <%= link_to "Avbryt", previous_view_path(admin_users_path) %>
+        </div>
       <% end %>
     </div>
   </div>

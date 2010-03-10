@@ -79,7 +79,7 @@ class PaymentsController < ApplicationController
     @payable = Registration.find_by_public_id(params[:id])
     @payment = @payable.payment
     respond_to do |format|
-      if @payable.in_progress?
+      if @payment.in_progress?
         format.html
       else
         @return_path = @payable.return_path

@@ -1,22 +1,7 @@
 <% @page_class = 'layout3' %>
 <% @page_title = "Kampanjer" -%>
 <div id="sub_nav">
-  <% form_tag search_admin_campaigns_path, :method => 'get' do %>
-  <div class="search">
-    <%= text_field_tag :query, (@query || 'Sök'), :class => "search_query", :id=> "search_query" %>
-    <%= submit_tag "Sök", :style => "display:none" %>
-  </div>
-  <% end %>
-  <div class="label">Status</div>
-  <ul class="filter">
-    <li<%= ' class="current"' if @filters[:active].to_i == 1 %>>
-      <%= link_to "Aktiva", admin_campaigns_path(:filters => @filters.merge(:active => 1)) %>
-    </li>
-    <li<%= ' class="current"' if @filters[:active].to_i == 0%>>
-      <%= link_to "Arkiverade", admin_campaigns_path(:filters => @filters.merge(:active => 0)) %>
-    </li>
-  </ul>
-  <%= link_to 'Exportera alla mätpunkter', admin_measure_points_path(:format => 'csv') %>
+  <%= render :partial => 'sub_nav' %>
 </div>
 <div id="workspace">
   <div class="header">

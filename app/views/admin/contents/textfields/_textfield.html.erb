@@ -1,5 +1,5 @@
+<div class="actual_content">
 <% unless content.shared? -%>
-<div class="textfield">
   <% case resource.filter
       when 'wymeditor' -%>
       <%= resource.body %>
@@ -10,7 +10,7 @@
   <%  else -%>
     <%= resource.body %>
   <% end -%>
-</div>
 <% else -%>
-  <%= resource.title %> <span class="notice">Delat innehåll</span>
+  <%= resource.title %> <span class="shared">Delat innehåll</span>
 <% end -%>
+</div>
