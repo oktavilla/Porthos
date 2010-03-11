@@ -546,7 +546,7 @@ document.observe('dom:loaded', function() {
   });
 
   var body = $(document.getElementsByTagName('body')[0]);
-  if (body.id == 'assets' ){
+  if (body.id == 'assets_view' ){
     if (body.hasClassName('index')){
       var view = new Porthos.Assets.IndexView();
     } else if (body.hasClassName('edit') || body.hasClassName('incomplete')){

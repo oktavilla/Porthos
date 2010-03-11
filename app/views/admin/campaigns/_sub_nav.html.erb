@@ -4,6 +4,7 @@
     <%= submit_tag "Sök", :style => "display:none" %>
   </div>
   <% end %>
+  <% if @filters %>
   <div class="label">Status</div>
   <ul class="filter">
     <li<%= ' class="current"' if @filters[:active].to_i == 1 %>>
@@ -14,3 +15,4 @@
     </li>
   </ul>
   <%= link_to 'Exportera alla mätpunkter', admin_measure_points_path(:format => 'csv') %>
+  <% end %>

@@ -7,7 +7,7 @@
     <%= submit_tag "Sök", :style => "display:none" %>
   </div>
   <% end %>
-  
+  <% if @filters %>
   <ul class="filter">
     <li<%= ' class="current"' if @filters[:role] == 'Admin' %>>
       <%= link_to "Redaktörer", admin_users_path(:filters => @filters.except(:role).merge({:role => 'Admin'})) %>
@@ -16,4 +16,5 @@
       <%= link_to "Besökare", admin_users_path(:filters => @filters.except(:role).merge({:role => 'Public'})) %>
     </li>
   </end>
+  <% end %>
 </div>

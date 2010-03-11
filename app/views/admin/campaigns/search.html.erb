@@ -14,22 +14,7 @@
     <% else %>
       <p class="blank-slate info">Inga träffar hittades på sökningen ”<%= @query %>”</p>
     <% end %>
-    <%= will_paginate @search %>
-  </div>
-    <div id="c_2">
-      <div class="inner">
-        <% form_tag search_admin_campaigns_path, :method => 'get' do %>
-        <div id="search">
-          <%= text_field_tag :query, (@query || 'Sök'), :class => "query", :id=> "search_query" %>
-          <%= submit_tag "Sök", :style => "display:none" %>
-        </div>
-        <% end %>
-        <div class="main_action">
-          <%= link_to 'Skapa ny kampanj', new_admin_campaign_path, :class => "new_campaign" %>
-        </div>
-        <%= link_to 'Exportera alla mätpunkter', admin_measure_points_path(:format => 'csv') %>
-      </div>
-    </div>
+    <%= will_paginate @search %>    
   </div>
 </div>
 <%= javascript_include_tag 'named_routes' %>

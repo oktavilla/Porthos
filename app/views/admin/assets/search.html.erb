@@ -1,105 +1,55 @@
-<% @page_title = "Filarkiv" %>
+<% @page_title = "Sök filer och dokument" %>
+<% @page_class = 'layout3' %>
+<%= render :partial => 'admin/assets/sub_nav' %>
 <div id="workspace">
   <div class="header">
     <h1>Sök filer och dokument</h1>
   </div>
-  <div id="c_wrap" class="layout_2">
-    <div id="c_1">
-      <div class="inner">
-        <span class="notice">
-          <% if @assets.any? %>
-            <%= @search.total_entries %> filer hittades med sökningen ”<span class="query"><%= @query %></span>”.
-            <%= link_to "Tillbaka", admin_assets_path, :class => 'back' %>
-          <% else %>
-            Inga filer hittades på din sökning. <%= link_to "Tillbaka till senaste filer", admin_assets_path, :class => 'back' %>
-          <% end %>
-        </span>
-        <div class="inner">
-          <% if @assets.any? %>
-          <ul class="assets detailed">
-            <% @assets.each do |asset| %>
-              <li class="<%= cycle 'even', 'odd' %>">
-                <a href="<%= edit_admin_asset_path(asset) %>">
-                <% if asset.image? %>
-                  <%= image_tag display_image_path(:size => 'c100x100', :id => asset, :format => asset.extname), :id => "asset_#{asset.id}", :width => 100, :height => 100 %>
-                <% elsif asset.respond_to?(:thumbnail) and not asset.thumbnail.blank? %>
-                  <%= image_tag display_image_path(:size => 'c100x100', :id => asset.thumbnail, :format => asset.thumbnail.extname), :id => "asset_#{asset.id}", :width => 100, :height => 100 %>
-                <% else %>
-                  <img src="/graphics/porthos/icons/filetypes/<%= asset.extname %>.png" alt="" width="100" height="100">
-                <% end %>
-                </a>
-                <h2 class="title"><%= link_to asset.title, edit_admin_asset_path(asset) %></h2>
-                <div class="description<%= ' blank' if asset.description.blank? %>">
-                  <%= asset.description.blank? ? "<a href=\"#{edit_admin_asset_path(asset)}\">Ingen beskrivning. Skriv en ...</a>" : truncate(asset.description,200) %>
-                </div>
-                <% unless asset.tag_names.blank? %>
-                <div class="tags"><%= asset.tags.collect { |tag| @current_tags.include?(tag.name) ? link_to(tag.name, admin_assets_path(:tags => [tag.name])) : link_to(tag.name, admin_assets_path(:tags => [tag.name])) }.join(' ') -%></div>
-                <% end %>
-                <div class="meta">
-                  <span>Uppladdad</span> den <%= asset.created_at.strftime("%d %b %Y") %>
-                  <% unless asset.created_by.nil? -%>
-                  <span>av</span> <%= asset.created_by.name %>
-                  <% end -%>
-                </div>
-                <div class="actions">
-                  <%= link_to "Ändra", edit_admin_asset_path(asset), :class => 'edit' %>
-                  <%= link_to "Ta bort", admin_asset_path(asset), :class => 'delete', :confirm => "Är du säker att du vill ta bort filen? Den kommer försvinna från alla sidor. Du kan INTE ångra dig.", :method => :delete %>
-                </div>
-              
-              </li>
-            <% end %>
-          </ul>
-          <%= will_paginate @search, :prev_label => "« Föregående", :next_label => "Nästa »" %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-    <div id="c_2">
-      <div class="inner">
-        <p class="main_action"><a href="<%= new_admin_asset_path %>" class="upload_files">Ladda upp filer</a></p>
-        <% form_for :asset, :url => search_admin_assets_path, :html => { :method => :get } do |f| %>
-        <div id="search">
-          <input type="text" name="query" class="query" value="<%= @query %>" id="search_query">
-          <input type="submit" class="submit" style="display:none" value="Sök">
-        </div>
+  <div id="content">
+    <div class="inner">
+      <span class="notice">
+        <% if @assets.any? %>
+          <%= @search.total_entries %> filer hittades med sökningen ”<span class="query"><%= @query %></span>”.
+          <%= link_to "Tillbaka", admin_assets_path, :class => 'back' %>
+        <% else %>
+          Inga filer hittades på din sökning. <%= link_to "Tillbaka till senaste filer", admin_assets_path, :class => 'back' %>
         <% end %>
-        <% if @current_tags.any? -%>
-        <h2>Valda nyckelord</h2>
-        <div class="tags current">
-          <ul>
-          <% @current_tags.each do |current_tag| %>
-            <li>
-              <span class="tag"><%= current_tag %></span> <%= link_to "Ta bort", admin_assets_path(:tags => @current_tags - [current_tag]) %>
-            </li>
-          <% end -%>
-          </ul>
-        </div>
-          <% if @related_tags.any? -%>
-          <h2>Relaterade nyckelord</h2>
-          <div class="tags">
-            <ul>
-            <% @related_tags.each do |tag| %>
-              <li>
-                <%= link_to tag.name, admin_assets_path(:tags => @current_tags + [tag.name]), :class => "tag" %>
-              </li>
+      </span>
+      <% if @assets.any? %>
+      <ul class="items thumbnails">
+        <% @assets.each do |asset| %>
+          <li class="<%= cycle 'even', 'odd' %>"><div class="inner">
+            <a href="<%= edit_admin_asset_path(asset) %>">
+            <% if asset.image? %>
+              <%= image_tag display_image_path(:size => 'c100x100', :id => asset, :format => asset.extname), :id => "asset_#{asset.id}", :width => 100, :height => 100 %>
+            <% elsif asset.respond_to?(:thumbnail) and not asset.thumbnail.blank? %>
+              <%= image_tag display_image_path(:size => 'c100x100', :id => asset.thumbnail, :format => asset.thumbnail.extname), :id => "asset_#{asset.id}", :width => 100, :height => 100 %>
+            <% else %>
+              <img src="/graphics/porthos/icons/filetypes/<%= asset.extname %>.png" alt="" width="100" height="100">
             <% end %>
-            </ul>
-          </div>
-          <%- end -%>
-        <% end -%>
-        <% if @tags.any? -%>
-        <h2>Populära nyckelord</h2>
-        <div class="tags popular">
-          <ul>
-          <% @tags.sort_by { |tag| tag.name }.each do |tag| %>
-            <li>
-              <%= link_to "#{tag.name} <span class=\"taggings\">#{tag.num_taggings}</span>", admin_assets_path(:tags => [tag.name]), :class => "tag" -%>
-            </li>
-          <% end %>
-          </ul>
-        </div>
-        <% end -%>
-      </div>
+            </a>
+            <h2 class="title"><%= link_to asset.title, edit_admin_asset_path(asset) %></h2>
+            <div class="description<%= ' blank' if asset.description.blank? %>">
+              <%= asset.description.blank? ? "<a href=\"#{edit_admin_asset_path(asset)}\">Ingen beskrivning. Skriv en ...</a>" : truncate(asset.description,200) %>
+            </div>
+            <% unless asset.tag_names.blank? %>
+            <div class="tags"><%= asset.tags.collect { |tag| @current_tags.include?(tag.name) ? link_to(tag.name, admin_assets_path(:tags => [tag.name])) : link_to(tag.name, admin_assets_path(:tags => [tag.name])) }.join(' ') -%></div>
+            <% end %>
+            <div class="meta">
+              <span>Uppladdad</span> den <%= asset.created_at.strftime("%d %b %Y") %>
+              <% unless asset.created_by.nil? -%>
+              <span>av</span> <%= asset.created_by.name %>
+              <% end -%>
+            </div>
+            <div class="actions">
+              <%= link_to "Ändra", edit_admin_asset_path(asset), :class => 'edit' %>
+              <%= link_to "Ta bort", admin_asset_path(asset), :class => 'delete', :confirm => "Är du säker att du vill ta bort filen? Den kommer försvinna från alla sidor. Du kan INTE ångra dig.", :method => :delete %>
+            </div>  
+          </div></li>
+        <% end %>
+      </ul>
+      <%= will_paginate @search, :prev_label => "« Föregående", :next_label => "Nästa »" %>
+      <% end %>
     </div>
   </div>
 </div>
