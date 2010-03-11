@@ -5,6 +5,7 @@
       <%= submit_tag "Sök", :style => "display:none" %>
     </div>
   <% end %>
+  <% if @filters %>
   <ul class="filter">
     <%= asset_filter_links(@filters).join(' ') %>
   </ul>
@@ -19,6 +20,7 @@
       </li>
     <% end -%>
   </ul>
+  <% end %>
 <% if @tags && @tags.any? -%>
   <div class="label">Nyckelord</div>
   <ul class="tags">
