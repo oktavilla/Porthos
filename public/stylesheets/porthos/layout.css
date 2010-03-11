@@ -287,18 +287,18 @@ body.layout3 #workspace {
     background:#fff;
     padding:20px 40px;}
     #workspace #c_1 {
-      float:right;
-      width:330px;
-      margin-bottom:30px;}
-    #workspace #c_2 {
       float:left;
-      padding-right:40px;
-      border-right:1px dashed #ccc; }
-    #workspace #c_3 {
-      clear:right;
-      margin-left:-10px;
-      border-top:1px solid #e2e2e2; }
-      #workspace #c_3 h2 {padding:0 10px;margin-bottom:0;}
+      width:100%;
+      margin-bottom:30px;}
+      #workspace #c_1 > .inner {
+        padding-right:40px;
+        border-right:1px dashed #ccc;
+        margin-right:330px; }
+    #workspace #c_2 {
+      width:330px;
+      float:left;
+      margin:0 0 0 -330px; }
+      #workspace #c_2 > .inner {padding-left:40px;}
 
 #footer {}
   #footer .inner {}
