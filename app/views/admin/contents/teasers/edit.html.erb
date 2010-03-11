@@ -38,7 +38,7 @@
   $$('#asset_usages').each(function(element) {
     Sortable.create(element, {
       overlap: 'horizontal',
-      constraint: 'false',
+      constraint: false,
       tag: 'div',
       onUpdate: function() {
         new Ajax.Request(Routing.sort_admin_asset_usages_path(), {
