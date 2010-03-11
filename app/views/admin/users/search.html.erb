@@ -3,17 +3,10 @@
 <%= render :partial => 'sub_nav' %>
 <div id="workspace">  
   <div class="header">
-    <h1>Användare - sökresultat</h1>
+    <h1>Sökresultat för "<%= @query %>" (<%= @search.total_entries %> träffar)</h1></h1>
   </div>
   <div id="content">
     <div class="inner">
-      <span class="notice">
-        <% if @search.total_entries != 0 -%>
-        Din sökning på <strong><%= @query %></strong> gav <strong><%= @search.total_entries %></strong> resultat
-        <% else -%>
-        Inga träffar hittades på sökningen ”<%= @query %>”
-        <% end -%>
-      </span>
       <ul id="userslist">
       <% @search.results.each do |user| -%>
         <li>
