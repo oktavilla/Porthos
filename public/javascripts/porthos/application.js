@@ -308,4 +308,16 @@ Porthos.SearchFieldAutoClear = function() {
 };
 document.observe('dom:loaded', function() {
   Porthos.SearchFieldAutoClear();
+  $$('#asset_usages.sortable').each(function(element) {
+    Sortable.create(element, {
+      handle: 'drag_handle',
+      tag: 'div',
+      onUpdate: function() {
+        new Ajax.Request(Routing.sort_admin_asset_usages_path(), {
+          method: 'put',
+          parameters: Sortable.serialize(element)
+        });
+      }
+    })
+  });
 });

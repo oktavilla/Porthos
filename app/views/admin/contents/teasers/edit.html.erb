@@ -11,12 +11,9 @@
       <% end %>
     </div></div>
     <div id="c_2"><div class="inner">
-      <div id="asset_usages">
+      <div id="asset_usages" class="sortable">
       <% @content.resource.asset_usages.each do |asset_usage| %>
-        <div id="asset_usage_<%= asset_usage.id %>">
-          <%= image_tag display_image_path(:id => asset_usage.asset, :size => 'c100x100', :format => asset_usage.asset.extname) %>
-          <%= button_to "Ta bort", admin_asset_usage_path(:id => asset_usage, :return_to => request.request_uri), :method => :delete, :src => '/graphics/porthos/icons/trash.gif', :confirm => "Är du helt säker på att du vill ta bort bilden?" %>
-        </div>
+        <%= render :partial => 'admin/asset_usages/asset_usage', :locals => { :asset_usage => asset_usage } %>
       <% end %>
       </div>
       <div class="new">
@@ -35,17 +32,4 @@
 <%= javascript_include_tag 'porthos/editor' %>
 <script type="text/javascript">
   Porthos.Editor.Initialize();
-  $$('#asset_usages').each(function(element) {
-    Sortable.create(element, {
-      overlap: 'horizontal',
-      constraint: false,
-      tag: 'div',
-      onUpdate: function() {
-        new Ajax.Request(Routing.sort_admin_asset_usages_path(), {
-          method: 'put',
-          parameters: Sortable.serialize(element)
-        });
-      }
-    })
-  });
 </script>
