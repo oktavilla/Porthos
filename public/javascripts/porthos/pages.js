@@ -125,9 +125,9 @@
       this.form.submit();
     });
     
-    if ($$("body#pages.show").size() > 0) {
+    if ($$("body#pages_view.show").size() > 0) {
       var page = new Porthos.Pages.Page();
-    } else if ($$("body#pages.new, body#pages.edit, body#nodes.edit").size() > 0) {
+    } else if ($$("body#pages_view.new, body#pages_view.edit, body#nodes_view.edit").size() > 0) {
       var page = Porthos.Pages.SetupForm();
     }
     
