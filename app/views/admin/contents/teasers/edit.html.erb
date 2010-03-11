@@ -16,8 +16,8 @@
         <%= render :partial => 'admin/asset_usages/asset_usage', :locals => { :asset_usage => asset_usage } %>
       <% end %>
       </div>
-      <div class="new">
-        <%= link_to "Lägg till bild", admin_assets_path(:asset_usage => { :parent_id => @content.resource.id, :parent_type => @content.resource.class.name }, :context_params => { :return_to => request.request_uri }) %>
+      <div class="add">
+        <%= link_to "Lägg till bild", admin_assets_path(:asset_usage => { :parent_id => @content.resource.id, :parent_type => @content.resource.class.name }, :context_params => { :return_to => request.request_uri }), :class => 'new' %>
       </div>
     </div></div>
   </div>
