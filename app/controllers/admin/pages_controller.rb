@@ -87,7 +87,6 @@ class Admin::PagesController < ApplicationController
     @page = Page.find(params[:id])
     respond_to do |format|
       format.html
-      format.js { render :action => 'edit', :layout => false }
     end
   end
 

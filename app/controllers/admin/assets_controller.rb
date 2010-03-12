@@ -2,17 +2,17 @@ class Admin::AssetsController < ApplicationController
   include Porthos::Admin
   
   before_filter :login_required
-  before_filter :set_content_context, :only => :index
-  before_filter :find_tags, :only => [:index, :new]
+  before_filter :set_content_context,
+                :only => :index
+  before_filter :find_tags,
+                :only => [:index, :new]
   skip_before_filter :clear_content_context
-  skip_before_filter :remember_uri, :only => [:index, :show, :create, :search]
+  skip_before_filter :remember_uri,
+                     :only => [:index, :show, :create, :search]
   
   protect_from_forgery :only => :create
-  
-  # GET /assets
-  # GET /assets.xml
+
   def index
-    
     @filters = {
       :order_by => 'created_at desc',
       :page     => (params[:page] || 1),
@@ -27,8 +27,6 @@ class Admin::AssetsController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.xml { render :xml => @assets.to_xml }
-      format.js { render :action => 'index', :layout => false }
     end
   end
 
@@ -47,13 +45,10 @@ class Admin::AssetsController < ApplicationController
           @current_tags = params[:tags] || []
           @related_tags = @current_tags.any? ? @type.find_related_tags(@current_tags) : []
         end
-        format.js { render :action => 'search', :layout => false }
-        format.xml { render :xml => @assets.to_xml }
       end
     else
       respond_to do |format|
         format.html { redirect_to admin_assets_path }
-        format.js { render :action => 'search', :layout => false }
       end
     end
   end
@@ -61,11 +56,11 @@ class Admin::AssetsController < ApplicationController
   def show
     @asset = Asset.find(params[:id])
     respond_to do |format|
+      format.html { redirect_to edit_admin_asset_path(@asset) }
       format.js { render :json => @asset.to_json(:methods => [:type, :thumbnail]) }
     end
   end
 
-  # GET /assets/new
   def new
     @filters = {}
     @asset = Asset.new
@@ -74,17 +69,13 @@ class Admin::AssetsController < ApplicationController
     end
   end
 
-  # GET /assets/1;edit
   def edit
     @asset = Asset.find_by_file_name(params[:id])
     respond_to do |format|
       format.html
-      format.js { render :layout => false }
     end
   end
 
-  # POST /assets
-  # POST /assets.xml
   def create
     if params[:asset]
       @assets = [Asset.from_upload(params[:asset].merge({:created_by => current_user}))]
@@ -98,13 +89,11 @@ class Admin::AssetsController < ApplicationController
       unless @not_saved
         flash[:notice] = t(:saved, :scope => [:app, :admin_assets])
         format.html { redirect_to incomplete_admin_assets_url(:assets => @assets.collect {|asset| asset.id }) }
-        format.xml  { head :created, :location => asset_url(@asset) }
         format.json do
           render :text => @assets.collect{ |asset| asset.attributes_for_js }.to_json, :layout => false, :status => 200
         end
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @asset.errors.to_xml }
       end
     end
   end
@@ -121,12 +110,9 @@ class Admin::AssetsController < ApplicationController
     flash[:notice] = t(:saved, :scope => [:app, :admin_assets])
     respond_to do |format|
       format.html { redirect_to admin_assets_url }
-      format.xml  { head :ok }
     end
   end
 
-  # PUT /assets/1
-  # PUT /assets/1.xml
   def update
     @asset = Asset.find_by_file_name(params[:id])
 
@@ -134,25 +120,18 @@ class Admin::AssetsController < ApplicationController
       if @asset.update_attributes(params[:asset])
         flash[:notice] = "#{@asset.full_name} #{t(:saved, :scope => [:app, :admin_general])}"
         format.html { redirect_to previous_view_path(edit_admin_asset_url(@asset)) }
-        format.js   { render :layout => false }
-        format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.js   { render :layout => false }
-        format.xml  { render :xml => @assset.errors.to_xml }
       end
     end
   end
 
-  # DELETE /assets/1
-  # DELETE /assets/1.xml
   def destroy
     @asset = Asset.find_by_file_name(params[:id])
     @asset.destroy
     flash[:notice] = "#{@asset.full_name} #{t(:deleted, :scope => [:app, :admin_general])}"
     respond_to do |format|
       format.html { redirect_to admin_assets_path }
-      format.xml  { head :ok }
     end
   end
 
