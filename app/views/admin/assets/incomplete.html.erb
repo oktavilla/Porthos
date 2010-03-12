@@ -18,7 +18,7 @@
             <% end %>
           </div>
         </div>
-        <fieldset class="compact">
+        <fieldset>
           <label for="assets[<%= asset.id %>][title]">Titel</label>
           <%= text_field_tag "assets[#{asset.id}][title]", asset.file_name, :size => "40" %>
           <label for="assets[<%= asset.id %>][description]">Beskrivning</label>
@@ -32,7 +32,7 @@
       </div>
       <% end -%>
       <fieldset class="submit">
-        <input type="submit" value="Spara beskrivningar">
+        <input type="submit" value="Spara beskrivningar"> eller <%= link_to "avbryt", admin_assets_path %>
       </fieldset>
     <% end %>
   </div>

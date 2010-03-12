@@ -492,6 +492,14 @@ ul#nodes, ul#nodes ul {
   padding-left:0; }
   #assets_view .items div.inner { padding-left:115px; }
 
+#assets_view.incomplete .describe_asset {
+  border-top:1px solid #ccc;
+  padding:0 0 20px 290px;
+  clear:left; }
+  #assets_view.incomplete .describe_asset .preview {
+    float:left;
+    margin:20px 0 0 -290px; }
+
 /* CodeMirror */
 .CodeMirror-line-numbers {
   width: 2.2em;
@@ -502,7 +510,6 @@ ul#nodes, ul#nodes ul {
   font-size: 10pt;
   font-family: monospace;
   padding-top: .4em; }
-
 .CodeMirror-wrapping { 
   background: #fff; 
   border: 1px solid #ccc;
