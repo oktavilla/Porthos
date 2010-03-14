@@ -1,8 +1,10 @@
-<div class="restrictions">
+<ul class="multiple_choice">
 <% User.allowed_restrictions.each do |name, restriction| -%>
-  <label for="content_restrictions_<%= name.to_s %>" class="contains-input">
-    <%= check_box_tag "content[multiple_restrictions][]", name, content.restrictions.detect { |r| r.mapping_key.to_sym == name } %>
-    <%= t(name, :scope => [:app, :restrictions]) %>
-  </label>
+  <li>
+    <label for="content_restrictions_<%= name.to_s %>" class="contains-input">
+      <%= check_box_tag "content[multiple_restrictions][]", name, content.restrictions.detect { |r| r.mapping_key.to_sym == name } %>
+      <%= t(name, :scope => [:app, :restrictions]) %>
+    </label>
+  </li>
 <% end -%>
-</div>
+</ul>
