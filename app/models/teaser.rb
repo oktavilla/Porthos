@@ -41,6 +41,10 @@ class Teaser < ActiveRecord::Base
     @image_size ||= display_types[display_type.to_i][:image_size]
   end
   
+  def display_type_key
+    @display_type_key ||= display_types[display_type.to_i][:key]
+  end
+  
   self.class_eval do
         
     display_types.each do |_type|
