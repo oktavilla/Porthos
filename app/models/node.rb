@@ -31,7 +31,7 @@ class Node < ActiveRecord::Base
   validates_uniqueness_of :slug
   validates_presence_of :name, :controller, :action
 
-  acts_as_tree :order => 'position', :counter_cache => :children_count
+  acts_as_tree :order => 'position'
   acts_as_list :scope => 'parent_id', :column => 'position', :order => 'position'
 
   after_save  :generate_slug_for_children
