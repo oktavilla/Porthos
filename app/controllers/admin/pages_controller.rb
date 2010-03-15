@@ -87,7 +87,6 @@ class Admin::PagesController < ApplicationController
     @page = Page.find(params[:id])
     respond_to do |format|
       format.html
-      format.js { render :action => 'edit', :layout => false }
     end
   end
 
@@ -108,9 +107,13 @@ class Admin::PagesController < ApplicationController
     @page.destroy
     respond_to do |format|
       flash[:notice] = "”#{@page.title}” #{t(:deleted, :scope => [:app, :admin_general])}"
-      format.html { 
-        redirect_to @page.child? ? url_for(:controller => @page.parent.class.to_s.tableize, :action => 'show', :id => @page.parent) : admin_nodes_path(:nodes => @page.node)
-      }
+      format.html do
+        if @page.child?
+          redirect_to url_for(:controller => @page.parent.class.to_s.tableize, :action => 'show', :id => @page.parent)
+        else
+          redirect_to admin_nodes_path(:nodes => @page.node)
+        end
+      end
     end
   end
   
@@ -146,7 +149,7 @@ class Admin::PagesController < ApplicationController
     })
     
     respond_to do |format|
-      format.html { redirect_back_or_default admin_page_path(@page) }
+      format.html { redirect_to admin_page_path(@page) }
     end
   end
   

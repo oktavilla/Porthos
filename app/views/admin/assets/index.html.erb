@@ -72,13 +72,13 @@
           </div>
           <% elsif @asset_usage %>
           <div class="add">
-            <%= link_to "Välj", new_admin_asset_usage_path({ :asset_usage => @asset_usage.merge({ :asset_id => asset.id }) }.merge(@context_params)), :class => 'new' %>
+            <%= link_to "Välj", admin_asset_usages_path({ :asset_usage => @asset_usage.merge({ :gravity => 'c', :asset_id => asset.id }) }.merge(@context_params)), :method => 'post', :class => 'new' %>
           </div>
           <% end -%>
         </div></li>
         <% end -%>
       </ul>
-      <%= will_paginate @assets, :prev_label => "« Föregående", :next_label => "Nästa »" unless @current_tags.any? %>
+      <%= will_paginate @assets, :previous_label => "« Föregående", :next_label => "Nästa »" unless @current_tags.any? %>
       <% end -%>
     </div>
   </div>

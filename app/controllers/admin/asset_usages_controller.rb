@@ -11,16 +11,9 @@ class Admin::AssetUsagesController < ApplicationController
   end
 
   def create
-    @asset_usage = AssetUsage.new(params[:asset_usage])
+    @asset_usage = AssetUsage.create(params[:asset_usage])
     respond_to do |format|
-      if @asset_usage.save
-        format.html { redirect_to params[:return_to] || eval("admin_#{@asset_usage.parent_type.tableize}_path") }
-        format.js do
-          # re fetch image_resource to get the asset
-          @asset_usage = AssetUsage.find(@asset_usage.id, :include => :asset)
-          render :json => @asset_usage.to_json(:include => :asset)
-        end
-      end
+      format.html { redirect_to params[:return_to] || eval("admin_#{@asset_usage.parent_type.tableize}_path") }
     end
   end
 
@@ -37,10 +30,8 @@ class Admin::AssetUsagesController < ApplicationController
     respond_to do |format|
       if @asset_usage.update_attributes(params[:asset_usage])
         format.html { redirect_to params[:return_to] || eval("admin_#{@asset_usage.parent_type.tableize}_path") }
-        format.js   { render :nothing => true }
       else
         format.html { render :action => 'edit' }
-        format.js   { render :action => 'edit', :layout => false }
       end
     end
     
@@ -51,7 +42,6 @@ class Admin::AssetUsagesController < ApplicationController
     @asset_usage.destroy
     respond_to do |format|
       format.html { redirect_to params[:return_to] || eval("admin_#{@asset_usage.parent_type.tableize}_path") }
-      format.js   { render :nothing => true }
     end
   end
   

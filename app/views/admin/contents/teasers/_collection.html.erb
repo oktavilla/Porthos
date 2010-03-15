@@ -24,13 +24,7 @@
       <div class="meta">
         <span class="size"><span class="type">Storlek:</span>
         <span class="value">
-          <% if child.resource.small? %>
-          Liten
-          <% elsif child.resource.medium? %>
-          Mellan
-          <% elsif child.resource.big? %>
-          Stor
-          <% end %>
+          <%= t(child.resource.display_type_key, :scope => [:app, :teasers, :types]) %>
         </span>
       </div>
     </div>

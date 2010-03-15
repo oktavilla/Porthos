@@ -1,43 +1,22 @@
-# == Schema Information
-# Schema version: 76
-#
-# Table name: assets
-#
-#  id          :integer(11)   not null, primary key
-#  type        :string(255)   
-#  title       :string(255)   
-#  file_name   :string(255)   
-#  mime_type   :string(255)   
-#  extname     :string(255)   
-#  width       :integer(11)   
-#  height      :integer(11)   
-#  size        :integer(11)   
-#  created_at  :datetime      
-#  updated_at  :datetime      
-#  author      :text          
-#  description :text          
-#  created_by  :integer(11)   
-#  incomplete  :integer(11)   default(0)
-#
-
 require 'digest/sha1'
 require 'mime/types'
 class Asset < ActiveRecord::Base
   belongs_to :created_by, :class_name => 'User'
-  has_many   :usages, :class_name => 'AssetUsage'
+  has_many   :usages, :class_name => 'AssetUsage', :dependent => :destroy
   
   has_one :child, :class_name => 'Asset', :foreign_key => 'parent_id', :dependent => :destroy
   
-  named_scope :is_public, :conditions => { :private => false }
-  named_scope :filter_created_by, lambda { |user_id|
-    { :conditions => ["created_by_id = ?", user_id] }
-  }
-  named_scope :filter_by_type, lambda { |type|
-    { :conditions => ["type = ?", type] }
-  }
-  named_scope :filter_order_by, lambda { |order|
-    { :order => order }
-  }
+  named_scope :is_public,
+              :conditions => { :private => false }
+  named_scope :filter_created_by, lambda { |user_id| {
+    :conditions => ["created_by_id = ?", user_id]
+  }}
+  named_scope :filter_by_type, lambda { |type| {
+    :conditions => ["type = ?", type]
+  }}
+  named_scope :filter_order_by, lambda { |order| {
+    :order => order
+  }}
 
   is_indexed({
     :fields => ['type', 'title', 'file_name', 'author', 'description'],

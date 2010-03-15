@@ -13,6 +13,7 @@
 .batch_edit .asset:after,
 form .avatar:after,
 #asset_usages:after,
+#asset_usages div:after,
 #tags_view .taggable:after {
   content:".";
   display:block;
@@ -425,15 +426,33 @@ ul#nodes, ul#nodes ul {
     padding:0; }
 
 #asset_usages {}
-  #asset_usages div {float:left;}
-  #asset_usages .button_to {
-    display:none;
+  #asset_usages div {
+    position:relative;
+    border-top:1px solid #ccc;
+    padding:10px 0 10px 30px; }
+  #asset_usages img {
+    margin-right:10px;
+    float:left;}
+  #asset_usages .edit {
     position:absolute;
-    top:5px;
-    right:5px;
-    width:10px;
-    height:11px; }
-  #asset_usages div:hover .button_to {display:block;}
+    font-size:12px;
+    top:0;
+    right:0;
+    background:rgba(255,255,255,.8);
+    display:block; }
+    #asset_usages .edit a {
+      display:inline-block;
+      padding:10px 5px; 
+      vertical-align:middle; }
+  #asset_usages .drag_handle {
+    position:absolute; 
+    display:block;
+    top:10px;
+    left:0; 
+    cursor:move;
+    height:25px; 
+    width:20px;
+    background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -790px no-repeat; }
   
 #sessions_view {
   background:#f2f2f2; }
@@ -473,6 +492,14 @@ ul#nodes, ul#nodes ul {
   padding-left:0; }
   #assets_view .items div.inner { padding-left:115px; }
 
+#assets_view.incomplete .describe_asset {
+  border-top:1px solid #ccc;
+  padding:0 0 20px 290px;
+  clear:left; }
+  #assets_view.incomplete .describe_asset .preview {
+    float:left;
+    margin:20px 0 0 -290px; }
+
 /* CodeMirror */
 .CodeMirror-line-numbers {
   width: 2.2em;
@@ -483,7 +510,6 @@ ul#nodes, ul#nodes ul {
   font-size: 10pt;
   font-family: monospace;
   padding-top: .4em; }
-
 .CodeMirror-wrapping { 
   background: #fff; 
   border: 1px solid #ccc;
