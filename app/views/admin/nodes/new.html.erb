@@ -1,5 +1,4 @@
 <% @page_class = "layout1" -%>
-<% @page_id = 'site-structure' -%>
 <% @page_title = "Navigation" -%>
   <div id="workspace">
     <div class="header">
@@ -17,23 +16,23 @@
         <label for="node_restricted" class="contains-input">
           <%= f.check_box :restricted %> Kräv inloggning
         </label>
-        <ul id="access_status">
+        <ul class="multiple_choice">
           <li>
             <label for="node_access_status_1">
               <%= f.radio_button :status, 1 %>
-              syns i navigationen <span class="info">(är tillgänglig på internet)</span>
+              Syns i navigationen <span class="form_help">Och är tillgänglig på internet.</span>
             </label>
           </li>
           <li>
             <label for="node_access_status_0">
               <%= f.radio_button :status, 0 %>
-              syns <strong>inte</strong> i navigationen <span class="info">(men är tillgänglig på internet)</span>
+              Syns inte i navigationen. <span class="form_help">Men är tillgänglig på internet.</span>
             </label>
           </li>
           <li>
             <label for="node_access_status_-1">
               <%= f.radio_button :status, -1 %>
-              avstängd <span class="info">(är ej tillgänglig på internet)</span>
+              Avstängd <span class="form_help">Är ej tillgänglig på internet.</span>
             </label>
           </li>
         </ul>
@@ -62,4 +61,4 @@
   </div>
 <%= javascript_include_tag 'named_routes' %>
 <%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', :cache => 'admin' %>
-<%= javascript_include_tag 'porthos/pages' %>
+<%= javascript_include_tag 'porthos/nodes' %>
