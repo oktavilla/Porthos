@@ -267,15 +267,15 @@ module ApplicationHelper
         :full_render => options[:full_render]
       })
     elsif !options[:full_render] and !content.restricted?
-      unless content.module?
+      if content.module? or content.form?
+        "<"+"%= render(:partial => '#{content.public_template}', :locals => { :page => @page, :content => Content.find(#{content.id}) }) %"+">"
+      else
         render(:partial => content.public_template, :locals => {
           :page     => page,
           :content  => content,
           :resource => content.resource,
           :full_render => options[:full_render]
         })
-      else
-        "<"+"%= render(:partial => '#{content.public_template}', :locals => { :page => @page, :content => Content.find(#{content.id}) }) %"+">"
       end
     end
   end
