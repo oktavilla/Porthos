@@ -257,6 +257,13 @@ end
 
 module MiniMagick
   class Image
+    def initialize(input_path, tempfile=nil)
+      ENV['PATH'] = "/usr/local/bin:/usr/bin:/bin:/opt/bin"
+      @path = input_path
+      @tempfile = tempfile 
+      run_command("identify", @path)
+    end
+    
     def write(output_path)
       FileUtils.move @path, output_path
       run_command "identify", output_path # Verify that we have a good image
