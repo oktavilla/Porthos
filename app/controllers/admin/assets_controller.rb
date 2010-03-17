@@ -3,7 +3,7 @@ class Admin::AssetsController < ApplicationController
   
   before_filter :login_required
   before_filter :set_content_context,
-                :only => :index
+                :only => [:index, :search]
   before_filter :find_tags,
                 :only => [:index, :new]
   skip_before_filter :clear_content_context
