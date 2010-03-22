@@ -93,7 +93,6 @@ ActionController::Routing::Routes.draw do |map|
 
     admin.registrations         '/registrations',               :controller => 'registrations', :action => 'index'
     admin.comment_registration  '/registrations/comment',       :controller => 'registrations', :action => 'comment'
-    admin.registrations_by_type '/registrations/:type',         :controller => 'registrations', :action => 'index'
     admin.invalid_registrations_by_type '/registrations/:type/invalid', :controller => 'registrations', :action => 'invalid'
     admin.registration          '/registrations/:type/:id',     :controller => 'registrations', :action => 'show'
     admin.export_registration   '/registrations/export/:type.:format',  :controller => 'registrations', :action => 'period'

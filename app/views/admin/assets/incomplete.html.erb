@@ -20,13 +20,13 @@
         </div>
         <fieldset>
           <label for="assets[<%= asset.id %>][title]">Titel</label>
-          <%= text_field_tag "assets[#{asset.id}][title]", asset.file_name, :size => "40" %>
+          <div class="fullwidth"><%= text_field_tag "assets[#{asset.id}][title]", asset.file_name, :size => "40" %></div>
           <label for="assets[<%= asset.id %>][description]">Beskrivning</label>
-          <%= text_area_tag("assets[#{asset.id}][description]", '', options = {:class => 'description', :rows => 2, :cols => 38}) %>
+          <div class="fullwidth"><%= text_area_tag("assets[#{asset.id}][description]", '', options = {:class => 'description', :rows => 2, :cols => 38}) %></div>
           <label for="assets[<%= asset.id %>][author]">Fotograf/copyright</label>
-          <%= text_field_tag "assets[#{asset.id}][author]", asset.author, :size => "40" %>
+          <div class="fullwidth"><%= text_field_tag "assets[#{asset.id}][author]", asset.author, :size => "40" %></div>
           <label for="assets[<%= asset.id %>][tag_names]">Nyckelord</label>
-          <%= text_field_tag "assets[#{asset.id}][tag_names]", {}, :size => "40", :class => 'asset_tags' %>
+          <div class="fullwidth"><%= text_field_tag "assets[#{asset.id}][tag_names]", {}, :size => "40", :class => 'asset_tags' %></div>
           <p class="form_help after">Dela fler nyckelord med mellanslag.</p>
         </fieldset>
       </div>

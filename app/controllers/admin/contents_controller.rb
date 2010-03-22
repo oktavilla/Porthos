@@ -23,6 +23,11 @@ class Admin::ContentsController < ApplicationController
   def edit
     @content  = Content.find(params[:id])
     @resource = @content.resource
+
+    if params[:resource]
+      @asset = Asset.find(params[:resource][:image_asset_id] || params[:resource][:movie_asset_id])
+    end
+
     respond_to do |format|
       format.html { render :template => @content.resource.view_path(:edit) }
       format.js   { render :template => @content.resource.view_path(:edit), :layout => false }

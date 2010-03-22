@@ -63,6 +63,7 @@ class RegistrationsController < ApplicationController
         registration_path(:id => @registration.to_url)
       end
     else
+<<<<<<< HEAD
       Conversion.from_click(session[:measure_point], @registration) if session[:measure_point]
       @redirection_url = registration_path(:id => @registration.to_url)
     end
