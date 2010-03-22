@@ -62,6 +62,7 @@ class RegistrationsController < ApplicationController
       respond_to do |format|
         format.html do
           load_page_objects
+          @full_render = true
           render :template => 'pages/show'
         end
         format.xml { render :xml => @registration.errors.to_xml, :status => 422 }
