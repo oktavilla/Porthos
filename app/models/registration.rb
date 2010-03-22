@@ -3,6 +3,8 @@ class Registration < ActiveRecord::Base
   def sale?; false; end
   def needs_confirmation?; false; end
 
+  acts_as_filterable
+
   class_inheritable_accessor :public_filters
   self.public_filters = [
     :confirmed,
@@ -24,7 +26,8 @@ class Registration < ActiveRecord::Base
   named_scope :confirmed_or_pending, :conditions => '(status = 1 or status = 0)'
 
   named_scope :with_period, lambda { |period| { :conditions => ["created_at BETWEEN ? AND ?", period.first, period.last] } }
-  named_scope :of_the_type, lambda { |class_type| { :conditions => ["type = ?", class_type.classify] } }
+ 
+  named_scope :filter_of_the_type, lambda { |class_type| { :conditions => ["type = ?", class_type.classify] } }
 
   has_many :comments, :class_name => 'RegistrationComment'
   has_many :related_registrations, :class_name => 'Registration', :finder_sql => 'SELECT * FROM registrations WHERE registrations.session_id = "#{session_id}" AND id != "#{id}"'
@@ -38,6 +41,12 @@ class Registration < ActiveRecord::Base
   validates_length_of :trigger, :is => 0, :allow_nil => true
   
   attr_accessor :env
+  
+  attr_accessor :should_create_user
+  
+  def should_create_user?
+    !should_create_user.blank?
+  end
   
   before_validation_on_create :generate_public_id, :set_current_user
   
@@ -184,19 +193,49 @@ class Registration < ActiveRecord::Base
   def humanized_status
     HUMANIZED_STATUSES[self.status]
   end
-
+  
+  def copy_user_information
+    if user
+      self.class.user_attribute_matchings.each do |user_key, reg_key|
+        unless user_key.is_a?(Array)
+          self.send("#{reg_key.to_s}=".to_sym, user.send(user_key)) if self.respond_to?("#{reg_key.to_s}=".to_sym) && self.send(reg_key).blank?
+        else
+          primary_key, secondary_key = user_key.first, user_key.last
+          value = if !user.send(primary_key).blank?
+            user.send(primary_key)
+          elsif !user.send(secondary_key).blank?
+            user.send(secondary_key)
+          else
+            ''
+          end
+          self.send("#{reg_key.to_s}=".to_sym, value) if self.respond_to?("#{reg_key.to_s}=".to_sym) && self.send(reg_key).blank?
+        end
+      end
+    end
+  end
+  
   class << self
+    
     def new_from_type(registration_type, attributes = {}, allowed_types = 'all')
       raise SecurityTransgression if allowed_types.is_a?(Array) and not allowed_types.include?(registration_type)
-      raise SecurityTransgression unless Registration.valid_registration_types.include?(registration_type)
       registration_type.constantize.new(attributes)
     end
-    
-    def valid_registration_types
-      [
-        'NewsletterSubscription',
-        'PageTip'
-      ]
+
+    def new_with_user(user = nil, *args)
+      returning(self.new) do |r|
+        r.user = user
+        r.copy_user_information
+      end
+    end
+
+    def user_attribute_matchings
+      {
+        :first_name           => :first_name,
+        :last_name            => :last_name,
+        :cell_phone           => :cell_phone,
+        :phone                => :phone,
+        :email                => :email
+      }
     end
 
     def average_sum(options = {})
@@ -250,7 +289,7 @@ protected
   end
 
   def set_current_user
-    self.user = User.current
+    self.user = User.current if self.user_id.blank?
   end
 
   def validate
