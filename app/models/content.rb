@@ -49,6 +49,10 @@ class Content < ActiveRecord::Base
     resource_type == 'RegistrationForm'
   end
 
+  def pre_renderable?
+    @pre_renderable ||= !module? && !form?
+  end
+
   def public_template
     @public_template ||= if collection?
       "/pages/contents/#{resource_type.underscore.pluralize}/collection"
