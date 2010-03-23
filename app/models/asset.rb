@@ -110,6 +110,15 @@ class Asset < ActiveRecord::Base
       tempfile.flush
       tempfile
     end
+    
+    def new_tempfile_from_url(url)
+      data = open(url)
+      if data.size > 0
+        temp_path = "/tmp/"+File.basename(data.base_uri.path)
+        File.open(temp_path, 'wb') { |disk_file| disk_file.write(data.read) }
+        Asset.new_tempfile(temp_path)
+      end
+    end
   end
 
   def to_param
