@@ -281,7 +281,7 @@ module ApplicationHelper
   end
   
   def display_image_path(options = {})
-    if not logged_in? or (logged_in? and not current_user.admin?)
+    if options.delete(:add_token) or not logged_in? or (logged_in? and not current_user.admin?)
       asset = options[:id].is_a?(Numeric) ? Asset.find(options[:id]) : options[:id]
       options[:token] = asset.resize_token(options[:size]) if options[:size]
     end
