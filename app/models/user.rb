@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
   
   named_scope :filter_role , lambda { |role_name| {
     :include => 'roles',
-    :conditions => ["roles.name = ?", role_name]
+    :conditions => (role_name.blank? ? [] : ["roles.name = ?", role_name])
   }}
   
   is_indexed :fields => ['first_name', 'last_name', 'email']

@@ -9,6 +9,9 @@
   <% end %>
   <% if @filters %>
   <ul class="filter">
+    <li<%= ' class="current"' if @filters[:role] == '' %>>
+      <%= link_to "Alla", admin_users_path(:filters => @filters.except(:role).merge({:role => ''})) %>
+    </li>
     <li<%= ' class="current"' if @filters[:role] == 'Admin' %>>
       <%= link_to "Redaktörer", admin_users_path(:filters => @filters.except(:role).merge({:role => 'Admin'})) %>
     </li>

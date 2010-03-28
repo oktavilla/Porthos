@@ -6,7 +6,7 @@ class Admin::UsersController < ApplicationController
     @filters = {
       :page     => (params[:page] || 1),
       :per_page => (params[:per_page] || 90),
-      :role     => 'Admin'
+      :role     => ''
     }.merge((params[:filters] || {}).to_options)
     @users = User.find_with_filter(@filters)
     respond_to do |format|
