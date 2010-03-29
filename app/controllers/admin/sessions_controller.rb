@@ -21,7 +21,7 @@ class Admin::SessionsController < ApplicationController
       end
       redirect_back_or_default('/admin')
     else
-      flash[:notice] = t(:login_failed, :scope => [:app, :admin_general])
+      flash.now[:notice] = t(:login_failed, :scope => [:app, :admin_general])
       render :action => 'new'
     end
   end

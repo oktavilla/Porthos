@@ -15,11 +15,19 @@ class User::SessionsController < ApplicationController
         self.current_user.remember_me
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
-      redirect_back_or_default('/')
-      flash[:notice] = t(:logged_in, :scope => [:app, :general])
+      respond_to do |format|
+        format.html do
+          flash[:notice] = t(:logged_in, :scope => [:app, :general])
+          redirect_back_or_default('/')
+        end
+      end
     else
-      flash[:notice] = t(:login_failed, :scope => [:app, :general])
-      render :action => 'new'
+      respond_to do |format|
+        format.html do
+          flash.now[:failure] = t(:login_failed, :scope => [:app, :general])
+          render :action => 'new'
+        end
+      end
     end
   end
   
