@@ -1,15 +1,22 @@
 class Content < ActiveRecord::Base
-  belongs_to :context,  :polymorphic => true
-  belongs_to :resource, :polymorphic => true
-  belongs_to :content_collection, :foreign_key => 'parent_id'
+  belongs_to :context,
+             :polymorphic => true
+  belongs_to :resource,
+             :polymorphic => true
+  belongs_to :content_collection,
+             :foreign_key => 'parent_id'
   has_many :restrictions
-  named_scope :active, :conditions => ["contents.active = ?", true]
+  named_scope :active,
+              :conditions => ["contents.active = ?", true]
 
   acts_as_list :scope => 'context_id = \'#{context_id}\' AND context_type = \'#{context_type}\' AND column_position = \'#{column_position}\' AND parent_id #{(parent_id.blank? ? "IS NULL" : (" = " + parent_id.to_s))}'
   
   acts_as_settingable
   
+  attr_accessor :multiple_restrictions
+  
   after_save :notify_context
+  after_save :set_restrictions
   
   # Should destroy resource unless it's shared in any sence
   before_destroy do |content|
@@ -100,13 +107,15 @@ class Content < ActiveRecord::Base
     !restrictions_count.nil? && restrictions_count > 0
   end
   
-  def multiple_restrictions=(_restrictions)
+  def set_restrictions
     self.restrictions.destroy_all
-    _restrictions.each do |key|
-      self.restrictions << self.restrictions.create(:mapping_key => key)
+    unless multiple_restrictions.nil?
+      multiple_restrictions.each do |key|
+        self.restrictions << self.restrictions.create(:mapping_key => key)
+      end
     end
   end
-  
+    
 protected
 
   def notify_context
