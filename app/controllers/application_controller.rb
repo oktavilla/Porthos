@@ -13,12 +13,15 @@ class ApplicationController < ActionController::Base
   rescue_from 'SecurityTransgression' do |e|
     head :forbidden
   end
+  rescue_from ActionController::RoutingError, :with => :status_404
+  rescue_from ActiveRecord::RecordNotFound,   :with => :status_404
+  
 
 protected
 
   def status_404
     respond_to do |format| 
-      format.html { render :file => "#{RAILS_ROOT}/public/404.html", :status => '404 Not Found' } 
+      format.html { render :file => "#{RAILS_ROOT}/public/404.html", :status => :not_found } 
       format.xml  { head(:not_found) } 
     end 
   end
