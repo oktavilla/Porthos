@@ -33,6 +33,11 @@
       <span class="draghandle"></span>
       <span class="inactive_proxy"></span>
       <% unless content.collection? -%>
+        <%= render :partial => content.resource_template, :locals => { :resource => content.resource, :content => content } %>
+      <% else %>
+        <%= render :partial => content.collection_template, :locals => { :content => content } %>
+      <% end %>
+      <% unless content.collection? -%>
         <span class="type"></span>
         <span class="controls">
           <% if content.module? and content.resource.has_settings? %>
@@ -42,9 +47,6 @@
           <%= link_to content.active? ? 'Dölj' : 'Visa', toggle_admin_content_path(content), :method => :put, :class => 'visibility' %>
           <%= link_to "Ta bort", admin_content_path(content), :method => :delete, :confirm => "Är du säker? Detta går inte att ångra.", :class => 'delete' %>
         </span>
-        <%= render :partial => content.resource_template, :locals => { :resource => content.resource, :content => content } %>
-      <% else %>
-        <%= render :partial => content.collection_template, :locals => { :content => content } %>
       <% end %>
       </li>
     <% end -%>
@@ -79,7 +81,6 @@
             scroll      : window,
             handle      : 'draghandle',
             only        : 'sortable',
-            constraint  : false,
             onUpdate    : this.sort.bindAsEventListener(this)
           });
         }.bind(this));
