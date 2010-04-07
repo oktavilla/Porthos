@@ -13,7 +13,8 @@ class Node < ActiveRecord::Base
   validates_uniqueness_of :slug
   validates_presence_of :name, :controller, :action
 
-  acts_as_tree :order     => 'position',
+  acts_as_tree :order => 'position',
+               :counter_cache => :children_count,
                :dependent => :destroy
 
   acts_as_list :scope  => :parent,
