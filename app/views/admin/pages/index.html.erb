@@ -15,7 +15,7 @@
       <%= link_to "Skapa en ny sida", (!@filters[:with_parent] ? new_admin_page_path : new_admin_page_path(:page => { :parent_id => @filters[:with_parent], :parent_type => 'Page' })), :class => 'new' %>
       <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'new' if current_user.can_create?(PageCollection) %>
     </div>
-    <% form_tag admin_pages_path, :method => :get do |f| %>
+    <% form_tag :url => admin_pages_path, :html => { :method => :get } do |f| %>
     <div class="sort">
       <label for="filters_order_by">Sortering:</label>
       <% @filters.except(:order_by).each do |filter, value| -%>
