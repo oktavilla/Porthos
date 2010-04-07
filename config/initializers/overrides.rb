@@ -114,6 +114,7 @@ class Money
   def initialize(cents, currency = Money.default_currency)
     @cents    = cents.to_f.round
     @currency = currency
+    @bank = Money::VariableExchangeBank.new
   end
 
   def to_f
