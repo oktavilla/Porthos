@@ -8,7 +8,7 @@ class NodeObserver < ActiveRecord::Observer
   def after_update(node)
     if node.slug_changed?
       Porthos::Routing::Nodes.update(node, true) 
-      Node.logger.info("Added route for #{node.name}") 
+      Node.logger.info("Updated route for #{node.name}") 
     else
       Node.logger.info("Skipped update of route for #{node.name} (no need)") 
     end

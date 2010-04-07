@@ -20,8 +20,13 @@ class Node < ActiveRecord::Base
                :column => 'position',
                :order  => 'position'
 
+  before_update :add_to_list_bottom,
+               :if => Proc.new { |node| node.parent_id_changed? }
+  after_update :reposition_former_list,
+               :if => Proc.new { |node| node.parent_id_changed? }
+
   after_save  :generate_slug_for_children
-  
+
   def access_status
     @access_status ||= case status
     when -1 : 'inactive'
@@ -63,9 +68,16 @@ private
       self.slug = !parent.parent_id.blank? ? [parent.slug, name.parameterize.to_s].join('/') : name.parameterize.to_s
     end
   end
-  
+
+  # before save when moved to another list, decrement all nodes in the former list
+  # (ie. parent_id_changed?)
+  def reposition_former_list
+    acts_as_list_class.update_all("#{position_column} = (#{position_column} - 1)", "parent_id = #{parent_id_was} AND #{position_column} > #{position_was}")
+  end
+
   # after save
   def generate_slug_for_children
     children.each(&:save) if slug_changed? && children.any?
   end
+  
 end
