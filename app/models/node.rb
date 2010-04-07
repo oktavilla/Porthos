@@ -16,7 +16,7 @@ class Node < ActiveRecord::Base
   acts_as_tree :order     => 'position',
                :dependent => :destroy
 
-  acts_as_list :scope  => 'parent_id',
+  acts_as_list :scope  => :parent,
                :column => 'position',
                :order  => 'position'
 
