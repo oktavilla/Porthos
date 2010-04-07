@@ -250,11 +250,11 @@ end
 module ActionController
   module Routing
     class RouteSet
-      alias :old_recognize :recognize
-      def recognize(request)
+      def recognize_with_porthos(request)
         Porthos::Routing::Nodes.load!
-        return old_recognize(request)
+        return recognize_without_porthos(request)
       end
+      alias_method_chain :recognize, :porthos
     end
   end
 end
