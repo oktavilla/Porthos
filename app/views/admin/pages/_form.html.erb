@@ -20,3 +20,6 @@
   <%= f.check_box :restricted %> Kräv inloggning
 </label>
 <% end %>
+
+<label for="page_title">Publiceringsdatum</label>
+<%= f.date_select :published_on, :order => [:day, :month, :year ] %>
