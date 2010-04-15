@@ -45,7 +45,7 @@ class Registration < ActiveRecord::Base
   attr_accessor :should_create_user
   
   def should_create_user?
-    !should_create_user.blank?
+    should_create_user == true || should_create_user.to_s.to_i == 1
   end
   
   before_validation_on_create :generate_public_id, :set_current_user
