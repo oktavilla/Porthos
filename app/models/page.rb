@@ -1,6 +1,7 @@
 class Page < ActiveRecord::Base
   
-  validates_presence_of :title, :page_layout_id
+  validates_presence_of :title,
+                        :page_layout_id
 
   belongs_to :parent,
              :polymorphic => true
@@ -9,7 +10,7 @@ class Page < ActiveRecord::Base
           :as => :resource
   
   has_many :contents,
-           :as => :context,
+           :as    => :context,
            :order => :position,
            :conditions => ["contents.parent_id IS NULL"],
            :dependent  => :destroy
@@ -42,18 +43,20 @@ class Page < ActiveRecord::Base
 
   named_scope :active,
               :conditions => ["active = ?", true]
+              
   named_scope :inactive,
               :conditions => ["active = ?", false]
+  
   named_scope :include_restricted, lambda { |restricted| {
     :conditions => [
       'restricted = ? or restricted = 0',
       restricted
     ]
   }}
-
   
   named_scope :created_latest, 
               :order => 'created_at DESC'
+              
   named_scope :updated_latest, 
               :conditions => 'changed_at > created_at', 
               :order => 'changed_at DESC'
@@ -61,18 +64,23 @@ class Page < ActiveRecord::Base
   named_scope :filter_created_by, lambda { |user_id| {
     :conditions => ["created_by_id = ?", user_id]
   }}
+
   named_scope :filter_updated_by, lambda { |user_id| {
     :conditions => ["updated_by_id = ?", user_id]
   }}
+
   named_scope :filter_with_parent, lambda { |parent_id|
     !parent_id.blank? ? { :conditions => ["parent_id = ? ", parent_id] } : { :conditions => ["parent_id IS NULL"] }
   }
+
   named_scope :filter_order_by, lambda { |order| {
     :order => order
   }}
+  
   named_scope :filter_active, lambda { |active| {
     :conditions => ["active = ?", active]
   }}
+  
   named_scope :filter_with_unpublished_changes,
               :conditions => ["changed_at > changes_published_at AND rendered_body IS NOT NULL"]
   
@@ -130,11 +138,7 @@ class Page < ActiveRecord::Base
         parent.slug+'/'+self.slug
       end
     else
-      if node
-        node.slug
-      else
-        slug
-      end
+      node ? node.slug : slug
     end
   end
 

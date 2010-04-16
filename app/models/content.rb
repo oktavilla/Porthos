@@ -15,8 +15,8 @@ class Content < ActiveRecord::Base
   
   attr_accessor :multiple_restrictions
   
-  after_save :notify_context
-  after_save :set_restrictions
+  after_save :notify_context,
+             :set_restrictions
   
   # Should destroy resource unless it's shared in any sence
   before_destroy do |content|
@@ -107,20 +107,20 @@ class Content < ActiveRecord::Base
     !restrictions_count.nil? && restrictions_count > 0
   end
   
+protected
+
+  def notify_context
+    if context && context.respond_to?(:changed_at)
+      context.changed_at = Time.now and context.save
+    end
+  end
+
   def set_restrictions
     self.restrictions.destroy_all
     unless multiple_restrictions.nil?
       multiple_restrictions.each do |key|
         self.restrictions << self.restrictions.create(:mapping_key => key)
       end
-    end
-  end
-    
-protected
-
-  def notify_context
-    if context && context.respond_to?(:changed_at)
-      context.changed_at = Time.now and context.save
     end
   end
 
