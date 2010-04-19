@@ -1,19 +1,9 @@
-# == Schema Information
-# Schema version: 76
-#
-# Table name: page_layouts
-#
-#  id         :integer(11)   not null, primary key
-#  css_id     :string(255)   
-#  name       :string(255)   
-#  columns    :integer(11)   default(1)
-#  created_at :datetime      
-#  updated_at :datetime      
-#
-
 class PageLayout < ActiveRecord::Base
-  validates_presence_of :name, :css_id
+  validates_presence_of :name,
+                        :css_id,
+                        :field_set_id
   has_many :pages
+  belongs_to :field_set
   
   has_many :default_contents do
     def in_column(column, options = {})
@@ -22,11 +12,12 @@ class PageLayout < ActiveRecord::Base
       end
     end
   end
+  
   attr_accessor :contents
   
-  after_save :store_default_contents
-  after_save :remove_old_default_contents
-  after_save :update_linked_pages
+  after_save :store_default_contents,
+             :remove_old_default_contents,
+             :update_linked_pages
 
   class << self
     def can_be_edited_by?(user)
@@ -43,6 +34,7 @@ class PageLayout < ActiveRecord::Base
   end
 
 private
+
   def remove_old_default_contents
     DefaultContent.destroy_all("column_position > #{columns} and page_layout_id = #{id}")
   end

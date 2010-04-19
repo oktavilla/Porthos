@@ -1,0 +1,44 @@
+<% @page_class = 'layout2' -%>
+<% @page_id = 'site-settings' -%>
+  <div id="sub_nav">
+    <%= render :partial => 'admin/shared/settings_sub_nav' %>
+  </div>
+  <div id="workspace">
+    <div class="header">
+      <h1><%= @field_set.title %></h1>
+      <%= link_to "Inställningar", edit_admin_field_set_path(@field_set), :class => 'edit_settings' %>
+    </div>
+    <div class="tools">
+      <div class="add">
+        <%= link_to "Lägg till fält", new_admin_field_set_field_path(@field_set), :class => "new" %>
+      </div>
+    </div>
+    <div id="content">
+      <% if @field_set.fields.any? -%>
+      <table>
+        <thead>
+          <tr>
+            <th>Namn</th>
+            <th>Fältnamn</th>
+            <th>Typ</th>
+            <th>Obligatorisk?</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @field_set.fields.each do |field| -%>
+          <tr>
+            <td class="label"><%= field.label %></td>
+            <td><%= field.handle %></td>
+            <td><%= field.class.human_name %></td>
+            <td><%= field.required? ? 'Ja' : 'Nej' %></td>
+            <td><%= link_to "Ta bort", admin_field_set_field_path(@field_set, field), :method => :delete, :confirm => "Ta bort #{field.label}?" %>
+          </tr>
+          <% end -%>
+        </tbody>
+      </table>
+      <% else -%>
+      <p class="notice">Det finns inga fält skapade än.</p>
+      <% end -%>
+    </div>
+  </div>

@@ -1,0 +1,23 @@
+<% @page_class = 'layout2' -%>
+<% @page_id = 'site-settings' -%>
+  <div id="sub_nav">
+    <%= render :partial => 'admin/shared/settings_sub_nav' %>
+  </div>
+  <div id="workspace">
+    <div class="header">
+      <h1>Fältsamlingar</h1>
+    </div>
+    <div class="tools">
+      <div class="add">
+        <%= link_to "Skapa ny fältsamling", new_admin_field_set_path, :class => "new" %>
+      </div>
+    </div>
+    <div id="content">
+      <% nested_list_of @field_sets, {}, :class => 'gl' do |field_set| %>
+        <%= field_set.title %> 
+        <span class="controls general">
+          <%= link_to "Ändra", edit_admin_field_set_path(field_set), :class => 'edit' %>
+        </span>
+      <% end %>
+    </div>
+  </div>

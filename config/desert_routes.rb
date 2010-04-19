@@ -43,6 +43,11 @@ ActionController::Routing::Routes.draw do |map|
       :collection => { :sort => :put }
 
     admin.resources :page_layouts
+
+    admin.resources :field_sets do |field_sets|
+      field_sets.resources :fields
+    end
+
     admin.resources(:contents, {
       :collection => {
         :sort => :put

@@ -14,6 +14,8 @@
           <legend>Attribut</legend>
           <label for="page_layout_name">Namn</label>
           <%= f.text_field :name %>
+          <label for="page_layout_field_set_id">Fältuppsättning</label>
+          <%= f.select :field_set_id FieldSet.all.collect { |f| [f.title, f.id] } %>
           <label for="page_layout_name">Stilmalls-klass</label>
           <%= f.text_field :css_id %>
           <label for="page_columns">Antal kolumner</label>

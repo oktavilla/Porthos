@@ -160,6 +160,10 @@
       user: Användare
       sample_product_order: Provkortsbeställning
       redirect: Vidarebefordring
+      field: Fält
+      date_time_field: Datum
+      string_field: Sträng
+      association_field: Relation
     attributes:
       registration: 
         first_name: Förnamn
