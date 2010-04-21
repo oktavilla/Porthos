@@ -11,7 +11,7 @@
 </label>
 
 <label for="field_notice">Instruktioner</label>
-<%= f.text_area :instructions %>
+<%= f.text_area :instructions, :rows => 3 %>
 
 <label for="field_type" class="contains-input">
   Typ <%= select_tag 'field_type', options_for_select(Field.types.collect { |type| [type.human_name, type.to_s] }) %>

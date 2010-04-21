@@ -13,10 +13,11 @@
       </div>
     </div>
     <div id="content">
-      <% nested_list_of @field_sets, {}, :class => 'gl' do |field_set| %>
-        <%= field_set.title %> 
-        <span class="controls general">
-          <%= link_to "Ändra", edit_admin_field_set_path(field_set), :class => 'edit' %>
+      <% nested_list_of @field_sets, {}, :class => 'items' do |field_set| %>
+        <span class="title"><%= field_set.title %></span>
+        <span class="edit">
+          <%= link_to "Lägg till / Ändra fält", admin_field_set_path(field_set) %>
+          <%= link_to "Inställningar", edit_admin_field_set_path(field_set) %>
         </span>
       <% end %>
     </div>

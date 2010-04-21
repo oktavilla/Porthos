@@ -1,6 +1,7 @@
 class Page < ActiveRecord::Base
   
-  validates_presence_of :title, :page_layout_id
+  validates_presence_of :title,
+                        :page_layout_id
 
   belongs_to :parent,
              :polymorphic => true
@@ -14,6 +15,17 @@ class Page < ActiveRecord::Base
            :conditions => ["contents.parent_id IS NULL"],
            :dependent  => :destroy
   
+  has_many :custom_attributes,
+           :as => :context,
+           :dependent => :destroy
+
+  has_many :custom_associations,
+           :as => :context,
+           :dependent => :destroy
+
+  has_many :association_targets,
+           :through => :custom_associations
+
   belongs_to :created_by,
              :class_name => 'User'
   
@@ -24,6 +36,7 @@ class Page < ActiveRecord::Base
   belongs_to  :default_child_layout,
               :foreign_key => 'default_child_layout_id',
               :class_name  => 'PageLayout'
+  
 
   has_many :comments,
            :as => :commentable,
@@ -134,6 +147,35 @@ class Page < ActiveRecord::Base
         node.slug
       else
         slug
+      end
+    end
+  end
+
+  def custom_value_for(field)
+    unless field.data_type == CustomAssociation
+      if custom_attribute = custom_attribute_for_field(field.id)
+        custom_attribute.value 
+      end
+    else
+    end
+  end
+
+  def custom_attribute_for_field(field_id)
+    custom_attributes.detect { |cd| cd.field_id == field_id.to_i }
+  end
+
+  def custom_fields=(fields)
+    fields.each do |key, value|
+      if custom_attribute = custom_attribute_for_field(key)
+        custom_attribute.update_attributes(:value => value)
+      else
+        field = page_layout.field_set.fields.find(key)
+        field.data_type.create({
+          :value   => value,
+          :field   => field,
+          :handle  => field.handle,
+          :context => self
+        })
       end
     end
   end

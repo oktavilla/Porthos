@@ -1,5 +1,6 @@
 class StringField < Field
 
-  validates_presence_of :allow_rich_text
+  self.data_type = StringAttribute
+  cattr_accessor :data_type
 
 end

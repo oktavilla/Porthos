@@ -280,6 +280,18 @@ module ApplicationHelper
     end
   end
   
+  def form_field_for_custom_field(page, form_builder, field)
+    string = ''
+    string += "<label for=\"page_custom_field_#{field.id}\">#{field.label}</label>"
+    string += case true
+    when field.is_a?(StringField) then form_builder.text_field(field.id, :value => page.custom_value_for(field))
+    when field.is_a?(DateTimeField) then select_datetime(page.custom_value_for(field), :prefix => form_builder.object_name + "[#{field.id}]")
+    when field.is_a?(AssociationField) then ""
+    end
+    string
+  end
+  
+  
   def display_image_path(options = {})
     if options.delete(:add_token) or not logged_in? or (logged_in? and not current_user.admin?)
       asset = options[:id].is_a?(Numeric) ? Asset.find(options[:id]) : options[:id]
