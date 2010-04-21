@@ -23,7 +23,7 @@
         <%= render :partial => "admin/registrations/types/default", :locals => { :registration => @registration } %>
       <% end %>
       <% if @registration.payment -%>
-        <%= render :partial => 'afmin/registrations/payment', :locals => { :registration => @registration } %>
+        <%= render :partial => 'admin/registrations/payment', :locals => { :registration => @registration } %>
       <% end -%>
       <%= render :partial => 'admin/registrations/conversions', :locals => { :registration => @registration } %>
     </div>
