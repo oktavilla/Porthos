@@ -23,19 +23,7 @@
         <%= render :partial => "admin/registrations/types/default", :locals => { :registration => @registration } %>
       <% end %>
       <% if @registration.payment -%>
-      <div id="payment" class="details">
-        <h3>Betalning</h3>
-        <span class="status <%= @registration.invoice_payment? ? 'invoice' : @registration.humanized_payment_status %>">
-          <%= number_to_currency(@registration.payment.amount) %>
-        </span>
-        <span class="payment_type"><%= @registration.payment.billing_method %></span>
-        <% if !@registration.payment.transaction_id.blank? && @registration.payment.transaction_id.to_i != 0 -%>
-        (<span class="payment_transaction_id"><%= @registration.payment.transaction_id %></span>)
-        <% end -%>
-        <% unless @registration.payment.response_message.blank? -%>
-          <div class="payment_response"><%= @registration.payment.response_message %></div>
-        <% end -%>
-      </div>
+        <%= render :partial => 'afmin/registrations/payment', :locals => { :registration => @registration } %>
       <% end -%>
       <%= render :partial => 'admin/registrations/conversions', :locals => { :registration => @registration } %>
     </div>
