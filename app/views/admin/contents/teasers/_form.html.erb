@@ -11,6 +11,11 @@
   <div class="fullwidth">
     <%= resource.text_area :body, :id => "editor", :class => content.resource.filter, :rows => 5 %>
   </div>
+  <% if @content.resource.asset_usages.any? %>
+  <h2>Bildinställningar</h2>
+  <label for="resource_images_display_type_0"><%= resource.radio_button :images_display_type, 0 %> Visa bara första bilden</label>
+  <label for="resource_images_display_type_1"><%= resource.radio_button :images_display_type, 1 %> Visa alla bilder som bildspel</label>
+  <% end %>
   <label for="resource_display_type">Typ</label>
   <%= resource.select :display_type, Teaser.display_types.enum_with_index.map { |type, i| [t(type[:key], :scope => [:app, :teasers, :types]), i.to_s] } %>
   <label for="resource_css_class">CSS-klass</label>
