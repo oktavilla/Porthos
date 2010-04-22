@@ -3,7 +3,11 @@ class PageLayout < ActiveRecord::Base
                         :css_id,
                         :field_set_id
   has_many :pages
+  
   belongs_to :field_set
+  
+  has_many :fields,
+           :through => :field_set
   
   has_many :default_contents do
     def in_column(column, options = {})
