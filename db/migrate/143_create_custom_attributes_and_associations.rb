@@ -22,6 +22,7 @@ class CreateCustomAttributesAndAssociations < ActiveRecord::Migration
       t.string  :context_type
       t.integer :target_id
       t.string  :target_type
+      t.string  :relationship
       t.integer :field_id
       t.string  :handle
       t.integer :position

@@ -157,6 +157,7 @@ class Page < ActiveRecord::Base
         custom_attribute.value 
       end
     else
+      custom_associations.find(:all, :conditions => ['field_id = ?', field.id])
     end
   end
 
@@ -164,18 +165,35 @@ class Page < ActiveRecord::Base
     custom_attributes.detect { |cd| cd.field_id == field_id.to_i }
   end
 
+  def custom_association_for_field(field_id)
+    custom_associations.detect { |ca| ca.field_id == field_id.to_i }
+  end
+
   def custom_fields=(fields)
     fields.each do |key, value|
-      if custom_attribute = custom_attribute_for_field(key)
-        custom_attribute.update_attributes(:value => value)
+      field = page_layout.field_set.fields.find(key)
+      unless field.data_type == CustomAssociation
+        if custom_attribute = custom_attribute_for_field(field.id)
+          custom_attribute.update_attributes(:value => value)
+        else
+          field.data_type.create({
+            :value   => value,
+            :field   => field,
+            :handle  => field.handle,
+            :context => self
+          })
+        end
       else
-        field = page_layout.field_set.fields.find(key)
-        field.data_type.create({
-          :value   => value,
-          :field   => field,
-          :handle  => field.handle,
-          :context => self
-        })
+        CustomAssociation.destroy_all(:context_id => self.id, :context_type => 'Page', :field_id => field.id)
+        value.to_a.each do |id|
+          custom_associations << CustomAssociation.create({
+            :context => self,
+            :field   => field,
+            :handle  => field.handle,
+            :relationship => field.relationship,
+            :target => Page.find(id)
+          })
+        end
       end
     end
   end

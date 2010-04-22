@@ -1,4 +1,5 @@
 class Field < ActiveRecord::Base
+  class_inheritable_accessor :data_type
 
   has_many :custom_attributes,
            :dependent => :destroy
@@ -16,13 +17,12 @@ class Field < ActiveRecord::Base
   
   acts_as_list :scope => :field_set_id
 
-  class_inheritable_accessor :data_type
-  
   class << self
   
     def types
       [
         StringField,
+        TextField,
         DateTimeField,
         AssociationField
       ]

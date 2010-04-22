@@ -18,13 +18,16 @@
 </label>
 
 <div id="field_types">
-  <div class="type string_field">
+  <div class="type text_field">
     <label for="field_allow_rich_text" class="contains-input">
       <%= f.check_box :allow_rich_text %>
       Tillåt textformatering?
     </label>
   </div>
   <div class="type association_field">
+    <label for="field_relationship" class="contains-input">
+      Typ av relation: <%= f.select :relationship, [['En till en', 'one_to_one'], ['En till många', 'one_to_many']] %>
+    </label>
     <label for="field_association_source_id" class="contains-input">
       Kan relatera till sidtyp <%= f.select :association_source_id, PageLayout.all.collect { |p| [p.name, p.id ] } %>
     </label>

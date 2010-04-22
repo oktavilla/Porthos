@@ -10,10 +10,12 @@ class CreateFields < ActiveRecord::Migration
       t.text    :instructions
       t.boolean :allow_rich_text, :default => false
       t.integer :association_source_id
+      t.string  :relationship
       t.timestamps
     end
     
-    add_index  :fields, :field_set_id
+    add_index :fields, :field_set_id
+    add_index :fields, :association_source_id
   end
   
   def self.down

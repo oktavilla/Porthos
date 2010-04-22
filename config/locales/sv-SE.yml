@@ -163,6 +163,7 @@
       field: Fält
       date_time_field: Datum
       string_field: Sträng
+      text_field:   Text
       association_field: Relation
     attributes:
       registration: 

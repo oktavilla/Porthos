@@ -1,3 +1,3 @@
-class TextAttribute < ActiveRecord::Base
+class TextAttribute < CustomAttribute
   self.value_attribute = :text_value
 end
