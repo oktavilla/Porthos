@@ -191,7 +191,8 @@ class Page < ActiveRecord::Base
             :field        => field,
             :handle       => field.handle,
             :relationship => field.relationship,
-            :target       => Page.find(id)
+            :target_id    => id,
+            :target_type  => field.target_class.to_s
           })
         end
       end
@@ -206,16 +207,12 @@ protected
       method_missing_without_find_custom_associations_and_attributes(method, *args)
     rescue NoMethodError
       if args.size == 0
-        match = custom_attributes.find_by_handle(method.to_s) || custom_associations.find_all_by_handle(method.to_s)
+        match = custom_attributes.find_by_handle(method.to_s) || custom_associations.find_all_by_handle(method.to_s, :include => :target)
         if (match.is_a?(Array) ? match.any? : match != nil)
           unless match.is_a?(Array)
             match.value
           else
-            if targets.size > 1
-              targets
-            else
-              targets.first.relationship == 'one_to_one' ? targets.first : targets
-            end
+            match.first.relationship == 'one_to_one' ? match.first.target : match.collect { |m| m.target }
           end
         # Do we have a matching field but no records, return nil for
         # page.handle ? do stuff in the views
