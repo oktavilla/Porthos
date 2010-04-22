@@ -5,6 +5,8 @@ class CustomAttribute < ActiveRecord::Base
              :polymorphic => true
 
   belongs_to :field
+
+  before_validation :parameterize_handle
   
   def value=(value)
     write_attribute(self.value_attribute, value)
@@ -12,6 +14,13 @@ class CustomAttribute < ActiveRecord::Base
   
   def value
     read_attribute(self.value_attribute)
+  end
+
+
+protected
+
+  def parameterize_handle
+    self.handle = handle.parameterize
   end
   
 end

@@ -14,6 +14,8 @@ class Field < ActiveRecord::Base
   validates_presence_of :field_set_id,
                         :label,
                         :handle
+
+  before_validation :parameterize_handle
   
   acts_as_list :scope => :field_set_id
 
@@ -28,6 +30,12 @@ class Field < ActiveRecord::Base
       ]
     end
     
+  end
+
+protected
+
+  def parameterize_handle
+    self.handle = handle.parameterize
   end
   
 end

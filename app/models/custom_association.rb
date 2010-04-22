@@ -9,4 +9,17 @@ class CustomAssociation < ActiveRecord::Base
                         :field_id,
                         :handle,
                         :relationship
+
+  named_scope :with_field, lambda { |field_id| {
+    :conditions => ['field_id = ?', field_id]
+  }}
+
+  before_validation :parameterize_handle
+
+protected
+
+  def parameterize_handle
+    self.handle = handle.parameterize
+  end
+  
 end
