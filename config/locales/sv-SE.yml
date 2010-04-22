@@ -163,8 +163,9 @@
       field: Fält
       date_time_field: Datum
       string_field: Sträng
-      text_field:   Text
-      association_field: Relation
+      text_field: Text
+      page_association_field: Relation till sida
+      asset_association_field: Relation till fil
     attributes:
       registration: 
         first_name: Förnamn

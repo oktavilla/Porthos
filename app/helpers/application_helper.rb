@@ -293,7 +293,6 @@ module ApplicationHelper
     string
   end
   
-  
   def display_image_path(options = {})
     if options.delete(:add_token) or not logged_in? or (logged_in? and not current_user.admin?)
       asset = options[:id].is_a?(Numeric) ? Asset.find(options[:id]) : options[:id]

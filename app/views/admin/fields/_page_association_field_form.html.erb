@@ -1,0 +1,1 @@
+<%= builder.select(field.id, field.possible_targets.collect { |pt| [pt['title'], pt['id']] }, { :selected => page.custom_value_for(field).collect { |a| a.target_id.to_s } }, :multiple => (field.relationship == 'one_to_many')) %>

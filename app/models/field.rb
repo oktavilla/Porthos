@@ -26,7 +26,8 @@ class Field < ActiveRecord::Base
         StringField,
         TextField,
         DateTimeField,
-        AssociationField
+        PageAssociationField,
+        AssetAssociationField
       ]
     end
     
