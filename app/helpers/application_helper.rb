@@ -283,10 +283,12 @@ module ApplicationHelper
   def form_field_for_custom_field(page, form_builder, field)
     string = ''
     string += "<label for=\"page_custom_field_#{field.id}\">#{field.label}</label>"
-    string += case true
-    when field.is_a?(StringField) then form_builder.text_field(field.id, :value => page.custom_value_for(field))
-    when field.is_a?(DateTimeField) then select_datetime(page.custom_value_for(field), :prefix => form_builder.object_name + "[#{field.id}]")
-    when field.is_a?(AssociationField) then ""
+    string += "<p class=\"form_help\">#{field.instructions}</p>" unless field.instructions.blank?
+    partial = "admin/fields/#{field.class.to_s.underscore}_form"
+    string += begin
+      render(:partial => partial, :locals => { :page => page, :builder => form_builder, :field => field })
+    rescue ActionView::MissingTemplate
+      ''
     end
     string
   end
