@@ -17,6 +17,8 @@ class Field < ActiveRecord::Base
 
   before_validation :parameterize_handle
   
+  validate :not_a_reserved_handle
+  
   acts_as_list :scope => :field_set_id
 
   class << self
@@ -37,6 +39,10 @@ protected
 
   def parameterize_handle
     self.handle = handle.parameterize
+  end
+  
+  def not_a_reserved_handle
+    errors.add(:handle, I18n.t(:reserved, :scope => :'activerecord.errors.models.field.handle')) if Page.new.respond_to?(handle)
   end
   
 end
