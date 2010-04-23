@@ -6,8 +6,7 @@ class Admin::PagesController < ApplicationController
     @filters = {
       :order_by => 'changed_at desc',
       :page     => (params[:page] || 1),
-      :per_page => (params[:per_page] || 25),
-      :with_parent => ''
+      :per_page => (params[:per_page] || 25)
     }.merge((params[:filters] || {}).to_options)
 
     @tags = Tag.on('Page')
@@ -59,6 +58,13 @@ class Admin::PagesController < ApplicationController
   
   def comments
     @page = Page.find(params[:id])
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def choose_layout
+    @page_layouts = PageLayout.all
     respond_to do |format|
       format.html
     end

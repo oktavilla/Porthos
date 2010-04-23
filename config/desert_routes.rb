@@ -85,6 +85,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources(:pages, {
       :collection => {
         :search => :get,
+        :choose_layout => :get,
         :sort => :put
       },
       :member => {
