@@ -11,7 +11,7 @@
   <div id="content">
     <%= error_messages_for :node %>
     <%= error_messages_for :page %>
-    <% form_for :page, :url => admin_pages_path, :html => { :id => 'page', :class => 'new' } do |f| %>
+    <% form_for @page, :url => admin_pages_path, :html => { :id => 'page', :class => 'new' } do |f| %>
       <%= render :partial => 'form', :locals => {:f => f} %>
       <div class="submit">
         <%= f.submit "Skapa sidan" %> eller <%= link_to "avbryt", previous_view_path(admin_pages_path) %>
