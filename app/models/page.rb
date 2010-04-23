@@ -207,12 +207,16 @@ protected
       method_missing_without_find_custom_associations_and_attributes(method, *args)
     rescue NoMethodError
       if args.size == 0
-        match = custom_attributes.find_by_handle(method.to_s) || custom_associations.find_all_by_handle(method.to_s, :include => :target)
+        handle = method.to_s
+        match = custom_attribute_by_handle(handle) || custom_associations_by_handle(handle)
         if (match.is_a?(Array) ? match.any? : match != nil)
           unless match.is_a?(Array)
             match.value
           else
-            match.first.relationship == 'one_to_one' ? match.first.target : match.collect { |m| m.target }
+            match.first.relationship == 'one_to_one' ? match.first.target : CustomAssociationProxy.new({
+              :target_class => match.first.target_type.constantize,
+              :target_ids   => match.collect { |m| m.target_id }
+            })
           end
         # Do we have a matching field but no records, return nil for
         # page.handle ? do stuff in the views
@@ -231,6 +235,14 @@ protected
 
 private
 
+  def custom_attribute_by_handle(handle)
+    custom_attributes.detect { |cd| cd.handle == handle } || custom_attributes.find_by_handle(handle)
+  end
+  
+  def custom_associations_by_handle(handle)
+    custom_associations.find_all { |ca| ca.handle == handle } || custom_associations.find_all_by_handle(handle)
+  end
+    
   def set_inactive
     self.active = !self.child?
     true
