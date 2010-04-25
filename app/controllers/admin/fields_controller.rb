@@ -49,6 +49,15 @@ class Admin::FieldsController < ApplicationController
     end
   end
 
+  def sort
+    params[:fields].each_with_index do |id, index|
+      @field_set.fields.update(id, :position => index + 1)
+    end
+    respond_to do |format|
+      format.js { render :nothing => true }
+    end
+  end
+
 protected
 
   def find_field_set

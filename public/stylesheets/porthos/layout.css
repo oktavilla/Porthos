@@ -453,7 +453,31 @@ ul#nodes, ul#nodes ul {
     height:25px; 
     width:20px;
     background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -790px no-repeat; }
-  
+
+table.field_set_fields {
+  margin-left:-40px;
+}
+
+tbody#fields {}
+  .field_set_fields tr th.blank {
+    padding:0;
+    width:40px;
+    background:transparent;}
+  tbody#fields tr:nth-child(odd) td.handle,
+  tbody#fields td.handle,
+  tbody#fields tr:hover td.handle {
+    padding:0;
+    text-align:center;
+    width:40px;
+    background:transparent;
+    cursor:pointer;}
+  tbody#fields tr:hover .drag_handle {
+     display:block;
+     margin-left:10px;
+     height:25px; 
+     width:20px;
+     background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -790px no-repeat;  }
+
 #sessions_view {
   background:#f2f2f2; }
   #sessions_view #wrap {

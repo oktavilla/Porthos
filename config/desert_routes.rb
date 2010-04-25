@@ -45,7 +45,10 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :page_layouts
 
     admin.resources :field_sets do |field_sets|
-      field_sets.resources :fields
+      field_sets.resources :fields,
+                           :collection => {
+                             :sort => :put
+                           }
     end
 
     admin.resources(:contents, {
@@ -85,7 +88,6 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources(:pages, {
       :collection => {
         :search => :get,
-        :choose_layout => :get,
         :sort => :put
       },
       :member => {

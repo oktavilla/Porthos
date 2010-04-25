@@ -15,9 +15,10 @@
     </div>
     <div id="content">
       <% if @field_set.fields.any? -%>
-      <table>
+      <table id="fields_for_field_set_<%= @field_set.id %>" class="field_set_fields">
         <thead>
           <tr>
+            <th class="blank"></th>
             <th>Namn</th>
             <th>Fältnamn</th>
             <th>Typ</th>
@@ -25,9 +26,10 @@
             <th colspan="2"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="fields">
           <% @field_set.fields.each do |field| -%>
-          <tr>
+          <tr class="field" id="field_<%= field.id %>">
+            <td class="handle"><span class="drag_handle"></span></td>
             <td class="label"><%= field.label %></td>
             <td><%= field.handle %></td>
             <td><%= field.class.human_name %></td>
@@ -43,3 +45,6 @@
       <% end -%>
     </div>
   </div>
+<%= javascript_include_tag 'named_routes' %>
+<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', :cache => 'admin' %>
+<%= javascript_include_tag 'porthos/field_sets' %>
