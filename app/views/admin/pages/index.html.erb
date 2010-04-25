@@ -12,7 +12,10 @@
   </div>
   <div class="tools">
     <div class="add">
-      <%= link_to "Skapa en ny sida", (!@filters[:with_parent] ? choose_layout_admin_pages_path : new_admin_page_path(:page => { :parent_id => @filters[:with_parent], :parent_type => 'Page' })), :class => 'new' %>
+      Skapa ny:
+      <% @field_sets.each do |field_set| -%>
+        <%= link_to field_set.title, (!@filters[:with_parent] ? new_admin_page_path(:page => { :field_set_id => field_set.id }) : new_admin_page_path(:page => { :field_set_id => field_set, :parent_id => @filters[:with_parent], :parent_type => 'Page' })), :class => 'new' %>
+      <% end if @field_sets.any? %>
       <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'new' if current_user.can_create?(PageCollection) %>
     </div>
     <% form_tag :url => admin_pages_path, :html => { :method => :get } do |f| %>

@@ -1,14 +1,8 @@
 class PageLayout < ActiveRecord::Base
   validates_presence_of :name,
-                        :css_id,
-                        :field_set_id
+                        :css_id
   has_many :pages
-  
-  belongs_to :field_set
-  
-  has_many :fields,
-           :through => :field_set
-  
+    
   has_many :default_contents do
     def in_column(column, options = {})
       with_scope(:find => { :conditions => ["column_position = ?", column]}) do

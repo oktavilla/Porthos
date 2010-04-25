@@ -9,6 +9,8 @@ class Admin::PagesController < ApplicationController
       :per_page => (params[:per_page] || 25)
     }.merge((params[:filters] || {}).to_options)
 
+    @field_sets = FieldSet.all
+
     @tags = Tag.on('Page')
     @current_tags = params[:tags] || []
     @related_tags = @current_tags.any? ? Page.find_related_tags(@current_tags) : []
@@ -58,13 +60,6 @@ class Admin::PagesController < ApplicationController
   
   def comments
     @page = Page.find(params[:id])
-    respond_to do |format|
-      format.html
-    end
-  end
-
-  def choose_layout
-    @page_layouts = PageLayout.all
     respond_to do |format|
       format.html
     end

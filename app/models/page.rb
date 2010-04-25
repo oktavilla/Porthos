@@ -1,6 +1,7 @@
 class Page < ActiveRecord::Base
   
   validates_presence_of :title,
+                        :field_set_id,
                         :page_layout_id
 
   belongs_to :parent,
@@ -14,6 +15,10 @@ class Page < ActiveRecord::Base
            :order => :position,
            :conditions => ["contents.parent_id IS NULL"],
            :dependent  => :destroy
+
+  belongs_to :field_set
+  has_many :fields,
+           :through => :field_set
   
   has_many :custom_attributes,
            :as => :context,
@@ -36,7 +41,6 @@ class Page < ActiveRecord::Base
   belongs_to  :default_child_layout,
               :foreign_key => 'default_child_layout_id',
               :class_name  => 'PageLayout'
-  
 
   has_many :comments,
            :as => :commentable,
@@ -64,7 +68,6 @@ class Page < ActiveRecord::Base
     ]
   }}
 
-  
   named_scope :created_latest, 
               :order => 'created_at DESC'
   named_scope :updated_latest, 
@@ -169,9 +172,9 @@ class Page < ActiveRecord::Base
     custom_associations.detect { |ca| ca.field_id == field_id.to_i }
   end
 
-  def custom_fields=(fields)
-    fields.each do |key, value|
-      field = page_layout.field_set.fields.find(key)
+  def custom_fields=(custom_fields)
+    custom_fields.each do |key, value|
+      field = self.fields.find(key)
       unless field.data_type == CustomAssociation
         if custom_attribute = custom_attribute_for_field(field.id)
           custom_attribute.update_attributes(:value => value)
@@ -208,7 +211,7 @@ protected
     rescue NoMethodError
       if args.size == 0
         handle = method.to_s
-        match = custom_attribute_by_handle(handle) || custom_associations_by_handle(handle)
+        match  = custom_attribute_by_handle(handle) || custom_associations_by_handle(handle)
         if (match.is_a?(Array) ? match.any? : match != nil)
           unless match.is_a?(Array)
             match.value
@@ -220,7 +223,7 @@ protected
           end
         # Do we have a matching field but no records, return nil for
         # page.handle ? do stuff in the views
-        elsif page_layout.fields.count(:conditions => ['handle = ?', method.to_s]) != 0
+        elsif self.fields.count(:conditions => ['handle = ?', method.to_s]) != 0
           nil
         # no match raise method missing again
         else
