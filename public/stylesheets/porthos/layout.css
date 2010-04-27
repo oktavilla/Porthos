@@ -500,7 +500,9 @@ table.sortable {
 
 .page_layout .column .contents { min-height:40px; }
 
-
+#field_form {}
+ #field_form #field_types {display:none;}
+ 
 #assets_view .items {
   width:100%;
   overflow:hidden; }
