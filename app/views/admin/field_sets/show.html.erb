@@ -15,10 +15,10 @@
     </div>
     <div id="content">
       <% if @field_set.fields.any? -%>
-      <table id="fields_for_field_set_<%= @field_set.id %>" class="field_set_fields">
+      <table id="fields_for_field_set_<%= @field_set.id %>" class="sortable">
         <thead>
           <tr>
-            <th class="blank"></th>
+            <th class="placeholder"></th>
             <th>Namn</th>
             <th>Fältnamn</th>
             <th>Typ</th>
