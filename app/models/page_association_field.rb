@@ -1,10 +1,11 @@
 class PageAssociationField < Field
-  validates_presence_of :association_source_id,
-                        :relationship
+  validates_presence_of :relationship
   self.data_type = CustomAssociation
   
   def possible_targets
-    @possible_targets ||= connection.select_all("SELECT id, title FROM pages WHERE page_layout_id = #{association_source_id}")
+    sql = 'SELECT id, title FROM pages'
+    sql += " WHERE field_set_id = #{association_source_id}" unless association_source_id.blank?
+    @possible_targets ||= connection.select_all(sql)
   end
 
   def target_class

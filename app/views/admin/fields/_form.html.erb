@@ -29,7 +29,7 @@
       Typ av relation: <%= f.select :relationship, [['En till en', 'one_to_one'], ['En till många', 'one_to_many']], :id => 'field_page_relationship' %>
     </label>
     <label for="field_association_source_id" class="contains-input">
-      Kan relatera till sidtyp <%= f.select :association_source_id, PageLayout.all.collect { |p| [p.name, p.id ] } %>
+      Kan relatera till: <%= f.select :association_source_id, FieldSet.all.collect { |p| [p.title, p.id ] }, :include_blank => "Alla sidor" %>
     </label>
   </div>
 
