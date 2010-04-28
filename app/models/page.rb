@@ -174,7 +174,7 @@ class Page < ActiveRecord::Base
 
   def custom_fields=(custom_fields)
     custom_fields.each do |key, value|
-      field = self.fields.find(key)
+      field = Field.find(key)
       unless field.data_type == CustomAssociation
         if custom_attribute = custom_attribute_for_field(field.id)
           custom_attribute.update_attributes(:value => value)
