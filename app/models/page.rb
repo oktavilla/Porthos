@@ -223,7 +223,7 @@ protected
           end
         # Do we have a matching field but no records, return nil for
         # page.handle ? do stuff in the views
-        elsif self.fields.count(:conditions => ['handle = ?', method.to_s]) != 0
+        elsif self.fields.count(:conditions => ['fields.handle = ?', method.to_s]) != 0
           nil
         # no match raise method missing again
         else
