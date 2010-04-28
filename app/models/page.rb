@@ -9,6 +9,7 @@ class Page < ActiveRecord::Base
   
   has_one :node,
           :as => :resource
+  accepts_nested_attributes_for :node
   
   has_many :contents,
            :as => :context,
