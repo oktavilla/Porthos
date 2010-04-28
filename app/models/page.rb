@@ -188,7 +188,7 @@ class Page < ActiveRecord::Base
         end
       else
         CustomAssociation.destroy_all(:context_id => self.id, :context_type => 'Page', :field_id => field.id)
-        value.to_a.each do |id|
+        value.to_a.reject(&:blank?).each do |id|
           custom_associations << CustomAssociation.create({
             :context      => self,
             :field        => field,
