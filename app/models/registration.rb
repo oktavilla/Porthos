@@ -129,9 +129,11 @@ class Registration < ActiveRecord::Base
   end
   
   def name=(names )
-    names      = names.split(" ")
-    self.first_name = names.shift
-    self.last_name  = names.join(" ") if names
+    if names and !names.blank?
+      names = names.split(" ")
+      self.first_name = names.shift
+      self.last_name  = names.join(" ") if names
+    end
     name
   end
   
