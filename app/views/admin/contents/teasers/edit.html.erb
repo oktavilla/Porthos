@@ -32,4 +32,11 @@
 <%= javascript_include_tag 'porthos/editor' %>
 <script type="text/javascript">
   Porthos.Editor.Initialize();
+  $$('a.new, a.asset_usage_settings').each(function(element){
+    element.observe('click', function(ev) {
+      if(!confirm('Om du har ändrat innehållet för puffen och går vidare kommer ändringarna inte att sparas. Klicka på OK för att gå vidare utan att spara.')){
+        ev.stop();
+      }
+    });
+  });
 </script>
