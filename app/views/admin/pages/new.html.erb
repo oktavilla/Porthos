@@ -3,7 +3,7 @@
 <div id="workspace">
   <div class="header">
     <% unless @page.child? -%>
-    <h1>Skapa en ny sida</h1>
+    <h1>Skapa en ny <%= @page.field_set ? @page.field_set.title.downcase : 'sida' %></h1>
     <% else -%>
     <h1>Skapa ny sida under ”<%= @page.parent.title.downcase %>”</h1>
     <% end -%>
