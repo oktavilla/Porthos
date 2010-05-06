@@ -1,8 +1,13 @@
-<ul class="multiple_choice">
+<% if !content.restrictions.any? -%>
+<p><a href="#" onclick="$('restrictions').toggle();return false;">Sätt visningsalternativ för olika användare</a></p>
+<ul class="multiple_choice" id="restrictions" style="display:none">
+<% else -%>
+<ul class="multiple_choice" id="restrictions">
+<% end -%>
 <% User.allowed_restrictions.each do |name, restriction| -%>
   <li>
     <label for="content_restrictions_<%= name.to_s %>" class="contains-input">
-      <%= check_box_tag "content[multiple_restrictions][]", name, content.restrictions.detect { |r| r.mapping_key.to_sym == name } %>
+      <%= check_box_tag "content[multiple_restrictions][]", name, content.restrictions.detect { |r| r.mapping_key.to_sym == name }, :id => "content_restrictions_#{name.to_s}" %>
       <%= t(name, :scope => [:app, :restrictions]) %>
     </label>
   </li>
