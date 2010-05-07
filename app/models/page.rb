@@ -189,13 +189,17 @@ class Page < ActiveRecord::Base
         end
       else
         CustomAssociation.destroy_all(:context_id => self.id, :context_type => 'Page', :field_id => field.id)
-        value.to_a.reject(&:blank?).each do |id|
+        value.to_a.reject(&:blank?).each do |association_value|
+          if association_value.is_a?(StringIO) || association_value.is_a?(Tempfile)
+            uploaded_asset = Asset.from_upload(:file => association_value)
+            association_value = uploaded_asset.id if uploaded_asset.save
+          end
           custom_associations << CustomAssociation.create({
             :context      => self,
             :field        => field,
             :handle       => field.handle,
             :relationship => field.relationship,
-            :target_id    => id,
+            :target_id    => association_value,
             :target_type  => field.target_class.to_s
           })
         end

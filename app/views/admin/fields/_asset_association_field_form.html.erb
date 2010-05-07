@@ -1,1 +1,3 @@
+Välj från filarkivet
 <%= builder.select(field.id, field.possible_targets.collect { |pt| [pt['title'], pt['id']] }, { :include_blank => 'Välj fil', :selected => page.custom_value_for(field).collect { |a| a.target_id.to_s } }, :multiple => (field.relationship == 'one_to_many') ) %>
+<br>eller ladda upp ny  <%= file_field_tag "page[custom_fields][#{field.id}][]" %>

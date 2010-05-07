@@ -7,7 +7,7 @@
   <div id="content">
   <%= error_messages_for :page %>
   <%= error_messages_for :node %>
-  <% form_for @page, :url => admin_page_path(@page), :html => { :method => :put } do |f| %>
+  <% form_for @page, :url => admin_page_path(@page), :html => { :method => :put, :multipart => true } do |f| %>
     <%= render :partial => 'form', :locals => {:f => f} %>
     <% if @page.node -%>
       <% f.fields_for :node_attributes, @page.node do |node| %>
