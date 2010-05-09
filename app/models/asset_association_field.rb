@@ -3,7 +3,7 @@ class AssetAssociationField < Field
   self.data_type = CustomAssociation
   
   def possible_targets
-    @possible_targets ||= connection.select_all("SELECT id, title FROM assets")
+    @possible_targets ||= connection.select_all("SELECT id, title FROM assets ORDER BY title")
   end
   
   def target_class
