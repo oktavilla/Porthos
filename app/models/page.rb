@@ -111,7 +111,7 @@ class Page < ActiveRecord::Base
   is_indexed({
     :fields => ['title', 'description', 'rendered_body'],
     :concatenate => [{
-      :class_name => 'Tag', :field => 'name', :as => 'tags', 
+      :association_name => 'tags', :field => 'name', :as => 'tags', 
       :association_sql => "LEFT OUTER JOIN taggings ON (pages.id = taggings.taggable_id AND taggings.taggable_type = 'Page') LEFT OUTER JOIN tags ON (tags.id = taggings.tag_id)"
     }],
     :delta => { :field => 'changed_at' }
