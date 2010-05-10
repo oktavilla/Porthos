@@ -77,7 +77,7 @@ class Registration < ActiveRecord::Base
     :fields => ['public_id', 'payment_transaction_id', 'dispatch_id', 'created_at'],
     :concatenate => [{
       :fields => [
-        'first_name', 'last_name', 'civic_number', 'customer_number',
+        'first_name', 'last_name', 'customer_number',
         'email', 'phone', 'cell_phone',
         'address', 'co_address', 'post_code', 'locality', 'country',
         'shipping_first_name', 'shipping_last_name',
