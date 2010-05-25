@@ -16,6 +16,9 @@
  *      Daniel Reszka (d.reszka a-t wymeditor dotorg)
 */
 
+@import url('/stylesheets/porthos/elements.css');
+@import url('/stylesheets/porthos/nodes.css');
+
 /*TRYING TO RESET STYLES THAT MAY INTERFERE WITH WYMEDITOR*/
         .wym_skin_porthos p, .wym_skin_porthos h2, .wym_skin_porthos h3,
         .wym_skin_porthos ul, .wym_skin_porthos li { background: transparent url(); margin: 0; padding: 0; border-width:0; list-style: none; }
@@ -131,3 +134,8 @@
             
 /*WYMEDITOR_LINK*/
         a.wym_wymeditor_link        { text-indent: -9999px; float: right; display: block; width: 50px; height: 15px; background: url(../wymeditor_icon.png);  overflow: hidden; text-decoration: none;  }
+
+
+
+.dialog_content { padding: 10px;}
+  .minimal .edit {display:none;}
