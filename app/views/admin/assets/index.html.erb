@@ -36,7 +36,7 @@
       <% if @assets.any? -%>
       <ul class="items thumbnails">
         <% @assets.each do |asset| -%><li><div class="inner">
-          <a href="<%= edit_admin_asset_path(asset) %>">
+          <a href="<%= edit_admin_asset_path(asset.id) %>">
           <% if asset.image? %>
             <%= image_tag display_image_path(:size => 'c100x100', :id => asset, :format => asset.extname), :id => "asset_#{asset.id}", :width => 100, :height => 100 %>
           <% elsif asset.respond_to?(:thumbnail) and not asset.thumbnail.blank? %>
@@ -45,22 +45,22 @@
             <img src="/graphics/porthos/icons/filetypes/<%= asset.extname %>.png" alt="" width="100" height="100">
           <% end %>
           </a>
-          <div class="title"><%= link_to asset.title, edit_admin_asset_path(asset) %></div>
+          <div class="title"><%= link_to asset.title, edit_admin_asset_path(asset.id) %></div>
           <div class="description<%= ' blank' if asset.description.blank? %>">
-            <%= asset.description.blank? ? "<a href=\"#{edit_admin_asset_path(asset)}\">Ingen beskrivning. Skriv en ...</a>" : truncate(asset.description, :length => 200) %>
+            <%= asset.description.blank? ? "<a href=\"#{edit_admin_asset_path(asset.id)}\">Ingen beskrivning. Skriv en ...</a>" : truncate(asset.description, :length => 200) %>
           </div>
           <% unless asset.tag_names.blank? %>
           <div class="tags"><%= asset.tags.collect { |tag| @current_tags.include?(tag.name) ? tag.name : link_to(tag.name, admin_assets_path(:tags => [tag.name])) }.join(', ') -%></div>
           <% end %>
           <div class="meta">
             <span>Uppladdad</span> den <%= asset.created_at.strftime("%d %b %Y") %>
-            <% unless asset.created_by.nil? -%>
+            <% if !asset.created_by.nil? && asset.created_by.respond_to?(:name) -%>
             <span>av</span> <%= asset.created_by.name %>
             <% end -%>
           </div>
           <div class="edit">
-            <%= link_to "Ändra", edit_admin_asset_path(asset) %>
-            <%= link_to "Ta bort", admin_asset_path(asset), :class => 'delete', :confirm => "Är du säker att du vill ta bort filen? Den kommer försvinna från alla sidor. Du kan INTE ångra dig.", :method => :delete %>
+            <%= link_to "Ändra", edit_admin_asset_path(asset.id) %>
+            <%= link_to "Ta bort", admin_asset_path(asset.id), :class => 'delete', :confirm => "Är du säker att du vill ta bort filen? Den kommer försvinna från alla sidor. Du kan INTE ångra dig.", :method => :delete %>
           </div>
           <% if @content -%>
           <div class="add">
