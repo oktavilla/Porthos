@@ -209,6 +209,16 @@ class Page < ActiveRecord::Base
 
 protected
 
+  def respond_to_with_custom_associations_and_attributes?(*args)
+    responds = respond_to_without_custom_associations_and_attributes?(*args)
+    if !responds && args.size == 1 && field_exists?(args.first.to_s)
+      true
+    else
+      responds
+    end
+  end
+  alias_method_chain :respond_to?, :custom_associations_and_attributes
+
   def method_missing_with_find_custom_associations_and_attributes(method, *args)
     # Check that we dont match any other method_missing hacks before we start query the database
     begin
@@ -216,21 +226,23 @@ protected
     rescue NoMethodError
       if args.size == 0
         handle = method.to_s
-        match  = custom_attribute_by_handle(handle) || custom_associations_by_handle(handle)
-        if (match.is_a?(Array) ? match.any? : match != nil)
-          unless match.is_a?(Array)
-            match.value
+        if field_exists?(handle)
+          match  = custom_attribute_by_handle(handle) || custom_associations_by_handle(handle)
+          if (match.is_a?(Array) ? match.any? : match != nil)
+            unless match.is_a?(Array)
+              match.value
+            else
+              match.first.relationship == 'one_to_one' ? match.first.target : CustomAssociationProxy.new({
+                :target_class => match.first.target_type.constantize,
+                :target_ids   => match.collect { |m| m.target_id }
+              })
+            end
+          # Do we have a matching field but no records, return nil for
+          # page.handle ? do stuff in the views
           else
-            match.first.relationship == 'one_to_one' ? match.first.target : CustomAssociationProxy.new({
-              :target_class => match.first.target_type.constantize,
-              :target_ids   => match.collect { |m| m.target_id }
-            })
+            nil
           end
-        # Do we have a matching field but no records, return nil for
-        # page.handle ? do stuff in the views
-        elsif self.fields.count(:conditions => ['fields.handle = ?', method.to_s]) != 0
-          nil
-        # no match raise method missing again
+          # no match raise method missing again
         else
           method_missing_without_find_custom_associations_and_attributes(method, *args)
         end
@@ -242,6 +254,10 @@ protected
   alias_method_chain :method_missing, :find_custom_associations_and_attributes
 
 private
+
+  def field_exists?(handle)
+    self.fields.count(:conditions => ['fields.handle = ?', handle]) != 0
+  end
 
   def custom_attribute_by_handle(handle)
     custom_attributes.detect { |cd| cd.handle == handle } || custom_attributes.find_by_handle(handle)
