@@ -79,7 +79,7 @@ Object.extend(Porthos.Editor.Options, {
                        + "    <div id='navigation' class='minimal' style='display:none'><h3>Laddar sidor...</h3></div>"
                        + "  </div></div>"
                        + "</div>"
-                       + "<script type='text/javascript' src='/javascripts/porthos/jquery-1.1.4.js'></script>"
+                       + "<script type='text/javascript' src='/javascripts/porthos/jquery/jquery.js'></script>"
                        + "<script type='text/javascript' src='/javascripts/porthos/wymeditor/jquery.wymeditor.js'></script>"
                        + "<script type='text/javascript' src='/javascripts/named_routes.js'></script>"
                        + "<script type='text/javascript' src='/javascripts/porthos/jquery.wymeditor.porthos-linking.js'></script>"
