@@ -14,7 +14,7 @@ Object.extend(Porthos.Editor.Options, {
   skin: "porthos",
 
   //options
-  dialogFeatures: "menubar=yes,titlebar=no,toolbar=no,resizable=yes,scrollbars=auto,width=870,height=820,top=0,left=0",
+  dialogFeatures: "menubar=yes,titlebar=no,toolbar=no,resizable=yes,scrollbars=yes,width=870,height=820,top=0,left=0",
 
   lang: "sv",
 
