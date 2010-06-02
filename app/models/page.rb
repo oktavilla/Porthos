@@ -181,10 +181,10 @@ class Page < ActiveRecord::Base
           custom_attribute.update_attributes(:value => value)
         else
           field.data_type.create({
-            :value   => value,
-            :field   => field,
-            :handle  => field.handle,
-            :context => self
+            :value    => value,
+            :field_id => field.id,
+            :handle   => field.handle,
+            :context  => self
           })
         end
       else
@@ -207,17 +207,11 @@ class Page < ActiveRecord::Base
     end
   end
 
-protected
-
-  def respond_to_with_custom_associations_and_attributes?(*args)
-    responds = respond_to_without_custom_associations_and_attributes?(*args)
-    if !responds && args.size == 1 && field_exists?(args.first.to_s)
-      true
-    else
-      responds
-    end
+  def field_exists?(handle)
+    self.fields.count(:conditions => ['fields.handle = ?', handle]) != 0
   end
-  alias_method_chain :respond_to?, :custom_associations_and_attributes
+
+protected
 
   def method_missing_with_find_custom_associations_and_attributes(method, *args)
     # Check that we dont match any other method_missing hacks before we start query the database
@@ -254,10 +248,6 @@ protected
   alias_method_chain :method_missing, :find_custom_associations_and_attributes
 
 private
-
-  def field_exists?(handle)
-    self.fields.count(:conditions => ['fields.handle = ?', handle]) != 0
-  end
 
   def custom_attribute_by_handle(handle)
     custom_attributes.detect { |cd| cd.handle == handle } || custom_attributes.find_by_handle(handle)
