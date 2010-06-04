@@ -30,7 +30,8 @@ protected
     end 
   end
   
-  def status_500
+  def status_500(exception)
+    log_error(exception)
     respond_to do |format| 
       format.html { render :file => "#{RAILS_ROOT}/public/500.html", :status => 500 } 
       format.xml  { head(500) } 
