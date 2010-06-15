@@ -70,7 +70,7 @@ class Admin::AssetsController < ApplicationController
   end
 
   def edit
-    @asset = Asset.find_by_file_name(params[:id])
+    @asset = Asset.find_by_file_name(params[:id]) || Asset.find(params[:id])
     respond_to do |format|
       format.html
     end

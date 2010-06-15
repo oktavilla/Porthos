@@ -31,7 +31,7 @@ class Page < ActiveRecord::Base
            :order => 'comments.created_at'
   
   named_scope :published, lambda {{
-    :conditions => ["published_on <= ?", Time.now.at_midnight + 1.day]
+    :conditions => ["published_on <= ?", Time.now.at_midnight + 1.day - 1.minute]
   }}
               
   named_scope :published_within, lambda { |from, to| {
