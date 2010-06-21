@@ -42,7 +42,7 @@ protected
   end
   
   def not_a_reserved_handle
-    errors.add(:handle, I18n.t(:reserved, :scope => :'activerecord.errors.models.field.handle')) if Page.new.respond_to_without_custom_associations_and_attributes?(handle)
+    errors.add(:handle, I18n.t(:reserved, :scope => :'activerecord.errors.models.field.handle')) if Page.new.respond_to?(handle)
   end
   
 end
