@@ -3,7 +3,6 @@ class PagesController < ApplicationController
   before_filter :require_node
 
   before_filter :only => :preview do |c|
-    c.send :login_required
     user = c.send :current_user
     raise ActiveRecord::RecordNotFound if user == :false or !user.admin?
   end
