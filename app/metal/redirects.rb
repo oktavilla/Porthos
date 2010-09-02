@@ -12,7 +12,7 @@ class Redirects
           redirect_path << "?#{env['QUERY_STRING']}"
         end
       end
-      [302, {'Content-Type' => 'text/html', 'Location' => redirect_path}, ['You are being redirected.']]
+      [301, {'Content-Type' => 'text/html', 'Location' => redirect_path}, ['You are being redirected.']]
     else
       [404, {'Content-Type' => 'text/html'}, ['Not Found']]
     end
