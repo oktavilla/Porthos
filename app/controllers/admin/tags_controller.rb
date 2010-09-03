@@ -2,6 +2,8 @@ class Admin::TagsController < ApplicationController
   include Porthos::Admin
   before_filter :login_required
   
+  skip_before_filter :clear_content_context, :only => [:search]
+  
   def index
     @tags = Tag.find(:all, :order => 'name')
   end

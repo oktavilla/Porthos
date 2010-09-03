@@ -1,3 +1,11 @@
+#campaigns_view.show .overview:after {
+  content:".";
+  display:block;
+  height:0;
+  line-height:0;
+  clear:both; 
+  visibility:hidden; }
+
 /* Registrations */
 
 .status {
@@ -81,66 +89,66 @@
     background:#a00;
     color:#fff; }
 
-#registrations.show {}
-  #registrations.show .details.meta {
+#registrations_view.show {}
+  #registrations_view.show .details.meta {
     width:150px;
     float:left;
     margin-left:0;
     border:none; }
-    #registrations.show .details.meta div {padding-left:22px;}
-    #registrations.show .details.meta .type {display:inline;}
-  #registrations.show .details.contact {border:none;}
-  #registrations.show .data .details:first-child {border-top:none;}
-  #registrations.show .data .details {margin-left:180px;}
-  #registrations.show .details {
+    #registrations_view.show .details.meta div {padding-left:22px;}
+    #registrations_view.show .details.meta .type {display:inline;}
+  #registrations_view.show .details.contact {border:none;}
+  #registrations_view.show .data .details:first-child {border-top:none;}
+  #registrations_view.show .data .details {margin-left:180px;}
+  #registrations_view.show .details {
     padding:10px 10px 15px 10px;
     border-top:1px solid #eee; }
-    #registrations.show .details h3 {
+    #registrations_view.show .details h3 {
       margin-top:5px;
       font-size:12px;
       text-transform:uppercase; 
       color:#999; 
       font-weight:normal; }
-    #registrations.show .details .type {
+    #registrations_view.show .details .type {
       font-size:12px;
       display:block; }
-    #registrations.show .details .vcard .type {display:inline;}
-  #registrations.show #registration_comment_body {
+    #registrations_view.show .details .vcard .type {display:inline;}
+  #registrations_view.show #registration_comment_body {
     width:100%;
     margin-bottom:0;}
-  #registrations.show .update_comment_status {
+  #registrations_view.show .update_comment_status {
     margin-top:-5px;
     padding:5px 7px;
     background:#f2f2f2;
     border:1px solid #ccc; }
-    #registrations.show .update_comment_status div {
+    #registrations_view.show .update_comment_status div {
       clear:left;
       font-size:12px; 
       padding-top:2px;
       color:#777; }
-    #registrations.show .textfield_wrap {margin-right:11px;}
-    #registrations.show .textfield_wrap textarea {font-size:12px;}
-    #registrations.show .update_comment_status label {font-weight:normal;}
-    #registrations.show .update_comment_status label input {margin-left:2px;}
-    #registrations.show .update_comment_status #registration_comment_submit {
+    #registrations_view.show .textfield_wrap {margin-right:11px;}
+    #registrations_view.show .textfield_wrap textarea {font-size:12px;}
+    #registrations_view.show .update_comment_status label {font-weight:normal;}
+    #registrations_view.show .update_comment_status label input {margin-left:2px;}
+    #registrations_view.show .update_comment_status #registration_comment_submit {
       margin:0 0 3px 0;
       padding:5px 10px;
       color:#000;
       font-size:14px; }
-    #registrations.show .update_comment_status .comment_status,
-    #registrations.show .update_comment_status .refund_fraud {margin-bottom:10px;}
-    #registrations.show .update_comment_status .comment_status label {
+    #registrations_view.show .update_comment_status .comment_status,
+    #registrations_view.show .update_comment_status .refund_fraud {margin-bottom:10px;}
+    #registrations_view.show .update_comment_status .comment_status label {
       clear:none;
       float:left;
       width:33%;
       margin:0;
       padding:0; }
-  #registrations.show .related_registrations .type {padding-left:22px;}
+  #registrations_view.show .related_registrations .type {padding-left:22px;}
 
-#campaigns.show {}
-  #campaigns.show .overview .clicks,
-  #campaigns.show .overview .conversions,
-  #campaigns.show .overview .income {
+#campaigns_view.show {}
+  #campaigns_view.show .overview .clicks,
+  #campaigns_view.show .overview .conversions,
+  #campaigns_view.show .overview .income {
     float:left;
     width:30%;
     margin:20px 5% 0 0;
@@ -148,22 +156,22 @@
     -moz-border-radius:10px 10px;
     -webkit-border-radius:10px 10px; 
     background: #f8faed; }
-    #campaigns.show .overview .income {margin-right:0;}
-    #campaigns.show .overview .type,
-    #campaigns.show .overview .value,
-    #campaigns.show .overview .description {
+    #campaigns_view.show .overview .income {margin-right:0;}
+    #campaigns_view.show .overview .type,
+    #campaigns_view.show .overview .value,
+    #campaigns_view.show .overview .description {
       display:block;
       text-align:center; 
       padding:0 30px;}
-    #campaigns.show .overview .type {}
-    #campaigns.show .overview .value {
+    #campaigns_view.show .overview .type {}
+    #campaigns_view.show .overview .value {
       color:#59941c;
       font-size:36px; 
       font-weight:bold; }
-    #campaigns.show .overview .description {
+    #campaigns_view.show .overview .description {
       font-size:12px; }
-  #campaigns.show #c_1 h2 {margin:2em 0 10px 10px;}
-  #campaigns.show #c_1 > div.conversions {margin-left:10px;}
+  #campaigns_view.show #c_1 h2 {margin:2em 0 10px 10px;}
+  #campaigns_view.show #c_1 > div.conversions {margin-left:10px;}
 
 .measure_points {
   width:100%; }
@@ -187,14 +195,17 @@
     margin-bottom:3px;
     font-size:14px; }
   .measure_points div.conversions {}
-    div.conversions ul {margin:0;}
-    div.conversions .type {
+    .measure_points div.conversions ul {
+      list-style:none;
+      margin:0;}
+      .measure_points div.conversions li {margin:0;}
+    .measure_points div.conversions .type {
       font-style:normal;
       font-weight:bold; 
       color:#000; }
-    div.conversions .value {
+    .measure_points div.conversions .value {
       font-weight:bold; }
-    div.conversions .average {
+    .measure_points div.conversions .average {
       display:block; 
       color:#999; }
 

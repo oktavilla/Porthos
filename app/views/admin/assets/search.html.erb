@@ -37,7 +37,7 @@
             <% end %>
             <div class="meta">
               <span>Uppladdad</span> den <%= asset.created_at.strftime("%d %b %Y") %>
-              <% unless asset.created_by.nil? -%>
+              <% if !asset.created_by.nil? && asset.created_by.respond_to?(:name) -%>
               <span>av</span> <%= asset.created_by.name %>
               <% end -%>
             </div>

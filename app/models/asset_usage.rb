@@ -15,8 +15,10 @@ protected
   # before filter
   def store_asset
     if file and file.size.nonzero?
-      Asset.from_upload(from_upload).save
-      self.asset = asset
+      asset = Asset.from_upload(:file => file)
+      if asset.save
+        self.asset = asset
+      end
     end
   end
 end

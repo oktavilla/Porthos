@@ -23,24 +23,39 @@ class Admin::RegistrationsController < ApplicationController
       :order    => 'registrations.created_at DESC'
     }.merge(conditions || {}))
   end
-  
-  def period
-    extract_periods
-    @type = params[:type].nil? ? Registration : params[:type].constantize
-    @registrations = @type.export(@period)
+
+  def show
+    @registration = Registration.find(params[:id])
+    @type = @registration.class.to_s
+    @registration_comment = RegistrationComment.new({
+      :status => @registration.status,
+      :fraud => @registration.fraud
+    })
     respond_to do |format|
-      format.csv do
-        file = render_to_string :template => 'admin/registrations/period', :layout => false
-        file_date = @period.blank? ? Time.now.strftime('%Y%m%d'): "#{@period.first.strftime('%Y%m%d')}-#{@period.last.strftime('%Y%m%d')}"
-        send_data file, :type => 'text/plain', :disposition => 'attachment', :filename => "#{params[:type]}_#{file_date}.csv"
-      end
+      format.html
+    end
+  end
+
+  def edit
+    @registration = Registration.find(params[:id])
+    @type = @registration.class.to_s
+    respond_to do |format|
+      format.html
     end
   end
   
-  def show
-    @type = params[:type].nil? ? 'Registration' : params[:type]
-    @registration = @type.constantize.find(params[:id])
-    @registration_comment = RegistrationComment.new(:status => @registration.status, :fraud => @registration.fraud)
+  def update
+    @registration = Registration.find(params[:id])
+    respond_to do |format|
+      if @registration.update_attributes(params[@registration.class.to_s.tableize.singularize.to_sym] || params[:registration])
+        flash[:notice] = "Dina ändringar är sparade"
+        format.html { redirect_to admin_registration_path(:id => @registration, :type => @registration.class.to_s) }
+        format.js { render :nothing => true }
+      else
+        format.html { render :action => 'edit' }
+        format.js { render :nothing => true }
+      end
+    end
   end
   
   def search
@@ -55,6 +70,19 @@ class Admin::RegistrationsController < ApplicationController
     @search.run
     respond_to do |format|
       format.html
+    end
+  end
+
+  def period
+    extract_periods
+    @type = params[:type].nil? ? Registration : params[:type].constantize
+    @registrations = @type.export(@period)
+    respond_to do |format|
+      format.csv do
+        file = render_to_string :template => 'admin/registrations/period', :layout => false
+        file_date = @period.blank? ? Time.now.strftime('%Y%m%d'): "#{@period.first.strftime('%Y%m%d')}-#{@period.last.strftime('%Y%m%d')}"
+        send_data file, :type => 'text/plain', :disposition => 'attachment', :filename => "#{params[:type]}_#{file_date}.csv"
+      end
     end
   end
   

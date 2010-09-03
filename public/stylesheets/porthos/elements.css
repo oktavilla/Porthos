@@ -456,20 +456,24 @@ ul.tags {
   color:#999; }
   .search .search_query:focus {color:#000;}
 
-.vcard {
-  padding-left:60px; }
-  .vcard img.avatar {
-    float:left;
-    margin-left:-60px; }
+.vcard {}
   .vcard .fn {
     display:block;
+    font-size:16px;
     font-weight:bold;
     color:#000; }
-  .vcard .tel,
+  .vcard address {
+    margin:0;
+    font-style:normal; }
+    .vcard address .street-address:after {content:", ";}
   .vcard .email,
-  .vcard .edit {
-    font-size:12px; }
   .vcard .tel .cell,
   .vcard .tel .work,
-  .vcard .edit {
+  .vcard .edit,
+  .vcard .tele {
     display:block; }
+
+  .vcard .optin {
+    color:#59941c;
+    padding-left:20px;
+    background:transparent url(/graphics/porthos/_new/icons/completed_10.png) 7px 2px no-repeat; }

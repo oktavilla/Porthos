@@ -14,7 +14,7 @@ Object.extend(Porthos.Editor.Options, {
   skin: "porthos",
 
   //options
-  dialogFeatures: "menubar=yes,titlebar=no,toolbar=no,resizable=yes,scrollbars=auto,width=870,height=820,top=0,left=0",
+  dialogFeatures: "menubar=yes,titlebar=no,toolbar=no,resizable=yes,scrollbars=yes,width=870,height=820,top=0,left=0",
 
   lang: "sv",
 
@@ -50,7 +50,41 @@ Object.extend(Porthos.Editor.Options, {
     { 'name': 'Paste',                'title': 'Paste_From_Word',   'css': 'wym_tools_paste'           },
     { 'name': 'ToggleHtml',           'title': 'HTML',              'css': 'wym_tools_html'            },
     { 'name': 'Preview',              'title': 'Preview',           'css': 'wym_tools_preview'         }
-  ]
+  ],
+      dialogLinkHtml:  "<body class='wym_dialog wym_dialog_link A'"
+                       + " onload='WYMeditor.INIT_DIALOG(" + WYMeditor.INDEX + ")'"
+                       + ">"
+                       + "<div class='dialog_content'>"
+                       + "  <h1>Skapa en länk</h1>"
+                       + "  <div class='column column1'><div class='inner'>"
+                       + "    <form>"
+                       + "<input type='hidden' class='wym_dialog_type' value='"
+                       + WYMeditor.DIALOG_LINK
+                       + "' />"
+                       + "      <label>Länk</label>"
+                       + "      <input type='text' class='wym_href' value='' size='60' />"
+                       + "      <span class='form_help'>Glöm inte http:// om du länkar till andra webbplatser</span>"
+                       + "      <label>Titel</label>"
+                       + "      <input type='text' class='wym_title' value='' size='60' />"
+                       + "      <span class='form_help'>Syns när besökaren håller pekaren över länken</span>"
+                       + "      <div class='submit absolute'>"
+                       + "        <input class='wym_submit' type='button' value='Lägg in länk' /> eller <a href='#' class='wym_cancel'>avbryt</a>"
+                       + "      </div>"
+                       + "    </form>"
+                       + "  </div></div>"
+                       + "  <div class='column column2'><div class='inner'>"
+                       + "    <ul class='tabs'>"
+                       + "      <li><a href='#' id='toggle_navigation' class='current'>Välj sida från navigationen</a></li>"
+                       + "    </ul>"
+                       + "    <div id='navigation' class='minimal' style='display:none'><h3>Laddar sidor...</h3></div>"
+                       + "  </div></div>"
+                       + "</div>"
+                       + "<script type='text/javascript' src='/javascripts/porthos/jquery/jquery.js'></script>"
+                       + "<script type='text/javascript' src='/javascripts/porthos/wymeditor/jquery.wymeditor.js'></script>"
+                       + "<script type='text/javascript' src='/javascripts/named_routes.js'></script>"
+                       + "<script type='text/javascript' src='/javascripts/porthos/jquery.wymeditor.porthos-linking.js'></script>"
+                       + "<script type='text/javascript' src='/javascripts/porthos/jquery.form.js'></script>"
+                       + "</body>"
 });
 
 Porthos.Editor.Initialize = function(selector, options) {

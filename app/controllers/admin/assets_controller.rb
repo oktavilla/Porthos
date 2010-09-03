@@ -71,7 +71,7 @@ class Admin::AssetsController < ApplicationController
   end
 
   def edit
-    @asset = Asset.find_by_file_name(params[:id])
+    @asset = Asset.find_by_file_name(params[:id]) || Asset.find(params[:id])
     respond_to do |format|
       format.html
     end
@@ -128,7 +128,7 @@ class Admin::AssetsController < ApplicationController
   end
 
   def destroy
-    @asset = Asset.find_by_file_name(params[:id])
+    @asset = Asset.find_by_file_name(params[:id]) || Asset.find(params[:id])
     @asset.destroy
     flash[:notice] = "#{@asset.full_name} #{t(:deleted, :scope => [:app, :admin_general])}"
     respond_to do |format|

@@ -77,22 +77,18 @@ class Registration < ActiveRecord::Base
               :converter => Proc.new { |donation| donation.to_money rescue 0.to_money }
   
   is_indexed({
-    :fields => ['public_id', 'payment_transaction_id', 'dispatch_id', 'created_at'],
+    :fields => ['public_id', 'created_at'],
     :concatenate => [{
       :fields => [
-        'first_name', 'last_name', 'civic_number', 'customer_number',
+        'first_name', 'last_name', 'customer_number',
         'email', 'phone', 'cell_phone',
-        'address', 'co_address', 'post_code', 'locality', 'country',
-        'shipping_first_name', 'shipping_last_name',
-        'shipping_address', 'shipping_co_address', 'shipping_post_code', 'shipping_locality', 'shipping_country'
+        'address', 'co_address', 'post_code', 'locality', 'country'
       ],
       :as => 'person'
     }, {
       :fields => [
         'organization',
-        'department',
         'organization_number',
-        'school'
       ],
       :as => 'organization'
     }, {
@@ -101,8 +97,7 @@ class Registration < ActiveRecord::Base
       :as => 'campaign_measure_point_id'
     }],
     :delta => true
-  })
-                         
+  })                         
   
   HUMANIZED_STATUSES = {
     0 => {
@@ -132,9 +127,11 @@ class Registration < ActiveRecord::Base
   end
   
   def name=(names )
-    names      = names.split(" ")
-    self.first_name = names.shift
-    self.last_name  = names.join(" ") if names
+    if names and !names.blank?
+      names = names.split(" ")
+      self.first_name = names.shift
+      self.last_name  = names.join(" ") if names
+    end
     name
   end
   
