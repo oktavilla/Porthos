@@ -14,6 +14,9 @@ class Registration < ActiveRecord::Base
     :fraud
   ]
 
+  class_inheritable_accessor :valid_registration_types
+  self.valid_registration_types = []
+
   named_scope :with_payment,  :conditions => "payment_status = 'Complete'"
   named_scope :with_opt_in,   :conditions => "contact_approval = 1"
 

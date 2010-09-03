@@ -14,14 +14,15 @@ class Admin::AssetsController < ApplicationController
 
   def index
     @filters = {
-      :order_by => 'created_at desc',
-      :page     => (params[:page] || 1),
-      :per_page => (params[:per_page] || 20)
+      :order_by => 'created_at desc'
     }.merge((params[:filters] || {}).to_options)
     
     @assets = unless @current_tags.any?
       @per_page = @filters[:per_page]
-      Asset.is_public.find_with_filter(@filters)
+      Asset.is_public.filter(@filters).paginate({
+        :page     => (params[:page] || 1),
+        :per_page => (params[:per_page] || 20)
+      })
     else
       Asset.is_public.find_tagged_with({:tags => params[:tags], :order => 'created_at DESC'})
     end

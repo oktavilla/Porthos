@@ -6,11 +6,13 @@ class Admin::CampaignsController < ApplicationController
   # GET /campaigns.xml
   def index
     @filters = {
-      :active => 1,
-      :per_page => 100
+      :active => 1
     }.merge((params[:filters] || {}).to_options)
     @campaign = Campaign.new
-    @campaigns = Campaign.find_with_filter(@filters)
+    @campaigns = Campaign.filter(@filters).paginate({
+      :page => (params[:page] || 1),
+      :per_page => 100
+    })
 
     respond_to do |format|
       format.html # index.html.erb

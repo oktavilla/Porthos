@@ -22,21 +22,18 @@ module Porthos
 
     module SingletonMethods
     
-      def find_with_filter(filters = {})
-        filters = filters || {}
-        filter_scopes = []
-        page = filters.delete(:page) || 1
-        per_page = filters.delete(:per_page) || 10
-        
-        filters.each do |name, value|
-          filter_scopes << ["filter_#{name}".to_sym, value] if available_filters.include?(name.to_sym)
+      def filter(filters = {})
+        current_scope = self
+        filters.each do |scope, args|
+          if available_filters.include?(scope.to_sym)
+            args, scope_method = args.to_s.split(','), "filter_#{scope}".to_sym
+            current_scope = args.any? ? self.scopes[scope_method].call(current_scope, *args) : self.scopes[scope_method].call(current_scope)
+          end
         end
-        
-        filter_scopes.inject(eval(self.to_s)) do |model, scope|
-          model.scopes[scope[0]].call(model, scope[1])
-        end.paginate(:all, :page => page, :per_page => per_page)
-        
+        current_scope
       end
+    
+      alias :find_with_filter :filter
     
     end
     

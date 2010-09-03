@@ -4,10 +4,7 @@ class Admin::PagesController < ApplicationController
 
   def index
     @filters = {
-      :order_by => 'changed_at desc',
-      :page     => (params[:page] || 1),
-      :per_page => (params[:per_page] || 25),
-      :with_parent => ''
+      :order_by => 'changed_at desc'
     }.merge((params[:filters] || {}).to_options)
 
     @tags = Tag.on('Page')
@@ -15,7 +12,10 @@ class Admin::PagesController < ApplicationController
     @related_tags = @current_tags.any? ? Page.find_related_tags(@current_tags) : []
     
     @pages = unless @current_tags.any?
-      Page.find_with_filter(@filters)
+      Page.filter(@filters).paginate({
+        :page     => (params[:page] || 1),
+        :per_page => (params[:per_page] || 25)
+      })
     else
       Page.find_tagged_with({:tags => params[:tags], :order => 'created_at DESC'})
     end

@@ -69,8 +69,8 @@ class Page < ActiveRecord::Base
     :conditions => ["updated_by_id = ?", user_id]
   }}
 
-  named_scope :filter_with_parent, lambda { |parent_id|
-    !parent_id.blank? ? { :conditions => ["parent_id = ? ", parent_id] } : { :conditions => ["parent_id IS NULL"] }
+  named_scope :filter_with_parent, lambda { |*args|
+    args.any? ? { :conditions => ["parent_id = ? and parent_type = ?", args[0], args[1]] } : { :conditions => ["parent_id IS NULL"] }
   }
 
   named_scope :filter_order_by, lambda { |order| {

@@ -38,7 +38,7 @@
   <li<%= ' class="current"' if current_type == 'Registration' %>>
   <%= link_to "Visa alla", admin_registrations_path() %>
   </li>
-<% Registration::valid_registration_types.each do |registration_type| -%>
+<% Registration.valid_registration_types.each do |registration_type| -%>
   <li<%= ' class="current"' if current_type == registration_type %>>
   <%= link_to registration_type.constantize.human_name, admin_registrations_path(:type => registration_type, :filter => current_filter.to_s) %>
   </li>
