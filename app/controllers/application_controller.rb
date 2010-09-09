@@ -19,7 +19,6 @@ class ApplicationController < ActionController::Base
     rescue_from ActionController::RoutingError, :with => :status_404
     rescue_from ActiveRecord::RecordNotFound,   :with => :status_404
   end
-  
 
 protected
 

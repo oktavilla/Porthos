@@ -280,6 +280,19 @@ module ApplicationHelper
     end
   end
   
+  def form_field_for_custom_field(page, form_builder, field)
+    string = ''
+    string += "<label for=\"page_custom_field_#{field.id}\">#{field.label}</label>"
+    string += "<p class=\"form_help\">#{field.instructions}</p>" unless field.instructions.blank?
+    partial = "admin/fields/#{field.class.to_s.underscore}_form"
+    string += begin
+      render(:partial => partial, :locals => { :page => page, :builder => form_builder, :field => field })
+    rescue ActionView::MissingTemplate
+      ''
+    end
+    string
+  end
+  
   def display_image_path(options = {})
     if options.delete(:add_token) or not logged_in? or (logged_in? and not current_user.admin?)
       asset = options[:id].is_a?(Numeric) ? Asset.find(options[:id]) : options[:id]

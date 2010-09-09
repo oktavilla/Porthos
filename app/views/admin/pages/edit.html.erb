@@ -7,10 +7,17 @@
   <div id="content">
   <%= error_messages_for :page %>
   <%= error_messages_for :node %>
-  <% form_for :page, :url => admin_page_path(@page), :html => { :method => :put } do |f| %>
+  <% form_for @page, :url => admin_page_path(@page), :html => { :method => :put, :multipart => true } do |f| %>
     <%= render :partial => 'form', :locals => {:f => f} %>
+    <% if @page.node -%>
+      <% f.fields_for :node_attributes, @page.node do |node| %>
+        <%= node.hidden_field :id %>
+        <%= render :partial => 'admin/nodes/form', :locals => { :f => node } %>
+      <% end -%>
+    <% end -%>
+
     <div class="submit">
-      <%= f.submit "Spara ändringar", :class => 'button' %> eller <%= link_to "Avbryt", previous_view_path(admin_page_path(@page)) %>
+      <%= f.submit "Spara ändringar", :class => 'button' %> eller <%= link_to "avbryt", previous_view_path(admin_page_path(@page)) %>
     </div>
   <% end %>
 </div>

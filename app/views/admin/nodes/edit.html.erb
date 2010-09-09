@@ -7,38 +7,8 @@
   <div id="content">
     <%= error_messages_for :node %>
     <% form_for :node, :url => admin_node_path(@node), :html => { :method => :put } do |f| %>
-      <% if @node.resource and @node.resource.is_a?(Page) %>
       <fieldset>
-        <% f.fields_for :resource_attributes, @node.resource do |resource| %>
-          <%= resource.hidden_field :id %>
-          <%= render :partial => 'admin/pages/form', :locals => {:f => resource, :in_nodes_edit => true} %>
-        <% end %>
-      <% end %>
-      <label for="node_name">Namn i navigationen</label>
-      <%= f.text_field :name %>
-      <label for="node_restricted" class="contains-input">
-        <%= f.check_box :restricted %> Kräv inloggning
-      </label>
-      <ul class="multiple_choice">
-        <li>
-          <label for="node_status_1">
-            <%= f.radio_button :status, 1 %>
-            Syns i navigationen. <span class="form_help">Och är tillgänglig på internet.</span>
-          </label>
-        </li>
-        <li>
-          <label for="node_status_0">
-            <%= f.radio_button :status, 0 %>
-            Syns inte i navigationen. <span class="form_help">Men är tillgänglig på internet.</span>
-          </label>
-        </li>
-        <li>
-          <label for="node_status_-1">
-            <%= f.radio_button :status, -1 %>
-            Avstängd. <span class="form_help">Är ej tillgänglig på internet.</span>
-          </label>
-        </li>
-      </ul>
+        <%= render :partial => 'form', :locals => { :f => f } %>
       </fieldset>
       <div class="submit">
         <%= submit_tag 'Spara ändringar' %> eller <%= link_to "avbryt", previous_view_path(admin_nodes_path(:nodes => @node)) %>
@@ -48,4 +18,5 @@
 </div>
 <%= javascript_include_tag 'named_routes' %>
 <%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', :cache => 'admin' %>
+<%= javascript_include_tag 'porthos/swfupload/swfupload', 'porthos/swfupload/swfupload.queue.js', 'porthos/assets', 'porthos/swfobject', 'porthos/mediaplayer', :cache => 'assets_uploader' %>
 <%= javascript_include_tag 'porthos/pages' %>
