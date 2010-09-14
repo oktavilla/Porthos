@@ -1,4 +1,4 @@
-class FlashAsset < MovieAsset
+class FlashAsset < VideoAsset
 
 protected
   # before validation on create

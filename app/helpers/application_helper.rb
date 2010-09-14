@@ -173,8 +173,8 @@ module ApplicationHelper
   
   def flash_mediaplayer_tag(asset, options = {})
    options.merge!( {
-     :file => display_movie_path(asset, asset.extname), 
-     :image => (display_image_path(:size => asset.thumbnail.width, :id => asset.thumbnail, :format => asset.thumbnail.extname) if asset.movie?)
+     :file => display_video_path(asset, asset.extname), 
+     :image => (display_image_path(:size => asset.thumbnail.width, :id => asset.thumbnail, :format => asset.thumbnail.extname) if asset.video?)
     })
     content = content_tag('a', t(:flash_is_needed, :scope => [:app, :general]), { :href => 'http://www.macromedia.com/go/getflashplayer'})
     content << options.collect { |option, value| content_tag('span', value, {:class => option}) }.join
@@ -278,6 +278,19 @@ module ApplicationHelper
         })
       end
     end
+  end
+  
+  def form_field_for_custom_field(page, form_builder, field)
+    string = ''
+    string += "<label for=\"page_custom_field_#{field.id}\">#{field.label}</label>"
+    string += "<p class=\"form_help\">#{field.instructions}</p>" unless field.instructions.blank?
+    partial = "admin/fields/#{field.class.to_s.underscore}_form"
+    string += begin
+      render(:partial => partial, :locals => { :page => page, :builder => form_builder, :field => field })
+    rescue ActionView::MissingTemplate
+      ''
+    end
+    string
   end
   
   def display_image_path(options = {})

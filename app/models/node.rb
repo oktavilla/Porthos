@@ -3,8 +3,6 @@ class Node < ActiveRecord::Base
              :polymorphic => true,
              :dependent => :destroy
   
-  accepts_nested_attributes_for :resource
-
   def resource_type=(r_type)
      super(r_type.to_s.classify.constantize.base_class.to_s)
   end

@@ -1,6 +1,7 @@
 class Page < ActiveRecord::Base
   
   validates_presence_of :title,
+                        :field_set_id,
                         :page_layout_id
 
   belongs_to :parent,
@@ -8,13 +9,29 @@ class Page < ActiveRecord::Base
   
   has_one :node,
           :as => :resource
+  accepts_nested_attributes_for :node
   
   has_many :contents,
            :as    => :context,
            :order => :position,
            :conditions => ["contents.parent_id IS NULL"],
            :dependent  => :destroy
+
+  belongs_to :field_set
+  has_many :fields,
+           :through => :field_set
   
+  has_many :custom_attributes,
+           :as => :context,
+           :dependent => :destroy
+
+  has_many :custom_associations,
+           :as => :context,
+           :dependent => :destroy
+
+  has_many :association_targets,
+           :through => :custom_associations
+
   belongs_to :created_by,
              :class_name => 'User'
   
@@ -54,7 +71,7 @@ class Page < ActiveRecord::Base
       restricted
     ]
   }}
-  
+
   named_scope :created_latest, 
               :order => 'created_at DESC'
               
@@ -103,7 +120,7 @@ class Page < ActiveRecord::Base
   is_indexed({
     :fields => ['title', 'description', 'rendered_body'],
     :concatenate => [{
-      :class_name => 'Tag', :field => 'name', :as => 'tags', 
+      :association_name => 'tags', :field => 'name', :as => 'tags', 
       :association_sql => "LEFT OUTER JOIN taggings ON (pages.id = taggings.taggable_id AND taggings.taggable_type = 'Page') LEFT OUTER JOIN tags ON (tags.id = taggings.tag_id)"
     }],
     :delta => { :field => 'changed_at' }
@@ -143,8 +160,108 @@ class Page < ActiveRecord::Base
     end
   end
 
+  def custom_value_for(field)
+    unless field.data_type == CustomAssociation
+      if custom_attribute = custom_attribute_for_field(field.id)
+        custom_attribute.value 
+      end
+    else
+      custom_associations.with_field(field.id).all
+    end
+  end
+
+  def custom_attribute_for_field(field_id)
+    custom_attributes.detect { |cd| cd.field_id == field_id.to_i }
+  end
+
+  def custom_association_for_field(field_id)
+    custom_associations.detect { |ca| ca.field_id == field_id.to_i }
+  end
+
+  def custom_fields=(custom_fields)
+    custom_fields.each do |key, value|
+      field = Field.find(key)
+      unless field.data_type == CustomAssociation
+        if custom_attribute = custom_attribute_for_field(field.id)
+          custom_attribute.update_attributes(:value => value)
+        else
+          field.data_type.create({
+            :value    => value,
+            :field_id => field.id,
+            :handle   => field.handle,
+            :context  => self
+          })
+        end
+      else
+        CustomAssociation.destroy_all(:context_id => self.id, :context_type => 'Page', :field_id => field.id)
+        value.to_a.reject(&:blank?).each do |association_value|
+          if association_value.is_a?(StringIO) || association_value.is_a?(Tempfile)
+            uploaded_asset = Asset.from_upload(:file => association_value)
+            association_value = uploaded_asset.id if uploaded_asset.save
+          end
+          custom_associations << CustomAssociation.create({
+            :context      => self,
+            :field        => field,
+            :handle       => field.handle,
+            :relationship => field.relationship,
+            :target_id    => association_value,
+            :target_type  => field.target_class.to_s
+          })
+        end
+      end
+    end
+  end
+
+  def field_exists?(handle)
+    self.fields.count(:conditions => ['fields.handle = ?', handle]) != 0
+  end
+
+protected
+
+  def method_missing_with_find_custom_associations_and_attributes(method, *args)
+    # Check that we dont match any other method_missing hacks before we start query the database
+    begin
+      method_missing_without_find_custom_associations_and_attributes(method, *args)
+    rescue NoMethodError
+      if args.size == 0
+        handle = method.to_s
+        if field_exists?(handle)
+          match  = custom_attribute_by_handle(handle) || custom_associations_by_handle(handle)
+          if (match.is_a?(Array) ? match.any? : match != nil)
+            unless match.is_a?(Array)
+              match.value
+            else
+              match.first.relationship == 'one_to_one' ? match.first.target : CustomAssociationProxy.new({
+                :target_class => match.first.target_type.constantize,
+                :target_ids   => match.collect { |m| m.target_id }
+              })
+            end
+          # Do we have a matching field but no records, return nil for
+          # page.handle ? do stuff in the views
+          else
+            nil
+          end
+          # no match raise method missing again
+        else
+          method_missing_without_find_custom_associations_and_attributes(method, *args)
+        end
+      else
+        method_missing_without_find_custom_associations_and_attributes(method, *args)
+      end
+    end
+  end
+  alias_method_chain :method_missing, :find_custom_associations_and_attributes
+
 private
 
+  def custom_attribute_by_handle(handle)
+    custom_attributes.detect { |cd| cd.handle == handle } || custom_attributes.find_by_handle(handle)
+  end
+  
+  def custom_associations_by_handle(handle)
+    custom_associations.find_all { |ca| ca.handle == handle } || custom_associations.find_all_by_handle(handle)
+  end
+    
   def set_inactive
     self.active = !self.child?
     true

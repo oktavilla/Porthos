@@ -1,0 +1,35 @@
+<h1>
+  Lägg till film <span class="info">eller <a href="#" class="back">gå tillbaka</a></span>
+</h1>
+<% form_for :content, @content, :url => admin_contents_path(:collection => params[:collection]) do |f| %>
+  <div class="column column1">
+    <div class="inner">
+      <%= f.hidden_field :context_id %>
+      <%= f.hidden_field :context_type %>
+      <%= f.hidden_field :parent_id %>
+      <%= f.hidden_field :column_position %>
+      <%= f.hidden_field :resource_type %>
+      <% fields_for :resource do |resource| %>
+        <%= resource.hidden_field :video_asset_id, :value => @content.resource.asset.id %>
+        <label for="content_image_title">Titel</label>
+        <%= resource.text_field :title, :value => @content.resource.asset.title %>
+        <label for="content_image_caption">Beskrivning</label>
+        <%= resource.text_area :caption, :value => @content.resource.asset.description, :cols => 30, :rows => 5 %>    
+        <label for="content_image_title">Copyright</label>
+        <%= resource.text_field :copyright, :value => @content.resource.asset.author %>
+      <% end %>
+    </div>
+  </div>
+  <div class="column column2">
+    <div class="inner">
+      <ul class="gl">
+        <li class="nb">
+          <%= image_tag display_image_path(:size => 'w270', :id => @content.resource.asset.thumbnail, :format => @content.resource.asset.thumbnail.extname), :width => 270 %>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="submit">
+    <input type="submit" value="Lägg till film"> eller <a href="#" class="back">avbryt</a>
+  </div>
+<% end %>

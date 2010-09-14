@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.with_options :controller => 'assets', :action => 'show' do |asset|
     asset.resized_image  '/images/:size/:id.:format'
-    asset.display_movie  '/movies/:id.:format'
+    asset.display_video  '/videos/:id.:format'
     asset.download_asset '/assets/:id.:format'
   end
 
@@ -41,6 +41,14 @@ ActionController::Routing::Routes.draw do |map|
       :collection => { :sort => :put }
 
     admin.resources :page_layouts
+
+    admin.resources :field_sets do |field_sets|
+      field_sets.resources :fields,
+                           :collection => {
+                             :sort => :put
+                           }
+    end
+
     admin.resources(:contents, {
       :collection => {
         :sort => :put

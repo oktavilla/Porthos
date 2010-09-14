@@ -7,12 +7,6 @@
   </div>
   <div id="content">
     <div class="inner">
-      <% form_for :page, :url => admin_pages_path, :html => {:class => "tiny", :id => "new_page_form", :style => "display:none;"} do |f| %>
-        <%= render :partial => 'admin/pages/form', :locals => {:f => f} %>
-        <div class="submit">
-          <%= f.submit "Lägg till sida" %> eller <%= link_to "Avbryt", admin_nodes_path, :onclick => "$('new_page_form').hide(); return false;" %>
-        </div>
-      <% end %>
       <% if @root -%>  
       <div id="root">
         <span class="name"><%= @root.name %></span>

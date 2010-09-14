@@ -28,7 +28,7 @@
       <div class="asset<%= " #{@asset.class}" %>">
         <% if @asset.image? %>
           <%= image_tag display_image_path(:size => '320', :id => @asset, :format => @asset.extname), :id => "asset_#{@asset.id}" %>
-        <% elsif @asset.movie? %>
+        <% elsif @asset.video? %>
           <%= flash_mediaplayer_tag(@asset, { :width => '320', :height => '240' }) %>
         <% elsif @asset.sound? %>
           <%= flash_mediaplayer_tag(@asset, { :width => '320', :height => '20' }) %>

@@ -7,6 +7,8 @@ class Admin::PagesController < ApplicationController
       :order_by => 'changed_at desc'
     }.merge((params[:filters] || {}).to_options)
 
+    @field_sets = FieldSet.all
+
     @tags = Tag.on('Page')
     @current_tags = params[:tags] || []
     @related_tags = @current_tags.any? ? Page.find_related_tags(@current_tags) : []

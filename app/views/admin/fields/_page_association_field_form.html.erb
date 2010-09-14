@@ -1,0 +1,1 @@
+<%= builder.select(field.id, field.possible_targets.reject { |pt| pt['id'].to_i == page.id }.collect { |pt| [pt['title'], pt['id']] }, { :include_blank => 'Välj sida', :selected => page.custom_value_for(field).collect { |a| a.target_id.to_s } }, :multiple => (field.relationship == 'one_to_many')) %>

@@ -76,7 +76,7 @@
   border-right:1px solid #ddd;
   border-bottom:1px solid #ddd;
   background:#fff; }
-  .asset.MovieAsset {background:#000;border-color:#000;}
+  .asset.VideoAsset {background:#000;border-color:#000;}
   .asset.SoundAsset {padding-top:100px;padding-bottom:100px;}
   .asset .icon {display:block;margin:40px auto 40px auto;}
   #assets.edit .meta {

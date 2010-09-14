@@ -95,7 +95,7 @@ class Content < ActiveRecord::Base
       'ContentModule',
       'RegistrationForm',
       'ContentImage',
-      'ContentMovie'
+      'ContentVideo'
     ]
   end
   

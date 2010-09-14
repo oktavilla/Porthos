@@ -1,0 +1,27 @@
+<% @page_class = 'layout2' -%>
+<% @page_id = 'site-settings' -%>
+  <div id="sub_nav">
+    <%= render :partial => 'admin/shared/settings_sub_nav' %>
+  </div>
+  <div id="workspace">
+    <div class="header">
+      <h1>Fältsamlingar</h1>
+    </div>
+    <div class="tools">
+      <div class="add">
+        <%= link_to "Skapa ny fältsamling", new_admin_field_set_path, :class => "new" %>
+      </div>
+    </div>
+    <div id="content">
+      <% nested_list_of @field_sets, {}, :class => 'items' do |field_set| %>
+        <span class="title"><%= field_set.title %></span>
+        <span class="edit">
+          <%= link_to "Lägg till / Ändra fält", admin_field_set_path(field_set) %>
+          <%= link_to "Inställningar", edit_admin_field_set_path(field_set) %>
+        </span>
+      <% end %>
+    </div>
+  </div>
+<%= javascript_include_tag 'named_routes' %>
+<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', :cache => 'admin' %>
+<%= javascript_include_tag 'porthos/field_sets' %>

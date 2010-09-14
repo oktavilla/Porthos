@@ -25,7 +25,7 @@ class Admin::ContentsController < ApplicationController
     @resource = @content.resource
 
     if params[:resource]
-      @asset = Asset.find(params[:resource][:image_asset_id] || params[:resource][:movie_asset_id])
+      @asset = Asset.find(params[:resource][:image_asset_id] || params[:resource][:video_asset_id])
     end
 
     respond_to do |format|

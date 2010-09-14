@@ -11,8 +11,8 @@
           <div class="asset<%= " #{asset.class}" %>">
             <% if asset.image? %>
               <%= image_tag display_image_path(:size => '260', :id => asset, :format => asset.extname), :id => "asset_#{asset.id}" %>
-            <% elsif asset.movie? and asset.thumbnail %>
-              <%= image_tag display_image_path(:size => '260', :id => asset.thumbnail, :format => asset.thumbnail.extname), :id => "asset_#{asset.id}", :class => 'movie' %>
+            <% elsif asset.video? and asset.thumbnail %>
+              <%= image_tag display_image_path(:size => '260', :id => asset.thumbnail, :format => asset.thumbnail.extname), :id => "asset_#{asset.id}", :class => 'video' %>
             <% else %>
               <img src="/graphics/porthos/icons/filetypes/<%= asset.extname %>.png" alt="" width="100" height="100" class="icon">
             <% end %>

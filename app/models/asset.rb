@@ -35,7 +35,7 @@ class Asset < ActiveRecord::Base
   
   SAVE_DIR = "#{RAILS_ROOT}/assets"
   IMAGE_FORMATS = [:jpg, :jpeg, :png, :gif]
-  MOVIE_FORMATS = [:flv, :mov, :qt, :mpg, :avi, :mp4]
+  VIDEO_FORMATS = [:flv, :mov, :qt, :mpg, :avi, :mp4]
   SOUND_FORMATS = [:mp3, :wav, :aiff, :aif]
   FLASH_FORMATS = [:swf]
 
@@ -62,8 +62,8 @@ class Asset < ActiveRecord::Base
     image? and file_name.include?("thumbnail") rescue false
   end
 
-  def movie?
-    MOVIE_FORMATS.include?(extname.to_sym) rescue false
+  def video?
+    VIDEO_FORMATS.include?(extname.to_sym) rescue false
   end
   
   def sound?
@@ -91,8 +91,8 @@ class Asset < ActiveRecord::Base
       extname = File.extname(attrs[:file].original_filename.downcase).gsub(/\./,'')
       if IMAGE_FORMATS.include?(extname.to_sym)
         klass = ImageAsset 
-      elsif MOVIE_FORMATS.include?(extname.to_sym)
-        klass = MovieAsset 
+      elsif VIDEO_FORMATS.include?(extname.to_sym)
+        klass = VideoAsset 
       elsif SOUND_FORMATS.include?(extname.to_sym)
         klass = SoundAsset
       elsif FLASH_FORMATS.include?(extname.to_sym)
