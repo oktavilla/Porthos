@@ -111,8 +111,8 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.datetime "updated_at"
   end
 
-  create_table "content_movies", :force => true do |t|
-    t.integer  "movie_asset_id"
+  create_table "content_videos", :force => true do |t|
+    t.integer  "video_asset_id"
     t.string   "title"
     t.text     "caption"
     t.string   "copyright"
@@ -120,7 +120,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.datetime "updated_at"
   end
 
-  add_index "content_movies", ["movie_asset_id"], :name => "index_content_movies_on_movie_asset_id"
+  add_index "content_videos", ["video_asset_id"], :name => "index_content_videos_on_video_asset_id"
 
   create_table "contents", :force => true do |t|
     t.integer  "context_id"

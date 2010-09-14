@@ -1,4 +1,4 @@
-class MovieAsset < Asset
+class VideoAsset < Asset
   has_one :thumbnail, :class_name => 'ImageAsset', :foreign_key => 'parent_id', :dependent => :destroy
   after_destroy :remove_symlink
 
@@ -26,7 +26,7 @@ protected
   end  
   
   def convert_to_flv
-    Dir.mkdir(public_movie_path) unless File.exists?(public_movie_path)
+    Dir.mkdir(public_video_path) unless File.exists?(public_video_path)
     system "(/usr/local/bin/ffmpeg -v 0 -i #{path} -ar 22050 -ab 64 -b 1500kbps -y #{flv_path}; /usr/local/bin/flvtool2 -U #{flv_path});chmod 644 #{flv_path}&"
   end
   
@@ -48,7 +48,7 @@ protected
   end
 
   def symlink_to_public
-    Dir.mkdir(public_movie_path) unless File.exists?(public_movie_path)
+    Dir.mkdir(public_video_path) unless File.exists?(public_video_path)
     system("ln -nfs #{path} #{flv_path}")
   end
 
@@ -57,10 +57,10 @@ protected
   end
 
   def flv_path
-    File.join(RAILS_ROOT, 'public', 'movies', "#{file_name}.flv")
+    File.join(RAILS_ROOT, 'public', 'videos', "#{file_name}.flv")
   end
   
-  def public_movie_path
-    File.join(RAILS_ROOT, 'public', 'movies')
+  def public_video_path
+    File.join(RAILS_ROOT, 'public', 'videos')
   end
 end

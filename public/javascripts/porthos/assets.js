@@ -44,7 +44,7 @@ Porthos.Assets.Asset = Class.create({
           'height': 87
         });
       }
-    } else if (this.attributes.type == 'MovieAsset') {
+    } else if (this.attributes.type == 'VideoAsset') {
       img = $img({
         'src'   : Routing.display_image_path('c87x87', this.attributes.thumbnail.file_name, this.attributes.thumbnail.extname),
         'alt'   : this.attributes.title,
@@ -517,7 +517,7 @@ Porthos.Assets.IndexView = Class.create({
 
 Porthos.Assets.EditView = Class.create({
   initialize: function() {
-    if($$('.MovieAsset').length > 0 && $(document.getElementsByTagName('body')[0]).hasClassName('edit')){
+    if($$('.VideoAsset').length > 0 && $(document.getElementsByTagName('body')[0]).hasClassName('edit')){
       var thumbnail_button = $button('Spara ny försättsbild');
       $$('.asset')[0].appendChild(thumbnail_button);
       thumbnail_button.observe('click', function(event){

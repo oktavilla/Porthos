@@ -122,7 +122,7 @@ namespace :deploy do
 
   desc "Symlink all flashvideos"
   task :symlink_flash_videos, :roles => :app do
-    run "ln -nfs #{shared_path}/system/assets/*.flv #{release_path}/public/movies/"
+    run "ln -nfs #{shared_path}/system/assets/*.flv #{release_path}/public/videos/"
   end
 
   desc "Relink cache dir in the release"

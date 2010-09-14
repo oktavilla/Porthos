@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.with_options :controller => 'assets', :action => 'show' do |asset|
     asset.resized_image  '/images/:size/:id.:format'
-    asset.display_movie  '/movies/:id.:format'
+    asset.display_video  '/videos/:id.:format'
     asset.download_asset '/assets/:id.:format'
   end
 

@@ -15,8 +15,8 @@ class AssetsController < ApplicationController
           format.send(asset_type) do
             if params[:size] and @asset.image?
               return send_image(@asset, params[:size])
-            elsif @asset.movie?
-              return send_movie(@asset)
+            elsif @asset.video?
+              return send_video(@asset)
             else
               return send_file(@asset.path, :filename => @asset.full_name, :type => @asset.mime_type, :disposition => 'inline')
             end
@@ -43,9 +43,9 @@ protected
     return head(:not_found)
   end
 
-  def send_movie(movie)
+  def send_video(video)
     begin
-      send_file(movie.public_path, :disposition => 'inline', :type => movie.mime_type) if movie.create_public_path
+      send_file(video.public_path, :disposition => 'inline', :type => video.mime_type) if video.create_public_path
     rescue
       return head(:not_found)
     end

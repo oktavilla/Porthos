@@ -7,7 +7,7 @@
     <%= image_tag display_image_path(:size => 'w270', :id => @content.resource.asset.thumbnail, :format => @content.resource.asset.thumbnail.extname), :width => 270 %>
     <% form_for :content, @content.resource, :url => admin_content_path(@content), :html => { :method => :put } do |f| %>
       <% fields_for :resource do |resource| %>
-        <%= resource.hidden_field :movie_asset_id, :value => @content.resource.asset.id %>
+        <%= resource.hidden_field :video_asset_id, :value => @content.resource.asset.id %>
         <label for="content_image_title">Titel</label>
         <%= resource.text_field :title, :value => @content.resource.asset.title %>
         <label for="content_image_caption">Beskrivning</label>

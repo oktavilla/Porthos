@@ -51,7 +51,7 @@ ul.contents > li {
     background:transparent url(/graphics/porthos/content_image_wrapper_bg.gif) 10px 10px no-repeat; }
     .teaser_wrapper li img,
     .ContentImage img,
-    .ContentMovie img {
+    .ContentVideo img {
       position:absolute;
       top:10px;
       left:10px; }
@@ -67,7 +67,7 @@ ul.contents > li {
     .teaser_wrapper li:hover .controls {visibility:visible;}
         
 ul.contents li.content_image_wrapper,
-ul.contents .ContentMovie {
+ul.contents .ContentVideo {
   padding:10px 20% 10px 120px;
   min-height:100px; }
   .content_image_wrapper .controls {line-height:1.4;}
@@ -207,7 +207,7 @@ ul.contents li.content_module_wrapper {
 .sub_controls ul li a.form {background:transparent url(/graphics/porthos/icons/32_form.png) 10px 5px no-repeat;}
 .sub_controls ul li a.shared_content {background:transparent url(/graphics/porthos/icons/32_shared_content.png) 10px 5px no-repeat;}
 .sub_controls ul li a.module {background:transparent url(/graphics/porthos/icons/32_module.png) 10px 5px no-repeat;}
-.sub_controls ul li a.movie {background:transparent url(/graphics/porthos/icons/32_movie.png) 10px 5px no-repeat;}
+.sub_controls ul li a.video {background:transparent url(/graphics/porthos/icons/32_video.png) 10px 5px no-repeat;}
 
 
 /**** CONTENT CONTROLS */
@@ -261,7 +261,7 @@ ul.contents li.content_module_wrapper {
     padding-left:23px;
     background:transparent url(/graphics/porthos/icons/16_create.png) 0 0 no-repeat; }
 
-.ContentMovie h3 {
+.ContentVideo h3 {
   position:absolute;
   top:10px;
   left:10px;
@@ -269,7 +269,7 @@ ul.contents li.content_module_wrapper {
   width:30px;
   height:30px;
   text-indent:-9999px;
-  background:#fff url(/graphics/porthos/icons/16_movie.png) no-repeat scroll 6px 6px;
+  background:#fff url(/graphics/porthos/icons/16_video.png) no-repeat scroll 6px 6px;
 }
 
 
