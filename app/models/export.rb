@@ -1,6 +1,5 @@
 class Export < ActiveRecord::Base
   def registrations
-#    @registrations ||= registration_type.classify.constantize.find(:all, :include => 'conversion', :conditions => ['registrations.created_at >= ? AND registrations.created_at <= ?', from, through ])
     @registrations ||= registration_type.classify.constantize.find_for_export(from, through)
   end
   

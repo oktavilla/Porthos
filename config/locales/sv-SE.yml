@@ -145,8 +145,6 @@
       order: Butiksbeställning
       global_parent_give_away: Ge bort Världsförälder
       registration: Registrering
-      payment: Betalning
-      print_setting: Tilltrycksinställning
       asset: Fil
       content_module: Innehållsmodul
       node: Navigations-node
@@ -183,7 +181,6 @@
         shipping_post_code: Postnummer för leverans
         shipping_locality: Leveransort
         shipping_country: Leveransland
-        payment_type: Betalningssätt
         amount: Summa
         total_sum: Belopp
         birth_date: Födelsedatum
@@ -197,14 +194,6 @@
         receiver_name: Namn
         receive_date: Datum
         giver_name: Avsändare
-      payment:
-        first_name: Förnamn
-        last_name: Efternamn
-        card_number: Kortnummer
-        card_expiry_month: Giltighetstid (månad)
-        card_expiry_year: Giltighetstid (år)
-        card_number_cvc: CVC
-        billing_method: Betalningssätt
       print_setting:
         predef_greeting: Hälsning
         greeting_text: Hälsning
@@ -411,14 +400,5 @@
         big: Stor
         medium: Mellan
         small: Liten
-    measure_point:
-      link_types: 
-        text_link: Text-länk
-        banner_flash: Banner (flash)
-        banner_gif: Banner (gif)
-      targets:
-        global_parents: Världsföräldrar
-        private_donations: Privatgivare
-        private_buys: Privata beställare i butiken
     validators:
       bad_email_format: har fel format

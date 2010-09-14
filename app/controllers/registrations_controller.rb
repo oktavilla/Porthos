@@ -43,29 +43,7 @@ class RegistrationsController < ApplicationController
     approved_url = params[:approved_url] || http_url_from_path(registration_path(:id => @registration.to_url))
     session[:current_registration] = @registration.id
 
-    if @registration.payable?
-      Conversion.from_payment(session[:measure_point], @registration) if session[:measure_point]
-      @payment = Payment.for_payable(@registration)
-      @payment.save
-      
-      @redirection_url = case
-      when @payment.direct_payment?
-        @payment.update_attributes(:status => 'Redirected')
-        @payment.integration_url({
-          :approved_url => approved_url,
-          :declined_url => params[:declined_url] || registration_url(:id => @registration.to_url, :denied => true)
-        })
-      when @payment.creditcard_payment?
-        @payment.update_attributes(:status => 'Redirected')
-        session[:registration_return_path] = approved_url
-        https_url_from_path((request.format.to_sym == :xml) ? new_payment_path(:public_id => @registration.public_id) : new_payment_path)
-      when @payment.invoice_payment?
-        registration_path(:id => @registration.to_url)
-      end
-    else
-      Conversion.from_click(session[:measure_point], @registration) if session[:measure_point]
-      @redirection_url = registration_path(:id => @registration.to_url)
-    end
+    @redirection_url = registration_path(:id => @registration.to_url)
     
     @registration.update_attribute(:return_path, approved_url)
     

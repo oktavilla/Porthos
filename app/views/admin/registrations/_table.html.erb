@@ -20,26 +20,6 @@
     <td class="personal">
       <%= render :partial => "vcard", :locals => { :registration => registration } %>
     </td>
-    <td class="payment">
-    <% if registration.total_sum? %>
-      <span class="status <%= registration.invoice_payment? ? 'invoice' : registration.humanized_payment_status %>">
-        <%= number_to_currency(registration.total_sum) %>
-      </span>
-      <span class="payment">
-      <% if (registration.is_a?(CompanyVgDonation) or registration.is_a?(CompanyDonation)) and registration.invoice_payment? %>
-        <span class="payment_type"><%= link_to "Faktura", invoice_admin_registration_path(registration) %></span>
-      <% else -%>
-        <span class="payment_type"><%= registration.payment_type %></span>
-      <% end %>
-      <% if !registration.payment_transaction_id.blank? && registration.payment_transaction_id.to_i != 0 -%>
-        <span class="payment_transaction_id">(<%= registration.payment_transaction_id %>)</span>
-      <% end -%>
-      </span>
-    <% end -%>
-    <% if registration.conversion and registration.conversion.measure_point -%>
-      <span class="measure_point"><span class="type">Mätpunkt:</span> <%= link_to registration.conversion.measure_point.public_id.upcase, admin_campaign_path(:id => registration.conversion.measure_point.campaign_id, :anchor => "measure_point_#{registration.conversion.measure_point.id}") %></span>
-    <% end -%>
-    </td>
   </tr>
   <% end -%>
 </table>

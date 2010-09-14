@@ -17,10 +17,9 @@ class Registration < ActiveRecord::Base
   class_inheritable_accessor :valid_registration_types
   self.valid_registration_types = []
 
-  named_scope :with_payment,  :conditions => "payment_status = 'Complete'"
   named_scope :with_opt_in,   :conditions => "contact_approval = 1"
 
-  named_scope :pending,       :conditions => "status = 0 and payment_status != 'Redirected'"
+  named_scope :pending,       :conditions => "status = 0"
   named_scope :confirmed,     :conditions => 'status = 1'
   named_scope :spam,          :conditions => 'status = 2'
   named_scope :failed,        :conditions => 'status = 3'
@@ -34,8 +33,6 @@ class Registration < ActiveRecord::Base
 
   has_many :comments, :class_name => 'RegistrationComment'
   has_many :related_registrations, :class_name => 'Registration', :finder_sql => 'SELECT * FROM registrations WHERE registrations.session_id = "#{session_id}" AND id != "#{id}"'
-  has_one :payment, :as => :payable
-  has_one :conversion
   belongs_to :node
   belongs_to :registration_form
   belongs_to :user
@@ -91,10 +88,6 @@ class Registration < ActiveRecord::Base
         'organization_number',
       ],
       :as => 'organization'
-    }, {
-      :association_name => 'conversion',
-      :field => 'measure_point_id',
-      :as => 'campaign_measure_point_id'
     }],
     :delta => true
   })                         
@@ -142,11 +135,7 @@ class Registration < ActiveRecord::Base
   def created_at_formatted_time
     created_at.strftime("%H:%M")
   end
-  
-  def conversion_point_public_id
-    ((conversion and conversion.measure_point) ? conversion.measure_point.public_id : '')
-  end
-  
+
   def total_sum_formatted
     total_sum.cents/100
   end
@@ -275,7 +264,6 @@ class Registration < ActiveRecord::Base
         :email,
         :contact_approval,
         :total_sum_formatted,
-        :conversion_point_public_id,
         :id
       ]
     end

@@ -1,11 +1,3 @@
-#campaigns_view.show .overview:after {
-  content:".";
-  display:block;
-  height:0;
-  line-height:0;
-  clear:both; 
-  visibility:hidden; }
-
 /* Registrations */
 
 .status {
@@ -39,29 +31,9 @@
     display:block;
     padding-left:22px; }
   .registrations .personal {}
-  .registrations .payment {width:200px;}
-    .registrations .payment .payment,
-    .registrations .payment .target_code,
-    .registrations .payment .measure_point,
-    .registrations .payment .delivery,
-    .registrations .payment .shipping {
-      display:block; 
-      padding-left:22px; }
-    .registrations .payment .amount {
-      font-weight:bold;
-      font-size:16px; 
-      color:#000; }
     .registrations .type {
       font-weight:normal;
       color:#999; }
-    .registrations .payment .payment_status.complete,
-    .registrations .payment .payment_status.pending,
-    .registrations .payment .payment_status.invoice,
-    .registrations .details .reference.complete,
-    .registrations .details .reference.pending,
-    .registrations .details .reference.deleted {
-      background-position:0 3px; }
-
 .comments {
   margin-top:1em;
   border-top:1px solid #eee;}
@@ -144,70 +116,6 @@
       margin:0;
       padding:0; }
   #registrations_view.show .related_registrations .type {padding-left:22px;}
-
-#campaigns_view.show {}
-  #campaigns_view.show .overview .clicks,
-  #campaigns_view.show .overview .conversions,
-  #campaigns_view.show .overview .income {
-    float:left;
-    width:30%;
-    margin:20px 5% 0 0;
-    padding:40px 0; 
-    -moz-border-radius:10px 10px;
-    -webkit-border-radius:10px 10px; 
-    background: #f8faed; }
-    #campaigns_view.show .overview .income {margin-right:0;}
-    #campaigns_view.show .overview .type,
-    #campaigns_view.show .overview .value,
-    #campaigns_view.show .overview .description {
-      display:block;
-      text-align:center; 
-      padding:0 30px;}
-    #campaigns_view.show .overview .type {}
-    #campaigns_view.show .overview .value {
-      color:#59941c;
-      font-size:36px; 
-      font-weight:bold; }
-    #campaigns_view.show .overview .description {
-      font-size:12px; }
-  #campaigns_view.show #c_1 h2 {margin:2em 0 10px 10px;}
-  #campaigns_view.show #c_1 > div.conversions {margin-left:10px;}
-
-.measure_points {
-  width:100%; }
-  .measure_points .details .ref_nr {
-    display:block;
-    font-weight:bold;
-    font-size:16px; 
-    color:#000; }
-  .measure_points .details .ref_nr,
-  .measure_points .details .created_at,
-  .measure_points .details .created_by,
-  .measure_points .details .updated_at {display:block;}
-  .measure_points td.total_clicks,
-  .measure_points td.total_conversions,
-  .measure_points td.total_roi {
-    font-size:16px;
-    color:#000;
-    font-weight:bold; }
-  .measure_points div.description {
-    color:#333;
-    margin-bottom:3px;
-    font-size:14px; }
-  .measure_points div.conversions {}
-    .measure_points div.conversions ul {
-      list-style:none;
-      margin:0;}
-      .measure_points div.conversions li {margin:0;}
-    .measure_points div.conversions .type {
-      font-style:normal;
-      font-weight:bold; 
-      color:#000; }
-    .measure_points div.conversions .value {
-      font-weight:bold; }
-    .measure_points div.conversions .average {
-      display:block; 
-      color:#999; }
 
 table.activities {
   width: 100%;

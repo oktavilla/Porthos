@@ -8,8 +8,6 @@ ActionController::Routing::Routes.draw do |map|
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
 
   map.resources :registrations
-  map.connect '/payments/update', :controller => 'payments', :action => 'update'
-  map.resources :payments, :member => { :pending => :get }
 
   map.with_options :controller => 'assets', :action => 'show' do |asset|
     asset.resized_image  '/images/:size/:id.:format'
@@ -58,11 +56,6 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :content_lists
 
     admin.resources :teasers, :collection => { :sort => :put }
-    
-    admin.resources :campaigns, :collection => { :search => :get }
-    admin.resources :measure_points
-    admin.conversions '/measure_points/:measure_point_id/conversions', :controller => 'conversions', :action => 'show'
-    admin.resources :payments
     admin.resources :exports
     
     admin.resources :assets, :collection => { :search => :get, :incomplete => :get, :update_multiple => :put }

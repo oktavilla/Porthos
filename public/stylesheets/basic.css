@@ -160,35 +160,7 @@ fieldset ul {list-style:none;}
       position:relative;
       float:left;
       margin:0 .4em -.2em -20px; }
-    fieldset label.contains-input input {margin-bottom:.1em;}
-fieldset.payment_methods {padding-top:.668em;}
-  fieldset.payment_methods ul {margin:0;}
-    fieldset.payment_methods li {
-      float:left;
-      width:135px;
-      margin:0 10px 0 0; 
-      border:1px solid #e5e5e5;
-      background:#f7f7f7;}
-      fieldset.payment_methods li.first {margin-left:147px;}
-      fieldset.payment_methods li.last {margin-right:0;}
-      fieldset.payment_methods li.selected {background:#ffa;}
-      fieldset.payment_methods li label {margin:0;padding:7px 0 0 7px;}
-        fieldset.payment_methods li input {margin-top:2px;margin-left:0;}
-        fieldset.payment_methods li .info {display:inline;}
-        fieldset.payment_methods li img {
-          float:right;
-          margin:5px;}
-        fieldset.payment_methods li.visa img {margin-top:17px;}
-        fieldset.payment_methods li.master img {margin-top:15px;}
-        fieldset.payment_methods li.american_express img {margin-top:2px;}
-        fieldset.payment_methods li.nordea img {margin-top:14px;}
-        fieldset.payment_methods li.seb img {margin-top:11px;margin-bottom:2px;}
-        fieldset.payment_methods li.hsb img {margin-top:17px;}
-        fieldset.payment_methods li.swedbank img {margin-top:1px;margin-bottom:4px;}
-fieldset#registration_payment_method_creditcard {margin-bottom:0;}
-fieldset#registration_payment_method_internetbank {margin-top:0;padding-top:2.672em;}
-  fieldset#registration_payment_method_internetbank li.first {margin-left:0;}
-  
+    fieldset label.contains-input input {margin-bottom:.1em;}  
 /**** General modified elements */
 
 .preamble {

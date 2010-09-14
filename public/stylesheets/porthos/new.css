@@ -5,7 +5,6 @@
 #assets.incomplete .describe_asset:after,
 #uploader li:after,
 #uploader .totals:after,
-#campaigns.show .overview:after,
 #registrations.show .update_comment_status .comment_status:after {
   content:".";
   display:block;
@@ -170,29 +169,9 @@ ul.filter li {margin:.8em -5px;}
     display:block;
     padding-left:22px; }
   .registrations .personal {}
-  .registrations .payment {width:200px;}
-    .registrations .payment .payment,
-    .registrations .payment .target_code,
-    .registrations .payment .measure_point,
-    .registrations .payment .delivery,
-    .registrations .payment .shipping {
-      display:block; 
-      padding-left:22px; }
-    .registrations .payment .amount {
-      font-weight:bold;
-      font-size:16px; 
-      color:#000; }
     .registrations .type {
       font-weight:normal;
       color:#999; }
-    .registrations .payment .payment_status.complete,
-    .registrations .payment .payment_status.pending,
-    .registrations .payment .payment_status.invoice,
-    .registrations .details .reference.complete,
-    .registrations .details .reference.pending,
-    .registrations .details .reference.deleted {
-      background-position:0 3px; }
-
 .comments {
   margin-top:1em;
   border-top:1px solid #eee;}
@@ -281,106 +260,6 @@ ul.filter li {margin:.8em -5px;}
       margin:0;
       padding:0; }
   #registrations.show .related_registrations .type {padding-left:22px;}
-
-.campaigns {
-  color:#666; 
-  width:100%; }
-  .campaigns .total_clicks,
-  .campaigns .total_conversions,
-  .campaigns .total_roi {
-    text-align:right; }
-  .campaigns td.name,
-  .campaigns td.total_clicks,
-  .campaigns td.total_conversions,
-  .campaigns td.total_roi {
-    font-size:16px;
-    color:#000;
-    font-weight:bold; }
-
-.main_action .new_measure_point {
-  display:block;
-  height:34px;
-  width:200px;
-  background:transparent url(/graphics/porthos/ui.png) -20px -129px no-repeat;
-  text-indent:-9999px; }
-.main_action .new_measure_point:hover {background-position:-20px -184px;}
-
-.main_action .new_campaign {
-  display:block;
-  height:34px;
-  width:200px;
-  background:transparent url(/graphics/porthos/ui.png) -20px -240px no-repeat;
-  text-indent:-9999px; }
-.main_action .new_campaign:hover {background-position:-20px -295px;}
-
-
-
-#campaigns.show {}
-  #campaigns.show .overview .clicks,
-  #campaigns.show .overview .conversions,
-  #campaigns.show .overview .income {
-    float:left;
-    width:30%;
-    margin:20px 5% 0 0;
-    padding:40px 0; 
-    -moz-border-radius:10px 10px;
-    -webkit-border-radius:10px 10px; 
-    background: #f8faed; }
-    #campaigns.show .overview .income {margin-right:0;}
-    #campaigns.show .overview .type,
-    #campaigns.show .overview .value,
-    #campaigns.show .overview .description {
-      display:block;
-      text-align:center; 
-      padding:0 30px;}
-    #campaigns.show .overview .type {}
-    #campaigns.show .overview .value {
-      color:#59941c;
-      font-size:36px; 
-      font-weight:bold; }
-    #campaigns.show .overview .description {
-      font-size:12px; }
-  #campaigns.show #c_1 h2 {margin:2em 0 10px 10px;}
-  #campaigns.show #c_1 > div.conversions {margin-left:10px;}
-
-.measure_points {
-  color:#666; 
-  width:100%; }
-  .measure_points td {padding:10px;}
-  .measure_points .details .ref_nr {
-    display:block;
-    font-weight:bold;
-    font-size:16px; 
-    color:#000; }
-  .measure_points .details .ref_nr,
-  .measure_points .details .created_at,
-  .measure_points .details .created_by,
-  .measure_points .details .updated_at {display:block;}
-  .measure_points .total_clicks,
-  .measure_points .total_conversions,
-  .measure_points .total_roi {
-    text-align:right; }
-  .measure_points td.total_clicks,
-  .measure_points td.total_conversions,
-  .measure_points td.total_roi {
-    font-size:16px;
-    color:#000;
-    font-weight:bold; }
-  .measure_points div.description {
-    color:#333;
-    margin-bottom:3px;
-    font-size:14px; }
-  .measure_points div.conversions {}
-    div.conversions ul {margin:0;}
-    div.conversions .type {
-      font-style:normal;
-      font-weight:bold; 
-      color:#000; }
-    div.conversions .value {
-      font-weight:bold; }
-    div.conversions .average {
-      display:block; 
-      color:#999; }
 
 #users {}      
   #users .user { 

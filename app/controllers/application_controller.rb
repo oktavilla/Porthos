@@ -3,7 +3,6 @@
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
-  filter_parameter_logging :card_number, :card_expiry_month, :card_expiry_year, :card_number_cvc, :payment_type
 
   include Porthos::AccessControl
   

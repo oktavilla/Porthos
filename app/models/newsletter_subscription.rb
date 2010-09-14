@@ -75,7 +75,6 @@ class NewsletterSubscription < Registration
         :first_name,
         :last_name,
         :email,
-        :conversion_point_id,
         :id
       ]
     end

@@ -1,3 +1,0 @@
-<% @export.registrations.each do |global_parent| -%>
-"<%= global_parent.created_at.to_s(:db) %>","<%= global_parent.first_name %>","<%= global_parent.last_name %>","<%= global_parent.address %>","<%= global_parent.post_code %>","<%= global_parent.locality %>","<%= global_parent.email %>","<%= global_parent.contact_approval ? '1' : '0' %>","<%= number_to_currency global_parent.total_sum %>","<%= (global_parent.conversion and global_parent.conversion.measure_point) ? global_parent.conversion.measure_point.public_id : '' %>",0,"<%= global_parent.id %>"
-<% end -%> 

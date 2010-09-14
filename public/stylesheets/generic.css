@@ -30,7 +30,6 @@ span.notice {padding:0;}
   margin-bottom:.668em;
   padding-left: 190px; }
 
-.payment_notice,
 .discount_notice,
 .errorExplanation {background:#ff0;color:#000;padding:10px;margin-bottom:1em;}
   .errorExplanation ul {margin-bottom:0;}

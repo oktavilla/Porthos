@@ -53,25 +53,6 @@ Antal personer
 Meddelande
 <%= registration.message %>
 
-<% if registration.payment -%>
-Betalning
-
-Betalningssätt
-<%= registration.payment.billing_method %>
-
-Transaktions id
-<%= registration.payment.transaction_id %>
-
-Status
-<%= registration.payment.status %>
-
-Betalningssvar
-<%= registration.payment.response_message %>
-
-Summa
-<%= number_to_currency(registration.payment.amount) %>
-<% end -%>
-
 <% if registration.shipment_type -%>
 Leveransinfo  
 

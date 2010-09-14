@@ -113,14 +113,12 @@ body#activities {}
 
 /**** NAVIGATION FOR ACTIVITY */
   body#activities #nav #n-activity a,
-  body#campaigns #nav #n-activity a,
   body#registrations #nav #n-activity a {
     color:#fff;
     font-weight:bold;
     text-decoration:none; }
     
     body#activities #n-activity-overview a,
-    body#campaigns #n-campaigns a,
     body#registrations #n-registrations a {
       color:#333;
       font-weight:bold;

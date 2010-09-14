@@ -74,7 +74,6 @@ class PageTip < Registration
         :recipients,
         :uri,
         :message,
-        :conversion_point_public_id,
         :id
       ]
     end

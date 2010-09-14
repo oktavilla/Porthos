@@ -10,18 +10,13 @@ class Admin::RegistrationsController < ApplicationController
     klass = @type.constantize
     scope = !params[:filter].blank? ? params[:filter].to_sym : :confirmed_or_pending
 
-    conditions = {
-      :conditions => ['conversions.measure_point_id = ?', params[:measure_point_id]],
-      :include => 'conversion'
-    } if params[:measure_point_id]
-
     @filter = klass.public_filters.include?(scope) ? scope : :confirmed_or_pending
     
     @registrations = klass.send(@filter).paginate({
       :page     => page,
       :per_page => per_page,
       :order    => 'registrations.created_at DESC'
-    }.merge(conditions || {}))
+    })
   end
 
   def show
