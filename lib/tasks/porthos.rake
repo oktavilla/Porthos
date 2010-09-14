@@ -68,19 +68,15 @@ namespace :porthos do
   
   desc "Load default db"
   task :install_database do
-    ENV['SCHEMA'] = File.join(plugin_path, 'db/schema.rb')
-    Rake::Task["db:schema:load"].invoke      
-    admin_role = Role.create(:name => 'Admin')
-    public_role = Role.create(:name => 'Public')
-    site_admin_role = Role.create(:name => 'SiteAdmin')
-    admin_user = User.create(:login => 'admin', :password => 'password', :password_confirmation => 'password', :first_name => 'Admin', :last_name => 'Admin', :email => 'admin@example.com')
-    UserRole.create(:role_id => admin_role.id, :user_id => admin_user.id)
-    UserRole.create(:role_id => site_admin_role.id, :user_id => admin_user.id)
-    
-    Dir.foreach(File.join(plugin_path, 'db','migrate')) do |entry|
-      unless File.basename(entry)[0,1] == '.'
-        ActiveRecord::Base.connection.execute("INSERT INTO plugin_schema_migrations (plugin_name, version) VALUES('porthos', #{entry[0..2]})")
-      end
+    printf "This will overwrite RAILS_ROOT/db/schema.rb and RAILS_ROOT/db/seeds.rb, ok? [y/n] "
+    if STDIN.gets.chomp == 'y'      
+      schema_template_file = 'db/schema.rb'
+      seeds_template_file = 'db/seeds.rb'
+      system("cp -f #{File.join(plugin_path, schema_template_file)} #{File.join(app_path, schema_template_file)}")
+      system("cp -f #{File.join(plugin_path, seeds_template_file)} #{File.join(app_path, seeds_template_file)}")
+      Rake::Task["db:setup"].invoke
+      system("rm #{File.join(app_path, schema_template_file)}")
+      system("rm #{File.join(app_path, seeds_template_file)}")
     end
   end
   
