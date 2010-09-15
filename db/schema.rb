@@ -553,7 +553,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
 
   add_index "tags", ["name"], :name => "index_tags_on_name"
 
-  create_table "teasers", :force => true do |t|
+  create_table "content_teasers", :force => true do |t|
     t.string   "title"
     t.text     "body"
     t.string   "link"
@@ -571,10 +571,10 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.string   "filter"
   end
 
-  add_index "teasers", ["image_asset_id"], :name => "index_teasers_on_image_asset_id"
-  add_index "teasers", ["parent_id"], :name => "index_teasers_on_resource_id"
-  add_index "teasers", ["product_category_id"], :name => "index_teasers_on_product_category_id"
-  add_index "teasers", ["product_id"], :name => "index_teasers_on_product_id"
+  add_index "content_teasers", ["image_asset_id"], :name => "index_teasers_on_image_asset_id"
+  add_index "content_teasers", ["parent_id"], :name => "index_teasers_on_resource_id"
+  add_index "content_teasers", ["product_category_id"], :name => "index_teasers_on_product_category_id"
+  add_index "content_teasers", ["product_id"], :name => "index_teasers_on_product_id"
 
   create_table "content_textfields", :force => true do |t|
     t.boolean  "shared",     :default => false

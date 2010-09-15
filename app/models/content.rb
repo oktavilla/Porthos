@@ -91,11 +91,11 @@ class Content < ActiveRecord::Base
   def self.approved_resources
     [
       'ContentTextfield',
-      'Teaser',
+      'ContentTeaser',
       'ContentModule',
-      'RegistrationForm',
       'ContentImage',
-      'ContentVideo'
+      'ContentVideo',
+      'RegistrationForm'
     ]
   end
   

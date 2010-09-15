@@ -6,7 +6,7 @@
   <div id="content">
     <div id="c_1"><div class="inner">
       <% form_for :content, :url => admin_content_path(@content), :html => { :multipart => true, :method => :put } do |f| %>
-        <%= render :partial => 'admin/contents/teasers/form', :locals => { :content => @content, :f => f } %>
+        <%= render :partial => 'admin/contents/content_teasers/form', :locals => { :content => @content, :f => f } %>
         <%= submit_tag 'Spara', :class => 'commit button' %> eller <%= link_to "avbryt", previous_view_path %>
       <% end %>
     </div></div>

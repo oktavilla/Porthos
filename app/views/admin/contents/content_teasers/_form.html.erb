@@ -5,7 +5,7 @@
   </div>
   <label for="resource_filter">
     Filter: 
-    <%= resource.select :filter, Teaser.filters %>
+    <%= resource.select :filter, ContentTeaser.filters %>
   </label>
   <label for="content_<%= content.id %>_resource_body">Text</label>
   <div class="fullwidth">
@@ -17,8 +17,8 @@
   <label for="resource_images_display_type_1"><%= resource.radio_button :images_display_type, 1 %> Visa alla bilder som bildspel</label>
   <% end %>
   <label for="resource_display_type">Typ</label>
-  <%= resource.select :display_type, Teaser.display_types.enum_with_index.map { |type, i| [t(type[:key], :scope => [:app, :teasers, :types]), i.to_s] } %>
+  <%= resource.select :display_type, ContentTeaser.display_types.enum_with_index.map { |type, i| [t(type[:key], :scope => [:app, :teasers, :types]), i.to_s] } %>
   <label for="resource_css_class">CSS-klass</label>
-  <%= resource.select :css_class, Teaser.css_classes.collect { |css_class| [t(css_class, :scope => [:app, :colors]), css_class] }.unshift(['Ingen', '']) %>
+  <%= resource.select :css_class, ContentTeaser.css_classes.collect { |css_class| [t(css_class, :scope => [:app, :colors]), css_class] }.unshift(['Ingen', '']) %>
 <% end %>
 <%= render :partial => 'admin/contents/restriction_settings', :locals => { :content => content }%>

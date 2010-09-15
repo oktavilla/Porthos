@@ -45,7 +45,7 @@
         <div class="sub_controls" style="display:none;">
           <ul>
             <li><a href="<%= new_admin_content_path(:content => { :context_id => @page.id, :context_type => 'Page', :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentTextfield', :column_position => column }) %>">Text</a></li>
-            <li><a href="<%= new_admin_content_path(:collection => 1, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'Teaser', :column_position => column }) %>">Puffar</a></li>
+            <li><a href="<%= new_admin_content_path(:collection => 1, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentTeaser', :column_position => column }) %>">Puffar</a></li>
             <li><a href="<%= admin_assets_path(:filters => { :by_type => 'ImageAsset' }, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentImage', :column_position => column }) %>">Bild</a></li>
             <li><a href="<%= admin_assets_path(:filters => { :by_type => 'VideoAsset' }, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentVideo', :column_position => column }) %>">Video</a></li>
             <li><a href="<%= new_admin_content_path(:content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'RegistrationForm', :column_position => column }) %>">Formulär</a></li>

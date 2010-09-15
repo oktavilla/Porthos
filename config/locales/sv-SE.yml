@@ -158,7 +158,7 @@
       product: Produkt
       product_category: Produktkategori
       shop: Butik
-      teaser: Teaser
+      content_teaser: Teaser
       user: Användare
       sample_product_order: Provkortsbeställning
       redirect: Vidarebefordring

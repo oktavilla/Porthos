@@ -62,7 +62,6 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :registration_forms
     admin.resources :content_lists
 
-    admin.resources :teasers, :collection => { :sort => :put }
     admin.resources :exports
     
     admin.resources :assets, :collection => { :search => :get, :incomplete => :get, :update_multiple => :put }

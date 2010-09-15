@@ -36,7 +36,7 @@
   </li>
 <% end -%>
   <li class="add">
-    <%= link_to("Lägg till puff", new_admin_content_path(:return_to => request.request_uri, :content => { :context_id => content.context_id, :context_type => content.context_type, :resource_type => 'Teaser', :parent_id => content, :column_position => content.column_position }), :class => 'new') %>
+    <%= link_to("Lägg till puff", new_admin_content_path(:return_to => request.request_uri, :content => { :context_id => content.context_id, :context_type => content.context_type, :resource_type => 'ContentTeaser', :parent_id => content, :column_position => content.column_position }), :class => 'new') %>
   </li>
 </ul>
 <% else %>

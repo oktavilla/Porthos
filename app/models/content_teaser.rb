@@ -1,4 +1,4 @@
-class Teaser < ActiveRecord::Base
+class ContentTeaser < ActiveRecord::Base
   include Porthos::ContentResource
 
   has_one :content, :as => :resource
