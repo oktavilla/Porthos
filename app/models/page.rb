@@ -48,7 +48,7 @@ class Page < ActiveRecord::Base
            :order => 'comments.created_at'
   
   named_scope :published, lambda {{
-    :conditions => ["published_on <= ?", Time.now.at_midnight + 1.day - 1.minute]
+    :conditions => ["published_on <= ?", Time.now]
   }}
               
   named_scope :published_within, lambda { |from, to| {
@@ -127,7 +127,7 @@ class Page < ActiveRecord::Base
   })
     
   def published?
-    published_on <= Time.now.end_of_day
+    published_on <= Time.now
   end
 
   def unpublished_changes?
@@ -272,7 +272,7 @@ private
   end
 
   def set_published_on
-    self.published_on = Time.now.at_midnight if published_on.blank?
+    self.published_on = Time.now if published_on.blank?
   end
   
   def set_layout_attributes    

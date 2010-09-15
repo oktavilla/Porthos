@@ -16,9 +16,9 @@
 <% end -%>
 <span class="meta">
   <% if page.changed_at && page.changed_at != page.published_on -%>
-  Senast ändrad <%= page.changed_at.strftime("%d %b %Y") %>. 
+  Senast ändrad <%= page.changed_at.strftime("%d %b %Y %H:%M") %>. 
   <% end -%>
-  Publicerad <%= page.published_on.strftime("%d %b %Y") %>.
+  Publicerad <%= page.published_on.strftime("%d %b %Y %H:%M") %>.
 </span>
 <span class="edit">
   <%= link_to "Ändra innehåll", admin_page_path(page) %>

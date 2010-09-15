@@ -66,7 +66,7 @@ class PageCollection < Page
     end
     
     def published_within(from, to)
-      find(:all, :conditions => ["active = 1 AND published_on BETWEEN ? AND ? #{'AND published_on <= CURRENT_DATE' unless proxy_owner.calendar?}", from.to_s(:db), to.to_s(:db)])
+      find(:all, :conditions => ["active = 1 AND published_on BETWEEN ? AND ? #{'AND published_on <= NOW()' unless proxy_owner.calendar?}", from.to_s(:db), to.to_s(:db)])
     end
     
     def find_by_params(params, options = {})
