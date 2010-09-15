@@ -576,7 +576,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   add_index "teasers", ["product_category_id"], :name => "index_teasers_on_product_category_id"
   add_index "teasers", ["product_id"], :name => "index_teasers_on_product_id"
 
-  create_table "textfields", :force => true do |t|
+  create_table "content_textfields", :force => true do |t|
     t.boolean  "shared",     :default => false
     t.string   "filter"
     t.string   "class_name"
@@ -584,17 +584,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "title"
-  end
-
-  create_table "tracking_points", :force => true do |t|
-    t.string   "name"
-    t.string   "template"
-    t.string   "parent_type"
-    t.string   "parent_id"
-    t.string   "event"
-    t.string   "checksum"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "user_roles", :force => true do |t|

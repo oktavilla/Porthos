@@ -1,4 +1,4 @@
-class Textfield < ActiveRecord::Base
+class ContentTextfield < ActiveRecord::Base
   include Porthos::ContentResource
   
   has_many :contents, :as => :resource

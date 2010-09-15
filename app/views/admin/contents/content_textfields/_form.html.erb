@@ -6,11 +6,11 @@
   <% fields_for :resource do |resource| %>
     <label for="resource_filter">
       Filter: 
-      <%= resource.select :filter, Textfield.filters %>
+      <%= resource.select :filter, ContentTextfield.filters %>
     </label>
     <%= resource.text_area :body, :class => @content.resource.filter, :id => 'editor', :cols => 90, :rows => 40 %>
   <% end %>
 <% else -%>
-  <%= f.select :resource_id, Textfield.shared.find(:all, :order => 'title ASC').collect { |t| [t.title, t.id] } %>
+  <%= f.select :resource_id, ContentTextfield.shared.find(:all, :order => 'title ASC').collect { |t| [t.title, t.id] } %>
 <% end -%>
 <%= render :partial => 'admin/contents/restriction_settings', :locals => { :content => @content }%>

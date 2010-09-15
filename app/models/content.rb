@@ -41,7 +41,7 @@ class Content < ActiveRecord::Base
   end
 
   def text?
-    resource_type == 'Textfield'
+    resource_type == 'ContentTextfield'
   end
   
   def shared?
@@ -90,7 +90,7 @@ class Content < ActiveRecord::Base
 
   def self.approved_resources
     [
-      'Textfield',
+      'ContentTextfield',
       'Teaser',
       'ContentModule',
       'RegistrationForm',

@@ -60,7 +60,6 @@ ActionController::Routing::Routes.draw do |map|
     })
     admin.resources :content_modules
     admin.resources :registration_forms
-    admin.resources :textfields, :collection => { :shared => :get }
     admin.resources :content_lists
 
     admin.resources :teasers, :collection => { :sort => :put }
@@ -88,9 +87,7 @@ ActionController::Routing::Routes.draw do |map|
         :publish  => :put,
         :comments => :get
       }
-    }) do |pages|
-      pages.resources :textfields
-    end
+    })
 
     admin.registrations         '/registrations',               :controller => 'registrations', :action => 'index'
     admin.comment_registration  '/registrations/comment',       :controller => 'registrations', :action => 'comment'

@@ -15,7 +15,7 @@
         <%= link_to("Ändra", edit_admin_content_list_path(content_list)) %>
         <span class="handle"><%= content_list.handle %></span>          
       </h2>
-      <!-- <%= link_to "Lägg till text", new_admin_content_path(:content => { :context_id => content_list.id, :context_type => content_list.class.to_s, :resource_type => 'Textfield' }) %> -->
+      <!-- <%= link_to "Lägg till text", new_admin_content_path(:content => { :context_id => content_list.id, :context_type => content_list.class.to_s, :resource_type => 'ContentTextfield' }) %> -->
     </div>
     <% end %>
   </div>

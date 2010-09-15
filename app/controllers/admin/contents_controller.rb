@@ -80,7 +80,7 @@ class Admin::ContentsController < ApplicationController
   def destroy
     @content = Content.find(params[:id])
     @content.destroy
-    flash[:notice] = "Innehåll borttaget" unless @content.resource and @content.resource_type == 'Textfield' and @content.resource.body.blank?
+    flash[:notice] = "Innehåll borttaget" unless @content.resource and @content.resource_type == 'ContentTextfield' and @content.resource.body.blank?
     respond_to do |format|
       format.html { redirect_to restfull_path_for(@content.context) }
     end

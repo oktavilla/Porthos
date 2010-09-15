@@ -25,13 +25,13 @@
         </fieldset>
         <fieldset>
           <legend>Förvalt innehåll</legend>
-        <% if Textfield.count(:conditions => ["shared = ?", true]) == 0 and ContentModule.count == 0 -%>
+        <% if ContentTextfield.count(:conditions => ["shared = ?", true]) == 0 and ContentModule.count == 0 -%>
           <p class="blank-slate">Det finns inget delat innehåll inlagt än</p>
         <% else -%>
           <% (1..@page_layout.columns).each do |column| %>
           <div class="column" id="column_<%= column %>">
             <label for="page_layout_column_<%= column %>_default_contents">Kolumn <%= column %></label>
-            <%= f.select(:contents, @default_textfields.collect { |t| [t.title, t.id] }, { :selected => @page_layout.default_contents.in_column(column, :conditions => ["resource_type = ?", 'Textfield']).collect { |c| c.resource.id } }, :multiple => true, :name => "page_layout[contents][#{column}][Textfield][]",     :id => "page_layout_column_#{column}_default_contents") if Textfield.count(:conditions => ["shared = ?", true]) != 0 %>
+            <%= f.select(:contents, @default_textfields.collect { |t| [t.title, t.id] }, { :selected => @page_layout.default_contents.in_column(column, :conditions => ["resource_type = ?", 'ContentTextfield']).collect { |c| c.resource.id } }, :multiple => true, :name => "page_layout[contents][#{column}][ContentTextfield][]",     :id => "page_layout_column_#{column}_default_contents") if ContentTextfield.count(:conditions => ["shared = ?", true]) != 0 %>
             <%= f.select(:contents, @default_modules.collect    { |m| [m.name, m.id] },  { :selected => @page_layout.default_contents.in_column(column, :conditions => ["resource_type = ?", 'ContentModule']).collect { |c| c.resource.id } }, :multiple => true, :name => "page_layout[contents][#{column}][ContentModule][]", :id => "page_layout_column_#{column}_default_contents") if ContentModule.count != 0 %>
           </div>
           <% end %>

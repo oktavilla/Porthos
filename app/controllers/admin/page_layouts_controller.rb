@@ -24,7 +24,7 @@ class Admin::PageLayoutsController < ApplicationController
   
   def edit
     @page_layout = PageLayout.find(params[:id])
-    @default_textfields = Textfield.find_all_by_shared(true)
+    @default_textfields = ContentTextfield.find_all_by_shared(true)
     @default_modules    = ContentModule.find(:all)
   end
   

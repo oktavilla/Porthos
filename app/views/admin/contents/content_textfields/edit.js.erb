@@ -1,7 +1,7 @@
-<%= error_messages_for :textfield %>
+<%= error_messages_for :content_textfield %>
 <% form_for :content, @content, :url => admin_content_path(@content), :html => { :method => :put } do |f| %>
   <% unless @content.resource.shared? %>
-  <%= render :partial => '/admin/contents/textfields/form.html.erb', :locals => { :content => @content, :f => f } %>
+  <%= render :partial => '/admin/contents/content_textfields/form.html.erb', :locals => { :content => @content, :f => f } %>
   <% else %>
   <div class="shared">
     <%= f.text_field :title, :class => 'text' %>
