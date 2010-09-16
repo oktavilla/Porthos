@@ -7,8 +7,10 @@
   </div>
   <div class="tools">
     <div class="add">
-      <%= link_to "Skapa en ny sida", (!@filters[:with_parent] ? new_admin_page_path : new_admin_page_path(:page => { :parent_id => @filters[:with_parent].split(',')[0], :parent_type => @filters[:with_parent].split(',')[1] })), :class => 'new' %>
-      <%= link_to "Skapa en ny sidsamling", new_admin_page_collection_path, :class => 'new' if current_user.can_create?(PageCollection) %>
+      Skapa ny:
+      <% @field_sets.each do |field_set| -%>
+        <%= link_to field_set.title, (!@filters[:with_parent] ? new_admin_page_path(:page => { :field_set_id => field_set.id }) : new_admin_page_path(:page => { :field_set_id => field_set, :parent_id => @filters[:with_parent].split(',')[0], :parent_type => @filters[:with_parent].split(',')[1] })), :class => 'new' %>
+      <% end if @field_sets.any? %>
     </div>
   </div>
   <div id="content">

@@ -116,17 +116,14 @@
 
 /**** NAVIGATION FOR CONTENT */
   body#contents #nav #n-content a,
-  body#page_layouts #nav #n-content a,
   body#content_textfields #nav #n-content a,
   body#content_modules #nav #n-content a,
-  body#registration_forms #nav #n-content a,
-  body#page_collections #nav #n-content a {
+  body#registration_forms #nav #n-content a {
       color:#fff;
       font-weight:bold;
       text-decoration:none; }
       
     body#contents #n-nodes a,
-    body#page_layouts #n-page_layouts a,
     body#content_textfields #n-textfields a,
     body#content_modules #n-modules a,
     body#registration_forms #n-forms a,

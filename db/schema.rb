@@ -186,19 +186,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   add_index "custom_attributes", ["field_id"], :name => "index_custom_attributes_on_field_id"
   add_index "custom_attributes", ["handle"], :name => "index_custom_attributes_on_handle"
 
-  create_table "default_contents", :force => true do |t|
-    t.integer  "position"
-    t.integer  "column_position"
-    t.integer  "page_layout_id"
-    t.string   "resource_type"
-    t.integer  "resource_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "default_contents", ["page_layout_id"], :name => "index_default_contents_on_page_layout_id"
-  add_index "default_contents", ["resource_id"], :name => "index_default_contents_on_resource_id"
-
   create_table "exports", :force => true do |t|
     t.string   "registration_type"
     t.datetime "from"
@@ -213,6 +200,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "handle"
+    t.string   "template_name"
   end
 
   add_index "field_sets", ["handle"], :name => "index_field_sets_on_handle"
@@ -259,6 +247,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.string   "action"
     t.string   "resource_type"
     t.integer  "resource_id"
+    t.integer  "field_set_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "children_count"
@@ -268,6 +257,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
 
   add_index "nodes", ["parent_id"], :name => "index_nodes_on_parent_id"
   add_index "nodes", ["resource_id"], :name => "index_nodes_on_resource_id"
+  add_index "nodes", ["field_set_id"], :name => "index_nodes_on_field_set_id"
   add_index "nodes", ["slug"], :name => "index_nodes_on_slug"
 
   create_table "order_items", :force => true do |t|
@@ -285,19 +275,9 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   add_index "order_items", ["order_id"], :name => "index_order_items_on_order_id"
   add_index "order_items", ["product_id"], :name => "index_order_items_on_product_id"
 
-  create_table "page_layouts", :force => true do |t|
-    t.string   "css_id"
-    t.string   "name"
-    t.integer  "columns",             :default => 1
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "main_content_column"
-  end
-
   create_table "pages", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.integer  "page_layout_id"
     t.string   "layout_class"
     t.integer  "column_count"
     t.datetime "published_on"
@@ -306,9 +286,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.string   "slug"
     t.string   "type"
     t.integer  "position"
-    t.integer  "parent_id"
-    t.string   "parent_type"
-    t.integer  "default_child_layout_id"
     t.boolean  "active",                  :default => true
     t.boolean  "calendar",                :default => false
     t.boolean  "restricted",              :default => false
@@ -321,10 +298,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.integer  "field_set_id"
   end
 
-  add_index "pages", ["default_child_layout_id"], :name => "index_pages_on_default_child_layout_id"
   add_index "pages", ["field_set_id"], :name => "index_pages_on_field_set_id"
-  add_index "pages", ["page_layout_id"], :name => "index_pages_on_page_layout_id"
-  add_index "pages", ["parent_id"], :name => "index_pages_on_parent_id"
   add_index "pages", ["slug"], :name => "index_pages_on_slug"
 
   create_table "payments", :force => true do |t|
@@ -527,16 +501,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   end
 
   add_index "settings", ["name"], :name => "index_settings_on_name"
-
-  create_table "tag_collections", :force => true do |t|
-    t.integer  "page_collection_id"
-    t.string   "name"
-    t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "tag_collections", ["page_collection_id"], :name => "index_tag_collections_on_page_collection_id"
 
   create_table "taggings", :force => true do |t|
     t.integer "tag_id"

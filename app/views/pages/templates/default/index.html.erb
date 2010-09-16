@@ -1,0 +1,14 @@
+<% @page_class = @field_set.handle -%>
+<% @page_title = @field_set.title -%>
+<% @page_id = 'pages-index' -%>
+<div id="content">
+  <h1><%= @field_set.title %></h2>
+  <ul>
+  <% @pages.each do |page| %>
+    <li>
+      <h2><%= page.title %></h2>
+      <div class="description"><%= page.description %></div>
+    </li>
+  <% end %>
+  </ul>
+</div>
