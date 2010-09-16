@@ -109,13 +109,7 @@ class Admin::PagesController < ApplicationController
     @page.destroy
     respond_to do |format|
       flash[:notice] = "”#{@page.title}” #{t(:deleted, :scope => [:app, :admin_general])}"
-      format.html do
-        if @page.child?
-          redirect_to url_for(:controller => @page.parent.class.to_s.tableize, :action => 'show', :id => @page.parent)
-        else
-          redirect_to admin_nodes_path(:nodes => @page.node)
-        end
-      end
+      format.html { redirect_to admin_nodes_path(:nodes => @page.node) }
     end
   end
   
@@ -146,7 +140,7 @@ class Admin::PagesController < ApplicationController
     end
     
     @page.update_attributes({
-      :rendered_body => render_to_string(:template => 'pages/show', :layout => false),
+      :rendered_body => render_to_string(:template => @page.field_set.template.views.show, :layout => false),
       :changes_published_at => Time.now
     })
     

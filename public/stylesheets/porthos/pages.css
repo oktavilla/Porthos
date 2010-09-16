@@ -130,42 +130,6 @@ ul.contents li.content_module_wrapper {
 /**** SORTING */
 
 .draghandle:hover {cursor:move;}
-
-.page_layout .draghandle {
-  display:none;
-  position:absolute;
-  top:0;
-  left:0;
-  z-index:1001;
-  width:36px;
-  height:100%;
-  background:#eee url(/graphics/porthos/content_li_draghandle_bg.gif) center center no-repeat; }
-  .page_layout.sorting .draghandle {display:block;}
-  .page_layout .collection li .draghandle {
-     top:10px;
-     left:10px;
-     width:70px;
-     height:70px;
-     background:transparent url(/graphics/porthos/content_teaser_draghandle_bg.png) 0 0 no-repeat; }
-  
-  .page_layout.sorting .textfield_content {padding-left:46px;}
-  .page_layout.sorting .content_image_wrapper {padding-left:156px;}
-  .page_layout.sorting .content_image_wrapper img {left:46px;}
-  .page_layout.sorting .teasers {min-height:59px;}
-
-  #content .page_layout.sorting .collection {
-    padding-left:36px;}
-  #content .page_layout.sorting .content_image_wrapper.collection img {left:10px;}
-  .page_layout.sorting .registration_form_wrapper,
-  .page_layout.sorting .content_module_wrapper,
-  .page_layout.sorting .shared {
-    padding-left:88px;
-    background-position:46px 12px; }
-    
-.page_layout.sorting .content .controls,
-.page_layout.sorting .teaser_wrapper .controls {visibility:hidden;}
-.page_layout.sorting .sub_content {display:none;}
-
 /**** CONTROLS ICON */
 
 .controls .add {
@@ -289,34 +253,3 @@ ul.contents li.content_module_wrapper {
 #page_published_on_1i { width: 100px;}
 #page_published_on_2i { width: 140px;}
 #page_published_on_3i { width: 80px;}
-
-
-#page_collections .page {
-  position:relative;
-  padding:10px 15px;
-  margin-right:3px; }
-#page_collections .page {  border-top:1px solid #ddd; }
-#page_collections .inner:first-child {border:none;}
-  #page_collections .page h2 {margin-bottom:.4em;}
-
-    #page_collections .page h2 .date {
-      font-size:66.8%;
-      color:#333;
-      font-weight:normal; }
-  #page_collections .dates a { text-transform:capitalize; }
-  #page_collections .dates a.current { color:#000; }
-
-  #page_collections .restricted { 
-    color:#888;
-    font-size: .5em; }
-    
-#tag_collections {}
-  #tag_collections .tag_collections {
-    padding:10px 15px; }
-    #tag_collections .tag_collections h3:after { content:":";}
-    #tag_collections .tag_collections h3,
-    #tag_collections .tag_collections ul,
-    #tag_collections .tag_collections ul li {
-      font-size:1em;
-      display:inline; }
-    #tag_collections .tag_collections li { margin-bottom:1em; }

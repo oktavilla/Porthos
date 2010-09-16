@@ -1,9 +1,0 @@
-<label for="page_title">Sidsamlingen namn</label>
-<%= f.text_field :title, :class => "title" %>
-
-<label for="page_title"><%= f.check_box :calendar %> Sidsamlingen är en kalender</label>
-
-<label for="page_default_child_layout_id">Välj förvald layout för undersidor</label>
-<%= f.select :default_child_layout_id, PageLayout.find(:all).collect { |page_layout| [page_layout.name, page_layout.id] } %>
-<label for="page_page_layout_id">Välj layout</label>
-<%= f.select :page_layout_id, PageLayout.find(:all).collect { |page_layout| [page_layout.name, page_layout.id] } %>

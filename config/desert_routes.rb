@@ -15,8 +15,11 @@ ActionController::Routing::Routes.draw do |map|
     asset.download_asset '/assets/:id.:format'
   end
 
-  map.resources :pages, :member => { :preview => :get, :comment => :post }
-  map.resources :page_collections
+  map.resources :pages,
+                :member => {
+                  :preview => :get,
+                  :comment => :post
+                }
   
   map.login  '/login',  :controller => 'user/sessions', :action => 'new'
   map.logout '/logout', :controller => 'user/sessions', :action => 'destroy'
@@ -39,8 +42,6 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :nodes, 
       :member => { :place => :get },
       :collection => { :sort => :put }
-
-    admin.resources :page_layouts
 
     admin.resources :field_sets do |field_sets|
       field_sets.resources :fields,
@@ -69,12 +70,15 @@ ActionController::Routing::Routes.draw do |map|
                     :collection => { :sort => :put }
     admin.resources :tags,
                     :collection => { :search => :get }
-    
-    admin.resources :page_collections do |page_collections|
-      page_collections.resources :tag_collections
-    end
-    
-    admin.resources :comments, :member => { :report_as_spam => :put, :report_as_ham => :put }, :collection => { :destroy_all_spam => :delete }
+        
+    admin.resources :comments,
+                    :member => {
+                      :report_as_spam => :put,
+                      :report_as_ham => :put
+                    },
+                    :collection => {
+                      :destroy_all_spam => :delete
+                    }
     
     admin.resources(:pages, {
       :collection => {

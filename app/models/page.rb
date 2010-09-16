@@ -1,12 +1,7 @@
 class Page < ActiveRecord::Base
   
   validates_presence_of :title,
-                        :field_set_id,
-                        :page_layout_id
-
-  belongs_to :parent,
-             :polymorphic => true
-  
+                        :field_set_id
   has_one :node,
           :as => :resource
   accepts_nested_attributes_for :node
@@ -20,6 +15,9 @@ class Page < ActiveRecord::Base
   belongs_to :field_set
   has_many :fields,
            :through => :field_set
+  
+  delegate :template,
+           :to => :field_set
   
   has_many :custom_attributes,
            :as => :context,
@@ -37,11 +35,6 @@ class Page < ActiveRecord::Base
   
   belongs_to :updated_by,
              :class_name => 'User'
-
-  belongs_to  :page_layout
-  belongs_to  :default_child_layout,
-              :foreign_key => 'default_child_layout_id',
-              :class_name  => 'PageLayout'
 
   has_many :comments,
            :as => :commentable,
@@ -79,6 +72,10 @@ class Page < ActiveRecord::Base
               :conditions => 'changed_at > created_at', 
               :order => 'changed_at DESC'
 
+  named_scope :filter_with_field_set, lambda { |field_set_id| {
+    :conditions => ["field_set_id = ?", field_set_id]
+  }}
+
   named_scope :filter_created_by, lambda { |user_id| {
     :conditions => ["created_by_id = ?", user_id]
   }}
@@ -86,10 +83,6 @@ class Page < ActiveRecord::Base
   named_scope :filter_updated_by, lambda { |user_id| {
     :conditions => ["updated_by_id = ?", user_id]
   }}
-
-  named_scope :filter_with_parent, lambda { |*args|
-    args.any? ? { :conditions => ["parent_id = ? and parent_type = ?", args[0], args[1]] } : { :conditions => ["parent_id IS NULL"] }
-  }
 
   named_scope :filter_order_by, lambda { |order| {
     :order => order
@@ -102,16 +95,15 @@ class Page < ActiveRecord::Base
   named_scope :filter_with_unpublished_changes,
               :conditions => ["changed_at > changes_published_at AND rendered_body IS NOT NULL"]
   
-  before_validation_on_create :set_default_layout, :set_inactive
+  before_validation_on_create :set_inactive
 
   before_create :set_published_on
   before_create :set_created_by
   before_save   :set_layout_attributes,
                 :generate_slug
   before_update :set_updated_by
-  after_create  :insert_default_contents
 
-  acts_as_list :scope => 'parent_id = \'#{parent_id}\' and parent_type = \'#{parent_type}\''
+  acts_as_list :scope => 'field_set_id'
   acts_as_taggable
   acts_as_filterable  
   
@@ -138,26 +130,8 @@ class Page < ActiveRecord::Base
     end
   end
 
-  def child?
-    not parent_type.blank? and not parent_id.blank?
-  end
-
-  def part_of_collection?
-    child? and parent_type == 'Page'
-  end
-  
   def full_slug
-    if child?
-      if parent.respond_to?(:slug_for_child)
-        parent.slug_for_child(self)
-      elsif parent.respond_to?(:node)
-        parent.node.slug+'/'+self.slug
-      elsif parent.respond_to?(:slug)
-        parent.slug+'/'+self.slug
-      end
-    else
-      node ? node.slug : slug
-    end
+    node ? node.slug : slug
   end
 
   def custom_value_for(field)
@@ -257,13 +231,13 @@ private
   def custom_attribute_by_handle(handle)
     custom_attributes.detect { |cd| cd.handle == handle } || custom_attributes.find_by_handle(handle)
   end
-  
+
   def custom_associations_by_handle(handle)
     custom_associations.find_all { |ca| ca.handle == handle } || custom_associations.find_all_by_handle(handle)
   end
-    
+
   def set_inactive
-    self.active = !self.child?
+    self.active = false
     true
   end
 
@@ -274,32 +248,19 @@ private
   def set_published_on
     self.published_on = Time.now.at_midnight if published_on.blank?
   end
-  
-  def set_layout_attributes    
-    contents.update_all("column_position = #{page_layout.columns}", "column_position > #{page_layout.columns}") unless column_count == page_layout.columns or column_count.blank?
-    self.layout_class = page_layout.css_id
-    self.column_count = page_layout.columns
-    self.main_content_column = page_layout.main_content_column
+
+  def set_layout_attributes
+    contents.update_all("column_position = #{template.columns}", "column_position > #{template.columns}") unless column_count == template.columns or column_count.blank?
+    self.layout_class = template.handle
+    self.column_count = template.columns
   end
-  
-  def set_default_layout
-    self.page_layout = parent.default_child_layout if child? and parent.respond_to?(:default_child_layout)
-  end
-  
-  def insert_default_contents
-    self.page_layout.default_contents.each do |d|
-      c = Content.new
-      c.resource_type, c.resource_id, c.column_position = d.resource_type, d.resource_id, d.column_position
-      self.contents << c
-    end if self.page_layout and self.page_layout.default_contents.any?
-  end
-  
+
   def set_created_by
     self.created_by = User.current
   end
-  
+
   def set_updated_by
     self.updated_by = User.current
   end
-  
+
 end

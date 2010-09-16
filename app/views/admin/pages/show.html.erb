@@ -4,12 +4,8 @@
     <h1><%= @page.title %></h1>
     <%= link_to "Inställningar", edit_admin_page_path(:id => @page, :return_to => request.request_uri), :class => 'edit_settings' %>
     <span class="away">
-      <%= link_to("Alla #{@page.parent.title.downcase}", admin_pages_path(:filters => { :with_parent => "#{@page.parent_id},#{@page.parent_type}" })) if @page.child? && @page.parent_type == 'PageCollection' %>
-      <% unless @page.is_a? PageCollection %>
-        <%= link_to 'Förhandsgranska', preview_page_path(@page.id), :class => 'public_link' %>
-      <% else %>
-        <%= link_to "Lägg till / redigera sidor", admin_page_collection_path(@page) %>
-      <% end %>
+      <%= link_to("Alla #{@page.field_set.title.downcase}", admin_pages_path(:filters => { :with_field_set => @page.field_set_id })) %>
+      <%= link_to 'Förhandsgranska', preview_page_path(@page.id), :class => 'public_link' %>
       <% if @page.comments.any? -%>
         <%= link_to 'Kommentarer', comments_admin_page_path(:id => @page), :class => 'comments' %>
       <% end -%>
@@ -26,7 +22,7 @@
       <%= link_to "Publicera ändringar", publish_admin_page_path(@page), :method => :put, :class => 'new publish' %>
     </div>
     <% end -%>
-    <% if !@page.child? && !@page.node -%>
+    <% unless @page.node -%>
     <div class="add">
       <%= link_to "Placera i navigationen", new_admin_node_path(:resource_id => @page.id), :class => 'new' %>
     </div>
@@ -34,7 +30,7 @@
   </div>
   <div id="content">
     <div id="page_<%= @page.id %>" class="page_layout <%= @page.layout_class %>">
-    <% (1..@page.column_count).each do |column| -%>
+    <% (1..@page.template.columns).each do |column| -%>
       <div id="column_<%= column %>" class="column">
         <% if @page.column_count > 1 %>
         <div class="title">Kolumn #<%= column %></div>
