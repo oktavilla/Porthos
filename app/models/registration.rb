@@ -72,25 +72,17 @@ class Registration < ActiveRecord::Base
               :class_name => "Money",
               :mapping => %w(donation cents),
               :converter => Proc.new { |donation| donation.to_money rescue 0.to_money }
-  
-  is_indexed({
-    :fields => ['public_id', 'created_at'],
-    :concatenate => [{
-      :fields => [
-        'first_name', 'last_name', 'customer_number',
-        'email', 'phone', 'cell_phone',
-        'address', 'co_address', 'post_code', 'locality', 'country'
-      ],
-      :as => 'person'
-    }, {
-      :fields => [
-        'organization',
-        'organization_number',
-      ],
-      :as => 'organization'
-    }],
-    :delta => true
-  })                         
+    
+  searchable do
+    text :public_id, :customer_number, :email, :phone, :cell_phone, :organization, :organization_number
+    text :name, :boost => 2.0 do 
+      "#{first_name} #{last_name}"
+    end
+    text :address do 
+      "#{address} #{co_address} #{post_code} #{locality} #{country}"
+    end
+    time :created_at
+  end
   
   HUMANIZED_STATUSES = {
     0 => {

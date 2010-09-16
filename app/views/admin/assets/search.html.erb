@@ -8,16 +8,16 @@
   <div id="content">
     <div class="inner">
       <span class="notice">
-        <% if @assets.any? %>
-          <%= @search.total_entries %> filer hittades med sökningen ”<span class="query"><%= @query %></span>”.
+        <% if @search.total > 0 %>
+          <%= @search.total %> filer hittades med sökningen ”<span class="query"><%= @query %></span>”.
           <%= link_to "Tillbaka", admin_assets_path, :class => 'back' %>
         <% else %>
           Inga filer hittades på din sökning. <%= link_to "Tillbaka till senaste filer", admin_assets_path, :class => 'back' %>
         <% end %>
       </span>
-      <% if @assets.any? %>
+      <% if @search.total > 0 %>
       <ul class="items thumbnails">
-        <% @assets.each do |asset| %>
+        <% @search.results.each do |asset| %>
           <li class="<%= cycle 'even', 'odd' %>"><div class="inner">
             <a href="<%= edit_admin_asset_path(asset) %>">
             <% if asset.image? %>
@@ -69,7 +69,7 @@
           </div></li>
         <% end %>
       </ul>
-      <%= will_paginate @search, :prev_label => "« Föregående", :next_label => "Nästa »" %>
+      <%= will_paginate @search.results, :prev_label => "« Föregående", :next_label => "Nästa »" %>
       <% end %>
     </div>
   </div>

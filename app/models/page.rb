@@ -115,16 +115,24 @@ class Page < ActiveRecord::Base
   acts_as_taggable
   acts_as_filterable  
   
-  #acts_as_defensio_article :fields => { :title => :title, :content => :body }
-  
-  is_indexed({
-    :fields => ['title', 'description', 'rendered_body'],
-    :concatenate => [{
-      :association_name => 'tags', :field => 'name', :as => 'tags', 
-      :association_sql => "LEFT OUTER JOIN taggings ON (pages.id = taggings.taggable_id AND taggings.taggable_type = 'Page') LEFT OUTER JOIN tags ON (tags.id = taggings.tag_id)"
-    }],
-    :delta => { :field => 'changed_at' }
-  })
+  searchable do
+    integer :page_layout_id
+    integer :field_set_id
+    text :title, :boost => 2.0
+    text :description
+    text :rendered_body
+    text :tag_names
+    text :custom_attributes_key_values do
+      custom_attributes.map { |ca| 
+        "#{ca.handle}:#{ca.string_value||ca.text_value||ca.date_time_value.to_s(:db)}" 
+      }
+    end
+    text :custom_associations_key_values do 
+      custom_associations.map { |ca|
+        "#{ca.handle}:#{ca.target_type}-#{ca.target_id}" 
+      }
+    end
+  end
     
   def published?
     published_on <= Time.now

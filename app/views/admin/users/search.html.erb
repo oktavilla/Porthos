@@ -3,7 +3,7 @@
 <%= render :partial => 'sub_nav' %>
 <div id="workspace">  
   <div class="header">
-    <h1>Sökresultat för "<%= @query %>" (<%= @search.total_entries %> träffar)</h1></h1>
+    <h1>Sökresultat för "<%= @query %>" (<%= @search.total %> träffar)</h1></h1>
   </div>
   <div id="content">
     <div class="inner">
@@ -14,7 +14,7 @@
         </li>
       <% end -%>
       </ul>
-      <%= will_paginate @search %>
+      <%= will_paginate @search.results %>
     </div>
   </div>
 </div>

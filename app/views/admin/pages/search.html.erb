@@ -13,12 +13,13 @@
   </div>
   <div id="content">
     <ul class="items">
-    <% @pages.each do |page| %>
+    <% @search.results.each do |page| %>
       <li>
       <%= render :partial => 'page', :locals => {:page => page} %>
       </li>
     <% end %>
     </ul>
+    <%= will_paginate @search.results, :prev_label => "« Föregående", :next_label => "Nästa »" %>
   </div>
 </div>
 <%= javascript_include_tag 'named_routes' %>

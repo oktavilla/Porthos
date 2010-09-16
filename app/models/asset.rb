@@ -17,18 +17,12 @@ class Asset < ActiveRecord::Base
   named_scope :filter_order_by, lambda { |order| {
     :order => order
   }}
-
-  is_indexed({
-    :fields => ['type', 'title', 'file_name', 'author', 'description'],
-    :concatenate => [{
-      :class_name => 'Tag',
-      :field      => 'name',
-      :as         => 'tags', 
-      :association_sql => "LEFT OUTER JOIN taggings ON (assets.id = taggings.taggable_id AND taggings.taggable_type = 'Asset') LEFT OUTER JOIN tags ON (tags.id = taggings.tag_id)"
-    }],
-    :conditions => 'private = 0',
-    :delta => true
-  })
+  
+  searchable do
+    text :title, :boost => 2.0
+    text :type, :file_name, :author, :description, :tag_names
+    boolean :is_private, :using => :private?
+  end
   
   acts_as_taggable
   acts_as_filterable

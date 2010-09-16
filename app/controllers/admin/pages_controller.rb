@@ -31,17 +31,15 @@ class Admin::PagesController < ApplicationController
       :order_by => 'changed_at'
     }.merge((params[:filters] || {}).to_options)
     
-    @query = params[:query] 
-    @page  = params[:page] || 1
+    query = params[:query] 
+    page  = params[:page] || 1
     per_page = params[:per_page] ? params[:per_page].to_i : 45
-    @search = Ultrasphinx::Search.new({
-      :query => "#{@query}",
-      :class_names => ['Page'],
-      :page => @page,
-      :per_page => (params[:per_page] || 45).to_i
-    })
-    @search.run
-    @pages = @search.results
+    @search = Page.search do
+      keywords(query)
+      paginate :page => page, :per_page => per_page
+    end
+    @query = query
+    @page = page
     respond_to do |format|
       format.html
     end

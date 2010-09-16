@@ -6,7 +6,6 @@ namespace :porthos do
     if STDIN.gets.chomp == 'y'
       ['config/initializers', 
        'config/locales',
-       'config/ultrasphinx',
        'vendor/plugins'].each { |dir| find_and_copy_files(dir) }
     end
   end

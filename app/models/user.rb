@@ -53,7 +53,9 @@ class User < ActiveRecord::Base
     :conditions => (role_name.blank? ? [] : ["roles.name = ?", role_name])
   }}
   
-  is_indexed :fields => ['first_name', 'last_name', 'email']
+  searchable do
+    text :first_name, :last_name, :email
+  end
   
   def validate
     if file and file.size.nonzero?

@@ -16,10 +16,14 @@ class Admin::UsersController < ApplicationController
   end
   
   def search
-    @query = params[:query]
-    @page  = params[:page] || 1
-    @search = Ultrasphinx::Search.new(:query => "#{@query}", :class_names => ['User'], :page => @page)
-    @search.run
+    query = params[:query]
+    page  = params[:page] || 1
+    @search = User.search do
+      keywords(query)
+      paginate :page => page
+    end
+    @query = query
+    @page = page
     respond_to do |format|
       format.html
     end

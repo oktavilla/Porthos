@@ -54,15 +54,15 @@ class Admin::RegistrationsController < ApplicationController
   end
   
   def search
-    @type = 'Registration'
-    @query = params[:query]
-    @page  = params[:page] || 1
-    @search = Ultrasphinx::Search.new(:query => "#{@query.escape_for_sphinx}", 
-                                      :class_names => [@type], 
-                                      :page => @page,
-                                      :sort_mode => 'descending',
-                                      :sort_by => 'created_at')
-    @search.run
+    query = params[:query]
+    page  = params[:page] || 1                                  
+    @search = Registration.search do
+      keywords(query)
+      paginate :page => page
+      order_by :created_at, :desc
+    end
+    @query = query
+    @page = page
     respond_to do |format|
       format.html
     end

@@ -35,12 +35,16 @@ class Admin::AssetsController < ApplicationController
     @type = params[:type] ? params[:type] : 'Asset'
     @tags = Tag.on('Asset').popular.find(:all, :limit => 30)
     unless params[:query].blank?
-      @query = params[:query] 
-      @page = params[:page] || 1
+      query = params[:query] 
+      page = params[:page] || 1
       per_page = params[:per_page] ? params[:per_page].to_i : 44
-      @search = Ultrasphinx::Search.new(:query => "#{@query}", :class_names => ['Asset','ImageAsset','VideoAsset'], :page => @page, :per_page => per_page)
-      @search.run
-      @assets = @search.results
+      @search = Asset.search do
+        keywords(query)
+        with(:is_private, false)
+        paginate :page => page, :per_page => per_page
+      end
+      @query = query
+      @page = page
       respond_to do |format|
         format.html do
           @current_tags = params[:tags] || []

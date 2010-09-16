@@ -184,42 +184,6 @@ module ActionView
   end
 end
 
-module Ultrasphinx
-  class Configure  
-    class << self
-
-      include Associations
-  
-      # Force all the indexed models to load and register in the MODEL_CONFIGURATION hash.
-      def load_constants
-        [PORTHOS_ROOT, "#{RAILS_ROOT}/app/models/"].each do |path|
-          Dir.chdir path do
-            Dir["**/*.rb"].each do |filename|
-              open(filename) do |file| 
-                begin
-                  if file.grep(/is_indexed/).any?
-                    filename = filename[0..-4]
-                    begin                
-                      File.basename(filename).camelize.constantize
-                    rescue NameError => e
-                      filename.camelize.constantize
-                    end
-                  end
-                rescue Object => e
-                  say "warning: possibly critical autoload error on #{filename}"
-                  say e.inspect
-                end
-              end 
-            end
-          end
-        end
-        # Build the field-to-type mappings.
-        Fields.instance.configure(MODEL_CONFIGURATION)
-      end
-    end
-  end
-end
-
 # override to not make acts_as_defensio submit articles
 # not sure if this is good, override needed to be able to to create new pages
 module Defensio
