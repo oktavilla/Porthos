@@ -6,8 +6,9 @@ namespace :porthos do
     if STDIN.gets.chomp == 'y'
       ['config/initializers', 
        'config/locales',
-       'vendor/plugins'].each { |dir| find_and_copy_files(dir) }
-      system("cp -f #{File.join(plugin_path, 'config', 'sunspot.yml')} #{File.join(app_path, , 'config', 'sunspot.yml')}")
+       'vendor/plugins',
+       'solr'].each { |dir| find_and_copy_files(dir) }
+      system("cp -f #{File.join(plugin_path, 'config', 'sunspot.yml')} #{File.join(app_path, 'config', 'sunspot.yml')}")
     end
   end
   

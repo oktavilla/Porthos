@@ -124,6 +124,8 @@ class Page < ActiveRecord::Base
         "#{ca.handle}:#{ca.target_type}-#{ca.target_id}" 
       }
     end
+    time :published_on
+    boolean :is_active, :using => :active?
   end
     
   def published?

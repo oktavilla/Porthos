@@ -104,6 +104,10 @@ module Porthos
           @routing.add_named_route("formatted_node_#{node['id']}_dated_page", "#{node["slug"]}/:year/:month/:day/:page_slug.:format", route_mappings.merge({
             :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/, :day => /[0-9]{2}/ }
           }))
+          
+          @routing.add_named_route("search_node_#{node['id']}", "#{node["slug"]}/search.:format", route_mappings.dup.merge({
+            :action => 'search'
+          }))
         end
 
         add_conditions.each do |condition|
