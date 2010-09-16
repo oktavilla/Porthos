@@ -67,38 +67,43 @@ module Porthos
           :id         => node["resource_id"],
           :slug       => node["slug"]
         }
-
-        if node["parent_id"]
-          if node['controller'] == 'pages'
-            @routing.add_named_route("node_#{node['id']}", node["slug"], route_mappings)
-            @routing.add_named_route("formatted_node_#{node['id']}", "#{node["slug"]}.:format", route_mappings)
-          end
-          if node["resource_class_name"] == "PageCollection"
-            @routing.add_named_route("node_#{node['id']}_year", "#{node["slug"]}/:year", route_mappings.merge({
-              :requirements       => { :year => /[0-9]{4}/ }
-            }))
-            @routing.add_named_route("node_#{node['id']}_month", "#{node["slug"]}/:year/:month", route_mappings.merge({
-              :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/ }
-            }))
-
-            @routing.add_named_route("node_#{node['id']}_day", "#{node["slug"]}/:year/:month/:day", route_mappings.merge({
-              :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/, :day => /[0-9]{2}/ }
-            }))
-
-            route_mappings.delete(:id)
-            @routing.add_named_route("node_child_#{node['id']}_permalink", "#{node["slug"]}/:id", route_mappings.merge({
-              :requirements       => { :id => /[0-9]+\-.+/ } 
-            }))
-            @routing.add_named_route("node_#{node['id']}_dated_page", "#{node["slug"]}/:year/:month/:day/:page_slug", route_mappings.merge({
-              :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/, :day => /[0-9]{2}/ }
-            }))
-
-            @routing.add_named_route("formatted_node_#{node['id']}_dated_page", "#{node["slug"]}/:year/:month/:day/:page_slug.:format", route_mappings.merge({
-              :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/, :day => /[0-9]{2}/ }
-            }))
-          end
+        
+        if node['controller'] == 'pages'
+          route_mappings[:field_set_id] = node["field_set_id"]
+        end
+        
+        unless node["parent_id"]
+          @routing.add_named_route('root', '', route_mappings)
         else
-          @routing.add_named_route 'root', '', route_mappings 
+          @routing.add_named_route("node_#{node['id']}", node["slug"], route_mappings)
+          @routing.add_named_route("formatted_node_#{node['id']}", "#{node["slug"]}.:format", route_mappings)
+        end
+
+        if node['controller'] == 'pages' && node['action'] == 'index'
+          @routing.add_named_route("node_#{node['id']}_year", "#{node["slug"]}/:year", route_mappings.merge({
+            :requirements       => { :year => /[0-9]{4}/ }
+          }))
+          
+          @routing.add_named_route("node_#{node['id']}_month", "#{node["slug"]}/:year/:month", route_mappings.merge({
+            :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/ }
+          }))
+
+          @routing.add_named_route("node_#{node['id']}_day", "#{node["slug"]}/:year/:month/:day", route_mappings.merge({
+            :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/, :day => /[0-9]{2}/ }
+          }))
+
+          route_mappings.delete(:id)
+          @routing.add_named_route("node_child_#{node['id']}_permalink", "#{node["slug"]}/:id", route_mappings.merge({
+            :requirements       => { :id => /[0-9]+\-.+/ } 
+          }))
+          
+          @routing.add_named_route("node_#{node['id']}_dated_page", "#{node["slug"]}/:year/:month/:day/:page_slug", route_mappings.merge({
+            :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/, :day => /[0-9]{2}/ }
+          }))
+
+          @routing.add_named_route("formatted_node_#{node['id']}_dated_page", "#{node["slug"]}/:year/:month/:day/:page_slug.:format", route_mappings.merge({
+            :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/, :day => /[0-9]{2}/ }
+          }))
         end
 
         add_conditions.each do |condition|
@@ -113,6 +118,7 @@ module Porthos
           "resource_id"   => node["resource_id"],
           "resource_type" => node["resource_type"],
           "slug"          => node["slug"],
+          "field_set_id"  => node["field_set_id"],
           "resource_class_name" => node["resource_class_name"]
         }
         Node.logger.warn("Added route for node #{node['id']}") if Routing.debug

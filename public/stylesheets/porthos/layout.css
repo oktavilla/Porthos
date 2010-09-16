@@ -504,8 +504,6 @@ table.sortable {
     padding-left:115px; }
   #sessions_view .flash {margin-bottom:1em;}
 
-.page_layout .column .contents { min-height:40px; }
-
 #field_form {}
  #field_form #field_types {display:none;}
  

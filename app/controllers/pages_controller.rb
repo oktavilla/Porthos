@@ -9,6 +9,15 @@ class PagesController < ApplicationController
 
   layout 'public'
 
+  def index
+    @field_set = @node.field_set
+    @pages = @field_set.pages.find_by_params(params, :logged_in => logged_in?)
+    respond_to do |format|
+      format.html { render :template => @field_set.template.views.index }
+      format.rss  { render :template => @field_set.template.views.index, :layout => false }
+    end
+  end
+
   def show
     # If the page belongs to a date sorted structure we need to find by the slug,
     # otherwise the id should be registred in routes
@@ -20,30 +29,22 @@ class PagesController < ApplicationController
     end
 
     login_required if @page.restricted?
-    
-    if @page.respond_to?(:pages)
-      @pages = @page.pages.find_by_params(params, :logged_in => logged_in?)
-    end
-    
+
     respond_to do |format|
       unless @page.rendered_body.blank?
         format.html { render :inline => @page.rendered_body, :layout => true }
       else
         @full_render = true
-        format.html { render :action => 'show' }
+        format.html { render :template => @page.field_set.template.views.show }
       end
-      format.rss { render :layout => false } if @page.is_a?(PageCollection)
     end
   end
   
   def preview
     @page = Page.find(params[:id])
-    if @page.respond_to?(:pages)
-      @pages = @page.pages.find_by_params(params, :logged_in => logged_in?)
-    end
     @full_render = true
     respond_to do |format|
-      format.html { render :action => 'show' }
+      format.html { render :template => @page.field_set.template.views.show }
     end
   end
   

@@ -2,7 +2,9 @@ class Node < ActiveRecord::Base
   belongs_to :resource,
              :polymorphic => true,
              :dependent => :destroy
-  
+
+  belongs_to :field_set
+
   def resource_type=(r_type)
      super(r_type.to_s.classify.constantize.base_class.to_s)
   end
@@ -53,6 +55,7 @@ class Node < ActiveRecord::Base
         node.controller = page.class.base_class.to_s.tableize
         node.action     = 'show'
         node.resource   = page
+        node.field_set_id = page.field_set_id
         node.resource_class_name = page.class.to_s
         node.parent = Node.root if node.parent_id.blank?
       end

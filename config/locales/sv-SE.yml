@@ -154,7 +154,6 @@
       node: Navigations-node
       order_item: Produkt
       page: Sida
-      page_layout: Layout
       product: Produkt
       product_category: Produktkategori
       shop: Butik
@@ -236,13 +235,8 @@
       page:
         title: Namn
         description: Beskrivning   
-        page_layout_id: Layout
         published_on: Publiceringsdatum
         parent_id: Sidtyp     
-      page_layout:
-        name: Namn
-        css_id: Klass
-        columns: Kolumner
       product:
         name: Namn
         short_description: Kort beskrivning
