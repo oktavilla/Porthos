@@ -31,4 +31,7 @@ Rails::Initializer.run do |config|
   config.gem 'will_paginate',
               :version => '~> 2.3.11',
               :source => 'http://gemcutter.org'
+  config.gem 'sunspot_rails', 
+              :lib => 'sunspot/rails',
+              :version => '=1.1.0'
 end
