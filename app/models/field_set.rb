@@ -8,21 +8,9 @@ class FieldSet < ActiveRecord::Base
            :order => 'fields.position',
            :dependent => :destroy
            
-  has_many :pages, :dependent => :destroy, :order => 'published_on DESC, id DESC' do
-
-    def find_by_params(params, options = {})
-      scope = active.
-              published.
-              include_restricted(options[:include_restricted])
-      if params[:tags]
-        scope.find_tagged_with(:tags => params[:tags])
-      elsif params[:year]
-        scope.published_within(*Time.delta(params[:year], params[:month], params[:day]))
-      else
-        scope
-      end
-    end
-  end
+  has_many :pages,
+           :dependent => :destroy,
+           :order => 'published_on DESC, id DESC'
 
   def dates_with_children(options = {})
     options = { :year => Time.now.year }.merge(options.symbolize_keys)

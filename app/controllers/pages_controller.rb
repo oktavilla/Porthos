@@ -11,7 +11,18 @@ class PagesController < ApplicationController
 
   def index
     @field_set = @node.field_set
-    @pages = @field_set.pages.find_by_params(params, :logged_in => logged_in?)
+    scope = @field_set.pages.
+                       active.
+                       published.
+                       include_restricted(logged_in?)
+    @pages = if params[:tags]
+               scope.find_tagged_with(:tags => params[:tags])
+             else
+               if params[:year]
+                 scope = scope.published_within(*Time.delta(params[:year], params[:month], params[:day]))
+               end
+               scope.paginate(:page => (params[:page] || 1), :per_page => (params[:per_page] || 25))
+             end
     respond_to do |format|
       format.html { render :template => @field_set.template.views.index }
       format.rss  { render :template => @field_set.template.views.index, :layout => false }
