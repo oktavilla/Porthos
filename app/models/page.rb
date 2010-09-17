@@ -111,18 +111,23 @@ class Page < ActiveRecord::Base
     integer :page_layout_id
     integer :field_set_id
     text :title, :boost => 2.0
-    text :description
-    text :rendered_body
-    text :tag_names
-    text :custom_attributes_key_values do
+    text :description ,:rendered_body, :tag_names
+    time :published_on
+    boolean :is_active, :using => :active?
+    text :custom_attributes_values do
       custom_attributes.map { |ca| 
-        "#{ca.handle}:#{ca.string_value||ca.text_value||ca.date_time_value.to_s(:db)}" 
+        "#{ca.string_value||ca.text_value||ca.date_time_value.to_s(:db)}" 
       }
     end
-    text :custom_associations_key_values do 
-      custom_associations.map { |ca|
-        "#{ca.handle}:#{ca.target_type}-#{ca.target_id}" 
-      }
+    dynamic_string :custom_attributes do
+      returning Hash.new do |attributes|
+        custom_attributes.each do |ca|
+          attributes[ca.handle.to_sym] = (ca.string_value||ca.text_value||ca.date_time_value.to_s(:db))
+        end
+        custom_associations.each do |ca|
+          attributes[ca.handle.to_sym] = "#{ca.target_type}-#{ca.target_id}"
+        end
+      end
     end
   end
     

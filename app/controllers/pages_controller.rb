@@ -48,6 +48,32 @@ class PagesController < ApplicationController
     end
   end
   
+  def search
+    @field_set = @node.field_set
+    search_query = params[:query] if params[:query].present?
+    if search_query.present? or params[:filters].any?
+      field_set_id = @field_set.id
+      @search = Page.search do
+        keywords search_query
+        if params[:filters] && params[:filters].any?
+          dynamic :custom_attributes do
+            params[:filters].each do |key, value|
+              with(key.to_sym).starting_with(value)
+            end
+          end
+        end
+        with(:is_active, true)
+        with(:field_set_id, field_set_id)
+        with(:published_on).less_than Time.now
+      end
+      @query = params[:query]
+      @filters = params[:filters]
+    end
+    respond_to do |format|
+      format.html { render :template => @field_set.template.views.search }
+    end
+  end
+  
   # POST
   def comment
     @page    = Page.find(params[:id])

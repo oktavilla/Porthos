@@ -1,0 +1,26 @@
+<% @page_class = @field_set.handle -%>
+<% @page_title = "#{@field_set.title}: Sök"  -%>
+<% @page_id = 'pages-index' -%>
+<div id="content">
+  <h1><%= @field_set.title %></h2>
+  <% form_for :search, :url => '?', :html => { :method => :get } do |f| %>
+    <label for="search_query">Sök:</label>
+    <%= text_field_tag :query, (@query || ''), :class => "search_query", :id=> "search_query" %>
+    <%= submit_tag "Sök" %>
+  <% end %>
+  <% if @search %>
+    <% if @search.total > 0 %>
+      <p>På din sökning på ”<%= @query %>” hittas <%= @search.total %> sidor</p>
+      <ul>
+      <% @search.results.each do |page| %>
+        <li>
+          <h2><%= page.title %></h2>
+          <div class="description"><%= page.description %></div>
+        </li>
+      <% end %>
+      </ul>
+    <% else %>
+    <p>Inga sidor hittades på sökningen ”<%= @query %>”</p>
+    <% end %>
+  <% end %>
+</div>
