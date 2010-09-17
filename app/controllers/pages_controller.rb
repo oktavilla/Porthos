@@ -50,18 +50,18 @@ class PagesController < ApplicationController
   
   def search
     @field_set = @node.field_set
-    search_query = []
-    search_query << params[:query] if params[:query].present?
-    if params[:filters] && params[:filters].any?
-      filters = []
-      params[:filters].each do |key, value|
-        search_query << "#{key}:#{value}"
-      end
-    end
-    if search_query.any?
+    search_query = params[:query] if params[:query].present?
+    if search_query.present? or params[:filters].any?
       field_set_id = @field_set.id
       @search = Page.search do
-        keywords search_query.compact.join(' AND ')
+        keywords search_query
+        if params[:filters] && params[:filters].any?
+          dynamic :custom_attributes do
+            params[:filters].each do |key, value|
+              with(key.to_sym).starting_with(value)
+            end
+          end
+        end
         with(:is_active, true)
         with(:field_set_id, field_set_id)
         with(:published_on).less_than Time.now
