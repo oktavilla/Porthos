@@ -9,84 +9,18 @@ class FieldSet < ActiveRecord::Base
            :dependent => :destroy
            
   has_many :pages, :dependent => :destroy, :order => 'published_on DESC, id DESC' do
-    def within(year, month, day)
-      from, to = Time.delta(year, month, day)
-      published_within from, to
-    end
-
-    def latest(options = {})
-      options = {
-        :include_restricted => false,
-        :page => 1,
-        :per_page => 10,
-        :order => 'published_on DESC, id DESC'
-      }.merge(options)
-      active.include_restricted(options[:include_restricted]).paginate({
-        :page => options[:page],
-        :per_page => options[:per_page],
-        :order => options[:order]
-      })
-    end
-
-    def by_date(options = {})
-      options = {
-        :include_restricted => false,
-        :page => 1,
-        :per_page => 10,
-        :order => 'published_on DESC, id DESC'
-      }.merge(options)
-      from, to = Time.delta(options[:year], options[:month], options[:day])
-      active.published.include_restricted(options[:include_restricted]).published_within(from, to).paginate({
-        :page => options[:page],
-        :per_page => options[:per_page],
-        :order => options[:order]
-      })
-    end
-
-    def tags
-      sql = "select distinct tags.*, count(taggings.taggable_id) as count
-      from taggings
-      left join tags on tags.id = taggings.tag_id
-      where taggings.taggable_type = 'Page'
-      and taggings.taggable_id in(select pages.id from pages where pages.field_set_id = #{ proxy_owner.id })
-      group by taggings.tag_id"
-      Tag.find_by_sql(sql)
-    end
-
-    def published_within(from, to)
-      find(:all, :conditions => ["active = 1 AND published_on BETWEEN ? AND ? AND published_on <= CURRENT_DATE", from.to_s(:db), to.to_s(:db)])
-    end
 
     def find_by_params(params, options = {})
+      scope = active.
+              published.
+              include_restricted(options[:include_restricted])
       if params[:tags]
-        return find_with_tags(params[:tags], {
-          :include_restricted => options[:logged_in],
-          :page     => params[:page],
-          :per_page => params[:per_page] || 10
-        })
-      end
-      if params[:year]
-        conditions = {
-          :year   => params[:year],
-          :month  => params[:month],
-          :day    => params[:day],
-          :page   => params[:page],
-          :include_restricted => true
-        }
-        active.published.by_date(conditions)
+        scope.find_tagged_with(:tags => params[:tags])
+      elsif params[:year]
+        scope.published_within(*Time.delta(params[:year], params[:month], params[:day]))
       else
-        active.published.latest({
-          :page => params[:page],
-          :include_restricted => true
-        })
+        scope
       end
-    end
-
-    def find_with_tags(tags, options)
-      active.include_restricted(options[:include_restricted]).published.find_tagged_with({
-        :tags => tags,
-        :order => 'created_at DESC, id DESC'
-      }).paginate(:page => options[:page], :per_page => options[:per_page])
     end
   end
 

@@ -276,26 +276,23 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   add_index "order_items", ["product_id"], :name => "index_order_items_on_product_id"
 
   create_table "pages", :force => true do |t|
+    t.integer  "field_set_id"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.string   "slug"
     t.string   "title"
     t.text     "description"
     t.string   "layout_class"
     t.integer  "column_count"
-    t.datetime "published_on"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "slug"
-    t.string   "type"
     t.integer  "position"
     t.boolean  "active",                  :default => true
-    t.boolean  "calendar",                :default => false
     t.boolean  "restricted",              :default => false
-    t.integer  "main_content_column"
     t.text     "rendered_body"
+    t.datetime "published_on"
     t.datetime "changed_at"
     t.datetime "changes_published_at"
-    t.integer  "created_by_id"
-    t.integer  "updated_by_id"
-    t.integer  "field_set_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "pages", ["field_set_id"], :name => "index_pages_on_field_set_id"
