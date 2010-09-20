@@ -27,7 +27,7 @@ class PageTemplate
   end
     
   def <=>(other)
-    self.name <=> other.name 
+    self.handle <=> other.handle 
   end
     
   def to_s
