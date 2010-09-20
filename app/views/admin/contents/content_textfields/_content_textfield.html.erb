@@ -1,16 +1,12 @@
 <div class="actual_content">
-<% unless content.shared? -%>
-  <% case resource.filter
-      when 'wymeditor' -%>
-      <%= resource.body %>
-  <%  when 'html' -%>
+<% case resource.filter
+    when 'wymeditor' -%>
     <%= resource.body %>
-  <%  when 'textile' -%>
-    <%= textilize resource.body %>
-  <%  else -%>
-    <%= resource.body %>
-  <% end -%>
-<% else -%>
-  <%= resource.title %> <span class="shared">Delat innehåll</span>
+<%  when 'html' -%>
+  <%= resource.body %>
+<%  when 'textile' -%>
+  <%= textilize resource.body %>
+<%  else -%>
+  <%= resource.body %>
 <% end -%>
 </div>

@@ -1,6 +1,3 @@
-<% if resource.shared? -%>
-<%= resource.body %>
-<% else -%>
 <div class="textfield">
   <% case resource.filter
       when 'wymeditor' -%>
@@ -13,4 +10,3 @@
     <%= resource.body %>
   <% end -%>
 </div>
-<% end -%>

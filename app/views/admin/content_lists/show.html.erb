@@ -29,7 +29,7 @@
   <div id="contents_container" class="page_layout">
     <ul class="contents sortable" id="contents">
     <% @content_list.contents.each do |content| -%>
-      <li class="<%= "#{content.resource_type} content " unless content.collection? %><%= ' collection' if content.collection? %> sortable <%= content.resource_type.underscore %>_wrapper<%= " shared" if content.shared? %><%= content.active? ? ' active' : ' inactive' %>" id="content_<%= content.id %>">
+      <li class="<%= "#{content.resource_type} content " unless content.collection? %><%= ' collection' if content.collection? %> sortable <%= content.resource_type.underscore %>_wrapper<%= content.active? ? ' active' : ' inactive' %>" id="content_<%= content.id %>">
       <span class="draghandle"></span>
       <span class="inactive_proxy"></span>
       <% unless content.collection? -%>

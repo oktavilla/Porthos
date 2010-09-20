@@ -18,7 +18,6 @@ class Content < ActiveRecord::Base
   after_save :notify_context,
              :set_restrictions
   
-  # Should destroy resource unless it's shared in any sence
   before_destroy do |content|
     content.resource.destroy if content.resource and not content.module? and not content.form?
   end
