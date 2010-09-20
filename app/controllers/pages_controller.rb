@@ -10,6 +10,7 @@ class PagesController < ApplicationController
   layout 'public'
 
   def index
+    
     @field_set = @node.field_set
     scope = @field_set.pages.
                        active.
@@ -29,14 +30,7 @@ class PagesController < ApplicationController
   end
 
   def show
-    # If the page belongs to a date sorted structure we need to find by the slug,
-    # otherwise the id should be registred in routes
-    @page = if params[:id]
-      Page.active.published.find(params[:id])
-    elsif params[:page_slug]
-      page = @node.resource.pages.active.find_by_slug(params[:page_slug]) or raise ActiveRecord::RecordNotFound
-      (page and (not page.parent_type.blank? and page.parent.calendar?) or page.published?) ? page : (raise ActiveRecord::RecordNotFound)
-    end
+    @page = Page.active.published.find(params[:id])
 
     login_required if @page.restricted?
 

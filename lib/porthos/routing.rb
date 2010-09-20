@@ -81,29 +81,55 @@ module Porthos
 
         if node['controller'] == 'pages' && node['action'] == 'index'
           @routing.add_named_route("node_#{node['id']}_year", "#{node["slug"]}/:year", route_mappings.merge({
-            :requirements       => { :year => /[0-9]{4}/ }
+            :requirements => {
+              :year => /[0-9]{4}/
+            }
           }))
           
           @routing.add_named_route("node_#{node['id']}_month", "#{node["slug"]}/:year/:month", route_mappings.merge({
-            :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/ }
+            :requirements => {
+              :year  => /[0-9]{4}/,
+              :month => /[0-9]{2}/
+            }
           }))
 
           @routing.add_named_route("node_#{node['id']}_day", "#{node["slug"]}/:year/:month/:day", route_mappings.merge({
-            :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/, :day => /[0-9]{2}/ }
+            :requirements => {
+              :year  => /[0-9]{4}/,
+              :month => /[0-9]{2}/,
+              :day   => /[0-9]{2}/
+            }
           }))
 
-          route_mappings.delete(:id)
-          @routing.add_named_route("node_child_#{node['id']}_permalink", "#{node["slug"]}/:id", route_mappings.merge({
-            :requirements       => { :id => /[0-9]+\-.+/ } 
-          }))
+          route_mappings.dup.tap do |mappings|
+            mappings.delete(:id)
+            @routing.add_named_route("node_child_#{node['id']}_permalink", "#{node["slug"]}/:id", mappings.merge({
+              :action => 'show',
+              :requirements => {
+                :id => /[0-9]+\-.+/
+              } 
+            }))
           
-          @routing.add_named_route("node_#{node['id']}_dated_page", "#{node["slug"]}/:year/:month/:day/:page_slug", route_mappings.merge({
-            :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/, :day => /[0-9]{2}/ }
-          }))
+            @routing.add_named_route("node_#{node['id']}_dated_page", "#{node["slug"]}/:year/:month/:day/:id", mappings.merge({
+              :action => 'show',
+              :requirements => {
+                :year  => /[0-9]{4}/,
+                :month => /[0-9]{2}/,
+                :day   => /[0-9]{2}/,
+                :id    => /[0-9]+\-.+/
+              }
+            }))
 
-          @routing.add_named_route("formatted_node_#{node['id']}_dated_page", "#{node["slug"]}/:year/:month/:day/:page_slug.:format", route_mappings.merge({
-            :requirements       => { :year  => /[0-9]{4}/, :month => /[0-9]{2}/, :day => /[0-9]{2}/ }
-          }))
+            @routing.add_named_route("formatted_node_#{node['id']}_dated_page", "#{node["slug"]}/:year/:month/:day/:id.:format", mappings.merge({
+              :action => 'show',
+              :requirements => {
+                :year  => /[0-9]{4}/,
+                :month => /[0-9]{2}/,
+                :day   => /[0-9]{2}/,
+                :id    => /[0-9]+\-.+/
+              }
+            }))
+          end
           
           @routing.add_named_route("search_node_#{node['id']}", "#{node["slug"]}/search.:format", route_mappings.dup.merge({
             :action => 'search'
