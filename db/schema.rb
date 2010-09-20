@@ -41,30 +41,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
 
   add_index "assets", ["file_name"], :name => "index_assets_on_file_name"
 
-  create_table "campaigns", :force => true do |t|
-    t.string   "name"
-    t.string   "dp_global_parent_code"
-    t.string   "dp_buyer_code"
-    t.string   "dp_donor_code"
-    t.boolean  "active",                :default => true
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "cart_items", :force => true do |t|
-    t.integer  "cart_id"
-    t.integer  "product_id"
-    t.integer  "quantity"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "print_setting_id"
-    t.integer  "min_quantity",     :default => 1
-    t.boolean  "gift_wrapping"
-  end
-
-  add_index "cart_items", ["cart_id"], :name => "index_cart_items_on_cart_id"
-  add_index "cart_items", ["product_id"], :name => "index_cart_items_on_product_id"
-
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id"
     t.string   "commentable_type"
@@ -142,15 +118,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   add_index "contents", ["parent_id"], :name => "index_contents_on_parent_id"
   add_index "contents", ["resource_id"], :name => "index_contents_on_resource_id"
 
-  create_table "conversions", :force => true do |t|
-    t.integer  "measure_point_id"
-    t.integer  "registration_id"
-    t.string   "registration_type"
-    t.integer  "amount",            :default => 0, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "custom_associations", :force => true do |t|
     t.integer  "context_id"
     t.string   "context_type"
@@ -223,20 +190,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   add_index "fields", ["association_source_id"], :name => "index_fields_on_association_source_id"
   add_index "fields", ["field_set_id"], :name => "index_fields_on_field_set_id"
 
-  create_table "measure_points", :force => true do |t|
-    t.string   "name"
-    t.integer  "link_type"
-    t.integer  "target"
-    t.integer  "cost",              :default => 0, :null => false
-    t.string   "public_id"
-    t.integer  "num_clicks",        :default => 0
-    t.integer  "campaign_id"
-    t.integer  "conversions_count", :default => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "user_id"
-  end
-
   create_table "nodes", :force => true do |t|
     t.integer  "parent_id"
     t.string   "name"
@@ -260,21 +213,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   add_index "nodes", ["field_set_id"], :name => "index_nodes_on_field_set_id"
   add_index "nodes", ["slug"], :name => "index_nodes_on_slug"
 
-  create_table "order_items", :force => true do |t|
-    t.integer "order_id"
-    t.integer "product_id"
-    t.string  "name"
-    t.string  "article_number"
-    t.float   "vat"
-    t.integer "quantity"
-    t.integer "price",            :default => 0, :null => false
-    t.integer "print_setting_id"
-    t.boolean "gift_wrapping"
-  end
-
-  add_index "order_items", ["order_id"], :name => "index_order_items_on_order_id"
-  add_index "order_items", ["product_id"], :name => "index_order_items_on_product_id"
-
   create_table "pages", :force => true do |t|
     t.integer  "field_set_id"
     t.integer  "created_by_id"
@@ -297,30 +235,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
 
   add_index "pages", ["field_set_id"], :name => "index_pages_on_field_set_id"
   add_index "pages", ["slug"], :name => "index_pages_on_slug"
-
-  create_table "payments", :force => true do |t|
-    t.string   "payable_type"
-    t.integer  "payable_id"
-    t.boolean  "recurring"
-    t.string   "billing_method"
-    t.string   "transaction_id"
-    t.string   "status"
-    t.string   "response_message"
-    t.integer  "amount",           :default => 0, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "result_code"
-  end
-
-  create_table "payments_registration_comments", :id => false, :force => true do |t|
-    t.integer  "payment_id"
-    t.integer  "registration_comment_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "payments_registration_comments", ["payment_id"], :name => "index_payments_registration_comments_on_payment_id"
-  add_index "payments_registration_comments", ["registration_comment_id"], :name => "index_payments_registration_comments_on_registration_comment_id"
 
   create_table "plugin_schema_migrations", :id => false, :force => true do |t|
     t.string "plugin_name"
@@ -421,26 +335,21 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.integer  "shipment_vat",             :default => 0
     t.string   "shipping_organisation"
     t.integer  "discount_id"
-    t.integer  "ecard_image_id"
-    t.integer  "company_logo_id"
-    t.string   "dp_campaign_code"
-    t.string   "come_from"
     t.string   "shipping_first_name"
     t.string   "shipping_last_name"
     t.boolean  "non_gp_giver",             :default => false
-    t.integer  "cart_id"
     t.string   "organization_type"
     t.string   "ip_address"
     t.string   "return_path"
     t.integer  "status",                   :default => 0
     t.boolean  "fraud",                    :default => false
+    t.string   "come_from"
     t.string   "session_id"
     t.string   "co_address"
     t.string   "shipping_co_address"
   end
 
   add_index "registrations", ["activity_group_id"], :name => "index_registrations_on_activity_group_id"
-  add_index "registrations", ["cart_id"], :name => "index_registrations_on_cart_id"
   add_index "registrations", ["discount_id"], :name => "index_registrations_on_discount_id"
   add_index "registrations", ["dispatch_id"], :name => "index_registrations_on_dispatch_id"
   add_index "registrations", ["node_id"], :name => "index_registrations_on_node_id"
@@ -508,11 +417,8 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.string   "link"
     t.string   "parent_type"
     t.integer  "parent_id"
-    t.integer  "image_asset_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "product_category_id"
-    t.integer  "product_id"
     t.integer  "position"
     t.string   "css_class"
     t.string   "display_type"
@@ -520,10 +426,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.string   "filter"
   end
 
-  add_index "content_teasers", ["image_asset_id"], :name => "index_teasers_on_image_asset_id"
-  add_index "content_teasers", ["parent_id"], :name => "index_teasers_on_resource_id"
-  add_index "content_teasers", ["product_category_id"], :name => "index_teasers_on_product_category_id"
-  add_index "content_teasers", ["product_id"], :name => "index_teasers_on_product_id"
+  add_index "content_teasers", ["parent_id", "parent_type"], :name => "index_teasers_on_parent_id_parent_type"
 
   create_table "content_textfields", :force => true do |t|
     t.string   "filter"
