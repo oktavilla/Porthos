@@ -4,6 +4,11 @@ class Page < ActiveRecord::Base
                         :field_set_id
   has_one :node,
           :as => :resource
+
+  has_one :index_node,
+          :through => :field_set,
+          :source  => :node
+
   accepts_nested_attributes_for :node
   
   has_many :contents,
