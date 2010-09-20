@@ -20,6 +20,7 @@ start_page = Page.create!({
   :created_by => admin_user,
   :field_set_id => start_fieldset.id
 })
+start_page.update_attributes(:active => true)
 start_node = Node.create!({
   :name => 'Start', 
   :status => 1, 
@@ -35,6 +36,7 @@ article_page = Page.create!({
   :created_by => admin_user,
   :field_set_id => article_fieldset.id
 })
+article_page.update_attributes(:active => true)
 Node.create!({
   :parent_id => start_node.id,
   :name => 'Artikel 1', 
