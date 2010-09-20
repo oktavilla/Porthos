@@ -327,18 +327,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.string "version"
   end
 
-  create_table "porthos_graphics", :force => true do |t|
-    t.string   "title"
-    t.string   "file_name"
-    t.string   "mime_type"
-    t.string   "extname"
-    t.integer  "width"
-    t.integer  "height"
-    t.integer  "size"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "redirects", :force => true do |t|
     t.string   "path"
     t.string   "target"
