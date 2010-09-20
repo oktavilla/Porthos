@@ -18,11 +18,13 @@ class Asset < ActiveRecord::Base
     :order => order
   }}
   
-  searchable do
+  searchable :auto_index => false do
     text :title, :boost => 2.0
     text :type, :file_name, :author, :description, :tag_names
     boolean :is_private, :using => :private?
   end
+  
+  after_save :commit_to_sunspot
   
   acts_as_taggable
   acts_as_filterable
@@ -155,5 +157,9 @@ protected
   def make_unique_filename(string)
     chars = ("a".."z").to_a + ("1".."9").to_a 
     self.file_name = string + '_' + Digest::SHA1.hexdigest(string + Array.new(8, '').collect{chars[rand(chars.size)]}.join + Time.now.to_s)[14..20]
+  end
+  
+  def commit_to_sunspot
+    Delayed::Job.enqueue SunspotIndexJob.new('Asset', self.id)
   end
 end

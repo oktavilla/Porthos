@@ -109,7 +109,7 @@ class Page < ActiveRecord::Base
   acts_as_taggable
   acts_as_filterable  
   
-  searchable do
+  searchable :auto_index => false do
     integer :field_set_id
     text :title, :boost => 2.0
     text :description ,:rendered_body, :tag_names
@@ -132,10 +132,12 @@ class Page < ActiveRecord::Base
     end
   end
   
+  after_save :commit_to_sunspot
+
   def to_param
     "#{id}-#{slug}"
   end
-  
+    
   def published?
     published_on <= Time.now
   end
@@ -279,6 +281,10 @@ private
 
   def set_updated_by
     self.updated_by = User.current
+  end
+  
+  def commit_to_sunspot
+    Delayed::Job.enqueue SunspotIndexJob.new('Page', self.id)
   end
 
 end
