@@ -16,7 +16,6 @@ article_fieldset = FieldSet.create!(:title => 'Artikel', :handle => 'article')
 # Create pages
 start_page = Page.create!({
   :title => 'Start',
-  :parent_type => 'Page', 
   :active => 1, 
   :created_by => admin_user,
   :field_set_id => start_fieldset.id
@@ -32,7 +31,6 @@ start_node = Node.create!({
 })
 article_page = Page.create!({
   :title => 'Artikel 1', 
-  :parent_type => 'Page', 
   :active => 1, 
   :created_by => admin_user,
   :field_set_id => article_fieldset.id
