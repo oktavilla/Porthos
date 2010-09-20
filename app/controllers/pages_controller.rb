@@ -15,14 +15,13 @@ class PagesController < ApplicationController
                        active.
                        published.
                        include_restricted(logged_in?)
-    @pages = if params[:tags]
-               scope.find_tagged_with(:tags => params[:tags])
-             else
-               if params[:year]
-                 scope = scope.published_within(*Time.delta(params[:year], params[:month], params[:day]))
-               end
-               scope.paginate(:page => (params[:page] || 1), :per_page => (params[:per_page] || 25))
-             end
+    @pages = unless params[:tags]
+      scope = scope.published_within(*Time.delta(params[:year], params[:month], params[:day])) if params[:year]
+      scope.paginate(:page => (params[:page] || 1), :per_page => (params[:per_page] || 25))
+    else
+      scope.find_tagged_with(:tags => params[:tags])
+    end
+    
     respond_to do |format|
       format.html { render :template => @field_set.template.views.index }
       format.rss  { render :template => @field_set.template.views.index, :layout => false }
