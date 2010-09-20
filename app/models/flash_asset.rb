@@ -5,7 +5,7 @@ protected
   def process
     if @file
       file_extname           = File.extname(@file.original_filename)
-      self.file_name         = @file.original_filename.gsub(file_extname,'').to_url
+      self.file_name         = @file.original_filename.gsub(file_extname,'').parameterize
       self.file_name         = make_unique_filename(file_name) unless Asset.count(:conditions => {:file_name => self.file_name}).zero?
       self.extname           = file_extname.gsub(/\./,'').downcase
       @original_path_with_ext = "#{@file.local_path}.#{self.extname}"

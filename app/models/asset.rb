@@ -129,7 +129,7 @@ protected
       self.size              = @file.size
       self.mime_type         = MIME::Types.type_for(@file.original_filename).first.to_s
       self.extname           = file_extname.gsub(/\./,'').downcase
-      self.file_name         = @file.original_filename.gsub(file_extname,'').to_url
+      self.file_name         = @file.original_filename.gsub(file_extname,'').parameterize
       self.title             = file_name.gsub(/\-/,'_').humanize if title.blank?
       self.file_name         = make_unique_filename(self.file_name) unless Asset.count(:conditions => {:file_name => self.file_name}).zero?
       write_to_disk

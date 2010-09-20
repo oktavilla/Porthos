@@ -41,7 +41,7 @@ class NodeTest < Test::Unit::TestCase
     node.name = 'Our Projects'
     node.save
     child.reload
-    assert_equal child.slug, "/our-projects/#{child.name.to_url}", "Should have been updated with the parents name in the slug"
+    assert_equal child.slug, "/our-projects/#{child.name.parameterize}", "Should have been updated with the parents name in the slug"
   end
 
   def test_should_default_status_to_hidden

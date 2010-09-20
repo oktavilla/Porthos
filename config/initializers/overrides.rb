@@ -1,43 +1,6 @@
 require 'UniversalDetector'
 class String
 
-  def to_url
-    str = strip
-    # replace whitespace with `-'
-    str.gsub!(/(\s+|\_)/, '-')
-    str.downcase!
-    search_replace = {
-                  'Å' => 'a',
-                  'Ä' => 'a',
-                  'Ö' => 'o',
-                  'Ø' => 'o',
-                  'Æ' => 'ae',
-                  'å' => 'a',
-                  'ä' => 'a',
-                  'ö' => 'o',
-                  'ø' => 'o',
-                  'æ' => 'ae',
-                  'é' => 'e',
-                  'ü' => 'u'}
-    search_replace.each{|key, value| str.gsub!( eval( "/" + key + "/") ,value ) }
-
-    # strip all other characters
-    str.gsub!(/[^a-z\-0-9]+/, '')
-    
-    str.gsub!(/\-$/, '')
-    str.gsub!(/^\-/, '')
-    str.gsub!(/--/,'-')
-    str
-  end
-  
-  def to_url!
-    replace to_url
-  end
-  
-  def escape_for_sphinx
-    self.gsub(/(:|@|-|!|~|&|"|\(|\)|\\|\|)/) { "\\#{$1}" }
-  end
-
   require 'iconv'  
   def to_utf8(from_charset = 'ISO-8859-1')
     c = Iconv.new('UTF-8', from_charset)  
@@ -91,19 +54,6 @@ class Time
   end
 end
 
-class File
-  class << self
-    # this will not work on unix with windows paths uploaded
-    def sanitize_filename(file_name)
-      # get only the filename, not the whole path (from IE)
-      just_filename = File.basename(file_name) 
-      # replace all none alphanumeric, underscore or perioids with underscore
-      just_filename.gsub(/[^\w\.\_]/,'_') 
-    end
-  end
-end
-
-
 # Overides the money gem's format method to accept :prefix and :precision rules
 class Money
   # Creates a new money object. 
@@ -121,42 +71,8 @@ class Money
     (cents.to_f / 100.00).to_f
   end
 
-  def awesome_format(*rules)
-    rules = rules.flatten
-    if rules.include?(:no_cents)
-      formatted = sprintf("%d", cents.to_f / 100  )          
-    else
-      formatted = sprintf("%.2f", cents.to_f / 100  )      
-    end
-
-    if rules.include?(:with_currency)
-      formatted << " "
-      formatted << '<span class="currency">' if rules.include?(:html)
-      formatted << currency
-      formatted << '</span>' if rules.include?(:html)
-    end
-    formatted
-  end
-
   def round
     to_f.round.to_money
-  end
-end
-
-class Array
-  def in_groups_by
-    # Group elements into individual array's by the result of a block
-    # Similar to the in_groups_of function.
-    # NOTE: assumes array is already ordered/sorted by group !!
-    curr=nil.class 
-    result=[]
-    each do |element|
-       group=yield(element) # Get grouping value
-       result << [] if curr != group # if not same, start a new array
-       curr = group
-       result[-1] << element
-    end
-    result
   end
 end
 

@@ -49,7 +49,7 @@ class Page < ActiveRecord::Base
       "published_on BETWEEN ? AND ?",
       from.to_s(:db),
       to.to_s(:db)
-    ] 
+    ]
   }}
 
   named_scope :active,
@@ -59,10 +59,7 @@ class Page < ActiveRecord::Base
               :conditions => ["active = ?", false]
   
   named_scope :include_restricted, lambda { |restricted| {
-    :conditions => [
-      'restricted = ? or restricted = 0',
-      restricted
-    ]
+    :conditions => ['restricted = ? or restricted = ?', restricted, false]
   }}
 
   named_scope :created_latest, 
@@ -255,7 +252,7 @@ private
   end
 
   def generate_slug
-    self.slug = title.to_url
+    self.slug = title.parameterize
   end
 
   def set_published_on
