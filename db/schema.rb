@@ -538,7 +538,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   add_index "content_teasers", ["product_id"], :name => "index_teasers_on_product_id"
 
   create_table "content_textfields", :force => true do |t|
-    t.boolean  "shared",     :default => false
     t.string   "filter"
     t.string   "class_name"
     t.text     "body"

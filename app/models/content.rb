@@ -20,9 +20,7 @@ class Content < ActiveRecord::Base
   
   # Should destroy resource unless it's shared in any sence
   before_destroy do |content|
-    if content.resource and not content.module? and not content.form?
-      content.resource.destroy unless content.resource.has_attribute?(:shared) and content.resource.shared?
-    end
+    content.resource.destroy if content.resource and not content.module? and not content.form?
   end
 
   # Should destroy content_collection if last child
@@ -30,10 +28,6 @@ class Content < ActiveRecord::Base
     unless content.parent_id.blank?
       content.content_collection.destroy if Content.count(:conditions => ["parent_id = ?", content.parent_id]) == 0
     end
-  end
-
-  def validate
-    errors.add(:resource_type, "är inte av rätt typ") if resource_type and not self.approved_resources.include?(resource_type)
   end
 
   def resource_class
@@ -44,10 +38,6 @@ class Content < ActiveRecord::Base
     resource_type == 'ContentTextfield'
   end
   
-  def shared?
-    resource and resource.has_attribute?(:shared) and resource.shared?
-  end
-
   def module?
     resource_type == 'ContentModule'
   end
@@ -82,23 +72,7 @@ class Content < ActiveRecord::Base
 
   def collection?
     self.is_a?(ContentCollection)
-  end
-
-  def approved_resources
-    self.class.approved_resources
-  end
-
-  def self.approved_resources
-    [
-      'ContentTextfield',
-      'ContentTeaser',
-      'ContentModule',
-      'ContentImage',
-      'ContentVideo',
-      'RegistrationForm'
-    ]
-  end
-  
+  end  
   def viewable_by(user)
     !self.restrictions.detect { |r| r.denies?(user) }
   end
