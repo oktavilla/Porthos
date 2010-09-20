@@ -131,7 +131,11 @@ class Page < ActiveRecord::Base
       end
     end
   end
-    
+  
+  def to_param
+    "#{id}-#{slug}"
+  end
+  
   def published?
     published_on <= Time.now
   end
