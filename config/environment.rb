@@ -34,4 +34,5 @@ Rails::Initializer.run do |config|
   config.gem 'sunspot_rails', 
               :lib => 'sunspot/rails',
               :version => '=1.1.0'
+  config.gem 'delayed_job'
 end

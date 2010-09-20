@@ -73,7 +73,7 @@ class Registration < ActiveRecord::Base
               :mapping => %w(donation cents),
               :converter => Proc.new { |donation| donation.to_money rescue 0.to_money }
     
-  searchable do
+  searchable :auto_index => false do
     text :public_id, :customer_number, :email, :phone, :cell_phone, :organization, :organization_number
     text :name, :boost => 2.0 do 
       "#{first_name} #{last_name}"
@@ -83,6 +83,8 @@ class Registration < ActiveRecord::Base
     end
     time :created_at
   end
+  
+  after_save :commit_to_sunspot
   
   HUMANIZED_STATUSES = {
     0 => {
@@ -274,6 +276,10 @@ protected
 
   def validate
     # errors.add(:type, "has invalid format") if type Registration.valid_registration_types.include?(self.class.to_s)
+  end
+  
+  def commit_to_sunspot
+    Delayed::Job.enqueue SunspotIndexJob.new('Registration', self.id)
   end
 
 end

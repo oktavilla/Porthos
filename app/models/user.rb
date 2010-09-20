@@ -53,9 +53,11 @@ class User < ActiveRecord::Base
     :conditions => (role_name.blank? ? [] : ["roles.name = ?", role_name])
   }}
   
-  searchable do
+  searchable :auto_index => false do
     text :first_name, :last_name, :email
   end
+  
+  after_save :commit_to_sunspot
   
   def validate
     if file and file.size.nonzero?
@@ -200,5 +202,9 @@ protected
       self.avatar.destroy if self.avatar
       self.avatar = ImageAsset.create(:title => name, :file => file, :private => true)
     end
+  end
+  
+  def commit_to_sunspot
+    Delayed::Job.enqueue SunspotIndexJob.new('User', self.id)
   end
 end
