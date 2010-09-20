@@ -40,6 +40,7 @@ class Admin::PagesController < ApplicationController
     end
     @query = query
     @page = page
+    @field_sets = FieldSet.all
     respond_to do |format|
       format.html
     end
