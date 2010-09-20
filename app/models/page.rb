@@ -105,7 +105,6 @@ class Page < ActiveRecord::Base
   acts_as_filterable  
   
   searchable do
-    integer :page_layout_id
     integer :field_set_id
     text :title, :boost => 2.0
     text :description ,:rendered_body, :tag_names
