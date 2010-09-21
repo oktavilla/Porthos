@@ -55,7 +55,7 @@ class PagesController < ApplicationController
   def search
     @field_set = @node.field_set
     search_query = params[:query] if params[:query].present?
-    if search_query.present? or params[:filters].any?
+    if search_query.present? or (params[:filters] && params[:filters].any?)
       field_set_id = @field_set.id
       @search = Page.search do
         keywords search_query
