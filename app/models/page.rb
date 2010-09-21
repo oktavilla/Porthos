@@ -18,6 +18,7 @@ class Page < ActiveRecord::Base
            :dependent  => :destroy
 
   belongs_to :field_set
+  
   has_many :fields,
            :through => :field_set
   
@@ -34,6 +35,11 @@ class Page < ActiveRecord::Base
 
   has_many :association_targets,
            :through => :custom_associations
+
+  has_many :custom_association_contexts,
+           :class_name => 'CustomAssociation',
+           :as => :target
+
 
   belongs_to :created_by,
              :class_name => 'User'
@@ -190,24 +196,31 @@ protected
     rescue NoMethodError
       if args.size == 0
         handle = method.to_s
-        if field_exists?(handle)
-          match  = custom_attribute_by_handle(handle) || custom_associations_by_handle(handle)
+        if field = self.fields.detect { |field| field.handle == handle }
+          match = field.target_handle.blank? ? (custom_attribute_by_handle(handle) || custom_associations_by_handle(handle)) : custom_association_contexts_by_handle(field.target_handle)
           if (match.is_a?(Array) ? match.any? : match != nil)
             unless match.is_a?(Array)
               match.value
             else
-              match.first.relationship == 'one_to_one' ? match.first.target : CustomAssociationProxy.new({
-                :target_class => match.first.target_type.constantize,
-                :target_ids   => match.collect { |m| m.target_id }
-              })
+              unless field.target_handle.present?
+                match.first.relationship == 'one_to_one' ? match.first.target : CustomAssociationProxy.new({
+                  :target_class => match.first.target_type.constantize,
+                  :target_ids   => match.collect { |m| m.target_id }
+                })
+              else
+                match.first.relationship == 'one_to_one' ? match.first.context : CustomAssociationProxy.new({
+                  :target_class => match.first.context_type.constantize,
+                  :target_ids   => match.collect { |m| m.context_id }
+                })
+              end
             end
           # Do we have a matching field but no records, return nil for
           # page.handle ? do stuff in the views
           else
             nil
           end
-          # no match raise method missing again
         else
+          # no match raise method missing again
           method_missing_without_find_custom_associations_and_attributes(method, *args)
         end
       else
@@ -259,6 +272,10 @@ private
 
   def custom_associations_by_handle(handle)
     custom_associations.find_all { |ca| ca.handle == handle } || custom_associations.find_all_by_handle(handle)
+  end
+
+  def custom_association_contexts_by_handle(handle)
+    custom_association_contexts.find_all { |ca| ca.handle == handle } || custom_association_contexts.find_all_by_handle(handle)
   end
 
   def set_inactive

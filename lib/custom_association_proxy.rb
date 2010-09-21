@@ -51,6 +51,10 @@ class CustomAssociationProxy
     end
   end
 
+  def each
+    all.each { |p| yield p }
+  end
+
   # Does the proxy or its \target respond to +symbol+?
   def respond_to?(*args)
     proxy_respond_to?(*args) || (load_target && @target.respond_to?(*args))

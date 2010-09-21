@@ -177,6 +177,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.integer  "field_set_id"
     t.string   "label"
     t.string   "handle"
+    t.string   "target_handle"
     t.integer  "position"
     t.boolean  "required",              :default => false
     t.text     "instructions"
@@ -187,8 +188,10 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.datetime "updated_at"
   end
 
-  add_index "fields", ["association_source_id"], :name => "index_fields_on_association_source_id"
   add_index "fields", ["field_set_id"], :name => "index_fields_on_field_set_id"
+  add_index "fields", ["handle"], :name => "index_fields_on_handle"
+  add_index "fields", ["target_handle"], :name => "index_fields_on_target_handle"
+  add_index "fields", ["association_source_id"], :name => "index_fields_on_association_source_id"
 
   create_table "nodes", :force => true do |t|
     t.integer  "parent_id"

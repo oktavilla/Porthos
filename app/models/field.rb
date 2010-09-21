@@ -22,17 +22,18 @@ class Field < ActiveRecord::Base
   acts_as_list :scope => :field_set_id
 
   class << self
-  
+
     def types
       [
         StringField,
         TextField,
         DateTimeField,
         PageAssociationField,
+        ReversedPageAssociationField,
         AssetAssociationField
       ]
     end
-    
+
   end
 
 protected
