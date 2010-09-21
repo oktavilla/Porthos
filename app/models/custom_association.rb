@@ -4,8 +4,7 @@ class CustomAssociation < ActiveRecord::Base
   belongs_to :target,
              :polymorphic => true
   belongs_to :field
-  validates_presence_of :context_id,
-                        :target_id,
+  validates_presence_of :target_id,
                         :field_id,
                         :handle,
                         :relationship

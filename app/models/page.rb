@@ -139,8 +139,7 @@ class Page < ActiveRecord::Base
   end
   
   after_save :commit_to_sunspot
-  after_save :store_custom_fields
-
+  
   def to_param
     "#{id}-#{slug}"
   end
@@ -180,7 +179,37 @@ class Page < ActiveRecord::Base
   end
 
   def custom_fields=(custom_fields)
-    @custom_fields = custom_fields
+    custom_fields.each do |key, value|
+      field = Field.find(key)
+      unless field.data_type == CustomAssociation
+        if custom_attribute = custom_attribute_for_field(field.id)
+          custom_attribute.update_attributes(:value => value)
+        else
+          self.custom_attributes << field.data_type.new({
+            :value    => value,
+            :field_id => field.id,
+            :handle   => field.handle,
+            :context => self
+          })
+        end
+      else
+        CustomAssociation.destroy_all(:context_id => self.id, :context_type => 'Page', :field_id => field.id)
+        value.to_a.reject(&:blank?).each do |association_value|
+          if association_value.is_a?(StringIO) || association_value.is_a?(Tempfile)
+            uploaded_asset = Asset.from_upload(:file => association_value)
+            association_value = uploaded_asset.id if uploaded_asset.save
+          end
+          self.custom_associations << self.custom_associations.build({
+            :context      => self,
+            :field        => field,
+            :handle       => field.handle,
+            :relationship => field.relationship,
+            :target_id    => association_value,
+            :target_type  => field.target_class.to_s
+          })
+        end
+      end
+    end    
   end
 
   def field_exists?(handle)
@@ -229,40 +258,6 @@ protected
     end
   end
   alias_method_chain :method_missing, :find_custom_associations_and_attributes
-
-  def store_custom_fields
-    (@custom_fields || []).each do |key, value|
-      field = Field.find(key)
-      unless field.data_type == CustomAssociation
-        if custom_attribute = custom_attribute_for_field(field.id)
-          custom_attribute.update_attributes(:value => value)
-        else
-          field.data_type.create({
-            :value    => value,
-            :field_id => field.id,
-            :handle   => field.handle,
-            :context  => self
-          })
-        end
-      else
-        CustomAssociation.destroy_all(:context_id => self.id, :context_type => 'Page', :field_id => field.id)
-        value.to_a.reject(&:blank?).each do |association_value|
-          if association_value.is_a?(StringIO) || association_value.is_a?(Tempfile)
-            uploaded_asset = Asset.from_upload(:file => association_value)
-            association_value = uploaded_asset.id if uploaded_asset.save
-          end
-          custom_associations << CustomAssociation.create({
-            :context      => self,
-            :field        => field,
-            :handle       => field.handle,
-            :relationship => field.relationship,
-            :target_id    => association_value,
-            :target_type  => field.target_class.to_s
-          })
-        end
-      end
-    end    
-  end
 
 private
 
