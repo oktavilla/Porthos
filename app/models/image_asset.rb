@@ -36,7 +36,7 @@ class ImageAsset < Asset
     
     size = options[:size].gsub(/[^0-9a-z\-]/,'')
 
-    Dir.mkdir images_dir unless File.exists? IMAGE_VERSIONS_DIR
+    Dir.mkdir IMAGE_VERSIONS_DIR unless File.exists? IMAGE_VERSIONS_DIR
     Dir.mkdir version_dir(size) unless File.exists? version_dir(size)
     
     magick_image.strip if options[:remove_profiles]
