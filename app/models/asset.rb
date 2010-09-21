@@ -47,7 +47,7 @@ class Asset < ActiveRecord::Base
   end
 
   def full_name
-    file_name+'.'+extname
+    "#{file_name}.#{extname}"
   end
 
   def image?
