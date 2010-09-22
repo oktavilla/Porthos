@@ -1,8 +1,7 @@
-<% @page_class = @field_set.handle -%>
-<% @page_title = "#{@field_set.title}: Sök"  -%>
-<% @page_id = 'pages-index' -%>
+<% @page_title = "Sök"  -%>
+<% @page_id = 'pages-search' -%>
 <div id="content">
-  <h1><%= @field_set.title %></h2>
+  <h1>Sök</h1>
   <% form_for :search, :url => '?', :html => { :method => :get } do |f| %>
     <label for="search_query">Sök:</label>
     <%= text_field_tag :query, (@query || ''), :class => "search_query", :id=> "search_query" %>
@@ -14,7 +13,7 @@
       <ul>
       <% @search.results.each do |page| %>
         <li>
-          <h2><%= page.title %></h2>
+          <h2><%= link_to page.title, (page.node ? "/#{page.node.slug}" : "/#{page.index_node.slug}/#{page.to_param}" ) %></h2>
           <div class="description"><%= page.description %></div>
         </li>
       <% end %>

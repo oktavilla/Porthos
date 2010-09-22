@@ -16,6 +16,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :pages,
+                :collection => { :search => :get },
                 :member => {
                   :preview => :get,
                   :comment => :post

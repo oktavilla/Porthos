@@ -121,6 +121,7 @@ class Page < ActiveRecord::Base
     text :description ,:rendered_body, :tag_names
     time :published_on
     boolean :is_active, :using => :active?
+    boolean :is_restricted, :using => :restricted?
     text :custom_attributes_values do
       custom_attributes.map { |ca| 
         "#{ca.string_value||ca.text_value||ca.date_time_value.to_s(:db)}" 

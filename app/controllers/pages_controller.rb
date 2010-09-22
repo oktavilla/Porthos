@@ -57,7 +57,7 @@ class PagesController < ApplicationController
     @field_set = @node.field_set
     search_query = params[:query] if params[:query].present?
     if search_query.present? or filters.any?
-      field_set_id = @field_set.id
+      field_set = @field_set
       @search = Page.search do
         keywords search_query
         if filters.any?
@@ -68,13 +68,14 @@ class PagesController < ApplicationController
           end
         end
         with(:is_active, true)
-        with(:field_set_id, field_set_id)
+        with(:is_restricted, false)
+        with(:field_set_id, field_set.id) if field_set
         with(:published_on).less_than Time.now
       end
       @query, @filters = params[:query], filters
     end
     respond_to do |format|
-      format.html { render :template => @field_set.template.views.search }
+      format.html { render :template => (@field_set ? @field_set.template.views.search : PageTemplate.default.views.search) }
     end
   end
   
