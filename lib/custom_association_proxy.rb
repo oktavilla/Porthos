@@ -1,4 +1,5 @@
 class CustomAssociationProxy
+  include Enumerable
   alias_method :proxy_respond_to?, :respond_to?
 
   attr_accessor :target_ids,
@@ -52,7 +53,8 @@ class CustomAssociationProxy
   end
 
   def each
-    all.each { |p| yield p }
+    load_target unless loaded?
+    target.each { |*p| yield *p }
   end
 
   # Does the proxy or its \target respond to +symbol+?
@@ -93,7 +95,7 @@ protected
   
   def load_target
     if !loaded?
-      target = find_target
+      self.target = find_target
     end
   end
   
