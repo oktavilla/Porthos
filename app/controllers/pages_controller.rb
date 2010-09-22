@@ -53,16 +53,17 @@ class PagesController < ApplicationController
   end
   
   def search
+    filters = params[:filters] || {}
     @field_set = @node.field_set
     search_query = params[:query] if params[:query].present?
-    if search_query.present? or (params[:filters] && params[:filters].any?)
+    if search_query.present? or filters.any?
       field_set_id = @field_set.id
       @search = Page.search do
         keywords search_query
-        if params[:filters] && params[:filters].any?
+        if filters.any?
           dynamic :custom_attributes do
-            params[:filters].each do |key, value|
-              with(key.to_sym).starting_with(value)
+            filters.each do |key, value|
+              with(key.to_sym).starting_with(value) unless value.blank?
             end
           end
         end
@@ -70,8 +71,7 @@ class PagesController < ApplicationController
         with(:field_set_id, field_set_id)
         with(:published_on).less_than Time.now
       end
-      @query = params[:query]
-      @filters = params[:filters]
+      @query, @filters = params[:query], filters
     end
     respond_to do |format|
       format.html { render :template => @field_set.template.views.search }
