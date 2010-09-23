@@ -22,9 +22,10 @@ class PagesController < ApplicationController
         scope.find_tagged_with(:tags => params[:tags])
       end
     end
+    template = @field_set ? @field_set.template : PageTemplate.default
     respond_to do |format|
-      format.html { render :template => @field_set.template.views.index }
-      format.rss  { render :template => @field_set.template.views.index, :layout => false }
+      format.html { render :template => template.views.index }
+      format.rss  { render :template => template.views.index, :layout => false }
     end
   end
 
