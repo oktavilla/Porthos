@@ -16,7 +16,7 @@ SESSION_KEY = '_porthos_session'
 Rails::Initializer.run do |config|
   config.load_paths += %W( #{RAILS_ROOT}/vendor/plugins/porthos/app/middleware #{RAILS_ROOT}/vendor/plugins/porthos/app/metal )
 
-  config.active_record.observers = :registration_observer, :node_observer
+  config.active_record.observers = :node_observer
   
   config.gem 'mime-types',
               :lib => 'mime/types'

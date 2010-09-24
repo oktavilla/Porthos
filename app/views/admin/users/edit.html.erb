@@ -13,23 +13,6 @@
       <% end %>
     </div></div>
     <div id="c_2"><div class="inner">
-      <% if @user.registrations.any? %>
-        <table>
-          <caption>Registreringar</caption>
-          <tr>
-            <th>Id</th>
-            <th>Typ</th>
-            <th>Datum</th>
-          </tr>
-          <% @user.registrations.each do |registration| -%>
-          <tr>
-            <td><%= link_to registration.id, admin_registration_path(:id => registration, :type => registration.type, :format => 'html') %></td>
-            <td><%= registration.class.human_name %></td>
-            <td class="date"><%= registration.created_at.day %> <%= registration.created_at.strftime("%b %Y") %></td>
-          </tr>
-          <% end -%>
-        </table>
-      <% end %>
     </div></div>
   </div>
 </div>

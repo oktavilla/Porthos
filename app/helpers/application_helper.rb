@@ -64,17 +64,7 @@ module ApplicationHelper
     list = content_tag('ul', ret, html_options)
     first_level ? concat(list) : list
   end
-  
-  def block_to_partial(partial_name, options = {}, &block)
-    options.merge!(:body => capture(&block))
-    concat(render(:partial => partial_name, :locals => options))
-  end
-  
-  def toolbox(type, options = {}, &block)
-    options = { :css_class => "" }.merge(options)
-    block_to_partial 'admin/shared/toolbox', options, &block
-  end
-  
+
   def page_id
     @page_id ||= controller.class.to_s.underscore.gsub(/_controller$/, '').gsub(/admin\//, '')
     ' id="'+@page_id+'_view"'
@@ -158,18 +148,6 @@ module ApplicationHelper
     "<form method=\"#{form_method}\" action=\"#{escape_once url}\" class=\"button_to\"><div>" + 
       method_tag + tag("input", html_options) + request_token_tag + "</div></form>"
   end
-
-  # Awesome truncate
-  # First regex truncates to the length, plus the rest of that word, if any.
-  # Second regex removes any trailing whitespace or punctuation (except ;).
-  # Unlike the regular truncate method, this avoids the problem with cutting
-  # in the middle of an entity ex.: truncate("this &amp; that",9)  => "this &am..."
-  # though it will not be the exact length.
-  def awesome_truncate(text, length = 30, truncate_string = "...")
-    return if text.nil?
-    l = length - truncate_string.mb_chars.length
-    text.mb_chars.length > length ? text[/\A.{#{l}}\w*\;?/m][/.*[\w\;]/m] + truncate_string : text
-  end 
   
   def flash_mediaplayer_tag(asset, options = {})
    options.merge!( {
@@ -179,26 +157,6 @@ module ApplicationHelper
     content = content_tag('a', t(:flash_is_needed, :scope => [:app, :general]), { :href => 'http://www.macromedia.com/go/getflashplayer'})
     content << options.collect { |option, value| content_tag('span', value, {:class => option}) }.join
     content_tag('div', content, { :class => 'mediaplayer', :id => "asset-#{asset.id}" })
-  end
-
-
-  # options
-  # :start_date, sets the time to measure against, defaults to now
-  # :date_format, used with <tt>to_formatted_s<tt>, default to :default
-  def time_ago(time, options = {})
-    start_date = options.delete(:start_date) || Time.new
-    date_format = options.delete(:date_format) || :short
-    delta_minutes = (start_date.to_i - time.to_i).floor / 60
-    if delta_minutes.abs <= (8724*60) # eight weeks… I’m lazy to count days for longer than that
-      distance = distance_of_time_in_words(delta_minutes);
-      if delta_minutes < 0
-        "om #{distance}"
-      else
-        "#{distance} sen"
-      end
-    else
-      return "på #{time.to_formatted_s(date_format)}"
-    end
   end
 
   def distance_of_time_in_words(minutes)
@@ -230,18 +188,7 @@ module ApplicationHelper
     path = File.join(RAILS_ROOT, 'public/stylesheets/porthos_extensions.css')
     stylesheet_link_tag(js_file) if File.exists?(path)
   end
-  
-  def flash_tag_for_asset(asset, options = {})
-    options = { :max_width => 800 }.merge(options.symbolize_keys)
-    width, height = if asset.width > options[:max_width]
-      scale_factor = (options[:max_width].to_f  / asset.width.to_f)
-      [(asset.width*scale_factor).to_i, (asset.height*scale_factor).to_i]
-    else
-      [asset.width, asset.height]
-    end
-    tag("embed", { :width => width, :height => height, :quality => "high", :src => "/swf/#{asset.full_name}", :type => "application/x-shockwave-flash" })
-  end
-  
+    
   def render_page_contents_for_rss(contents, &block)
     capture do
       contents.collect do |content|

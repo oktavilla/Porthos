@@ -19,7 +19,7 @@ class Content < ActiveRecord::Base
              :set_restrictions
   
   before_destroy do |content|
-    content.resource.destroy if content.resource and not content.module? and not content.form?
+    content.resource.destroy if content.resource and not content.module?
   end
 
   # Should destroy content_collection if last child
@@ -41,19 +41,13 @@ class Content < ActiveRecord::Base
     resource_type == 'ContentModule'
   end
 
-  def form?
-    resource_type == 'RegistrationForm'
-  end
-
   def pre_renderable?
-    @pre_renderable ||= !module? && !form?
+    !module?
   end
 
   def public_template
     @public_template ||= if collection?
       "/pages/contents/#{resource_type.underscore.pluralize}/collection"
-    elsif form?
-      "/pages/contents/registration_forms/#{resource.template}"
     elsif module?
       "/pages/contents/modules/#{resource.template}/content.html.erb"
     else

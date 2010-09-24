@@ -3,10 +3,6 @@
     <li class="pages_index"><%= link_to "Sidor", admin_pages_path %></li>
     <li class="nodes_index"><%= link_to "Navigation", admin_nodes_path %></li>
     <li class="assets_index"><%= link_to "Filarkiv", admin_assets_path %></li>
-    <% unless Registration.count.zero? %>
-    <li class="registrations_index"><%= link_to "Registreringar", admin_registrations_path %></li>
-    <li class="activities_index"><%= link_to "Statistik", admin_activities_path %></li>
-    <% end %>
     <li class="users_index"><%= link_to "Användare", admin_users_path %></li>
     <% unless Comment.count.zero? %>
     <li class="comments_index"><%= link_to "Kommentarer", admin_comments_path %></li>

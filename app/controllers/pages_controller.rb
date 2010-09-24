@@ -10,7 +10,6 @@ class PagesController < ApplicationController
   layout 'public'
 
   def index
-    
     @field_set = @node.field_set
     scope = @field_set.pages.
                        active.

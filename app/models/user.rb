@@ -10,7 +10,6 @@ class User < ActiveRecord::Base
 
   has_many :user_roles
   has_many :roles, :through => :user_roles
-  has_many :registrations
   
   has_many :created_pages, :foreign_key => 'created_by_id', :class_name => 'Page', :order => 'created_at DESC'
   has_many :updated_pages, :foreign_key => 'updated_by_id', :class_name => 'Page', :order => 'updated_at DESC'
@@ -169,20 +168,6 @@ class User < ActiveRecord::Base
   def add_role(role)
     return if self.has_role?(role)
     self.roles << Role.find_by_name(role)
-  end
-
-  def valid_for_registration?(registration)
-    registration.valid?
-    keys = registration.class.user_attribute_matchings.values
-    registration.errors.reject do |_attr, msg|
-      !keys.include?(_attr.to_sym)
-    end.size == 0
-  end
-
-  def sync_with_registration(registration, replace = false)
-    registration.class.user_attribute_matchings.each do |user_key, registration_key|        
-      self.send("#{user_key.to_s}=".to_sym, registration.send(registration_key)) if self.respond_to?("#{user_key.to_s}=".to_sym) && (replace == true or self.send(user_key).blank?)
-    end
   end
 
 protected

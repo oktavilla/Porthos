@@ -11,5 +11,3 @@ Mime::Type.register "video/quicktime", :mov
 Mime::Type.register "video/quicktime", :qt
 # Application formats
 Mime::Type.register "application/pdf", :pdf
-# Export formats
-Mime::Type.register "text/plain", :dp

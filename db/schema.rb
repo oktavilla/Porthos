@@ -153,14 +153,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   add_index "custom_attributes", ["field_id"], :name => "index_custom_attributes_on_field_id"
   add_index "custom_attributes", ["handle"], :name => "index_custom_attributes_on_handle"
 
-  create_table "exports", :force => true do |t|
-    t.string   "registration_type"
-    t.datetime "from"
-    t.datetime "through"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "field_sets", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -252,116 +244,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   end
 
   add_index "redirects", ["path"], :name => "index_redirects_on_path"
-
-  create_table "registration_comments", :force => true do |t|
-    t.integer  "registration_id"
-    t.text     "body"
-    t.integer  "status"
-    t.boolean  "fraud",                :default => false
-    t.boolean  "updated_registration"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "registration_comments", ["registration_id"], :name => "index_registration_comments_on_registration_id"
-  add_index "registration_comments", ["user_id"], :name => "index_registration_comments_on_user_id"
-
-  create_table "registration_forms", :force => true do |t|
-    t.integer  "contact_person_id"
-    t.string   "name"
-    t.string   "template"
-    t.boolean  "send_email_response"
-    t.boolean  "replyable_email"
-    t.string   "reply_to_email"
-    t.string   "email_subject"
-    t.text     "email_body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "type"
-    t.string   "target_code"
-    t.string   "default_amounts"
-    t.integer  "notification_person_id"
-    t.integer  "product_category_id"
-  end
-
-  create_table "registrations", :force => true do |t|
-    t.string   "type"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "customer_number"
-    t.integer  "age"
-    t.string   "email"
-    t.string   "phone"
-    t.string   "cell_phone"
-    t.string   "organization"
-    t.string   "department"
-    t.string   "organization_number"
-    t.string   "address"
-    t.string   "post_code"
-    t.string   "locality"
-    t.string   "country"
-    t.string   "shipping_address"
-    t.string   "shipping_post_code"
-    t.string   "shipping_locality"
-    t.string   "shipping_country"
-    t.boolean  "contact_approval"
-    t.integer  "total_sum",                :default => 0,     :null => false
-    t.integer  "total_vat",                :default => 0,     :null => false
-    t.integer  "total_items"
-    t.integer  "payment_id"
-    t.string   "payment_type"
-    t.string   "payment_transaction_id"
-    t.string   "payment_status"
-    t.string   "payment_response_message"
-    t.string   "public_id"
-    t.integer  "user_id"
-    t.integer  "shop_id"
-    t.string   "dispatch_id"
-    t.string   "dispatch_status"
-    t.string   "shipment_id"
-    t.string   "shipment_type"
-    t.text     "message"
-    t.integer  "node_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "registration_form_id"
-    t.integer  "donation",                 :default => 0,     :null => false
-    t.integer  "shipment_price",           :default => 0,     :null => false
-    t.integer  "activity_group_id"
-    t.string   "school"
-    t.string   "school_class"
-    t.integer  "number_of_persons"
-    t.string   "uri"
-    t.string   "recipients"
-    t.string   "target_code"
-    t.integer  "shipment_vat",             :default => 0
-    t.string   "shipping_organisation"
-    t.integer  "discount_id"
-    t.string   "shipping_first_name"
-    t.string   "shipping_last_name"
-    t.boolean  "non_gp_giver",             :default => false
-    t.string   "organization_type"
-    t.string   "ip_address"
-    t.string   "return_path"
-    t.integer  "status",                   :default => 0
-    t.boolean  "fraud",                    :default => false
-    t.string   "come_from"
-    t.string   "session_id"
-    t.string   "co_address"
-    t.string   "shipping_co_address"
-  end
-
-  add_index "registrations", ["activity_group_id"], :name => "index_registrations_on_activity_group_id"
-  add_index "registrations", ["discount_id"], :name => "index_registrations_on_discount_id"
-  add_index "registrations", ["dispatch_id"], :name => "index_registrations_on_dispatch_id"
-  add_index "registrations", ["node_id"], :name => "index_registrations_on_node_id"
-  add_index "registrations", ["payment_id"], :name => "index_registrations_on_payment_id"
-  add_index "registrations", ["payment_transaction_id"], :name => "index_registrations_on_payment_transaction_id"
-  add_index "registrations", ["public_id"], :name => "index_registrations_on_public_id"
-  add_index "registrations", ["registration_form_id"], :name => "index_registrations_on_registration_form_id"
-  add_index "registrations", ["shipment_id"], :name => "index_registrations_on_shipment_id"
-  add_index "registrations", ["user_id"], :name => "index_registrations_on_user_id"
 
   create_table "restrictions", :force => true do |t|
     t.integer  "content_id"

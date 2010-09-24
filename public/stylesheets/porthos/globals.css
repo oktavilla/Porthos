@@ -100,7 +100,6 @@ h6 {color:#222;}
 .controls .create,
 .controls .edit,
 .controls .delete,
-.controls .export,
 .controls .visibility {padding-left:23px;}
 .controls .back {padding-left:23px;}
 
@@ -110,7 +109,6 @@ h6 {color:#222;}
 .controls .settings {background:transparent url(/graphics/porthos/icons/16_edit.png) 0 9px no-repeat;}
 .controls .delete {background:transparent url(/graphics/porthos/icons/16_delete.png) 0 9px no-repeat;}
 .controls .back {background:transparent url(/graphics/porthos/icons/16_back.png) 0 9px no-repeat;}
-.controls .export {background:transparent url(/graphics/porthos/icons/16_export.png) 0 9px no-repeat;}
 .active .controls .visibility {background:transparent url(/graphics/porthos/icons/16_hide.png) 0 2px no-repeat;}
 .inactive .controls .visibility {background:transparent url(/graphics/porthos/icons/16_show.png) 0 2px no-repeat;}
 

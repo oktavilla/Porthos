@@ -1,8 +1,0 @@
-<% unless @registration.organization.blank? and @registration.department.blank? %>
-<div id="organization" class="details vcard">
-  <h3>Företag/organisation/skola</h3>
-  <%= "<span class=\"org fn\">#{@registration.organization}</span>" unless @registration.organization.blank? %>
-  <%= "<span class=\"organization_number\">#{@registration.organization_number}</span>" unless @registration.organization_number.blank? %>
-  <%= "<span class=\"department\">#{@registration.department}</span>" unless @registration.department.blank? %>
-</div>
-<% end -%>

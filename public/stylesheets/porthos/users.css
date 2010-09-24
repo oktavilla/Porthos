@@ -2,7 +2,6 @@
 
 body#users .index {}
 
-  body#users .export,
   body#users .create { 
     margin-left: 10px;
     padding-left: 2em; }

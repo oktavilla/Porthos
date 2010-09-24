@@ -72,16 +72,13 @@ ul.contents .ContentVideo {
   min-height:100px; }
   .content_image_wrapper .controls {line-height:1.4;}
 
-ul.contents li.registration_form_wrapper,
 ul.contents li.content_module_wrapper {
   padding:16px 0 16px 52px;
   min-height:29px; }
   ul.contents li.content_module_wrapper h1 { 
     font-weight:bold;
     font-size:1.4em; }
-.registration_form_wrapper {background:transparent url(/graphics/porthos/icons/32_form.png) 10px 12px no-repeat;}
 .content_module_wrapper {background:transparent url(/graphics/porthos/icons/32_module.png) 10px 12px no-repeat;}
-  .registration_form_wrapper .notice,
   .content_module_wrapper .notice {
     position:relative;
     top:-2px;

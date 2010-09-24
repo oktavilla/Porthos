@@ -7,8 +7,6 @@ ActionController::Routing::Routes.draw do |map|
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
 
-  map.resources :registrations
-
   map.with_options :controller => 'assets', :action => 'show' do |asset|
     asset.resized_image  '/images/:size/:id.:format'
     asset.display_video  '/videos/:id.:format'
@@ -61,11 +59,8 @@ ActionController::Routing::Routes.draw do |map|
       }
     })
     admin.resources :content_modules
-    admin.resources :registration_forms
     admin.resources :content_lists
 
-    admin.resources :exports
-    
     admin.resources :assets, :collection => { :search => :get, :incomplete => :get, :update_multiple => :put }
     admin.resources :asset_usages,
                     :collection => { :sort => :put }
@@ -93,19 +88,6 @@ ActionController::Routing::Routes.draw do |map|
       }
     })
 
-    admin.registrations         '/registrations',               :controller => 'registrations', :action => 'index'
-    admin.comment_registration  '/registrations/comment',       :controller => 'registrations', :action => 'comment'
-    admin.invalid_registrations_by_type '/registrations/:type/invalid', :controller => 'registrations', :action => 'invalid'
-    admin.registration          '/registrations/:type/:id',     :controller => 'registrations', :action => 'show'
-    admin.export_registration   '/registrations/export/:type.:format',  :controller => 'registrations', :action => 'period'
-    
-    admin.show_registration  '/registration/',       :controller => 'registrations', :action => 'show'
-    admin.resources(:registrations, :collection => { :invalid => :get, :search => :get, :export => :get })
-    
-     
-    admin.activities '/activities', :controller => 'activities', :action => 'index'
-    admin.registration_activity '/activities/:type', :controller => 'activities', :action => 'show'
-    
     admin.resources :redirects
   end
 end
