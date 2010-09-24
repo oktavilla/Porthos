@@ -11,9 +11,8 @@
   <span class="info restricted">lösenordsskyddad</span>
   <% end -%>
   <span class="edit">
-    <% if node.resource_class_name == 'PageCollection' -%>
-    <%= link_to "Visa alla sidor", admin_pages_path(:filters => { :with_parent => "#{node.resource_id},#{node.resource_type}" }), :class => 'edit' %>
-    <%= link_to "Ändra innehåll", admin_page_path(node.resource_id), :class => 'edit' %>
+    <% if node.controller == 'pages' && node.action == 'index' -%>
+    <%= link_to "Visa alla sidor", admin_pages_path(:filters => { :with_field_set => node.field_set_id }), :class => 'edit' %>
     <% else -%>
     <%= link_to "Ändra innehåll", node_path(node), :class => 'edit' %>
     <% end -%>
