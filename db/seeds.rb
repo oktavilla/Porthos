@@ -47,3 +47,12 @@ Node.create!({
   :resource_id => article_page.id,
   :field_set_id => article_fieldset.id
 })
+
+# Search
+Node.create({
+  :parent_id => start_node.id,
+  :name   => 'Sök',
+  :status => 0,
+  :controller => 'pages',
+  :action => 'search'
+})
