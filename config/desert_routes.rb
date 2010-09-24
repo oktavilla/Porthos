@@ -83,7 +83,6 @@ ActionController::Routing::Routes.draw do |map|
       },
       :member => {
         :toggle   => :put,
-        :publish  => :put,
         :comments => :get
       }
     })
