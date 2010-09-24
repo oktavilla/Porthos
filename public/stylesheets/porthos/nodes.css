@@ -117,8 +117,7 @@
 /**** NAVIGATION FOR CONTENT */
   body#contents #nav #n-content a,
   body#content_textfields #nav #n-content a,
-  body#content_modules #nav #n-content a,
-  body#registration_forms #nav #n-content a {
+  body#content_modules #nav #n-content a {
       color:#fff;
       font-weight:bold;
       text-decoration:none; }
@@ -126,7 +125,6 @@
     body#contents #n-nodes a,
     body#content_textfields #n-textfields a,
     body#content_modules #n-modules a,
-    body#registration_forms #n-forms a,
     body#comments #n-comments a,
     body#redirects #n-redirects a,
     #main_nav .current a,

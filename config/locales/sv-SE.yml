@@ -133,33 +133,12 @@
           handle:
             reserved: används redan av sidan
     models:
-      page_tip: Tips om sida
-      activity_group_membership: Lokalgruppsanmälan
-      newsletter_subscription: Nyhetsbrevsanmälan
-      christmas_cards_order: Julkortsbeställning
-      water_drop_order: Vattendroppe
-      will_information_order: Arv och testamente
-      global_parent: Världsförälder
-      donation: Gåva
-      private_donation: Privatgåva
-      company_donation: Företagsgåva
-      vg_donation: Symbolisk gåva
-      private_order: Privatköp
-      company_order: Företagsköp
-      order: Butiksbeställning
-      global_parent_give_away: Ge bort Världsförälder
-      registration: Registrering
       asset: Fil
       content_module: Innehållsmodul
       node: Navigations-node
-      order_item: Produkt
       page: Sida
-      product: Produkt
-      product_category: Produktkategori
-      shop: Butik
       content_teaser: Teaser
       user: Användare
-      sample_product_order: Provkortsbeställning
       redirect: Vidarebefordring
       field_set: Sidtyp
       field: Fält
@@ -170,53 +149,6 @@
       reversed_page_association_field: Relation från en annan sidtyp
       asset_association_field: Relation till fil
     attributes:
-      registration: 
-        first_name: Förnamn
-        last_name: Efternamn  
-        customer_number: Kundnummer
-        age: Ålder
-        email: E-post           
-        phone: Telefon
-        cell_phone: Mobil
-        organization_type: Organisationstyp
-        organization: Organisation
-        department: Avdelning
-        organization_number: Organisationsnummer
-        address: Address
-        post_code: Postnummer     
-        locality: Ort
-        country: Land
-        shipping_first_name: Förnamn för leverans
-        shipping_last_name: Efternamn för leverans
-        shipping_address: Leveransadress
-        shipping_post_code: Postnummer för leverans
-        shipping_locality: Leveransort
-        shipping_country: Leveransland
-        amount: Summa
-        total_sum: Belopp
-        birth_date: Födelsedatum
-        recipient_first_name: Mottagarens förnamn
-        recipient_last_name: Mottagarens efternamn
-        recipient_address: Mottagarens gatuadress
-        recipient_post_code: Mottagarens postnummer
-        recipient_locality: Mottagarens ort
-        recipient_period: Perioden
-        number_of_persons: Antal personer
-        receiver_name: Namn
-        receive_date: Datum
-        giver_name: Avsändare
-      print_setting:
-        predef_greeting: Hälsning
-        greeting_text: Hälsning
-        greeting_color: Färg
-        greeting_font: Typsnitt
-        logo_file_name: Logotyp-fil
-        logo_color: Logotyp-färg
-        signature_file_name: Fil med signaturer
-        delivery_date: Leveransdatum
-        comments: Meddelande
-        signature_file: Signatur-fil
-        logo_file: Logotype-fil
       asset:
         file: Vald fil
         title: Titel 
@@ -229,37 +161,11 @@
       node:
         name: Namn
         status: Status
-      order_item:
-        name: Namn
-        article_number: Artikelnummer
-        price: Pris
-        quantity: Antal
       page:
         title: Namn
         description: Beskrivning   
         published_on: Publiceringsdatum
         parent_id: Sidtyp     
-      product:
-        name: Namn
-        short_description: Kort beskrivning
-        long_description: Utökad beskrivning
-        article_number: Artikel #
-        hidden: Synlighet
-        price: Pris
-        vat: Moms
-        quantity: Lagersaldo
-        printable: Tilltryck
-      product_category:
-        name: Namn
-        shop_id: Butik
-      shop:
-        name: Namn
-        shop_vat: Visa moms
-        closed: Stängd
-        message: Meddelande till besökare när butiken är stängd
-        contact_phone: Kontaktnummer
-        contact_email: Kontaktadress
-        allow_printable: Tillåt tilltryck
       teaser:
         title: Rubrik
         body: Text
@@ -273,8 +179,6 @@
         cell_phone: Mobil
         password: Lösenord
         password_confirmation: Lösenordsbekräftelse
-      sample_product_order:
-        selected_products: valda produkter
       redirect:
         path: Från
         target: Till
