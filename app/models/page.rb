@@ -115,10 +115,13 @@ class Page < ActiveRecord::Base
   searchable :auto_index => false do
     integer :field_set_id
     text :title, :boost => 2.0
-    text :description ,:rendered_body, :tag_names
+    text :description, :tag_names
     time :published_on
     boolean :is_active, :using => :active?
     boolean :is_restricted, :using => :restricted?
+    text :body do
+       contents_as_text
+    end
     text :custom_attributes_values do
       custom_attributes.map { |ca| 
         "#{ca.string_value||ca.text_value||ca.date_time_value.to_s(:db)}" 
@@ -137,6 +140,27 @@ class Page < ActiveRecord::Base
   end
   
   after_save :commit_to_sunspot
+  
+  def contents_as_text
+    contents.active.collect do |content|
+      def render_content(content_resource)
+        if content_resource.is_a?(ContentImage) or content_resource.is_a?(ContentVideo)
+          "#{content_resource.asset.title} #{content_resource.asset.description}"
+        elsif content_resource.is_a?(ContentTextfield)
+          content_resource.body
+        elsif content_resource.is_a?(ContentTeaser)
+          "#{content_resource.title} #{content_resource.body}"
+        end
+      end
+      if !content.restricted? && !content.module?
+        if content.collection?
+          content.contents.collect {|c| render_content(c)}
+        else
+          render_content(content.resource)
+        end
+      end
+    end.join(' ').gsub(/<\/?[^>]*>/, "")
+  end
   
   def to_param
     "#{id}-#{slug}"

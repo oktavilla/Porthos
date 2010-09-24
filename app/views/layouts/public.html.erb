@@ -1,21 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html lang="sv">
 <head>
-
   <!-- produced by winstondesign.se -->
-
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title><%= "#{@page_title} | " unless @page_title.blank? %></title>
-  <%= stylesheet_link_tag 'basic', 'public', :cache => 'screen', :title => 'Screen', :media => 'screen, projection' %>
-  <!--[if IE 7]>
-    <link href="/stylesheets/ie7.css" media="screen,projection" rel="Stylesheet" type="text/css">  
-  <![endif]-->
-  <!--[if lt IE 7]>
-    <link href="/stylesheets/ie.css" media="screen,projection" rel="Stylesheet" type="text/css">  
-    <meta name="MSSmartTagsPreventParsing" content="true">   
-    <meta http-equiv="imagetoolbar" content="false">
-  <![endif]-->
+  <title><%= @page_title unless @page_title.blank? %></title>
+  <%= stylesheet_link_tag 'typography', 'layout', :cache => 'screen', :title => 'Screen', :media => 'screen, projection' %>
 </head>
 <body<%= public_body_attributes %>>
 <% if @preview and logged_in? -%>
@@ -37,9 +26,6 @@
   </div>
   <%= yield %>
   <div id="footer">
-    <div id="footer_info">
-      
-    </div>
   </div>
 </div>
 </body>
