@@ -7,6 +7,9 @@
     <div class="header">
       <h1><%= @field_set.title %></h1>
       <%= link_to "Inställningar", edit_admin_field_set_path(@field_set), :class => 'edit_settings' %>
+      <span class="away">
+        <%= link_to "Alla sidtyper", admin_field_sets_path %>
+      </span>
     </div>
     <div class="tools">
       <div class="add">

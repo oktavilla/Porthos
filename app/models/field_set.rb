@@ -15,6 +15,8 @@ class FieldSet < ActiveRecord::Base
   has_one :node,
           :conditions => { :controller => 'pages', 'action' => 'index' }
 
+  acts_as_list
+
   def dates_with_children(options = {})
     options = { :year => Time.now.year }.merge(options.symbolize_keys)
     years = connection.select_values("select distinct year(published_on) as year from pages where field_set_id = #{ self.id } and published_on <= now() and active = 1 order by year desc")

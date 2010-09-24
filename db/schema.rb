@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   add_index "custom_attributes", ["handle"], :name => "index_custom_attributes_on_handle"
 
   create_table "field_sets", :force => true do |t|
+    t.integer  "position"
     t.string   "title"
     t.text     "description"
     t.datetime "created_at"

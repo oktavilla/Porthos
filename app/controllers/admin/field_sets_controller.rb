@@ -3,7 +3,7 @@ class Admin::FieldSetsController < ApplicationController
   before_filter :login_required
 
   def index
-    @field_sets = FieldSet.all
+    @field_sets = FieldSet.all(:order => 'position')
     respond_to do |format|
       format.html
     end
@@ -60,4 +60,12 @@ class Admin::FieldSetsController < ApplicationController
     end
   end
 
+  def sort
+    params[:field_sets].each_with_index do |id, index|
+      FieldSet.update(id, :position => index + 1)
+    end
+    respond_to do |format|
+      format.js { render :nothing => true }
+    end
+  end
 end

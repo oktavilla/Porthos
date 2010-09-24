@@ -1,5 +1,20 @@
 document.observe('dom:loaded', function() {
-  $$('#fields').each(function(table_body) {
+  $$('tbody#field_sets').each(function(table_body) {
+    Sortable.create(table_body, {
+      ghosting:true,
+      tag: 'tr',
+      onUpdate: function() {
+        new Ajax.Request(Routing.sort_admin_field_sets_path(), {
+          method: 'put',
+          parameters: Sortable.serialize(table_body, {
+            name: 'field_sets'
+          })
+        });
+      }
+    });
+  });
+
+  $$('tbody#fields').each(function(table_body) {
     Sortable.create(table_body, {
       ghosting:true,
       tag: 'tr',

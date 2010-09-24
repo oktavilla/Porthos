@@ -5,21 +5,36 @@
   </div>
   <div id="workspace">
     <div class="header">
-      <h1>Fältsamlingar</h1>
+      <h1>Alla sidtyper</h1>
     </div>
     <div class="tools">
       <div class="add">
-        <%= link_to "Skapa ny fältsamling", new_admin_field_set_path, :class => "new" %>
+        <%= link_to "Lägg till sidtyp", new_admin_field_set_path, :class => "new" %>
       </div>
     </div>
     <div id="content">
-      <% nested_list_of @field_sets, {}, :class => 'items' do |field_set| %>
-        <span class="title"><%= field_set.title %></span>
-        <span class="edit">
-          <%= link_to "Lägg till / Ändra fält", admin_field_set_path(field_set) %>
-          <%= link_to "Inställningar", edit_admin_field_set_path(field_set) %>
-        </span>
-      <% end %>
+    <% if @field_sets.any? -%>
+      <table class="sortable">
+        <thead>
+          <tr>
+            <th class="placeholder"></th>
+            <th>Namn</th>
+            <th>Handle</th>
+            <th>Template</th>
+          </tr>
+        </thead>
+        <tbody id="field_sets">
+        <% @field_sets.each do |field_set| %>
+          <tr id="field_set_<%= field_set.id %>">
+            <td class="handle"><span class="drag_handle"></span></td>
+            <td class="title"><%= link_to field_set.title, admin_field_set_path(field_set) %></td>
+            <td><%= field_set.handle %></td>
+            <td><%= field_set.template_name %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% end -%>
     </div>
   </div>
 <%= javascript_include_tag 'named_routes' %>
