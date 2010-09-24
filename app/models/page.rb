@@ -100,9 +100,6 @@ class Page < ActiveRecord::Base
     :conditions => ["active = ?", active]
   }}
   
-  named_scope :filter_with_unpublished_changes,
-              :conditions => ["changed_at > changes_published_at AND rendered_body IS NOT NULL"]
-  
   before_validation_on_create :set_inactive
 
   before_create :set_published_on
@@ -147,14 +144,6 @@ class Page < ActiveRecord::Base
     
   def published?
     published_on <= Time.now
-  end
-
-  def unpublished_changes?
-    if !changes_published_at.nil? && !changed_at.nil?
-      changed_at > changes_published_at
-    else
-      !changed_at.nil?
-    end
   end
 
   def full_slug

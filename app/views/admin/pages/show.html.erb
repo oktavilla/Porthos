@@ -17,10 +17,6 @@
       Sida är inte publicerad och syns inte på webbplatsen än.
       <%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put, :class => 'new' %>
     </div>
-    <% elsif @page.unpublished_changes? -%>
-    <div class="add" id="publish_changes">
-      <%= link_to "Publicera ändringar", publish_admin_page_path(@page), :method => :put, :class => 'new publish' %>
-    </div>
     <% end -%>
     <% if !@page.index_node && !@page.node -%>
     <div class="add">

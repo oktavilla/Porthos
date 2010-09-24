@@ -223,7 +223,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.text     "rendered_body"
     t.datetime "published_on"
     t.datetime "changed_at"
-    t.datetime "changes_published_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

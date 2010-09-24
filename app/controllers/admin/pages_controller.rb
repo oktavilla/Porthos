@@ -128,24 +128,4 @@ class Admin::PagesController < ApplicationController
       format.js { render :nothing => true }
     end
   end
-  
-  def publish
-    self.class.send :include, Porthos::Public
-    
-    @page = Page.find(params[:id])
-    @node = @page.node
-    if @page.respond_to?(:pages)
-      @pages = @page.pages.find_by_params(params, :logged_in => logged_in?)
-    end
-    
-    @page.update_attributes({
-      :rendered_body => render_to_string(:template => @page.field_set.template.views.show, :layout => false),
-      :changes_published_at => Time.now
-    })
-    
-    respond_to do |format|
-      format.html { redirect_to admin_page_path(@page) }
-    end
-  end
-  
 end
