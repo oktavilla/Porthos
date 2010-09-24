@@ -6,9 +6,6 @@
 .controls:after,
 .graphic:after,
 .sub_controls:after,
-.action_dialog_container ul.assets:after,
-.action_dialog_container .dialog_content:after,
-.action_dialog_container .dialog_content form:after,
 form:after {
   content:".";
   display:block;

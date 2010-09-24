@@ -7,7 +7,7 @@ class Admin::PagesController < ApplicationController
       :order_by => 'changed_at desc'
     }.merge((params[:filters] || {}).to_options)
 
-    @field_sets = FieldSet.all
+    @field_sets = FieldSet.all(:order => 'position')
 
     @tags = Tag.on('Page')
     @current_tags = params[:tags] || []
@@ -40,7 +40,7 @@ class Admin::PagesController < ApplicationController
     end
     @query = query
     @page = page
-    @field_sets = FieldSet.all
+    @field_sets = FieldSet.all(:order => 'position')
     respond_to do |format|
       format.html
     end
