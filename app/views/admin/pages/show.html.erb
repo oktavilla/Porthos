@@ -22,7 +22,7 @@
       <%= link_to "Publicera ändringar", publish_admin_page_path(@page), :method => :put, :class => 'new publish' %>
     </div>
     <% end -%>
-    <% unless @page.node -%>
+    <% if !@page.index_node && !@page.node -%>
     <div class="add">
       <%= link_to "Placera i navigationen", new_admin_node_path(:resource_id => @page.id), :class => 'new' %>
     </div>
