@@ -366,11 +366,9 @@ form .avatar {
         margin-top:25px; }
       
   .contents .actual_content.module .title,
-  .contents .actual_content.registration_form .title,
   .contents .actual_content.video .title {
     padding-left:20px;
     background:transparent url(/graphics/porthos/ui_new.png) 0 -1050px no-repeat; }
-  .contents .actual_content.registration_form .title { background-position:0 -1080px; }
   .contents .actual_content.video .title {background-position:0 -1120px;}
 
   .contents li.collection {

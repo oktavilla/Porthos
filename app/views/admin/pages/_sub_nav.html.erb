@@ -13,14 +13,11 @@
   </ul>
   <div class="label">Status</div>
   <ul class="filter">
-    <li<%= ' class="current"' if !@filters[:active] && !@filters[:with_unpublished_changes] %>>
-      <%= link_to "Alla", admin_pages_path(:filters => @filters.except(:active).except(:with_unpublished_changes)) %>
+    <li<%= ' class="current"' if !@filters[:active] %>>
+      <%= link_to "Alla", admin_pages_path(:filters => @filters.except(:active)) %>
     </li>
     <li<%= ' class="current"' if @filters[:active]%>>
-      <%= link_to "Utkast", admin_pages_path(:filters => @filters.except(:with_unpublished_changes).merge(:active => 0)) %> (<%= Page.inactive.count %>)
-    </li>
-    <li<%= ' class="current"' if @filters[:with_unpublished_changes]%>>
-      <%= link_to "Opublicerade ändringar", admin_pages_path(:filters => @filters.except(:active).merge(:with_unpublished_changes => '')) %> (<%= Page.filter_with_unpublished_changes.count %>)
+      <%= link_to "Utkast", admin_pages_path(:filters => @filters.merge(:active => 0)) %> (<%= Page.inactive.count %>)
     </li>
   </ul>
   <div class="label">Senast ändrad av</div>
