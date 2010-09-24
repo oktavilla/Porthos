@@ -190,11 +190,11 @@ form .avatar {
   color: #333;
   font-size:1.1667em;
   color:#390;
-  background: #cfc url(/graphics/porthos/_new/ui_new.png) 40px -889px no-repeat; }
+  background: #cfc url(/graphics/porthos/ui_new.png) 40px -889px no-repeat; }
   .flash.error {
     color:#f60;
     border-color:#ffdc92;
-    background:#ffedae url(/graphics/porthos/_new/ui_new.png) 40px -948px no-repeat; }
+    background:#ffedae url(/graphics/porthos/ui_new.png) 40px -948px no-repeat; }
 
 .blank_slate {
   font-size:36px; }
@@ -208,13 +208,17 @@ form .avatar {
 .add {
   margin-top:6px;
   margin-bottom:6px; }
+  .add .label {
+    float:left;
+    margin-right:1em; 
+    padding-top:7px; }
   .add .new {
     float:left;
     margin-right:.5em;
     padding:6px 10px 5px 10px;
     font-size:12px;
     color:rgba(0,0,0,.85);
-    background:rgb(240,240,240) url(/graphics/porthos/_new/button_grey_bg.png) 0 0 repeat-x; 
+    background:rgb(240,240,240) url(/graphics/porthos/button_grey_bg.png) 0 0 repeat-x; 
     border:1px solid rgb(215,215,215);
     text-shadow:1px 1px 1px rgb(255,255,255);
     /*
@@ -304,7 +308,7 @@ form .avatar {
     width:2em;
     height:2em;
     cursor:move;
-    background:transparent url(/graphics/porthos/_new/ui_new.png) 1px -790px no-repeat; 
+    background:transparent url(/graphics/porthos/ui_new.png) 1px -790px no-repeat; 
     display:none; }
   .contents li.content:hover > .draghandle,
   .contents li.content:hover > .edit {display:block;}
@@ -365,7 +369,7 @@ form .avatar {
   .contents .actual_content.registration_form .title,
   .contents .actual_content.video .title {
     padding-left:20px;
-    background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -1050px no-repeat; }
+    background:transparent url(/graphics/porthos/ui_new.png) 0 -1050px no-repeat; }
   .contents .actual_content.registration_form .title { background-position:0 -1080px; }
   .contents .actual_content.video .title {background-position:0 -1120px;}
 
@@ -472,8 +476,3 @@ ul.tags {
   .vcard .edit,
   .vcard .tele {
     display:block; }
-
-  .vcard .optin {
-    color:#59941c;
-    padding-left:20px;
-    background:transparent url(/graphics/porthos/_new/icons/completed_10.png) 7px 2px no-repeat; }

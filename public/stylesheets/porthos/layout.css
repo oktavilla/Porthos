@@ -66,14 +66,14 @@ body {
   #pages_view .pages_index a,
   #activities_view .activities_index a,
   #link_lists_view .link_lists_index a {color:#fff;}
-    #main_nav .groups_index a        {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -50px no-repeat;}
-    #main_nav .pages_index a         {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -200px no-repeat;}
-    #main_nav .nodes_index a         {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -280px no-repeat;}
-    #main_nav .assets_index a        {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -130px no-repeat;}
-    #main_nav .registrations_index a {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -519px no-repeat;}
-    #main_nav .activities_index a    {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -459px no-repeat;}
-    #main_nav .users_index a         {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -358px no-repeat;}    
-    #main_nav .comments_index a      {background:transparent url(/graphics/porthos/_new/ui_new.png) 50% -667px no-repeat;}    
+    #main_nav .groups_index a        {background:transparent url(/graphics/porthos/ui_new.png) 50% -50px no-repeat;}
+    #main_nav .pages_index a         {background:transparent url(/graphics/porthos/ui_new.png) 50% -200px no-repeat;}
+    #main_nav .nodes_index a         {background:transparent url(/graphics/porthos/ui_new.png) 50% -280px no-repeat;}
+    #main_nav .assets_index a        {background:transparent url(/graphics/porthos/ui_new.png) 50% -130px no-repeat;}
+    #main_nav .registrations_index a {background:transparent url(/graphics/porthos/ui_new.png) 50% -519px no-repeat;}
+    #main_nav .activities_index a    {background:transparent url(/graphics/porthos/ui_new.png) 50% -459px no-repeat;}
+    #main_nav .users_index a         {background:transparent url(/graphics/porthos/ui_new.png) 50% -358px no-repeat;}    
+    #main_nav .comments_index a      {background:transparent url(/graphics/porthos/ui_new.png) 50% -667px no-repeat;}    
     #main_nav .link_lists_index a {
       padding-right:40px;
       border-right:1px dashed #444; }
@@ -100,7 +100,7 @@ body {
 #wrap {}
 
 body.layout2 {
-  background:rgb(214,221,229) url(/graphics/porthos/_new/layout2_bg_shadow.png) 0 0 repeat-y; }
+  background:rgb(214,221,229) url(/graphics/porthos/layout2_bg_shadow.png) 0 0 repeat-y; }
 
 body.layout2 #wrap {
   padding-left:180px; }
@@ -115,7 +115,7 @@ body.layout2 #workspace {
   width:100%; }
 
 body.layout3 { 
-  background:rgb(214,221,229) url(/graphics/porthos/_new/layout3_bg_shadow.png) 100% 0 repeat-y; }
+  background:rgb(214,221,229) url(/graphics/porthos/layout3_bg_shadow.png) 100% 0 repeat-y; }
 
 body.layout3 #wrap {
   padding-right:300px; }
@@ -162,7 +162,7 @@ body.layout3 #workspace {
       cursor:move;
       height:25px; 
       width:20px;
-      background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -790px no-repeat; }
+      background:transparent url(/graphics/porthos/ui_new.png) 0 -790px no-repeat; }
   #sub_nav .label {
     margin:.5em 0 .5em 0;
     font-size:12px;
@@ -175,7 +175,7 @@ body.layout3 #workspace {
     border-top:1px dashed #ccc;
     font-weight:normal;
     font-size:12px; 
-    background:transparent url(/graphics/porthos/_new/ui_new.png) 20px -730px no-repeat;}
+    background:transparent url(/graphics/porthos/ui_new.png) 20px -730px no-repeat;}
 
 
 #tags_view .taggables {
@@ -218,9 +218,9 @@ body.layout3 #workspace {
     #workspace .header .private {
       color:#c41134; }
     #workspace .header .edit_settings {
-      background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -680px no-repeat; }
+      background:transparent url(/graphics/porthos/ui_new.png) 0 -680px no-repeat; }
     #workspace .header .public_link {
-      background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -630px no-repeat; }
+      background:transparent url(/graphics/porthos/ui_new.png) 0 -630px no-repeat; }
     #workspace .header .away { float:right; }
   #workspace .tools,
   #workspace .adding {
@@ -249,18 +249,18 @@ body.layout3 #workspace {
       #workspace .tools .actions a.inactive {
         cursor:default;
         color:#ccc; }
-      #workspace .tools .actions #edit_selected {background:transparent url(/graphics/porthos/_new/ui_new.png) -900px -400px no-repeat;}
-      #workspace .tools .actions #remove_selected {background:transparent url(/graphics/porthos/_new/ui_new.png) -900px -520px no-repeat;}
-      #workspace .tools .actions #make_selected_cover {background:transparent url(/graphics/porthos/_new/ui_new.png) -900px -460px no-repeat;}
+      #workspace .tools .actions #edit_selected {background:transparent url(/graphics/porthos/ui_new.png) -900px -400px no-repeat;}
+      #workspace .tools .actions #remove_selected {background:transparent url(/graphics/porthos/ui_new.png) -900px -520px no-repeat;}
+      #workspace .tools .actions #make_selected_cover {background:transparent url(/graphics/porthos/ui_new.png) -900px -460px no-repeat;}
       #workspace .tools .actions #edit_selected:active,
-      #workspace .tools .actions #edit_selected.inactive {background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -400px no-repeat;}
+      #workspace .tools .actions #edit_selected.inactive {background:transparent url(/graphics/porthos/ui_new.png) 0 -400px no-repeat;}
       #workspace .tools .actions #remove_selected:active,
-      #workspace .tools .actions #remove_selected.inactive {background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -520px no-repeat;}
+      #workspace .tools .actions #remove_selected.inactive {background:transparent url(/graphics/porthos/ui_new.png) 0 -520px no-repeat;}
       #workspace .tools .actions #make_selected_cover:active,
-      #workspace .tools .actions #make_selected_cover.inactive {background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -460px no-repeat;}
-      #workspace .tools .actions #add_selected_to_set {background:transparent url(/graphics/porthos/_new/ui_new.png) -900px -1000px no-repeat;}
+      #workspace .tools .actions #make_selected_cover.inactive {background:transparent url(/graphics/porthos/ui_new.png) 0 -460px no-repeat;}
+      #workspace .tools .actions #add_selected_to_set {background:transparent url(/graphics/porthos/ui_new.png) -900px -1000px no-repeat;}
       #workspace .tools .actions #add_selected_to_set:active,
-      #workspace .tools .actions #add_selected_to_set.inactive {background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -1000px no-repeat;}
+      #workspace .tools .actions #add_selected_to_set.inactive {background:transparent url(/graphics/porthos/ui_new.png) 0 -1000px no-repeat;}
 
       #workspace .tools #create_placements,
       #workspace .tools #create_placements div {display:inline;}
@@ -458,7 +458,7 @@ ul#nodes, ul#nodes ul {
     cursor:move;
     height:25px; 
     width:20px;
-    background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -790px no-repeat; }
+    background:transparent url(/graphics/porthos/ui_new.png) 0 -790px no-repeat; }
 
 table.sortable {
   margin-left:-40px; }
@@ -479,7 +479,7 @@ table.sortable {
      margin-left:10px;
      height:25px; 
      width:20px;
-     background:transparent url(/graphics/porthos/_new/ui_new.png) 0 -790px no-repeat;  }
+     background:transparent url(/graphics/porthos/ui_new.png) 0 -790px no-repeat;  }
 
 #sessions_view {
   background:#f2f2f2; }
