@@ -6,11 +6,7 @@ class ContentModule < ActiveRecord::Base
   def available_templates
     @available_templates ||= self.class.find_available_templates
   end
-  
-  def available_page_types
-    self.class.available_page_types
-  end
-  
+    
   def has_settings?
     ContentModule.template_paths.collect do |path|
       path = File.join(path, template)
@@ -41,11 +37,7 @@ class ContentModule < ActiveRecord::Base
     def can_be_destroyed_by?(user)
       user.has_role?('SiteAdmin')
     end
-    
-    def available_page_types
-      ['Page', 'PageCollection']
-    end
-    
+        
     def find_available_templates
       ContentModule.template_paths.collect do |path|
         Dir.entries(path).reject { |entry| entry.chars.first == '.' or !File.directory?(File.join(path, entry) ) }
