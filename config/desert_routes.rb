@@ -42,7 +42,7 @@ ActionController::Routing::Routes.draw do |map|
       :member => { :place => :get },
       :collection => { :sort => :put }
 
-    admin.resources :field_sets, :collection => { :sort => :put } do |field_sets|
+    admin.resources :field_sets, :collection => { :sort => :put }, :member => { :pages => :get } do |field_sets|
       field_sets.resources :fields, :collection => { :sort => :put }
     end
 

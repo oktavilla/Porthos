@@ -1,0 +1,44 @@
+body#sessions { background: #444; }
+
+#sessions #wrapper {
+  width:500px;
+  margin:10em auto;
+  background:transparent; }
+#sessions #container { background: none;}
+#sessions .flash.notice {
+  margin:0 4em 0 4em;
+  padding:.8em 1em;
+  border:1px solid #a5683b;
+  border-bottom:none;
+  font-size:1em;
+  font-weight:normal;
+  line-height:1;
+  background:#ffffcd url(/graphics/admin/session_failed_bkgnd.gif) 0 100% repeat-x; }
+
+#sessions #content {
+  padding:1em;
+  border:.75em solid #ddd;
+  background:#fff; }
+  #sessions #content h1 {
+    margin:0 0 .5em 0;
+    padding:0 0 .25em 0;
+    min-height:0;
+    color:#757575;
+    line-height:1.4;
+    border-bottom:1px dotted #bbb;
+    background:transparent; }
+  #sessions #content .container {
+    display:block;
+    margin:0 0 -1em 0;
+    padding:.5em;
+    background:#fafafa;}
+    #sessions #content .info {
+      margin-top:.5em;
+      font-size:.85em;
+      color:#858585;
+      font-weight:normal; }
+  #sessions #content form {margin:0;}
+  #sessions #content .confirm {
+    margin:2.7em -1.75em -1.75em -1.75em;
+    border:.75em solid #b4e187;
+    border-top:none; }

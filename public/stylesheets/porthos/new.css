@@ -1,0 +1,206 @@
+@import url(reset_old_design.css);
+
+#c_wrap:after,
+.assets li:after,
+#assets.incomplete .describe_asset:after,
+#uploader li:after,
+#uploader .totals:after, {
+  content:".";
+  display:block;
+  height:0;
+  line-height:0;
+  clear:both; 
+  visibility:hidden; }
+
+#assets #n-assets a {color:#fff;font-weight:bold;}
+
+#c_wrap.layout_1 {position:relative;}
+  #c_wrap.layout_1 #c_1 {
+    position:absolute; 
+    top:20px;
+    left:10px;
+    width:361px; }
+  #c_wrap.layout_1 #c_2 {
+    float:none; 
+    width:auto;
+    margin-left:391px; }
+
+#c_wrap.layout_2 #c_1 {width:70%;}
+#c_wrap.layout_2 #c_2 {width:30%;}
+  #c_wrap.layout_2 #c_2 .inner {margin-left:30px;}
+#c_wrap.layout_3 #c_1 {width:100%;}
+
+.search .search_query {
+  width:95%; 
+  color:#999; }
+.search .search_query:focus {color:#000;}
+
+.assets {margin:0;}
+.assets.detailed li {
+  margin:0; 
+  padding:.5em 0 .5em 115px; }
+  .assets.detailed img {
+    float:left;
+    margin-left:-115px; 
+    border:1px solid #ccc; }
+  .assets.detailed .title {margin:.5em 0 0 0;}
+    .assets.detailed .title a {color:#000;text-decoration:none;}
+    .assets.detailed .title a:hover {text-decoration:underline;}
+  .assets.detailed .description {margin-bottom:.3em;}
+  .assets.detailed .description.blank a {color:#999;text-decoration:none;}
+  .assets.detailed .description.blank a:hover {text-decoration:underline;color:#000;}
+  .assets.detailed .tags,
+  .assets.detailed .meta,
+  .assets.detailed .actions {
+    font-size:12px; 
+    color:#999; }
+  .assets.detailed .meta,
+  .assets.detailed .actions {display:inline;}
+
+  .assets li .actions {display:none !important;}
+  .assets li:hover .actions {display:inline !important;}
+
+  .assets.detailed .tags a,
+  .assets.detailed .actions a {margin-right:.3em;}
+  .assets.detailed .tags a {color:#777;}
+
+.meta {
+  margin-right:10px;
+  font-size:12px;
+  color:#777; }
+  .meta span {color:#aaa;}
+.asset {
+  overflow:hidden;
+  padding:20px; 
+  border-right:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+  background:#fff; }
+  .asset.VideoAsset {background:#000;border-color:#000;}
+  .asset.SoundAsset {padding-top:100px;padding-bottom:100px;}
+  .asset .icon {display:block;margin:40px auto 40px auto;}
+  #assets.edit .meta {
+    margin-left:20px; }
+    #assets.edit .meta li {margin:0;}
+
+#assets.incomplete {}
+  #assets.incomplete .describe_asset {
+    margin-bottom:15px;
+    padding-bottom:15px;
+    border-bottom:1px solid #ddd; }
+  #assets.incomplete .describe_asset .preview {
+    width:35%;
+    float:left; 
+    clear:left;
+    margin-bottom:20px; }
+    #assets.incomplete .describe_asset .asset {
+      margin-right:30px; }
+  #assets.incomplete .describe_asset fieldset.compact {
+    float:left;
+    width:64%;
+    padding-top:5px; }
+  #assets.incomplete .describe_asset .asset_tags {margin-bottom:.5em;}
+  #assets.incomplete .submit {text-align:center;}
+
+.swfupload { position:absolute; }
+
+.flash.notice {display:none;}
+.main_action {margin:0 0 20px 0;}
+  .main_action .upload_files {
+    display:block;
+    height:34px;
+    width:148px;
+    background:transparent url(/graphics/porthos/ui.png) -20px -20px no-repeat;
+    text-indent:-9999px; }
+  .main_action .upload_files:hover {background-position:-20px -75px;}
+div.filter {margin:1em 0 1em 5px;}
+ul.filter {margin:0;}
+ul.filter li {margin:.8em -5px;}
+  .filter .current,
+  .filter a {
+    padding:4px 5px;
+    margin-right:10px; }
+  .filter .current {
+    background:#555;
+    color:#fff; 
+    text-decoration:none;}
+
+.pagination {
+  margin:20px 0 20px 0;
+  padding:15px 15px;
+  border-top:1px solid #ddd; }
+  .pagination a {border:1px solid #ddd;}
+  .pagination .prev_page,
+  .pagination .next_page {
+    float:left;
+    margin-top:-5px; }
+  .pagination .next_page {float:right;}
+
+/* REGISTRATIONS */
+
+.status {
+  display:block;
+  font-weight:bold;
+  font-size:16px;
+  color:#000;
+  padding-left:22px; }
+.status.complete,
+.status.completed {
+  color:#59941c;
+  background:transparent url(/graphics/porthos/_new/icons/completed.png) 0 1px no-repeat; }
+.status.pending {
+  color:#ffba00;
+  background:transparent url(/graphics/porthos/_new/icons/pending.png) 0 1px no-repeat; }
+.status.deleted {
+  background:transparent url(/graphics/porthos/_new/icons/deleted.png) 1px 1px no-repeat;
+  color:#a00;
+  text-decoration:line-through; }
+.status.failed {
+  background:transparent url(/graphics/porthos/_new/icons/failed.png) 0 1px no-repeat; }
+.status.invoice {  
+  background:transparent url(/graphics/porthos/_new/icons/invoice.png) 0 1px no-repeat; }
+
+.comments {
+  margin-top:1em;
+  border-top:1px solid #eee;}
+  .comments li {
+    padding:10px 0;
+    font-size:12px;
+    border-bottom:1px solid #eee; }
+/*  .comments li .meta {
+    color:#777;
+    padding:0 !important;
+    font-size:11px; 
+    margin-bottom:.5em; }*/
+  .comments li .status_changed {
+    text-transform:uppercase;
+    margin-left:5px;
+    font-weight:bold;
+    padding:3px 4px 2px 4px; }
+  .comments li .status_changed.completed {
+    color:#fff;
+    background:#59941c;}
+  .comments li .status_changed.pending {
+    background:#ffba00;
+    color:#fff; }
+  .comments li .status_changed.deleted {
+    background:#a00;
+    color:#fff; }
+
+
+#users {}      
+  #users .user { 
+    padding: 10px;
+    width: 100%;
+    color: #666;
+    font-size: 12px; 
+    clear: left; 
+    border-top:1px solid #eee;
+    min-height: 90px;}
+  #users .first { border: none;} 
+  #users.show .details {
+    padding:10px 10px 15px 10px;
+    border-top:1px solid #eee; }
+    #users .avatar { 
+      float: right; 
+      margin-right: 10px;}
+    #users .tel .work, #users .tel .cell, #users .extra_details  { display: block; }  

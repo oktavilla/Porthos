@@ -1,0 +1,263 @@
+input[type="text"], input[type="password"], textarea, select {
+  color:#000;
+  font-size:1em; 
+  width:auto; 
+  font-weight:normal; }
+
+fieldset label,
+fieldset textarea {
+  margin-left:0; }
+fieldset label {
+  padding:0; }
+
+html, body, form, fieldset {
+  margin:0;
+  padding:0;
+  font:100%/120% Helvetica, Arial, Verdana, sans-serif; }
+h1, h2, h3, h4, h5, h6, p, pre,
+blockquote, ul, ol, dl, address {
+  margin:1em 0;
+  padding:0; }
+li, dd, blockquote { margin-left:2em; }
+fieldset { border:none; }
+input, select, textarea { font-size:100%; }
+body {
+  font-size:75%;
+  line-height:1.336;
+  color:#444;
+  background:#f2f2f2; }
+html>body { font-size:14px; }
+h1 {
+  margin:0;
+  font-size:18px;
+  line-height:1;
+  color:#000; }
+h2 {
+  font-size:14px;
+  color:#000; }
+  h2 a {
+    font-weight:inherit;
+    font-size:inherit; }
+a {color:#009be9;}
+a:hover { text-decoration:none; }
+a img { border:none; }
+a:focus { outline:none }
+p {}
+
+strong {font-weight:bold;color:#000;}
+
+pre {
+  display:block;
+  border:1px dashed #ccc;
+  background:#f9f9f9;
+  padding:5px;
+  overflow-x:auto;
+  white-space:nowrap;
+  font-size:12px; }
+
+code {font-size:12px;}
+
+li {margin:0;}
+
+span.type {
+  color:#999;
+  font-style:italic;
+  font-weight:normal; }
+address {
+  margin:0;
+  font-style:normal;}
+table {
+  margin-bottom:10px;
+  border-collapse:collapse;
+  font-size:12px;
+  border-bottom:1px solid #ddd; }
+th, td {
+  vertical-align:top;
+  text-align:left;
+  padding:5px 10px; }
+th {font-weight:normal;}
+td {
+  border-top:1px solid #ddd; }
+.vcard {}
+  .vcard .fn {
+    font-size:16px;
+    color:#000;
+    font-weight:bold; 
+    display:block; }
+  .vcard .street-address,
+  .vcard .department,
+  .vcard .tele,
+  .vcard .email {display:block;}
+  .vcard .optin {
+    color:#59941c;
+    padding-left:20px;
+    background:transparent url(/graphics/porthos/_new/icons/completed_10.png) 7px 2px no-repeat; }
+
+legend {
+  margin:0 0 1em 0;
+  padding:0 1em 0 0;
+  font-weight:bold;
+  font-size:18px;
+  line-height:1.4em;
+  color:#000; }
+label {
+  display:block;
+  font-size:12px;
+  color:#000; 
+  font-weight:bold; }
+
+fieldset.compact {}
+  fieldset.compact label {
+    float:left;
+    padding-top:1em;
+    margin-right:.5em;
+    font-weight:normal;
+    font-size:12px;
+    width:100px; 
+    text-align:right; 
+    clear:left; }
+  fieldset.compact input,
+  fieldset.compact textarea {float:left;}
+  fieldset.compact .form_help {
+    clear:left;
+    margin-left:100px; 
+    margin-top:-.7em;
+    padding-left:.5em; }
+
+input[type="text"], input[type="password"], textarea, select { margin:.3em 0 1em 0; }
+input[type="text"], input[type="password"], textarea { padding:5px 4px 4px 4px; }
+
+p.fieldset_help {margin-top:0;}
+
+.form_help {
+  margin:0 0 0 .5em;
+  font-size:12px; 
+  line-height:14px; 
+  color:#777; 
+  font-weight:normal; }
+p.form_help { margin:.4em 0 0 0; }
+input + p.form_help {margin:-1em 0 1.5em 0;}
+
+.submit {padding-top:10px;}
+  .submit input {font-size:16px;font-weight:bold;}
+
+input.title {font-size:18px;font-weight:bold;}
+
+label.uri {
+  margin-top:-.8em;
+  margin-bottom:1em;
+  font-weight:normal;
+  font-size:12px;
+  color:#777; }
+  label.uri input {
+    margin:0 .2em;
+    padding:1px;
+    font-size:12px; }
+
+textarea.file {
+  margin:0;
+  width:97%; }
+  
+.drag_handle { display:none; }
+
+/* Copied 27 jan 2009 from portfolioh/public/stylesheet/layout.css */
+
+#workspace {
+  margin:33px 0 0 0;
+  background:transparent;
+  padding:15px 15px 40px 15px; }
+  #workspace .header {
+    padding:5px 15px 20px 10px;
+    border-bottom:1px solid #e2e2e2; }
+  #workspace #workspace_nav {
+    float:right;
+    margin-top:-1.2em;
+    font-size:14px; }
+  #workspace #c_wrap {padding:10px;}
+    #workspace #c_1 {
+      width:35%;
+      float:left; 
+      margin:-10px -10px 30px -10px;
+      padding:15px 10px 10px 10px;
+      background:#fff;
+      -moz-box-shadow:2px 3px 3px #ddd;
+      -moz-border-radius:10px 10px;
+      -webkit-box-shadow:2px 3px 3px #ddd;
+      -webkit-border-radius:10px 10px; }
+    #workspace #c_2 {
+      float:left;
+      width:64%; }
+    #workspace #c_3 {
+      clear:right;
+      margin-left:-10px;
+      border-top:1px solid #e2e2e2; }
+      #workspace #c_3 h2 {padding:0 10px;margin-bottom:0;}
+
+/* Copied 28 jan 2009 from portfolioh/public/stylesheet/layout.css */
+
+#uploader {
+  margin:100px auto 0 auto;
+  width:502px; }
+  #init_file_dialogue h2 {margin-bottom:0;}
+  #init_file_dialogue p {margin-top:0;}
+  #uploader h2 {
+    font-size:24px;
+    line-height:30px; }
+  #uploader .allowed_formats {margin-top:.5em;color:#777;}
+  #uploader ul {
+    list-style:none;
+    margin:0;
+    border:1px solid #ccc; 
+    height: 201px;
+    overflow-y:auto;}
+  #uploader li,
+  #uploader .totals {
+    font-size:12px;
+    margin:0;
+    padding:7px 5px 5px 5px;
+    border-bottom: 1px solid #ddd; }
+    #uploader li .name, 
+    #uploader li .size, 
+    #uploader li .progress,
+    #uploader .totals .add_more,
+    #uploader .totals .size {float:left;}
+    #uploader li .name,
+    #uploader .totals .add_more {
+      width:335px; 
+      color:#555;}
+    #uploader .size {
+      width:70px;
+      font-style:italic; 
+      text-align:right;}
+    #uploader li .progress {
+      width:70px;
+      text-align:right; }
+    #uploader .progress {
+      color:#a8b561;
+      font-weight:bold; }
+  #uploader .totals {
+    margin-bottom:2em;
+    width:490px; 
+    border:1px solid #ccc; 
+    border-top:none; }
+    #uploader .totals .size,
+    #uploader .totals .progress {
+      font-weight:bold;
+      color:#000; }
+    #uploader .totals .progress {
+      float:left;
+      width:70px;
+      text-align:right; }
+  #uploader #upload_complete {
+    padding:7px 0 7px 35px;
+    background:transparent url(/graphics/porthos/icons/confirmed.png) 0 7px no-repeat; }
+
+/* END following specific */
+
+#nav,
+#main_nav {margin:0;}
+  #nav li {margin:0;}
+#workspace {margin-top:0;}
+#footer {background:transparent;}
+
+fieldset.submit input {margin-left:0;}

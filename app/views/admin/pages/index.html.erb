@@ -9,6 +9,11 @@
   <% else %>
   <div class="header">
     <h1>Sidor</h1>
+    <% if @field_set.present? && @field_set.pages_sortable? %>
+    <span class="away">
+      <%= link_to "Sortera sidor", pages_admin_field_set_path(@field_set) %>
+    </span>
+    <% end %>
   </div>
   <div class="tools">
     <div class="add">

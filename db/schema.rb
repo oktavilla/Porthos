@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.datetime "updated_at"
     t.string   "handle"
     t.string   "template_name"
+    t.boolean  "pages_sortable"
   end
 
   add_index "field_sets", ["handle"], :name => "index_field_sets_on_handle"
