@@ -361,4 +361,22 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     table.timestamps
   end
   add_index :delayed_jobs, [:priority, :run_at], :name => 'delayed_jobs_priority'
+  
+  create_table "asset_usages", :force => true do |t|
+    t.integer  "asset_id"
+    t.integer  "parent_id"
+    t.string   "parent_type"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "gravity"
+  end
+  
+  create_table 'site_settings', :force => true do |t|
+    t.string 'name'
+    t.string 'value'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
+  end
+  add_index :site_settings, :name, :name => 'site_settings_name'
 end

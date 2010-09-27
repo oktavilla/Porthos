@@ -85,5 +85,6 @@ ActionController::Routing::Routes.draw do |map|
     })
 
     admin.resources :redirects
+    admin.resources :site_settings
   end
 end
