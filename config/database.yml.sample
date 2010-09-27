@@ -1,20 +1,23 @@
 development:
   adapter: mysql
-  database: unicef2_development
+  database: porthos_development
   username: root
   password:
   socket: /tmp/mysql.sock
+  encoding: utf8
 
 test:
   adapter: mysql
-  database: unicef2_test
+  database: porthos_test
   username: root
   password:
   socket: /tmp/mysql.sock
+  encoding: utf8
 
 production:
   adapter: mysql
-  database: unicef2_production
+  database: porthos_production
   username: root
   password: 
   socket: /tmp/mysql.sock
+  encoding: utf8
