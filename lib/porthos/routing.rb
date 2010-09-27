@@ -238,13 +238,7 @@ module Porthos
     class MemCacheStore
   
       def initialize(options = {})
-        begin
-          namespace_key = SESSION_KEY
-        rescue
-          puts "*** Unable to find constant SESSION_KEY, using 'porthos' for MemCache namespace."
-          namespace_key = 'porthos'
-        end
-        
+        namespace_key = ActionController::Base.session_options[:key]
         @options = {
           :storage_key   => 'routes',
           :timestamp_key => 'routes_last_changed',

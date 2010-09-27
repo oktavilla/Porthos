@@ -33,9 +33,9 @@ class PageTemplate
   def to_s
     name
   end
-  
+
   class << self
-    
+  
     def all
       @all ||= Dir.entries(self.root_directory).reject { |f| f[0...1] == "." }.collect do |dir|
         self.new(dir)
@@ -53,7 +53,7 @@ class PageTemplate
     def default
       self.new('default')
     end
-
+  
   end
 
   def respond_to?(*args)
@@ -64,7 +64,7 @@ class PageTemplate
     settings[method.to_s] || method_missing_without_settings(method, *args)
   end
   alias_method_chain :method_missing, :settings
-  
+
   class Views
     include Enumerable
     
@@ -76,9 +76,9 @@ class PageTemplate
     def each
       @views.each { |v| yield v }
     end
-        
+    
     def names
-      @names ||= self.collect { |v| v.split(/\./).first }
+      @names ||= self.collect { |v| v.split(/\./).first.gsub(/(^\_)/, '') }
     end
     
     def respond_to?(*args)
@@ -100,5 +100,5 @@ class PageTemplate
     end
     alias_method_chain :method_missing, :check_default
   end
-  
+
 end
