@@ -2,13 +2,7 @@
 <% if content.contents.active.any? -%>
   <div class="teasers">
   <% content.contents.active.each do |child| %>
-    <% if local_assigns[:full_render] != true && !@full_render -%>
-      <%= "<"+"% if Content.find(#{child.id}).viewable_by(current_user) -%"+">" if child.restricted? %>
-      <%= render(:partial => 'pages/contents/content_teasers/content_teaser', :locals => { :content => child, :parent => content }) %>
-      <%= "<"+"% end -%"+">" if child.restricted? %>
-    <% else -%>
-      <%= render(:partial => 'pages/contents/content_teasers/content_teaser', :locals => { :content => child, :parent => content }) if !child.restricted? || child.viewable_by(current_user) %>
-    <% end -%>
+    <%= render(:partial => 'pages/contents/content_teasers/content_teaser', :locals => { :content => child, :parent => content }) if !child.restricted? || child.viewable_by(current_user) %>
   <% end -%>
   </div>
 <% end -%>

@@ -1,17 +1,11 @@
-<% if @full_render -%>
 <% @page_class = @page.layout_class -%>
 <% @page_title = @page.title -%>
 <% @page_id = 'pages-show' -%>
-<% else -%>
-<%= '<'+'% @page_class = @page.layout_class %'+'>' -%>
-<%= '<'+'% @page_title = @page.title %'+'>' -%>
-<%= '<'+'% @page_id = "pages-show" %'+'>' -%>
-<% end -%>
 <div id="content">
 <% (1..@page.column_count).each do |column| %>
   <div id="c_<%= column %>" class="column">
   <% @page.contents.active.find_all { |content| content.column_position == column }.each do |content| -%>
-    <%= render_page_content(@page, content, { :full_render => @full_render }) %>
+    <%= render_page_content(@page, content) %>
   <% end -%>
   </div>
 <% end %>

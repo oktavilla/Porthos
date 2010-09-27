@@ -203,27 +203,12 @@ module ApplicationHelper
   end
   
   def render_page_content(page, content, options = {})
-    options = {
-      :full_render => false
-    }.merge(options)
-    if options[:full_render] and (!content.restricted? || content.viewable_by(current_user))
+    if (!content.restricted? || content.viewable_by(current_user))
       render(:partial => content.public_template, :locals => {
         :page     => page,
         :content  => content,
-        :resource => content.resource,
-        :full_render => options[:full_render]
+        :resource => content.resource
       })
-    elsif !options[:full_render] and !content.restricted?
-      unless content.pre_renderable?
-        "<"+"%= render(:partial => '#{content.public_template}', :locals => { :page => @page, :content => Content.find(#{content.id}), :resource => Content.find(#{content.id}).resource }) %"+">"
-      else
-        render(:partial => content.public_template, :locals => {
-          :page     => page,
-          :content  => content,
-          :resource => content.resource,
-          :full_render => options[:full_render]
-        })
-      end
     end
   end
   

@@ -35,18 +35,12 @@ class PagesController < ApplicationController
     login_required if @page.restricted?
 
     respond_to do |format|
-      unless @page.rendered_body.blank?
-        format.html { render :inline => @page.rendered_body, :layout => true }
-      else
-        @full_render = true
-        format.html { render :template => @page.field_set.template.views.show }
-      end
+      format.html { render :template => @page.field_set.template.views.show }
     end
   end
   
   def preview
     @page = Page.find(params[:id])
-    @full_render = true
     respond_to do |format|
       format.html { render :template => @page.field_set.template.views.show }
     end
