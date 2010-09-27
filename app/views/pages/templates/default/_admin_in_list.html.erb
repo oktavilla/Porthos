@@ -1,0 +1,27 @@
+<span class="title"><%= link_to page.title, admin_page_path(page) %></span>
+<% unless page.full_slug.blank? -%>
+<span class="slug">
+  /<%= page.full_slug %>
+</span>
+<% end -%>
+<div class="description">
+  <% unless page.description.blank? -%>
+  <%= truncate(page.description,:length => 200) %>
+  <% else -%>
+  <%= link_to "Lägg till en beskrivning av sidan", edit_admin_page_path(page) %>
+  <% end -%>
+</div>
+<% if page.tags.any? -%>
+<span class="tags"><%= page.tags.collect { |tag| link_to(tag.name, admin_pages_path(:tags => [tag.name]))}.join(', ') %></span>
+<% end -%>
+<span class="meta">
+  <% if page.changed_at && page.changed_at != page.published_on -%>
+  Senast ändrad <%= page.changed_at.strftime("%d %b %Y %H:%M") %>. 
+  <% end -%>
+  Publicerad <%= page.published_on.strftime("%d %b %Y %H:%M") %>.
+</span>
+<span class="edit">
+  <%= link_to "Ändra innehåll", admin_page_path(page) %>
+  <%= link_to "Inställningar", edit_admin_page_path(page)  %>
+  <%= link_to "Ta bort", admin_page_path(page), { :method => :delete, :confirm => "Är du säker, detta går inte att ångra." } %>
+</span>
