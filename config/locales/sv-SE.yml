@@ -145,6 +145,7 @@
       date_time_field: Datum
       string_field: Sträng
       text_field: Text
+      boolean_field: Booleanskt värde
       page_association_field: Relation till sida
       reversed_page_association_field: Relation från en annan sidtyp
       asset_association_field: Relation till fil

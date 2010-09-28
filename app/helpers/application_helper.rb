@@ -216,9 +216,8 @@ module ApplicationHelper
     string = ''
     string += "<label for=\"page_custom_field_#{field.id}\">#{field.label}</label>"
     string += "<p class=\"form_help\">#{field.instructions}</p>" unless field.instructions.blank?
-    partial = "admin/fields/#{field.class.to_s.underscore}_form"
     string += begin
-      render(:partial => partial, :locals => { :page => page, :builder => form_builder, :field => field })
+      render(:partial => "admin/fields/#{field.class.to_s.underscore}_form", :locals => { :page => page, :builder => form_builder, :field => field })
     rescue ActionView::MissingTemplate
       ''
     end

@@ -237,12 +237,12 @@ protected
       method_missing_without_find_custom_associations_and_attributes(method, *args)
     rescue NoMethodError
       if args.size == 0
-        handle = method.to_s
+        handle = method.to_s.gsub(/\?/, '')
         if field = self.fields.detect { |field| field.handle == handle }
           match = field.target_handle.blank? ? (custom_attribute_by_handle(handle) || custom_associations_by_handle(handle)) : custom_association_contexts_by_handle(field.target_handle)
           if (match.is_a?(Array) ? match.any? : match != nil)
             unless match.is_a?(Array)
-              match.value
+              match.is_a?(BooleanAttribute) ? (match.value.to_i == 1) : match.value
             else
               unless field.target_handle.present?
                 match.first.relationship == 'one_to_one' ? match.first.target : CustomAssociationProxy.new({

@@ -28,6 +28,7 @@ class Field < ActiveRecord::Base
         StringField,
         TextField,
         DateTimeField,
+        BooleanField,
         PageAssociationField,
         ReversedPageAssociationField,
         AssetAssociationField

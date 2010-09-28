@@ -145,6 +145,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.string   "string_value"
     t.text     "text_value"
     t.datetime "date_time_value"
+    t.boolean  "boolean_attribute"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
