@@ -68,4 +68,12 @@ class Admin::FieldSetsController < ApplicationController
       format.js { render :nothing => true }
     end
   end
+  
+  def pages
+    @field_set = FieldSet.find(params[:id])
+    @pages = @field_set.pages.all(:order => 'position')
+    respond_to do |format|
+      format.html
+    end
+  end
 end

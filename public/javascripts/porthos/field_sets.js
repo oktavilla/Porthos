@@ -28,4 +28,17 @@ document.observe('dom:loaded', function() {
       }
     });
   });
+  $$('ul.items').each(function(table_body) {
+    Sortable.create(table_body, {
+      tag: 'li',
+      onUpdate: function() {
+        new Ajax.Request(Routing.sort_admin_pages_path(), {
+          method: 'put',
+          parameters: Sortable.serialize(table_body, {
+            name: 'pages'
+          })
+        });
+      }
+    });
+  });
 });

@@ -1,0 +1,31 @@
+<% @page_class = 'layout2' -%>
+<% @page_id = 'site-settings' -%>
+  <div id="sub_nav">
+    <%= render :partial => 'admin/shared/settings_sub_nav' %>
+  </div>
+  <div id="workspace">
+    <div class="header">
+      <h1><%= @field_set.title %></h1>
+      <%= link_to "Inställningar", edit_admin_field_set_path(@field_set), :class => 'edit_settings' %>
+      <span class="away">
+        <%= link_to "Alla sidtyper", admin_field_sets_path %>
+      </span>
+    </div>
+    <div id="content">
+      <% if @pages.any? -%>
+      <ul class="items sortable" id="pages">
+      <% @pages.each do |page| -%>
+        <li id="page_<%= page.id %>">
+          <span class="drag_handle"></span>
+          <%= render :partial => page.template.views.admin_in_list, :locals => { :page => page } %>
+        </li>
+      <% end -%>
+      </ul>
+      <% else -%>
+      <p class="notice">Det finns inga sidor skapade än.</p>
+      <% end -%>
+    </div>
+  </div>
+<%= javascript_include_tag 'named_routes' %>
+<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', :cache => 'admin' %>
+<%= javascript_include_tag 'porthos/field_sets' %>

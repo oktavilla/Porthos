@@ -8,6 +8,7 @@ class Admin::PagesController < ApplicationController
     }.merge((params[:filters] || {}).to_options)
 
     @field_sets = FieldSet.all(:order => 'position')
+    @field_set = FieldSet.find(@filters[:with_field_set]) if @filters[:with_field_set].present?
 
     @tags = Tag.on('Page')
     @current_tags = params[:tags] || []

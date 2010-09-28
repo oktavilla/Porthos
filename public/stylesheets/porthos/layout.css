@@ -499,6 +499,16 @@ table.sortable {
 #field_form {}
  #field_form #field_types {display:none;}
  
+#site-settings_view ul.sortable {margin-left:-26px;}
+ #site-settings_view ul.sortable li {padding-left: 26px;}
+   #site-settings_view ul.sortable li:hover .drag_handle {
+     display:block;
+     position:absolute;
+     left:0;
+     height:25px; 
+     width:20px;
+     background:transparent url(/graphics/porthos/ui_new.png) 0 -790px no-repeat;  }
+ 
 #assets_view .items {
   width:100%;
   overflow:hidden; }
