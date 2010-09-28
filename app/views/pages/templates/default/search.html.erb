@@ -14,7 +14,6 @@
       <% @search.results.each do |page| %>
         <li>
           <h2><%= link_to page.title, (page.node ? "/#{page.node.slug}" : "/#{page.index_node.slug}/#{page.to_param}" ) %></h2>
-          <div class="description"><%= page.description %></div>
         </li>
       <% end %>
       </ul>

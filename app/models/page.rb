@@ -114,7 +114,7 @@ class Page < ActiveRecord::Base
   searchable :auto_index => false do
     integer :field_set_id
     text :title, :boost => 2.0
-    text :description, :tag_names
+    text :tag_names
     time :published_on
     boolean :is_active, :using => :active?
     boolean :is_restricted, :using => :restricted?

@@ -4,13 +4,6 @@
   /<%= page.full_slug %>
 </span>
 <% end -%>
-<div class="description">
-  <% unless page.description.blank? -%>
-  <%= truncate(page.description,:length => 200) %>
-  <% else -%>
-  <%= link_to "Lägg till en beskrivning av sidan", edit_admin_page_path(page) %>
-  <% end -%>
-</div>
 <% if page.tags.any? -%>
 <span class="tags"><%= page.tags.collect { |tag| link_to(tag.name, admin_pages_path(:tags => [tag.name]))}.join(', ') %></span>
 <% end -%>
