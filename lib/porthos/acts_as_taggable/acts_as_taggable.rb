@@ -74,7 +74,7 @@ module ActiveRecord
       module InstanceMethods
         
         def tag_names
-          tags.collect {|t| t.name }.join(Tag.delimiter)
+          tags.collect {|t| t.name.include?(Tag.delimiter) ? "\"#{t.name}\"" : t.name }.join(Tag.delimiter)
         end
         
         def tag_names=(tag_string)
