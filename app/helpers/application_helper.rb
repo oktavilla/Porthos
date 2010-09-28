@@ -11,7 +11,8 @@ module ApplicationHelper
       :node_class     => collection.first.class.to_s.underscore,
       :end_points     => [],
       :trail          => [],
-      :except         => []
+      :except         => [],
+      :trailed_class  => 'trailed'
     }.merge(options)
     
     html_options = {
@@ -41,7 +42,7 @@ module ApplicationHelper
         status_class = unless in_trail
           item.access_status
         else
-          "#{item.access_status} trailed"
+          "#{item.access_status} #{options[:trailed_class]}"
         end
       end
       options[:node_cycle_values].push({ :name => options[:node_cycle_name] })
