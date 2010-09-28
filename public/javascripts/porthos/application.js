@@ -215,6 +215,40 @@ Porthos.Helpers.graphicLabel = function(element) {
   });
 };
 
+Object.extend(String.prototype, {
+  toUrl: function() {
+    var source = this;
+    source = source.strip().toLowerCase();
+    var from = "åäöàáäâèéëêìíïîòóöôùúüûÑñÇç·/_,:;";
+    var to   = "aaoaaaaeeeeiiiioooouuuunncc------";
+    for (var i = 0, l = from.length; i < l; i++) {
+      source = source.replace(new RegExp(from[i], 'g'), to[i]);
+    }
+    return source.replace(/[^a-zA-Z0-9 -]/g, '').replace(/\s+/g, '-');
+  }
+});
+
+Porthos.Helpers.cloneAsUrl = function(source, target) {
+  var source = $(source), target = $(target);
+  if (!source || !target) { return; }
+  target.store('clone_from_title', target.getValue().empty());
+  source.observe('keyup', function(event) {
+    if (target.retrieve('clone_from_title') == true) {
+      target.value = $(this).getValue().toUrl();
+    }
+  });
+  target.observe('change', function(event) {
+    var value = $(this).getValue();
+    if (!value.empty()) {
+      if (value != source.getValue().toUrl()) {
+        target.store('clone_from_title', false);
+      }
+    } else {
+      target.store('clone_from_title', true);
+    }
+  });
+};
+
 Porthos.Sorting = Class.create({
   initialize: function(el, list, serialized_name) {
     if($(el) == null) { return; }

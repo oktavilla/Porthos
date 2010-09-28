@@ -3,7 +3,7 @@ class FieldSet < ActiveRecord::Base
                         :handle
   validates_uniqueness_of :title,
                           :handle
-  
+
   has_many :fields,
            :order => 'fields.position',
            :dependent => :destroy

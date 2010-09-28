@@ -13,14 +13,14 @@
     <% end %>
   </div>
 </div>
-<%= javascript_include_tag 'named_routes' %>
-<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', :cache => 'admin' %>
-<%= javascript_include_tag 'porthos/jquery/jquery' %>
-<%= javascript_include_tag 'porthos/wymeditor/jquery.wymeditor.min', 'porthos/wymeditor/lang/sv', 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools', 'porthos/wymeditor/plugins/tidy/jquery.wymeditor.tidy' %>
-<%= javascript_include_tag 'porthos/wymeditor/lang/sv' %>
-<%= javascript_include_tag 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools' %>
-<%= javascript_include_tag 'porthos/codemirror/codemirror' %>
-<%= javascript_include_tag 'porthos/editor' %>
-<script type="text/javascript">
-  Porthos.Editor.Initialize();
-</script>
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'porthos/jquery/jquery' %>
+  <%= javascript_include_tag 'porthos/wymeditor/jquery.wymeditor.min', 'porthos/wymeditor/lang/sv', 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools', 'porthos/wymeditor/plugins/tidy/jquery.wymeditor.tidy' %>
+  <%= javascript_include_tag 'porthos/wymeditor/lang/sv' %>
+  <%= javascript_include_tag 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools' %>
+  <%= javascript_include_tag 'porthos/codemirror/codemirror' %>
+  <%= javascript_include_tag 'porthos/editor' %>
+  <script type="text/javascript">
+    Porthos.Editor.Initialize();
+  </script>
+<% end %>

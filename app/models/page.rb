@@ -40,7 +40,6 @@ class Page < ActiveRecord::Base
            :class_name => 'CustomAssociation',
            :as => :target
 
-
   belongs_to :created_by,
              :class_name => 'User'
   
@@ -68,14 +67,14 @@ class Page < ActiveRecord::Base
               
   named_scope :inactive,
               :conditions => ["active = ?", false]
-  
+
   named_scope :include_restricted, lambda { |restricted| {
     :conditions => ['restricted = ? or restricted = ?', restricted, false]
   }}
 
   named_scope :created_latest, 
               :order => 'created_at DESC'
-              
+
   named_scope :updated_latest, 
               :conditions => 'changed_at > created_at', 
               :order => 'changed_at DESC'
@@ -95,11 +94,11 @@ class Page < ActiveRecord::Base
   named_scope :filter_order_by, lambda { |order| {
     :order => order
   }}
-  
+
   named_scope :filter_active, lambda { |active| {
     :conditions => ["active = ?", active]
   }}
-  
+
   before_validation_on_create :set_inactive
 
   before_create :set_published_on
@@ -110,8 +109,8 @@ class Page < ActiveRecord::Base
 
   acts_as_list :scope => 'field_set_id'
   acts_as_taggable
-  acts_as_filterable  
-  
+  acts_as_filterable
+
   searchable :auto_index => false do
     integer :field_set_id
     text :title, :boost => 2.0
@@ -138,9 +137,9 @@ class Page < ActiveRecord::Base
       end
     end
   end
-  
+
   after_save :commit_to_sunspot
-  
+
   def contents_as_text
     contents.active.collect do |content|
       def render_content(content_resource)
@@ -161,11 +160,11 @@ class Page < ActiveRecord::Base
       end
     end.join(' ').gsub(/<\/?[^>]*>/, "")
   end
-  
+
   def to_param
     "#{id}-#{slug}"
   end
-    
+
   def published?
     published_on <= Time.now
   end

@@ -53,8 +53,7 @@
     </ul>
   </div>
 </div>
-<%= javascript_include_tag 'named_routes' %>
-<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', :cache => 'admin' %>
+<% content_for :javascripts do %>
 <script type="text/javascript">
   Event.onReady(function() {
     var Contents = Class.create({
@@ -111,3 +110,4 @@
     
   });
 </script>
+<% end %>

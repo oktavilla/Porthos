@@ -22,21 +22,21 @@
     </div></div>
   </div>
 </div>
-<%= javascript_include_tag 'named_routes' %>
-<%= javascript_include_tag 'porthos/prototype', 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', :cache => 'admin' %>
-<%= javascript_include_tag 'porthos/jquery/jquery' %>
-<%= javascript_include_tag 'porthos/wymeditor/jquery.wymeditor.min', 'porthos/wymeditor/lang/sv', 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools', 'porthos/wymeditor/plugins/tidy/jquery.wymeditor.tidy' %>
-<%= javascript_include_tag 'porthos/wymeditor/lang/sv' %>
-<%= javascript_include_tag 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools' %>
-<%= javascript_include_tag 'porthos/codemirror/codemirror' %>
-<%= javascript_include_tag 'porthos/editor' %>
-<script type="text/javascript">
-  Porthos.Editor.Initialize();
-  $$('a.new, a.asset_usage_settings').each(function(element){
-    element.observe('click', function(ev) {
-      if(!confirm('Om du har ändrat innehållet för puffen och går vidare kommer ändringarna inte att sparas. Klicka på OK för att gå vidare utan att spara.')){
-        ev.stop();
-      }
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'porthos/jquery/jquery' %>
+  <%= javascript_include_tag 'porthos/wymeditor/jquery.wymeditor.min', 'porthos/wymeditor/lang/sv', 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools', 'porthos/wymeditor/plugins/tidy/jquery.wymeditor.tidy' %>
+  <%= javascript_include_tag 'porthos/wymeditor/lang/sv' %>
+  <%= javascript_include_tag 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools' %>
+  <%= javascript_include_tag 'porthos/codemirror/codemirror' %>
+  <%= javascript_include_tag 'porthos/editor' %>
+  <script type="text/javascript">
+    Porthos.Editor.Initialize();
+    $$('a.new, a.asset_usage_settings').each(function(element){
+      element.observe('click', function(ev) {
+        if(!confirm('Om du har ändrat innehållet för puffen och går vidare kommer ändringarna inte att sparas. Klicka på OK för att gå vidare utan att spara.')){
+          ev.stop();
+        }
+      });
     });
-  });
-</script>
+  </script>
+<% end %>
