@@ -498,17 +498,37 @@ table.sortable {
 
 #field_form {}
  #field_form #field_types {display:none;}
- 
-#site-settings_view ul.sortable {margin-left:-26px;}
- #site-settings_view ul.sortable li {padding-left: 26px;}
-   #site-settings_view ul.sortable li:hover .drag_handle {
-     display:block;
+
+.contents li.content {
+  position:relative;
+  list-style:none;
+  margin:0;
+  padding:1em 250px 1em 2em;
+  border-top:1px solid #ddd; 
+  background:#fff; }
+  .contents li.content > .edit {
      position:absolute;
-     left:0;
-     height:25px; 
-     width:20px;
-     background:transparent url(/graphics/porthos/ui_new.png) 0 -790px no-repeat;  }
- 
+     top:.5em;
+     right:.5em;
+     background:rgba(255,255,255,.8); 
+     display:none; }
+    .contents li.content > .edit a {
+      display:inline-block;
+      padding:10px 5px; 
+      vertical-align:middle; }
+  .contents li.content > .draghandle {
+    position:absolute;
+    top:.7em;
+    left:0;
+    vertical-align:middle;
+    width:2em;
+    height:2em;
+    cursor:move;
+    background:transparent url(/graphics/porthos/ui_new.png) 1px -790px no-repeat; 
+    display:none; }
+  .contents li.content:hover > .draghandle,
+  .contents li.content:hover > .edit {display:block;}
+
 #assets_view .items {
   width:100%;
   overflow:hidden; }
