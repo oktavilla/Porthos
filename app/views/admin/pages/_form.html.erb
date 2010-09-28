@@ -1,12 +1,11 @@
 <%= f.hidden_field :field_set_id %>
-<label for="page_title">Skriv en beskrivande titel</label>
-<p class="form_help">En bra titel kan läsas ur sitt sammanhang och ändå förstås. Det är titeln som visas på Googles sökresultatsida.</p>
+<label for="page_title">Titel</label>
 <div class="fullwidth">
   <%= f.text_field :title, :class => "title" %>
 </div>
-<label for="page_description">Skriv en sammanfattning av innehållet på sidan</label>
+<label for="page_slug">Sidans address</label>
 <div class="fullwidth">
-  <%= f.text_area :description, :rows => 3, :class => 'wymeditor' %>
+  <%= f.text_field :slug, :class => "slug" %>
 </div>
 
 <% f.fields_for :custom_fields do |custom_fields| %>

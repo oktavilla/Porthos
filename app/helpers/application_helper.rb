@@ -11,7 +11,8 @@ module ApplicationHelper
       :node_class     => collection.first.class.to_s.underscore,
       :end_points     => [],
       :trail          => [],
-      :except         => []
+      :except         => [],
+      :trailed_class  => 'trailed'
     }.merge(options)
     
     html_options = {
@@ -41,7 +42,7 @@ module ApplicationHelper
         status_class = unless in_trail
           item.access_status
         else
-          "#{item.access_status} trailed"
+          "#{item.access_status} #{options[:trailed_class]}"
         end
       end
       options[:node_cycle_values].push({ :name => options[:node_cycle_name] })
@@ -216,9 +217,8 @@ module ApplicationHelper
     string = ''
     string += "<label for=\"page_custom_field_#{field.id}\">#{field.label}</label>"
     string += "<p class=\"form_help\">#{field.instructions}</p>" unless field.instructions.blank?
-    partial = "admin/fields/#{field.class.to_s.underscore}_form"
     string += begin
-      render(:partial => partial, :locals => { :page => page, :builder => form_builder, :field => field })
+      render(:partial => "admin/fields/#{field.class.to_s.underscore}_form", :locals => { :page => page, :builder => form_builder, :field => field })
     rescue ActionView::MissingTemplate
       ''
     end

@@ -76,8 +76,8 @@ class Page < ActiveRecord::Base
               :order => 'created_at DESC'
 
   named_scope :updated_latest, 
-              :conditions => 'changed_at > created_at', 
-              :order => 'changed_at DESC'
+              :conditions => 'updated_at > created_at', 
+              :order => 'updated_at DESC'
 
   named_scope :filter_with_field_set, lambda { |field_set_id| {
     :conditions => ["field_set_id = ?", field_set_id]
@@ -114,7 +114,7 @@ class Page < ActiveRecord::Base
   searchable :auto_index => false do
     integer :field_set_id
     text :title, :boost => 2.0
-    text :description, :tag_names
+    text :tag_names
     time :published_on
     boolean :is_active, :using => :active?
     boolean :is_restricted, :using => :restricted?
@@ -237,7 +237,7 @@ protected
       method_missing_without_find_custom_associations_and_attributes(method, *args)
     rescue NoMethodError
       if args.size == 0
-        handle = method.to_s
+        handle = method.to_s.gsub(/\?/, '')
         if field = self.fields.detect { |field| field.handle == handle }
           match = field.target_handle.blank? ? (custom_attribute_by_handle(handle) || custom_associations_by_handle(handle)) : custom_association_contexts_by_handle(field.target_handle)
           if (match.is_a?(Array) ? match.any? : match != nil)
@@ -292,7 +292,7 @@ private
   end
 
   def generate_slug
-    self.slug = title.parameterize
+    self.slug = title.parameterize unless slug.present?
   end
 
   def set_published_on

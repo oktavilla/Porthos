@@ -145,6 +145,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.string   "string_value"
     t.text     "text_value"
     t.datetime "date_time_value"
+    t.boolean  "boolean_value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -216,15 +217,12 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.integer  "updated_by_id"
     t.string   "slug"
     t.string   "title"
-    t.text     "description"
     t.string   "layout_class"
     t.integer  "column_count"
     t.integer  "position"
     t.boolean  "active",                  :default => true
     t.boolean  "restricted",              :default => false
-    t.text     "rendered_body"
     t.datetime "published_on"
-    t.datetime "changed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
