@@ -14,7 +14,8 @@
 form .avatar:after,
 #asset_usages:after,
 #asset_usages div:after,
-#tags_view .taggable:after {
+#tags_view .taggable:after,
+.page_content:after {
   content:".";
   display:block;
   height:0;
@@ -214,6 +215,45 @@ body.layout3 #workspace {
     #workspace .header .public_link {
       background:transparent url(/graphics/porthos/ui_new.png) 0 -630px no-repeat; }
     #workspace .header .away { float:right; }
+    /* Page header */
+    #workspace .header {}
+      #workspace .header .parents {margin-bottom:.2em;}
+      #workspace .header .parents a {
+        margin:0;
+        padding:0; 
+        font-size:1em; }
+      #workspace .header .navigation {margin-top:1em;}
+      #workspace .header .slug,
+      #workspace .header .navigation {
+        font-size:.8571em; }
+        #workspace .header .slug .key,
+        #workspace .header .navigation .key {
+          margin-right:.5em;
+          color:#aaa; }
+        #workspace .header .navigation .value {font-weight:bold;color:#000;}
+        #workspace .header .navigation .status {
+          margin-left:.5em;
+          line-height:1;
+          padding:2px 4px 1px 4px;
+          background:green;
+          color:#fff;
+          text-transform:uppercase;
+          font-size:9px; 
+          -webkit-border-radius: 3px;
+          -moz-border-radius: 3px;
+          border-radius: 3px; }
+          #workspace .header .navigation .restricted {background:red;}
+          #workspace .header .navigation .hidden {background:red;}
+      #workspace .header form {
+        width:70%; }
+        #workspace .header label:first-child {
+          margin-top:0; }
+        #workspace .header form .slug_field {margin-top:.5em;}
+          #workspace .header form .slug_field input {
+            margin-left:.3em;
+            padding:.1em;
+            font-size:.8571em; }
+        #workspace .header form .multiple_choice {margin:1em 0;}
   #workspace .tools,
   #workspace .adding {
     padding:10px 40px;

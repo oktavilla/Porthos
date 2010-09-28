@@ -74,6 +74,7 @@ label {
   font-size:14px;
   color:#000; 
   font-weight:bold; }
+  label.notasimportant {font-weight:normal;}
   input[type="hidden"] + label,
   legend + label  {margin-top:.5em;}
 fieldset {margin:.5em 0 1em 0;}
@@ -101,7 +102,9 @@ fieldset.compact {
   list-style:none;
   margin:1.5em 0 1.5em 0;}
   .multiple_choice li {margin:0;}
-  .multiple_choice li label {margin-top:.5em;}
+  .multiple_choice li label {
+    font-weight:normal;
+    margin-top:.5em; }
 
 input.title {font-size:18px;font-weight:bold;}
 
@@ -381,6 +384,57 @@ form .avatar {
       margin:0;
       padding-left:2em;
       border-top: 1px solid rgb(221, 221, 221); }
+
+#workspace #content.page_contents {
+  padding:0; }
+  .page_content {
+    margin:0;
+    padding:20px 250px 20px 40px;
+    border-top:1px solid #ddd;}
+    .page_content:first-child {border-top:none;}
+    .page_content h2.field_label {
+      margin:0 0 .5em 0;
+      font-size:1em; 
+      color:#999; }
+    .page_content label {margin-top:0;}
+    .page_content .submit {
+      font-size:.857142857em;
+      margin-top:.5em;}
+    .page_content .content {color:#000;}
+    .page_content .edit,
+    .page_content .delete {font-size:.857142857em;}
+  .page_content.string {}
+    .page_content.string .content {
+      font-size:1.142857143em; }
+    .page_content.string .edit {
+      margin-top:.5em; }
+  .page_content.association {}
+    .page_content.association ul {
+      list-style:none; 
+      margin:0; }
+    .page_content.association li {margin:0 0 .25em 0;}
+    .page_content.association li .page {
+      font-size:1.142857143em; }
+    .page_content.association li .delete {margin-left:1em;}
+    .page_content.association .edit {margin-top:.5em;}
+    .page_content.association .select_page {
+      margin-top:.5em;
+      padding:10px;
+      background:#f5f5f5; }
+      .page_content.association .select_page label {display:none;}
+      .page_content.association .select_page .submit_inline {
+        display:inline;
+        font-size:.857142857em;}
+  .page_content.image {}
+    .page_content.image img {
+      float:left;
+      margin-right:20px; }
+    .page_content.image .title {
+      padding-top:1.5em;
+      font-weight:bold; }
+    .page_content.image .caption {
+      font-size:.857142857em; }
+    .page_content.image .edit {margin-top:.5em;}
 
 ul.nav,
 ul.tags,
