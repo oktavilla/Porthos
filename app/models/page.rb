@@ -76,8 +76,8 @@ class Page < ActiveRecord::Base
               :order => 'created_at DESC'
 
   named_scope :updated_latest, 
-              :conditions => 'changed_at > created_at', 
-              :order => 'changed_at DESC'
+              :conditions => 'updated_at > created_at', 
+              :order => 'updated_at DESC'
 
   named_scope :filter_with_field_set, lambda { |field_set_id| {
     :conditions => ["field_set_id = ?", field_set_id]
@@ -292,7 +292,7 @@ private
   end
 
   def generate_slug
-    self.slug = title.parameterize
+    self.slug = title.parameterize unless slug.present?
   end
 
   def set_published_on

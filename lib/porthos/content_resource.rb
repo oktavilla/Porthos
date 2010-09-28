@@ -28,8 +28,8 @@ module Porthos
     
       def notify_content_context
         Content.find(:all, :conditions => ["resource_id = ? and resource_type = ?", self.id, self.class.to_s], :include => :context).each do |content|
-          if content.context && content.context.respond_to?(:changed_at)
-            content.context.update_attributes(:changed_at => Time.now)
+          if content.context && content.context.respond_to?(:updated_at)
+            content.context.update_attributes(:updated_at => Time.now)
           end
         end
       end

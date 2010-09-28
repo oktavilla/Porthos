@@ -4,7 +4,7 @@ class Admin::PagesController < ApplicationController
 
   def index
     @filters = {
-      :order_by => 'changed_at desc'
+      :order_by => 'updated_at desc'
     }.merge((params[:filters] || {}).to_options)
 
     @field_sets = FieldSet.all(:order => 'position')
@@ -29,7 +29,7 @@ class Admin::PagesController < ApplicationController
 
   def search
     @filters = {
-      :order_by => 'changed_at'
+      :order_by => 'updated_at desc'
     }.merge((params[:filters] || {}).to_options)
     
     query = params[:query] 

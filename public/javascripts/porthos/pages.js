@@ -1,6 +1,6 @@
 (function(){
   Porthos.namespace('Porthos.Pages');
-
+  Porthos.Helpers.cloneAsUrl('page_title', 'page_slug');
   Porthos.Pages.SetupForm = function() {
     new Porthos.TagAutoCompletion($('page_tag_names'));
   };

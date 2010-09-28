@@ -15,8 +15,8 @@
 <span class="tags"><%= page.tags.collect { |tag| link_to(tag.name, admin_pages_path(:tags => [tag.name]))}.join(', ') %></span>
 <% end -%>
 <span class="meta">
-  <% if page.changed_at && page.changed_at != page.published_on -%>
-  Senast ändrad <%= page.changed_at.strftime("%d %b %Y %H:%M") %>. 
+  <% if page.updated_at && page.updated_at != page.updated_at -%>
+  Senast ändrad <%= page.updated_at.strftime("%d %b %Y %H:%M") %>. 
   <% end -%>
   Publicerad <%= page.published_on.strftime("%d %b %Y %H:%M") %>.
 </span>
