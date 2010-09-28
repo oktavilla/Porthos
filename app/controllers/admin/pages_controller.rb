@@ -109,7 +109,7 @@ class Admin::PagesController < ApplicationController
     @page.destroy
     respond_to do |format|
       flash[:notice] = "”#{@page.title}” #{t(:deleted, :scope => [:app, :admin_general])}"
-      format.html { redirect_to admin_nodes_path(:nodes => @page.node) }
+      format.html { redirect_to admin_pages_path }
     end
   end
   
