@@ -242,7 +242,7 @@ protected
           match = field.target_handle.blank? ? (custom_attribute_by_handle(handle) || custom_associations_by_handle(handle)) : custom_association_contexts_by_handle(field.target_handle)
           if (match.is_a?(Array) ? match.any? : match != nil)
             unless match.is_a?(Array)
-              match.is_a?(BooleanAttribute) ? (match.value.to_i == 1) : match.value
+              match.value
             else
               unless field.target_handle.present?
                 match.first.relationship == 'one_to_one' ? match.first.target : CustomAssociationProxy.new({
