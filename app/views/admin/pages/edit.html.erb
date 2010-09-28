@@ -17,10 +17,16 @@
     <% end -%>
 
     <div class="submit">
-      <%= f.submit "Spara ändringar", :class => 'button' %> eller <%= link_to "avbryt", previous_view_path(admin_page_path(@page)) %>
+      <%= f.submit "Spara ändringar", :class => 'button commit' %> eller <%= link_to "avbryt", previous_view_path(admin_page_path(@page)) %>
     </div>
   <% end %>
 </div>
 <% content_for :javascripts do %>
+  <%= javascript_include_tag 'porthos/jquery/jquery' %>
+  <%= javascript_include_tag 'porthos/wymeditor/jquery.wymeditor.min', 'porthos/wymeditor/lang/sv', 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools', 'porthos/wymeditor/plugins/tidy/jquery.wymeditor.tidy' %>
+  <%= javascript_include_tag 'porthos/wymeditor/lang/sv' %>
+  <%= javascript_include_tag 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools' %>
+  <%= javascript_include_tag 'porthos/editor' %>
   <%= javascript_include_tag 'porthos/pages' %>
+  
 <% end %>

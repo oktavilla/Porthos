@@ -3,6 +3,9 @@
 
   Porthos.Pages.SetupForm = function() {
     new Porthos.TagAutoCompletion($('page_tag_names'));
+    $$('.editor').each(function(el){
+      Porthos.jQuery(el).wymeditor(Porthos.Editor.Options);
+    });
   };
 
   Porthos.Pages.Page = Class.create({

@@ -10,11 +10,16 @@
     <% form_for @page, :url => admin_pages_path, :html => { :id => 'page', :class => 'new' } do |f| %>
       <%= render :partial => 'form', :locals => {:f => f} %>
       <div class="submit">
-        <%= f.submit "Skapa sidan" %> eller <%= link_to "avbryt", previous_view_path(admin_pages_path) %>
+        <%= f.submit "Skapa sidan", :class => 'commit' %> eller <%= link_to "avbryt", previous_view_path(admin_pages_path) %>
       </div>
     <% end %>
   </div>
 </div>
 <% content_for :javascripts do %>
+  <%= javascript_include_tag 'porthos/jquery/jquery' %>
+  <%= javascript_include_tag 'porthos/wymeditor/jquery.wymeditor.min', 'porthos/wymeditor/lang/sv', 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools', 'porthos/wymeditor/plugins/tidy/jquery.wymeditor.tidy' %>
+  <%= javascript_include_tag 'porthos/wymeditor/lang/sv' %>
+  <%= javascript_include_tag 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools' %>
+  <%= javascript_include_tag 'porthos/editor' %>
   <%= javascript_include_tag 'porthos/pages' %>
 <% end %>
