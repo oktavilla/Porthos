@@ -1,5 +1,5 @@
 <%= f.hidden_field :field_set_id %>
-<label for="page_title">Titel</label>
+<label for="page_title"><%= f.object.field_set && f.object.field_set.page_label.present? ? f.object.field_set.page_label : "Titel" %></label>
 <div class="fullwidth">
   <%= f.text_field :title, :class => "title" %>
 </div>
