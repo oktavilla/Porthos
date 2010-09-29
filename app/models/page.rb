@@ -228,6 +228,10 @@ class Page < ActiveRecord::Base
   def field_exists?(handle)
     self.fields.count(:conditions => ['fields.handle = ?', handle]) != 0
   end
+  
+  def respond_to?(method, *args)
+    super || field_exists?(method.to_s.gsub(/\?/, ''))
+  end
 
 protected
 
