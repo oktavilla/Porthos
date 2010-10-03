@@ -1,6 +1,8 @@
 class FieldSet < ActiveRecord::Base
   validates_presence_of :title,
+                        :page_label,
                         :handle
+
   validates_uniqueness_of :title,
                           :handle
 
