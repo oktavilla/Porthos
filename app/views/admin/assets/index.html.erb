@@ -62,27 +62,11 @@
             <%= link_to "Ändra", edit_admin_asset_path(asset.id) %>
             <%= link_to "Ta bort", admin_asset_path(asset.id), :class => 'delete', :confirm => "Är du säker att du vill ta bort filen? Den kommer försvinna från alla sidor. Du kan INTE ångra dig.", :method => :delete %>
           </div>
-          <% if @content -%>
+          <% if @create_callback.present? %>
           <div class="add">
-            <% if not @content[:resource_id].blank? %>
-              <% if asset.image? %>
-              <%= link_to "Välj", edit_admin_content_path(@content[:resource_id], :resource => { :image_asset_id => asset.id }), :class => 'new' %>
-              <% elsif asset.video? %>
-              <%= link_to "Välj", edit_admin_content_path(@content[:resource_id], :resource => { :video_asset_id => asset.id }), :class => 'new' %>
-              <% end %>
-            <% else %>
-              <% if asset.image? %>
-              <%= link_to "Välj", new_admin_content_path({ :content => @content, :resource => { :image_asset_id => asset.id }}.merge(@context_params)), :class => 'new' %>
-              <% elsif asset.video? %>
-              <%= link_to "Välj", new_admin_content_path({ :content => @content, :resource => { :video_asset_id => asset.id }}.merge(@context_params)), :class => 'new' %>
-              <% end %>
-            <% end %>
+            <%= render :partial => 'create_callback_form', :locals => {:create_callback => @create_callback, :asset => asset} %>
           </div>
-          <% elsif @asset_usage %>
-          <div class="add">
-            <%= link_to "Välj", admin_asset_usages_path({ :asset_usage => @asset_usage.merge({ :gravity => 'c', :asset_id => asset.id }) }.merge(@context_params)), :method => 'post', :class => 'new' %>
-          </div>
-          <% end -%>
+          <% end %>
         </div></li>
         <% end -%>
       </ul>

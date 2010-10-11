@@ -14,10 +14,10 @@
       <% if child.resource.images.primary %>
       <div class="thumbnail">
         <%= image_tag(display_image_path(:size => "c80x80", :id => child.resource.images.primary, :format => child.resource.images.primary.extname), :alt => child.resource.images.primary.title ) %>
-        <%= link_to "Lägg till bild", admin_assets_path(:asset_usage => { :parent_id => child.resource.id, :parent_type => child.resource.class.name }, :context_params => { :return_to => request.request_uri }) %>
+        <%= link_to "Lägg till bild", admin_assets_path(:filters => { :by_type => 'ImageAsset' }, :create_callback => {:controller => 'admin/asset_usages', :action => 'create', :method => 'post', :asset_field_name => 'asset_usage[asset_id]', :params => {'asset_usage[gravity]' => 'c', 'asset_usage[parent_id]' => child.resource.id, 'asset_usage[parent_type]' => child.resource.class.name,  :return_to => request.request_uri }}) %>
       </div>
       <% else %>
-        <%= link_to "<span>Lägg till<br>bild</span>", admin_assets_path(:asset_usage => { :parent_id => child.resource.id, :parent_type => child.resource.class.name }, :context_params => { :return_to => request.request_uri }), :class => "no_image" %>
+        <%= link_to "<span>Lägg till<br>bild</span>", admin_assets_path(:filters => { :by_type => 'ImageAsset' }, :create_callback => {:controller => 'admin/asset_usages', :action => 'create', :method => 'post', :asset_field_name => 'asset_usage[asset_id]', :params => {'asset_usage[gravity]' => 'c', 'asset_usage[parent_id]' => child.resource.id, 'asset_usage[parent_type]' => child.resource.class.name,  :return_to => request.request_uri }}), :class => "no_image" %>
       <% end %>
       <div class="title"><%= child.resource.title %></div>
       <%= child.resource.body %>
