@@ -5,13 +5,13 @@ module Porthos
     def self.included(base)
       base.send :include, Porthos::AccessControl
       base.send :skip_before_filter, :remember_uri, :only => [:edit, :create, :update, :destroy, :sort]
-      base.send :before_filter, :clear_content_context
+      base.send :before_filter, :clear_callback
       base.send :layout, 'admin/porthos'
     end
 
   protected
 
-    def clear_content_context
+    def clear_callback
       unless params[:content]
         session[:content], @content = nil unless params[:content]
         session[:asset_usage], @asset_usage = nil unless params[:asset_usage]

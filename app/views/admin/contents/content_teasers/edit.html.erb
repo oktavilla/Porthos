@@ -17,7 +17,7 @@
       <% end %>
       </div>
       <div class="add">
-        <%= link_to "Lägg till bild", admin_assets_path(:asset_usage => { :parent_id => @content.resource.id, :parent_type => @content.resource.class.name }, :context_params => { :return_to => request.request_uri }), :class => 'new' %>
+        <%= link_to "Lägg till bild", admin_assets_path(:filters => { :by_type => 'ImageAsset' }, :create_callback => {:controller => 'admin/asset_usages', :action => 'create', :method => 'post', :asset_field_name => 'asset_usage[asset_id]', :params => {'asset_usage[gravity]' => 'c', 'asset_usage[parent_id]' => @content.resource.id, 'asset_usage[parent_type]' => @content.resource.class.name, :return_to => request.request_uri }}), :class => 'new' %>
       </div>
     </div></div>
   </div>
