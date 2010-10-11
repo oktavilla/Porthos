@@ -1,6 +1,31 @@
 <% @page_title = "Sidor > #{@page.title}" -%>
 <% @page_class = "layout3" -%>
 <div id="sub_nav">
+<% if not @page.active? -%>
+  <h2 class="label">Publicering</h2>
+  <p>Sida är inte publicerad och syns inte på webbplatsen än.</p>
+  <p><%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put %></p>
+<% end -%>
+  <h2 class="label">Skapad och ändrad</h2>
+  <p>Skapad av: <%= User.find(@page.created_by_id).name %>.</p>
+  <p>Ändrades senast den <%= @page.updated_at.strftime("%d %B %Y") %><%= " av #{User.find(@page.updated_by_id).name}" if @page.updated_by %>.</p>
+  <h2 class="label">Nyckelord</h2>
+  <div id="page_tags">
+    <div id="page_tags_list">
+      <ul>
+      <% @page.tags.each do |tag| -%>
+        <li><%= tag.name %></li>
+      <% end -%>
+      </ul>
+      <p><a href="#">Ändra</a></p>
+    </div>
+    <% form_for [:admin, @page], :html => { :id => 'page_tags_form', :style => 'display:none;' } do |f| -%>
+      <div>
+        <%= f.text_field :tag_names %>
+        <input type="submit" value="Spara"> eller <a href="#">avbryt</a>
+      </div>
+    <% end -%>
+  </div>
 </div>
 <div id="workspace">
   <div class="header">
@@ -123,26 +148,39 @@
     <% else -%>
       <% case field.class.to_s
          when 'StringField' -%>
-        <% @page.custom_attribute_for_field(field.id).tap do |custom_attribute| -%>
+        <% (@page.custom_attribute_for_field(field.id) || @page.custom_attributes.build).tap do |custom_attribute| -%>
         <div class="page_content attribute string">
           <div class="container">
             <h2 class="field_label"><%= field.label %></h2>
             <div class="content"><%= custom_attribute.value %></div>
             <div class="edit"><a href="#">Ändra</a></div>
           </div>
-          <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
-            <label for="page_<%= field.handle %>"><%= field.label %></label>
-            <div class="fullwidth">
-              <%= f.text_field :value, :value => custom_attribute.value, :class => 'title', :id => "page_#{field.handle}" %>
-            </div>
-            <div class="submit">
-              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
-            </div>
+          <% unless custom_attribute.new_record? -%>
+            <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
+              <label for="page_<%= field.handle %>"><%= field.label %></label>
+              <div class="fullwidth">
+                <%= f.text_field :value, :value => custom_attribute.value, :class => 'title', :id => "page_#{field.handle}" %>
+              </div>
+              <div class="submit">
+                <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              </div>
+            <% end %>
+          <% else %>
+            <% form_for :custom_attribute, :url => admin_page_custom_attributes_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
+              <%= hidden_field_tag :field_id, field.id %>
+              <label for="page_<%= field.handle %>"><%= field.label %></label>
+              <div class="fullwidth">
+                <%= f.text_field :value, :value => custom_attribute.value, :class => 'title', :id => "page_#{field.handle}" %>
+              </div>
+              <div class="submit">
+                <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              </div>
+            <% end %>
           <% end %>
         </div>
         <% end -%>
       <% when 'TextField' -%>
-        <% @page.custom_attribute_for_field(field.id).tap do |custom_attribute| -%>
+        <% (@page.custom_attribute_for_field(field.id) || @page.custom_attributes.build).tap do |custom_attribute| -%>
         <div class="page_content attribute textfield">
           <div class="container">
             <h2 class="field_label"><%= field.label %></h2>
@@ -151,14 +189,27 @@
             </div>
             <div class="edit"><a href="#">Ändra</a></div>
           </div>
-          <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
-            <label for="page_<%= field.handle %>"><%= field.label %></label>
-            <div class="fullwidth">
-              <%= f.text_area :value, :value => custom_attribute.value, :class => (field.allow_rich_text? ? 'editor' : 'normal') %>
-            </div>
-            <div class="submit">
-              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
-            </div>
+          <% unless custom_attribute.new_record? -%>
+            <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
+              <label for="page_<%= field.handle %>"><%= field.label %></label>
+              <div class="fullwidth">
+                <%= f.text_area :value, :value => custom_attribute.value, :class => (field.allow_rich_text? ? 'editor' : 'normal') %>
+              </div>
+              <div class="submit">
+                <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              </div>
+            <% end %>
+          <% else %>
+            <% form_for :custom_attribute, :url => admin_page_custom_attributes_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
+              <%= hidden_field_tag :field_id, field.id %>
+              <label for="page_<%= field.handle %>"><%= field.label %></label>
+              <div class="fullwidth">
+                <%= f.text_area :value, :value => custom_attribute.value, :class => (field.allow_rich_text? ? 'editor' : 'normal') %>
+              </div>
+              <div class="submit">
+                <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              </div>
+            <% end %>
           <% end %>
         </div>
         <% end -%>
