@@ -17,7 +17,12 @@
       }
       parent.select(query).invoke('toggle');
     });
-
+    
+    $$('#page_tags a').invoke('observe', 'click', function(event) {
+      event.stop();
+      $$('#page_tags_list, #page_tags_form').invoke('toggle');
+    });
+    
     $$('#content ul.sortable').each(function(element) {
       var sortable = $(element);
       Sortable.create(sortable, {

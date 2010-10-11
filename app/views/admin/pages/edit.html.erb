@@ -1,6 +1,31 @@
 <% @page_title = "Sidor > #{@page.title}" -%>
 <% @page_class = "layout3" -%>
 <div id="sub_nav">
+<% if not @page.active? -%>
+  <h2 class="label">Publicering</h2>
+  <p>Sida är inte publicerad och syns inte på webbplatsen än.</p>
+  <p><%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put %></p>
+<% end -%>
+  <h2 class="label">Skapad och ändrad</h2>
+  <p>Skapad av: <%= User.find(@page.created_by_id).name %>.</p>
+  <p>Ändrades senast den <%= @page.updated_at.strftime("%d %B %Y") %><%= " av #{User.find(@page.updated_by_id).name}" if @page.updated_by %>.</p>
+  <h2 class="label">Nyckelord</h2>
+  <div id="page_tags">
+    <div id="page_tags_list">
+      <ul>
+      <% @page.tags.each do |tag| -%>
+        <li><%= tag.name %></li>
+      <% end -%>
+      </ul>
+      <p><a href="#">Ändra</a></p>
+    </div>
+    <% form_for [:admin, @page], :html => { :id => 'page_tags_form', :style => 'display:none;' } do |f| -%>
+      <div>
+        <%= f.text_field :tag_names %>
+        <input type="submit" value="Spara"> eller <a href="#">avbryt</a>
+      </div>
+    <% end -%>
+  </div>
 </div>
 <div id="workspace">
   <div class="header">
