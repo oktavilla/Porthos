@@ -15,7 +15,8 @@ form .avatar:after,
 #asset_usages:after,
 #asset_usages div:after,
 #tags_view .taggable:after,
-.page_content:after {
+.page_content:after,
+.page_content .content:after {
   content:".";
   display:block;
   height:0;

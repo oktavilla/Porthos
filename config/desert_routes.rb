@@ -82,8 +82,13 @@ ActionController::Routing::Routes.draw do |map|
         :toggle   => :put,
         :comments => :get
       }
-    })
-
+    }) do |pages|
+      pages.resources :custom_attributes
+      pages.resources :custom_associations
+    end
+    admin.resources :custom_associations, {
+      :collection => { :sort => :put }
+    }
     admin.resources :redirects
     admin.resources :site_settings
   end

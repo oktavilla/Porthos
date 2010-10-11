@@ -17,7 +17,6 @@
 */
 
 @import url('/stylesheets/porthos/elements.css');
-@import url('/stylesheets/porthos/nodes.css');
 
 /*TRYING TO RESET STYLES THAT MAY INTERFERE WITH WYMEDITOR*/
         .wym_skin_porthos p, .wym_skin_porthos h2, .wym_skin_porthos h3,

@@ -8,6 +8,10 @@ class PageAssociationField < Field
     @possible_targets ||= connection.select_all(sql)
   end
 
+  def target_type
+    @target_type ||= target_class.to_s.downcase
+  end
+
   def target_class
     self.class.target_class
   end

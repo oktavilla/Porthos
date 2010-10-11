@@ -400,7 +400,8 @@ form .avatar {
     .page_content .submit {
       font-size:.857142857em;
       margin-top:.5em;}
-    .page_content .content {color:#000;}
+    .page_content .content {
+      color:#000;}
     .page_content .edit,
     .page_content .delete {font-size:.857142857em;}
   .page_content.string {}
