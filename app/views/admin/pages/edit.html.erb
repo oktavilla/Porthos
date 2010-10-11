@@ -123,26 +123,39 @@
     <% else -%>
       <% case field.class.to_s
          when 'StringField' -%>
-        <% @page.custom_attribute_for_field(field.id).tap do |custom_attribute| -%>
+        <% (@page.custom_attribute_for_field(field.id) || @page.custom_attributes.build).tap do |custom_attribute| -%>
         <div class="page_content attribute string">
           <div class="container">
             <h2 class="field_label"><%= field.label %></h2>
             <div class="content"><%= custom_attribute.value %></div>
             <div class="edit"><a href="#">Ändra</a></div>
           </div>
-          <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
-            <label for="page_<%= field.handle %>"><%= field.label %></label>
-            <div class="fullwidth">
-              <%= f.text_field :value, :value => custom_attribute.value, :class => 'title', :id => "page_#{field.handle}" %>
-            </div>
-            <div class="submit">
-              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
-            </div>
+          <% unless custom_attribute.new_record? -%>
+            <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
+              <label for="page_<%= field.handle %>"><%= field.label %></label>
+              <div class="fullwidth">
+                <%= f.text_field :value, :value => custom_attribute.value, :class => 'title', :id => "page_#{field.handle}" %>
+              </div>
+              <div class="submit">
+                <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              </div>
+            <% end %>
+          <% else %>
+            <% form_for :custom_attribute, :url => admin_page_custom_attributes_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
+              <%= hidden_field_tag :field_id, field.id %>
+              <label for="page_<%= field.handle %>"><%= field.label %></label>
+              <div class="fullwidth">
+                <%= f.text_field :value, :value => custom_attribute.value, :class => 'title', :id => "page_#{field.handle}" %>
+              </div>
+              <div class="submit">
+                <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              </div>
+            <% end %>
           <% end %>
         </div>
         <% end -%>
       <% when 'TextField' -%>
-        <% @page.custom_attribute_for_field(field.id).tap do |custom_attribute| -%>
+        <% (@page.custom_attribute_for_field(field.id) || @page.custom_attributes.build).tap do |custom_attribute| -%>
         <div class="page_content attribute textfield">
           <div class="container">
             <h2 class="field_label"><%= field.label %></h2>
@@ -151,14 +164,27 @@
             </div>
             <div class="edit"><a href="#">Ändra</a></div>
           </div>
-          <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
-            <label for="page_<%= field.handle %>"><%= field.label %></label>
-            <div class="fullwidth">
-              <%= f.text_area :value, :value => custom_attribute.value, :class => (field.allow_rich_text? ? 'editor' : 'normal') %>
-            </div>
-            <div class="submit">
-              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
-            </div>
+          <% unless custom_attribute.new_record? -%>
+            <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
+              <label for="page_<%= field.handle %>"><%= field.label %></label>
+              <div class="fullwidth">
+                <%= f.text_area :value, :value => custom_attribute.value, :class => (field.allow_rich_text? ? 'editor' : 'normal') %>
+              </div>
+              <div class="submit">
+                <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              </div>
+            <% end %>
+          <% else %>
+            <% form_for :custom_attribute, :url => admin_page_custom_attributes_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
+              <%= hidden_field_tag :field_id, field.id %>
+              <label for="page_<%= field.handle %>"><%= field.label %></label>
+              <div class="fullwidth">
+                <%= f.text_area :value, :value => custom_attribute.value, :class => (field.allow_rich_text? ? 'editor' : 'normal') %>
+              </div>
+              <div class="submit">
+                <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              </div>
+            <% end %>
           <% end %>
         </div>
         <% end -%>
