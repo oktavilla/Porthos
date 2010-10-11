@@ -8,9 +8,12 @@
     });
 
     $$('#content div.edit a, #content a.cancel').invoke('observe', 'click', function(event) {
+      var element = $(event.element());
+      if (!(element.hasClassName('change')
+        || element.hasClassName('add')
+        || element.hasClassName('cancel'))) { return; }
       event.stop();
-      var element = $(event.element()),
-          parent  = $(element.up('div.page_content'));
+      var parent  = $(element.up('div.page_content'));
           query   = 'form';
       if (!parent.hasClassName('one_to_many')) {
         query += ', div.container';

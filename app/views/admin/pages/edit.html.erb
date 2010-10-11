@@ -38,16 +38,18 @@
     <div class="navigation">
       <span class="key">Namn i navigationen:</span>
       <span class="value"><%= @page.node.name %></span>
-      <span class="status <%= @page.node.access_status %>">
-      <% case @page.node.access_status
-         when 'active' -%>
-        Visas
-      <% when 'hidden' -%>
-        Dold
-      <% when 'inactive' -%>
-        Avstängd
-      <% end -%>
-      </span>
+      <div class="navigation">
+        <span class="status <%= @page.node.access_status %>">
+        <% case @page.node.access_status
+           when 'active' -%>
+          Visas
+        <% when 'hidden' -%>
+          Dold
+        <% when 'inactive' -%>
+          Avstängd
+        <% end -%>
+        </span>
+      </div>
     </div>
     <div class="slug">
       <span class="key">Adress:</span>
@@ -70,9 +72,9 @@
     <% if field.data_type == CustomAssociation %>
       <% @page.custom_associations.find(:all, :conditions => ["field_id = ?", field.id], :order => 'custom_associations.position').tap do |custom_associations| %>
       <div class="page_content association <%= field.target_type %> <%= field.relationship %>">
-        <% if custom_associations.any? -%>
         <div class="container">
           <h2 class="field_label"><%= field.label %></h2>
+        <% if custom_associations.any? -%>
           <% if field.target_type == 'asset' -%>
             <% custom_associations.each do |custom_association| -%>
               <% custom_association.target.tap do |image| -%>
@@ -96,18 +98,20 @@
             <% end -%>
             </ul>
           <% end -%>
+        <% end -%>
           <div class="edit">
-            <% if field.relationship == 'one_to_one' -%>
-            <a href="#" class="change">Ändra</a>
-            <% else -%>
-            <a href="#" class="add">Lägg till</a>
+            <% if field.target_type == 'asset' && !(field.relationship == 'one_to_one' && custom_associations.any?)-%>
+              <%= link_to "Lägg till fil", admin_assets_path(:create_callback => {:controller => 'admin/custom_associations', :action => 'create', :method => 'post', :asset_field_name => 'custom_association[target_id]', :params => { :page_id => @page, 'custom_association[target_type]' => field.target_class.to_s, 'custom_association[context_id]' => @page.id, 'custom_association[context_type]' => 'Page', 'custom_association[handle]' => field.handle, 'custom_association[field_id]' => field.id, 'custom_association[relationship]' => field.relationship }}) %>
+            <% elsif field.target_type == 'page' -%>
+              <% if field.relationship == 'one_to_one' -%>
+                <a href="#" class="change">Ändra</a>
+              <% else -%>
+                <a href="#" class="add">Lägg till</a>
+              <% end -%>
             <% end -%>
           </div>
         </div>
-        <% end -%>
-        <% if field.is_a?(AssetAssociationField) && (field.relationship == 'one_to_one' && !custom_associations.any?) || field.relationship == 'one_to_many' %>
-          <%= link_to "Lägg till fil", admin_assets_path(:create_callback => {:controller => 'admin/custom_associations', :action => 'create', :method => 'post', :asset_field_name => 'custom_association[target_id]', :params => { :page_id => @page, 'custom_association[target_type]' => field.target_class.to_s, 'custom_association[context_id]' => @page.id, 'custom_association[context_type]' => 'Page', 'custom_association[handle]' => field.handle, 'custom_association[field_id]' => field.id, 'custom_association[relationship]' => field.relationship }}) %>
-        <% else %>
+        <% unless field.target_type == 'asset' -%>
            <% if field.relationship == 'one_to_many' -%>
               <% form_for :custom_association, :url => admin_page_custom_associations_path(@page), :html => { :style => 'display:none;', :class => 'select_page' } do |f| %>
                 <%= f.hidden_field :target_type, :value => field.target_class.to_s %>
@@ -131,7 +135,7 @@
                   </div>
                 <% end -%>
               <% else -%>
-                <% form_for :custom_association, :url => admin_page_custom_associations_path(@page) do |f| %>
+                <% form_for :custom_association, :url => admin_page_custom_associations_path(@page), :html => { :style => 'display:none;' } do |f| %>
                   <%= f.hidden_field :target_type, :value => field.target_class.to_s %>
                   <%= f.hidden_field :field_id, :value => field.id %>
                   <%= f.hidden_field :handle, :value => field.handle %>
@@ -139,12 +143,12 @@
                   <label for="page_<%= field.label %>"><%= field.label %></label>
                   <%= f.select :target_id, field.possible_targets.collect { |pt| [pt['title'], pt['id']] }, :include_blank => (field.required? ? false : '(ingen)') %>
                   <div class="submit_inline">
-                    <input type="submit" value="Spara">
+                    <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
                   </div>
                 <% end -%>
               <% end -%>
             <% end -%>
-        <% end %>
+        <% end -%>
       <% end -%>
       </div>
     <% else -%>
@@ -155,7 +159,7 @@
           <div class="container">
             <h2 class="field_label"><%= field.label %></h2>
             <div class="content"><%= custom_attribute.value %></div>
-            <div class="edit"><a href="#">Ändra</a></div>
+            <div class="edit"><a href="#" class="change">Ändra</a></div>
           </div>
           <% unless custom_attribute.new_record? -%>
             <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
@@ -189,7 +193,7 @@
             <div class="content">
               <%= !field.allow_rich_text? ? simple_format(custom_attribute.value) : custom_attribute.value %>
             </div>
-            <div class="edit"><a href="#">Ändra</a></div>
+            <div class="edit"><a href="#" class="change">Ändra</a></div>
           </div>
           <% unless custom_attribute.new_record? -%>
             <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
