@@ -123,13 +123,27 @@ class Page < ActiveRecord::Base
     end
     text :custom_attributes_values do
       custom_attributes.map { |ca| 
-        "#{ca.string_value||ca.text_value||ca.date_time_value.to_s(:db)}" 
+        if ca.string_value || ca.text_value
+          "#{ca.string_value||ca.text_value}" 
+        elsif ca.date_time_value.present?
+          ca.date_time_value.to_s(:db)
+        elsif ca.boolean_value.present?
+          ca.boolean_value.to_i
+        end
       }
     end
     dynamic_string :custom_attributes do
       returning Hash.new do |attributes|
         custom_attributes.each do |ca|
-          attributes[ca.handle.to_sym] = (ca.string_value||ca.text_value||ca.date_time_value.to_s(:db))
+          attributes[ca.handle.to_sym] = custom_attributes.map { |ca| 
+            if ca.string_value || ca.text_value
+              "#{ca.string_value||ca.text_value}" 
+            elsif ca.date_time_value.present?
+              ca.date_time_value.to_s(:db)
+            elsif ca.boolean_value.present?
+              ca.boolean_value.to_i
+            end
+          }
         end
         custom_associations.each do |ca|
           attributes[ca.handle.to_sym] = "#{ca.target_type}-#{ca.target_id}"
