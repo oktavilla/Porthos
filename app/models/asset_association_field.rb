@@ -5,6 +5,10 @@ class AssetAssociationField < Field
   def possible_targets
     @possible_targets ||= connection.select_all("SELECT id, title FROM assets ORDER BY title")
   end
+
+  def target_type
+    @target_type ||= target_class.to_s.downcase
+  end
   
   def target_class
     self.class.target_class
@@ -13,5 +17,4 @@ class AssetAssociationField < Field
   def self.target_class
     Asset
   end
-  
 end

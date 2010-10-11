@@ -15,6 +15,8 @@ class CustomAssociation < ActiveRecord::Base
 
   before_validation :parameterize_handle
 
+  acts_as_list :scope => 'context_type = \"#{context_type}\" and context_id = #{context_id} and handle = \"#{handle}\"'
+
 protected
 
   def parameterize_handle

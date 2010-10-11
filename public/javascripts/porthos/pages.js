@@ -2,10 +2,36 @@
   Porthos.namespace('Porthos.Pages');
   Porthos.Helpers.cloneAsUrl('page_title', 'page_slug');
   Porthos.Pages.SetupForm = function() {
-    new Porthos.TagAutoCompletion($('page_tag_names'));
-    $$('.editor').each(function(el){
+    // new Porthos.TagAutoCompletion($('page_tag_names'));
+    $$('textarea.editor').each(function(el){
       Porthos.jQuery(el).wymeditor(Porthos.Editor.Options);
     });
+
+    $$('#content div.edit a, #content a.cancel').invoke('observe', 'click', function(event) {
+      event.stop();
+      var element = $(event.element()),
+          parent  = $(element.up('div.page_content'));
+          query   = 'form';
+      if (!parent.hasClassName('one_to_many')) {
+        query += ', div.container';
+      }
+      parent.select(query).invoke('toggle');
+    });
+
+    $$('#content ul.sortable').each(function(element) {
+      var sortable = $(element);
+      Sortable.create(sortable, {
+        onUpdate    : function(event) {
+          new Ajax.Request(Routing.sort_admin_custom_associations_path(), {
+            method: 'put',
+            parameters: Sortable.serialize(sortable, {
+              name: 'custom_associations'
+            })
+          });
+        }
+      });
+    });
+    
   };
 
   Porthos.Pages.Page = Class.create({
