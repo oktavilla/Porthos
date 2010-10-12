@@ -87,6 +87,11 @@
           <label for="page_slug">Adress:</label> <%= "#{request.host}/#{@page.index_node.slug}/#{@page.id}-" if @page.index_node %>
           <%= f.text_field :slug %>
         </div>
+        <label for="page_slug">Namn i navigationen</label>
+        <div class="fullwidth">
+          <%= "#{request.host}/#{@page.index_node.slug}/#{@page.id}-" if @page.index_node %>
+          <%= f.text_field :slug %>
+        </div>
       <% end %>
       <div class="submit"> 
         <input type="submit" value="Spara"> eller <a href="#" class="toggler">avbryt</a> 
