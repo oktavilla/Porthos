@@ -2,7 +2,7 @@
   Porthos.namespace('Porthos.Pages');
   Porthos.Helpers.cloneAsUrl('page_title', 'page_slug');
   Porthos.Pages.SetupForm = function() {
-    // new Porthos.TagAutoCompletion($('page_tag_names'));
+    new Porthos.TagAutoCompletion($('page_tag_names'));
     $$('textarea.editor').each(function(el){
       Porthos.jQuery(el).wymeditor(Porthos.Editor.Options);
     });
@@ -24,6 +24,15 @@
     $$('#page_tags a').invoke('observe', 'click', function(event) {
       event.stop();
       $$('#page_tags_list, #page_tags_form').invoke('toggle');
+    });
+    
+    $$('#workspace > div.header').invoke('observe', 'click', function(event) {
+      var element = $(event.element());
+      if (element.nodeName.toUpperCase() != 'A' || !element.hasClassName('toggler')) {
+        return;
+      }
+      event.stop()
+      $$('#workspace > div.header').invoke('toggle');
     });
     
     $$('#content ul.sortable').each(function(element) {

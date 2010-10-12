@@ -404,10 +404,10 @@ form .avatar {
       color:#000;}
     .page_content .edit,
     .page_content .delete {font-size:.857142857em;}
-  .page_content.string {}
-    .page_content.string .content {
+  .page_content.string_field {}
+    .page_content.string_field .content {
       font-size:1.142857143em; }
-    .page_content.string .edit {
+    .page_content.string_field .edit {
       margin-top:.5em; }
   .page_content.association {}
     .page_content.association ul {
@@ -426,16 +426,16 @@ form .avatar {
       .page_content.association .select_page .submit_inline {
         display:inline;
         font-size:.857142857em;}
-  .page_content.image {}
-    .page_content.image img {
+  .page_content.asset {}
+    .page_content.asset img {
       float:left;
       margin-right:20px; }
-    .page_content.image .title {
+    .page_content.asset .title {
       padding-top:1.5em;
       font-weight:bold; }
-    .page_content.image .caption {
+    .page_content.asset .caption {
       font-size:.857142857em; }
-    .page_content.image .edit {margin-top:.5em;}
+    .page_content.asset .edit {margin-top:.5em;}
 
 ul.nav,
 ul.tags,
