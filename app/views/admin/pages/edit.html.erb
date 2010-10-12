@@ -236,10 +236,38 @@
           <div class="content">
             <%= custom_attribute.value.strftime("%Y-%m-%d") if custom_attribute.value %>
           </div>
+          <div class="edit"><a href="#" class="change">Ändra</a></div>
         </div>
+        <% unless custom_attribute.new_record? %>
+          <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
+            <%= hidden_field_tag :field_id, field.id %>
+            <label for="page_<%= field.handle %>">
+              <%= field.label %>
+            </label>
+            <div>
+              <%= select_date((custom_attribute.value || Time.now), :prefix => 'custom_attribute[value]') %>
+            </div>
+            <div class="submit">
+              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+            </div>
+          <% end %>
+        <% else %>
+          <% form_for :custom_attribute, :url => admin_page_custom_attributes_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
+            <%= hidden_field_tag :field_id, field.id %>
+            <label for="page_<%= field.handle %>">
+              <%= field.label %>
+            </label>
+            <div>
+              <%= select_date((custom_attribute.value || Time.now), :prefix => 'custom_attribute[value]') %>
+            </div>
+            <div class="submit">
+              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+            </div>
+          <% end %>
+        <% end %>
       <% when 'BooleanField' -%>
         <div class="container">
-          <h2 class="field_label <%= custom_attribute.value ? 'checked' : 'unchecked' %>"><%= field.label %></h2>
+          <h2 class="field_label <%= custom_attribute.value == 1 ? 'checked' : 'unchecked' %>"><%= field.label %></h2>
           <div class="edit"><a href="#" class="change">Ändra</a></div>
         </div>
         <% unless custom_attribute.new_record? -%>
