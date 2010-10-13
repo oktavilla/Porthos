@@ -17,7 +17,7 @@
     <div class="add controls">
       <a id="add_content" class="new" href="#">Lägg till innehåll</a>
     </div>
-    <div class="sub_controls">
+    <div class="sub_controls" style="display:none;">
       <ul>
         <li>
           <a class="text ContentTextfield new_content" href="<%= new_admin_content_path(:content => { :context_id => content_list.id, :context_type => 'ContentList', :context_id => content_list.id, :context_type => 'ContentList', :resource_type => 'ContentTextfield' }) %>">Text</a>
@@ -53,3 +53,61 @@
   </div>
   <% end %>
 </div>
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  Event.onReady(function() {
+    var Contents = Class.create({
+      initialize: function(element) {
+        this.element = $(element);
+        this.sortables = $$('ul.sortable');
+        this.observeSorting();
+      },
+      
+      observeSorting: function() {
+        this.element.addClassName('sorting');
+        var teaser_collections = $$('ul.teasers');
+        this.sortables.reverse().each(function(sortable) {
+          sortable.isTeaserContainer = sortable.hasClassName('teasers');
+          if (sortable.isTeaserContainer) {
+            sortable_containment = teaser_collections;
+          } else {
+            sortable_containment = sortable;
+          }
+          Sortable.create(sortable, {
+            containment : sortable_containment,
+            dropOnEmpty : true,
+            hoverclass  : 'drop_target',
+            scroll      : window,
+            handle      : 'draghandle',
+            only        : 'sortable',
+            onUpdate    : this.sort.bindAsEventListener(this)
+          });
+        }.bind(this));
+      },
+      
+      sort: function(event) {
+        this.sortables.each(function(sortable) {
+          var params = '';
+          if (sortable.isTeaserContainer) {
+            params = '&parent_id=' + encodeURIComponent(Porthos.extractId(sortable.id));
+          }
+          new Ajax.Request(Routing.sort_admin_contents_path(), {
+            method: 'put',
+            parameters: Sortable.serialize(sortable, {
+              name: 'contents'
+            }) + params
+          });
+        }.bind(this));
+      }
+    });
+    
+    new Contents('contents');
+    
+    $('add_content').observe('click', function(event) {
+      $$('div.sub_controls').invoke('toggle');
+      event.stop();
+    });
+    
+  });
+</script>
+<% end %>

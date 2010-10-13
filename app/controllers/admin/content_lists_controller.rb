@@ -27,7 +27,7 @@ class Admin::ContentListsController < ApplicationController
     @content_list = ContentList.new(params[:content_list])
     respond_to do |format|
       if @content_list.save
-        format.html { redirect_to admin_content_list_path(@content_list) }
+        format.html { redirect_to admin_content_lists_path }
       else
         format.html { render :action => 'new' }
       end
@@ -45,7 +45,7 @@ class Admin::ContentListsController < ApplicationController
     @content_list = ContentList.find(params[:id])
     respond_to do |format|
       if @content_list.update_attributes(params[:content_list])
-        format.html { redirect_to admin_content_list_path(@content_list) }
+        format.html { redirect_to admin_content_lists_path }
       else
         format.html { render :action => 'edit' }
       end
