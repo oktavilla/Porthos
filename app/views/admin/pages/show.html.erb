@@ -95,6 +95,7 @@
   </div>
   <div id="content" class="page_contents">
   <% @page.field_set.fields.each do |field| -%>
+    <% next if field.is_a?(ReversedPageAssociationField) -%>
     <div class="page_content <%= field.data_type == CustomAssociation ? ['association', field.target_type, field.relationship].join(' ') : ['attribute', field.class.to_s.underscore].join(' ') %>">
     <% if field.data_type == CustomAssociation %>
       <% @page.custom_associations.find(:all, :conditions => ["field_id = ?", field.id], :order => 'custom_associations.position').tap do |custom_associations| %>
@@ -222,7 +223,7 @@
               <%= f.text_area :value, :value => custom_attribute.value, :class => (field.allow_rich_text? ? 'editor' : 'normal') %>
             </div>
             <div class="submit">
-              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              <input type="submit" value="Spara" class="commit button"> eller <a href="#" class="cancel">avbryt</a>
             </div>
           <% end %>
         <% else %>
@@ -233,7 +234,7 @@
               <%= f.text_area :value, :value => custom_attribute.value, :class => (field.allow_rich_text? ? 'editor' : 'normal') %>
             </div>
             <div class="submit">
-              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              <input type="submit" value="Spara" class="commit button"> eller <a href="#" class="cancel">avbryt</a>
             </div>
           <% end %>
         <% end %>
