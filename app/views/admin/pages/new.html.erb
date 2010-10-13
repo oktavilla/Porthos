@@ -15,7 +15,7 @@
       </div>
       <div class="slug_field">
         <label for="page_slug">Adress:</label>
-        <%= "#{request.host}/#{@page.field_set.node.slug}/#{@page.id}-" if @page.field_set && @page.field_set.node %>
+        <%= "#{request.host}/#{@page.field_set.node.slug}/" if @page.field_set && @page.field_set.node %>
         <%= f.text_field :slug, :class => "slug" %>
       </div>
       <div class="submit">
