@@ -13,7 +13,7 @@ module Porthos
 
     def clear_callback
       unless params[:create_callback]
-        session[:create_callback]
+        session[:create_callback] = nil
       end
     end
 
