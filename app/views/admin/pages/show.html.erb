@@ -137,12 +137,18 @@
         <% if custom_associations.any? -%>
           <% if field.target_type == 'asset' -%>
             <% custom_associations.each do |custom_association| -%>
-              <% custom_association.target.tap do |image| -%>
+              <% custom_association.target.tap do |asset| -%>
               <div class="content">
-                <%= image_tag(display_image_path(:id => image.file_name, :size => 'c100x100', :format => image.extname), :width => 100, :height => 100) %>
-                <div class="title"><%= image.title %></div>
-                <div class="caption"><%= image.description %></div>
-                <span class="edit"><%= link_to "Ändra", edit_admin_asset_path(image.id, :return_to => request.path) %></span>
+                <% if asset.image? %>
+                  <%= image_tag display_image_path(:size => 'c100x100', :id => asset, :format => asset.extname), :id => "asset_#{asset.id}", :width => 100, :height => 100 %>
+                <% elsif asset.respond_to?(:thumbnail) and not asset.thumbnail.blank? %>
+                  <%= image_tag display_image_path(:size => 'c100x100', :id => asset.thumbnail, :format => asset.thumbnail.extname), :id => "asset_#{asset.id}", :width => 100, :height => 100 %>
+                <% else %>
+                  <img src="/graphics/porthos/icons/filetypes/<%= asset.extname %>.png" alt="" width="100" height="100">
+                <% end %>
+                <div class="title"><%= asset.title %></div>
+                <div class="caption"><%= asset.description %></div>
+                <span class="edit"><%= link_to "Ändra", edit_admin_asset_path(asset.id, :return_to => request.path) %></span>
                 <span class="delete"><%= link_to "Ta bort", admin_page_custom_association_path(@page.id, custom_association), :method => :delete %></span>
               </div>
               <% end -%>
