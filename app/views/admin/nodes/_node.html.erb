@@ -12,11 +12,11 @@
   <% end -%>
   <span class="edit">
     <% if node.controller == 'pages' && node.action == 'index' -%>
-    <%= link_to "Visa alla sidor", admin_pages_path(:filters => { :with_field_set => node.field_set_id }), :class => 'edit' %>
+      <%= link_to "Visa alla #{node.field_set.title.downcase}", admin_pages_path(:filters => { :with_field_set => node.field_set_id }), :class => 'edit' %>
+      <%= link_to "Ändra", edit_admin_node_path(node), :class => 'settings' %>
     <% else -%>
-    <%= link_to "Ändra innehåll", node_path(node), :class => 'edit' %>
+      <%= link_to "Ändra", node_path(node), :class => 'edit' %>
     <% end -%>
-    <%= link_to "Inställningar", edit_admin_node_path(node), :class => 'settings' %>
     <%= link_to "Flytta", place_admin_node_path(node) %>
     <%= link_to "Ta bort", admin_node_path(node), { :method => :delete, :class => "delete", :confirm => "Är du säker, detta går inte att ångra." } %>
   </span>
