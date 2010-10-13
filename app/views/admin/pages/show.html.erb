@@ -67,6 +67,11 @@
     <% elsif @page.index_node %>
       <div class="slug">
         <span class="key">Adress:</span>
+        <span class="value"><%= request.host %>/<%= @page.node.slug %></span>
+      </div>
+    <% elsif @page.index_node %>
+      <div class="slug">
+        <span class="key">Adress:</span>
         <span class="value"><%= request.host %>/<%= @page.index_node.slug %>/<%= @page.to_param %></span>
       </div>
     <% end %>
@@ -85,11 +90,6 @@
         </div>
         <div class="slug_field">
           <label for="page_slug">Adress:</label> <%= "#{request.host}/#{@page.index_node.slug}/#{@page.id}-" if @page.index_node %>
-          <%= f.text_field :slug %>
-        </div>
-        <label for="page_slug">Namn i navigationen</label>
-        <div class="fullwidth">
-          <%= "#{request.host}/#{@page.index_node.slug}/#{@page.id}-" if @page.index_node %>
           <%= f.text_field :slug %>
         </div>
       <% end %>
