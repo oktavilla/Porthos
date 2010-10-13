@@ -12,10 +12,8 @@ module Porthos
   protected
 
     def clear_callback
-      unless params[:content]
-        session[:content], @content = nil unless params[:content]
-        session[:asset_usage], @asset_usage = nil unless params[:asset_usage]
-        session[:context_params], @context_params = nil unless params[:context_params]
+      unless params[:create_callback]
+        session[:create_callback]
       end
     end
 
