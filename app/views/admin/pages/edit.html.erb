@@ -4,7 +4,7 @@
 <% if not @page.active? -%>
   <h2 class="label">Publicering</h2>
   <p>Sida är inte publicerad och syns inte på webbplatsen än.</p>
-  <p><%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put %></p>
+  <p class="add"><%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put, :class => 'new' %></p>
 <% end -%>
   <h2 class="label">Skapad och ändrad</h2>
   <p>Skapad av: <%= User.find(@page.created_by_id).name %>.</p>
@@ -29,16 +29,14 @@
 </div>
 <div id="workspace">
   <div class="header">
-    <div class="parents"><%= link_to @page.field_set.title, admin_pages_path(:filters => { :with_field_set => @page.field_set.id }) %></div>
-    <h1><%= @page.title %></h1>
-    <a href="#" class="edit_settings toggler">Ändra</a>
     <span class="away">
-      <%= link_to "Förhandsgranska", preview_page_path(@page), :class => 'public_link' %>
+      <a href="#" class="edit_settings toggler action">Ändra</a>
+      <%= link_to "Förhandsgranska", preview_page_path(@page), :class => 'public_link action' %>
     </span>
-    <% if @page.node %>
-      <div class="navigation">
-        <span class="key">Namn i navigationen:</span>
-        <span class="value"><%= @page.node.name %></span>
+    <div class="parents"><%= link_to @page.field_set.title, admin_pages_path(:filters => { :with_field_set => @page.field_set.id }) %></div>
+    <div class="page_title">
+      <h1><%= @page.title %></h1>
+      <% if @page.node %>
         <span class="status <%= @page.node.access_status %>">
         <% case @page.node.access_status
            when 'active' -%>
@@ -49,19 +47,24 @@
           Avstängd
         <% end -%>
         </span>
+      <% elsif @page.index_node %>
+        <% if @page.active? -%>
+        <span class="status active">Visas</span>
+        <% else -%>
+        <span class="status inactive">Avstängd</span>
+        <% end -%>
+      <% end %>
+    </div>
+    <% if @page.node %>
+      <div class="navigation">
+        <span class="key">Namn i navigationen:</span>
+        <span class="value"><%= @page.node.name %></span>
       </div>
       <div class="slug">
         <span class="key">Adress:</span>
         <span class="value"><%= request.host %>/<%= @page.node.slug %></span>
       </div>
     <% elsif @page.index_node %>
-      <div class="navigation">
-        <% if @page.active? -%>
-        <span class="status active">Visas</span>
-        <% else -%>
-        <span class="status inactive">Avstängd</span>
-        <% end -%>
-      </div>
       <div class="slug">
         <span class="key">Adress:</span>
         <span class="value"><%= request.host %>/<%= @page.index_node.slug %>/<%= @page.to_param %></span>
@@ -71,18 +74,17 @@
   <div class="header" style="display:none;">
     <% form_for @page do |f| %>
       <% if @page.node -%>
-        <label for="page_title"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
+        <label for="page_title" class="first_label"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
         <div class="fullwidth">
-          <%= f.text_field :title %>
+          <%= f.text_field :title, :class => 'title' %>
         </div>
       <% else -%>
-        <label for="page_title"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
+        <label for="page_title" class="first_label"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
         <div class="fullwidth">
-          <%= f.text_field :title %>
+          <%= f.text_field :title, :class => 'title' %>
         </div>
-        <label for="page_slug">Namn i navigationen</label>
-        <div class="fullwidth">
-          <%= "#{request.host}/#{@page.index_node.slug}/#{@page.id}-" if @page.index_node %>
+        <div class="slug_field">
+          <label for="page_slug">Adress:</label> <%= "#{request.host}/#{@page.index_node.slug}/#{@page.id}-" if @page.index_node %>
           <%= f.text_field :slug %>
         </div>
       <% end %>

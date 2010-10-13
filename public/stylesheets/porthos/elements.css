@@ -76,7 +76,8 @@ label {
   font-weight:bold; }
   label.notasimportant {font-weight:normal;}
   input[type="hidden"] + label,
-  legend + label  {margin-top:.5em;}
+  legend + label,
+  label.first_label  {margin-top:.5em;}
 fieldset {margin:.5em 0 1em 0;}
 fieldset.compact {
   padding-top:1.5em;
@@ -97,6 +98,15 @@ fieldset.compact {
     margin-bottom:1em;}
   fieldset.compact .submit {
     padding-left:115px; }
+
+form .slug_field {margin-top:.5em;}
+  form .slug_field label {
+    display:inline;
+    font-weight:normal; }
+  form .slug_field input {
+      margin-left:.3em;
+      padding:.1em;
+      font-size:.8571em; }
 
 .multiple_choice {
   list-style:none;
@@ -208,29 +218,23 @@ form .avatar {
     color:#000;
     background:#ff0;}
 
-.add {
-  margin-top:6px;
-  margin-bottom:6px; }
+.add {}
   .add .label {
-    float:left;
-    margin-right:1em; 
+    display:inline-block;
+    margin-right:.5em;
     padding-top:7px; }
   .add .new {
-    float:left;
-    margin-right:.5em;
+    display:inline-block;
+    margin:0 0 .5em .5em;
     padding:6px 10px 5px 10px;
     font-size:12px;
     color:rgba(0,0,0,.85);
     background:rgb(240,240,240) url(/graphics/porthos/button_grey_bg.png) 0 0 repeat-x; 
     border:1px solid rgb(215,215,215);
     text-shadow:1px 1px 1px rgb(255,255,255);
-    /*
-    green style
-    color:rgba(0,0,0,.7);
-    background:rgb(116,176,15); 
-    border:1px solid rgb(90,160,45);
-    text-shadow:1px 1px 1px rgb(166,206,66); */
-    -webkit-border-radius:5px; 
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
     font-weight:bold; }
     .add .new:active {
       background:rgb(250,250,250);

@@ -139,7 +139,7 @@ body.layout3 #workspace {
   #sub_nav p {
     margin:0;
     font-size:12px;
-    padding:0 0 0 40px;
+    padding:0 0 0 20px;
     color:#8598a4;}
   #sub_nav .new a {
     display:block;
@@ -203,12 +203,13 @@ body.layout3 #workspace {
         font-weight:normal; 
         color:#666;
         text-transform:uppercase; }
-    #workspace .header a {
+    #workspace .header a.action {
       margin-left:1.5em;
       padding:5px 0 5px 18px;
       font-size:.8571em; 
       text-decoration:none;
       color:#666; }
+      #workspace .header a.action:hover {color:#005e96;}
     #workspace .header .private {
       color:#c41134; }
     #workspace .header .edit_settings {
@@ -223,7 +224,8 @@ body.layout3 #workspace {
         margin:0;
         padding:0; 
         font-size:1em; }
-      #workspace .header .navigation {margin-top:1em;}
+      #workspace .header .page_title {
+        margin:.5em 0 .6em 0;}
       #workspace .header .slug,
       #workspace .header .navigation {
         font-size:.8571em; }
@@ -232,7 +234,7 @@ body.layout3 #workspace {
           margin-right:.5em;
           color:#aaa; }
         #workspace .header .navigation .value {font-weight:bold;color:#000;}
-        #workspace .header .navigation .status {
+        #workspace .header .status {
           margin-left:.5em;
           line-height:1;
           padding:2px 4px 1px 4px;
@@ -243,17 +245,12 @@ body.layout3 #workspace {
           -webkit-border-radius: 3px;
           -moz-border-radius: 3px;
           border-radius: 3px; }
-          #workspace .header .navigation .restricted {background:red;}
-          #workspace .header .navigation .hidden {background:red;}
+          #workspace .header .inactive {background:#d00;}
+          #workspace .header .hidden {background:red;}
       #workspace .header form {
         width:70%; }
         #workspace .header label:first-child {
           margin-top:0; }
-        #workspace .header form .slug_field {margin-top:.5em;}
-          #workspace .header form .slug_field input {
-            margin-left:.3em;
-            padding:.1em;
-            font-size:.8571em; }
         #workspace .header form .multiple_choice {margin:1em 0;}
   #workspace .tools,
   #workspace .adding {
