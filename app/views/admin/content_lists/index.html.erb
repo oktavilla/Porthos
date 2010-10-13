@@ -15,7 +15,7 @@
       <%= link_to("Ändra", edit_admin_content_list_path(content_list)) %>
     </div>
     <div class="add controls">
-      <a id="add_content" class="new" href="#">Lägg till innehåll</a>
+      <a class="new" href="#">Lägg till innehåll</a>
     </div>
     <div class="sub_controls" style="display:none;">
       <ul>
@@ -27,7 +27,7 @@
         </li>
       </ul>
     </div>
-    <ul class="contents items sortable" id="contents">
+    <ul class="contents items sortable" id="content_list_<%= content_list.id %>">
     <% content_list.contents.each do |content| -%>
       <li class="<%= "#{content.resource_type} content " unless content.collection? %><%= ' collection' if content.collection? %> sortable <%= content.resource_type.underscore %>_wrapper<%= content.active? ? ' active' : ' inactive' %>" id="content_<%= content.id %>">
       <span class="draghandle"></span>
@@ -55,59 +55,59 @@
 </div>
 <% content_for :javascripts do %>
 <script type="text/javascript">
+  var Contents = Class.create({
+    initialize: function(element) {
+      this.element = $(element);
+      this.sortables = this.element.select('ul.sortable');
+      this.observeSorting();
+    },
+  
+    observeSorting: function() {
+      this.element.addClassName('sorting');
+      var teaser_collections = $$('ul.teasers');
+      this.sortables.reverse().each(function(sortable) {
+        sortable.isTeaserContainer = sortable.hasClassName('teasers');
+        if (sortable.isTeaserContainer) {
+          sortable_containment = teaser_collections;
+        } else {
+          sortable_containment = sortable;
+        }
+        Sortable.create(sortable, {
+          containment : sortable_containment,
+          dropOnEmpty : true,
+          hoverclass  : 'drop_target',
+          scroll      : window,
+          handle      : 'draghandle',
+          only        : 'sortable',
+          onUpdate    : this.sort.bindAsEventListener(this)
+        });
+      }.bind(this));
+    },
+  
+    sort: function(event) {
+      this.sortables.each(function(sortable) {
+        var params = '';
+        if (sortable.isTeaserContainer) {
+          params = '&parent_id=' + encodeURIComponent(Porthos.extractId(sortable.id));
+        }
+        new Ajax.Request(Routing.sort_admin_contents_path(), {
+          method: 'put',
+          parameters: Sortable.serialize(sortable, {
+            name: 'contents'
+          }) + params
+        });
+      }.bind(this));
+    }
+  });
+
   Event.onReady(function() {
-    var Contents = Class.create({
-      initialize: function(element) {
-        this.element = $(element);
-        this.sortables = $$('ul.sortable');
-        this.observeSorting();
-      },
-      
-      observeSorting: function() {
-        this.element.addClassName('sorting');
-        var teaser_collections = $$('ul.teasers');
-        this.sortables.reverse().each(function(sortable) {
-          sortable.isTeaserContainer = sortable.hasClassName('teasers');
-          if (sortable.isTeaserContainer) {
-            sortable_containment = teaser_collections;
-          } else {
-            sortable_containment = sortable;
-          }
-          Sortable.create(sortable, {
-            containment : sortable_containment,
-            dropOnEmpty : true,
-            hoverclass  : 'drop_target',
-            scroll      : window,
-            handle      : 'draghandle',
-            only        : 'sortable',
-            onUpdate    : this.sort.bindAsEventListener(this)
-          });
-        }.bind(this));
-      },
-      
-      sort: function(event) {
-        this.sortables.each(function(sortable) {
-          var params = '';
-          if (sortable.isTeaserContainer) {
-            params = '&parent_id=' + encodeURIComponent(Porthos.extractId(sortable.id));
-          }
-          new Ajax.Request(Routing.sort_admin_contents_path(), {
-            method: 'put',
-            parameters: Sortable.serialize(sortable, {
-              name: 'contents'
-            }) + params
-          });
-        }.bind(this));
-      }
+    $$('div.content_list').each(function(content_list) {
+      new Contents($(content_list));
+      content_list.select('div.controls a.new').invoke('observe', 'click', function(event) {
+        content_list.select('div.sub_controls').invoke('toggle');
+        event.stop();
+      });
     });
-    
-    new Contents('contents');
-    
-    $('add_content').observe('click', function(event) {
-      $$('div.sub_controls').invoke('toggle');
-      event.stop();
-    });
-    
   });
 </script>
 <% end %>
