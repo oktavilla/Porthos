@@ -11,8 +11,7 @@
       <div id="root">
         <span class="name"><%= @root.name %></span>
         <span class="edit">
-          <%= link_to "Ändra innehåll", node_path(@root), :class => 'edit' %>
-          <%= link_to "Inställningar", edit_admin_node_path(@root), :class => 'settings' %>
+          <%= link_to "Ändra", edit_admin_node_path(@root), :class => 'settings' %>
         </span>
       </div>
       <div id="navigation">
