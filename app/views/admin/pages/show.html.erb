@@ -4,7 +4,7 @@
 <% if not @page.active? -%>
   <h2 class="label">Publicering</h2>
   <p>Sida är inte publicerad och syns inte på webbplatsen än.</p>
-  <div id="publish_now" class="add"><%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put, :class => 'new' %></div>
+  <div id="publish_now" class="add"><%= link_to "Publicera sidan", toggle_admin_page_path(@page.id), :method => :put, :class => 'new' %></div>
 <% end -%>
   <h2 class="label">Skapad och ändrad</h2>
   <p>Skapad av: <%= User.find(@page.created_by_id).name %>.</p>
@@ -34,7 +34,7 @@
   <div class="header">
     <span class="away">
       <a href="#" class="edit_settings toggler action">Ändra</a>
-      <%= link_to "Förhandsgranska", preview_page_path(@page), :class => 'public_link action' %>
+      <%= link_to "Förhandsgranska", preview_page_path(@page.id), :class => 'public_link action' %>
     </span>
     <div class="parents"><%= link_to @page.field_set.title, admin_pages_path(:filters => { :with_field_set => @page.field_set.id }) %></div>
     <div class="page_title">
@@ -75,12 +75,39 @@
     <% end %>
   </div>
   <div class="header" style="display:none;">
-    <% form_for @page do |f| %>
+    <% form_for @page, :url => admin_page_path(@page.id) do |f| %>
       <% if @page.node -%>
         <label for="page_title" class="first_label"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
         <div class="fullwidth">
           <%= f.text_field :title, :class => 'title' %>
         </div>
+        <% f.fields_for :node, @page.node do |node_form| %>
+          <label for="page_node_attributes_name" class="notasimportant">Namn i navigationen</label>
+          <%= node_form.text_field :name, :size => 60 %>
+          <div class="slug_field">
+            <label for="page_slug">Adress:</label> <%= "#{request.host}/#{@page.node.parent.slug}" %><%= f.text_field :slug %>
+          </div>
+          <ul class="multiple_choice">
+            <li>
+              <label for="shown_in_nav">
+                <%= node_form.radio_button :status, 1, :id => 'shown_in_nav' %>
+                Visas i navigationen <span class="form_help">Och är tillgänglig på internet.</span>
+              </label>
+            </li>
+            <li>
+              <label for="not_shown_in_nav">
+                <%= node_form.radio_button :status, 0, :id => 'not_shown_in_nav' %>
+                Visas inte i navigationen. <span class="form_help">Men är tillgänglig på internet.</span>
+              </label>
+            </li>
+            <li>
+              <label for="restricted">
+                <%= node_form.radio_button :status, -1, :id => 'restricted' %>
+                Avstängd <span class="form_help">Är ej tillgänglig på internet.</span>
+              </label>
+            </li>
+          </ul>
+        <% end %>
       <% else -%>
         <label for="page_title" class="first_label"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
         <div class="fullwidth">
@@ -98,6 +125,7 @@
   </div>
   <div id="content" class="page_contents">
   <% @page.field_set.fields.each do |field| -%>
+    <% next if field.is_a?(ReversedPageAssociationField) -%>
     <div class="page_content <%= field.data_type == CustomAssociation ? ['association', field.target_type, field.relationship].join(' ') : ['attribute', field.class.to_s.underscore].join(' ') %>">
     <% if field.data_type == CustomAssociation %>
       <% @page.custom_associations.find(:all, :conditions => ["field_id = ?", field.id], :order => 'custom_associations.position').tap do |custom_associations| %>
@@ -135,7 +163,7 @@
             <% elsif field.target_type == 'page' -%>
               <% if field.relationship == 'one_to_one' -%>
                 <a href="#" class="change">Ändra</a>
-              <% else -%>
+              <% elsif custom_associations.size != field.possible_targets.size -%>
                 <a href="#" class="add">Lägg till</a>
               <% end -%>
             <% end -%>
@@ -143,13 +171,13 @@
         </div>
         <% if field.target_type == 'page' -%>
            <% if field.relationship == 'one_to_many' -%>
-              <% form_for :custom_association, :url => admin_page_custom_associations_path(@page), :html => { :style => 'display:none;', :class => 'select_page' } do |f| %>
+              <% form_for :custom_association, :url => admin_page_custom_associations_path(@page.id), :html => { :style => 'display:none;', :class => 'select_page' } do |f| %>
                 <%= f.hidden_field :target_type, :value => field.target_class.to_s %>
                 <%= f.hidden_field :field_id, :value => field.id %>
                 <%= f.hidden_field :handle, :value => field.handle %>
                 <%= f.hidden_field :relationship, :value => field.relationship %>
                 <label for="page_<%= field.label %>"><%= field.label %></label>
-                <%= f.select :target_id, field.possible_targets.collect { |pt| [pt['title'], pt['id']] }, :selected => custom_associations.collect { |ca| ca.target_id } %>
+                <%= f.select :target_id, field.possible_targets.find_all { |pt| !custom_associations.collect { |ca| ca.target_id }.include?(pt['id'].to_i) }.collect { |pt| [pt['title'], pt['id']] }, :selected => custom_associations.collect { |ca| ca.target_id } %>
                 <div class="submit_inline">
                   <input type="submit" value="Lägg till">
                   eller <a href="#" class="cancel">avbryt</a>
@@ -165,13 +193,13 @@
                   </div>
                 <% end -%>
               <% else -%>
-                <% form_for :custom_association, :url => admin_page_custom_associations_path(@page), :html => { :style => 'display:none;' } do |f| %>
+                <% form_for :custom_association, :url => admin_page_custom_associations_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
                   <%= f.hidden_field :target_type, :value => field.target_class.to_s %>
                   <%= f.hidden_field :field_id, :value => field.id %>
                   <%= f.hidden_field :handle, :value => field.handle %>
                   <%= f.hidden_field :relationship, :value => field.relationship %>
                   <label for="page_<%= field.label %>"><%= field.label %></label>
-                  <%= f.select :target_id, field.possible_targets.collect { |pt| [pt['title'], pt['id']] }, :include_blank => (field.required? ? false : '(ingen)') %>
+                  <%= f.select :target_id, field.possible_targets.find_all { |pt| !custom_associations.collect { |ca| ca.target_id }.include?(pt['id'].to_i) }.collect { |pt| [pt['title'], pt['id']] } %>
                   <div class="submit_inline">
                     <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
                   </div>
@@ -226,7 +254,7 @@
               <%= f.text_area :value, :value => custom_attribute.value, :class => (field.allow_rich_text? ? 'editor' : 'normal') %>
             </div>
             <div class="submit">
-              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              <input type="submit" value="Spara" class="commit button"> eller <a href="#" class="cancel">avbryt</a>
             </div>
           <% end %>
         <% else %>
@@ -237,7 +265,7 @@
               <%= f.text_area :value, :value => custom_attribute.value, :class => (field.allow_rich_text? ? 'editor' : 'normal') %>
             </div>
             <div class="submit">
-              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              <input type="submit" value="Spara" class="commit button"> eller <a href="#" class="cancel">avbryt</a>
             </div>
           <% end %>
         <% end %>
@@ -256,7 +284,7 @@
               <%= field.label %>
             </label>
             <div>
-              <%= select_date((custom_attribute.value || Time.now), :prefix => 'custom_attribute[value]') %>
+              <%= select_date(custom_attribute.value, :order => [:year, :month, :day], :prompt => true, :prefix => 'custom_attribute[value]') %>
             </div>
             <div class="submit">
               <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
@@ -269,7 +297,7 @@
               <%= field.label %>
             </label>
             <div>
-              <%= select_date((custom_attribute.value || Time.now), :prefix => 'custom_attribute[value]') %>
+              <%= select_date(custom_attribute.value, :order => [:year, :month, :day], :prompt => true, :prefix => 'custom_attribute[value]') %>
             </div>
             <div class="submit">
               <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>

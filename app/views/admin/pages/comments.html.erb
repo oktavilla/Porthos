@@ -27,6 +27,6 @@
     <%= link_to "Redigera sidan", admin_page_path(:id => @page) %>
   </div>
   <div id="content">
-    <%= render :partial => "admin/comments/table", :locals => { :comments => @page.comments.find(:all, :order => 'created_at DESC'), :return_to => comments_admin_page_path(@page) } %>
+    <%= render :partial => "admin/comments/table", :locals => { :comments => @page.comments.find(:all, :order => 'created_at DESC'), :return_to => comments_admin_page_path(@page.id) } %>
   </div>
 </div>
