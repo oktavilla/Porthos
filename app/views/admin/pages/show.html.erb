@@ -289,7 +289,7 @@
               <%= field.label %>
             </label>
             <div>
-              <%= select_date(custom_attribute.value, :order => [:year, :month, :day], :prompt => true, :prefix => 'custom_attribute[value]') %>
+              <%= select_date((custom_attribute.value||Time.now), :order => [:year, :month, :day], :prompt => true, :prefix => 'custom_attribute[value]') %>
             </div>
             <div class="submit">
               <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
@@ -302,7 +302,7 @@
               <%= field.label %>
             </label>
             <div>
-              <%= select_date(custom_attribute.value, :order => [:year, :month, :day], :prompt => true, :prefix => 'custom_attribute[value]') %>
+              <%= select_date((custom_attribute.value||Time.now), :order => [:year, :month, :day], :prompt => true, :prefix => 'custom_attribute[value]') %>
             </div>
             <div class="submit">
               <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
