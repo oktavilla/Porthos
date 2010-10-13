@@ -2,11 +2,11 @@ class Admin::AssetsController < ApplicationController
   include Porthos::Admin
   
   before_filter :login_required
-  before_filter :set_content_context,
+  before_filter :set_callback,
                 :only => [:index, :search]
   before_filter :find_tags,
                 :only => [:index, :new]
-  skip_before_filter :clear_content_context
+  skip_before_filter :clear_callback
   skip_before_filter :remember_uri,
                      :only => [:index, :show, :create, :search]
   
@@ -148,10 +148,8 @@ protected
     @related_tags = @current_tags.any? ? Asset.find_related_tags(@current_tags) : []
   end
 
-  def set_content_context
-    @content = session[:content] ||= params[:content]
-    @asset_usage = session[:asset_usage] ||= params[:asset_usage]
-    @context_params = session[:context_params] ||= params[:context_params] ||= {}
+  def set_callback
+    @create_callback = session[:create_callback] = params[:create_callback]
   end
 
 end
