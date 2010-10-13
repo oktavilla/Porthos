@@ -130,8 +130,7 @@ body.layout3 #workspace {
   #sub_nav ul.filter,
   #sub_nav ul.tags,
   #sub_nav ul.nav li a,
-  #sub_nav .label,
-  #sub_nav .new a {
+  #sub_nav .label {
     padding:.5em 40px .45em 20px; }
   #sub_nav .back {
     display:block;
@@ -139,12 +138,8 @@ body.layout3 #workspace {
   #sub_nav p {
     margin:0;
     font-size:12px;
-    padding:0 0 0 20px;
+    padding:0 20px .5em 20px;
     color:#8598a4;}
-  #sub_nav .new a {
-    display:block;
-    margin-top:.3em;
-    padding:.5em 20px .45em 40px; }
   #sub_nav ul.sortable li {
     position:relative;
     margin:0; }
@@ -158,19 +153,13 @@ body.layout3 #workspace {
       width:20px;
       background:transparent url(/graphics/porthos/ui_new.png) 0 -790px no-repeat; }
   #sub_nav .label {
-    margin:.5em 0 .5em 0;
+    margin:1em 0 1em 0;
     font-size:12px;
     text-transform:uppercase; 
     border-bottom:1px dashed #ccc;
     color:#8598a4; }
   
-  #sub_nav .new {
-    margin-top:.5em;
-    border-top:1px dashed #ccc;
-    font-weight:normal;
-    font-size:12px; 
-    background:transparent url(/graphics/porthos/ui_new.png) 20px -730px no-repeat;}
-
+  #sub_nav #publish_now {padding:10px 20px;}
 
 #tags_view .taggables {
   list-style:none; }
@@ -459,7 +448,17 @@ ul#nodes, ul#nodes ul {
     #userslist .vcard .email,
     #userslist .vcard .edit {
       font-size:12px; }
-    
+
+.drag_handle {
+  position:absolute; 
+  display:block;
+  top:0px;
+  left:0px; 
+  cursor:move;
+  height:25px; 
+  width:25px;
+  background:transparent url(/graphics/porthos/ui_new.png) 0 -792px no-repeat; }
+
 
 #asset_usages {}
   #asset_usages div {

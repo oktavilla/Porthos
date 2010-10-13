@@ -225,7 +225,7 @@ form .avatar {
     padding-top:7px; }
   .add .new {
     display:inline-block;
-    margin:0 0 .5em .5em;
+    margin:0 .5em .5em 0;
     padding:6px 10px 5px 10px;
     font-size:12px;
     color:rgba(0,0,0,.85);
@@ -291,8 +291,9 @@ form .avatar {
     font-weight:bold;
     color:#000;}
   .column .controls {
-    padding:1em 40px 1em 40px; }
-    .column .controls .add {margin:0;}
+    padding:1em 40px 1em 40px;
+    line-height:1em; }
+    .column .controls .add {margin-bottom:0;}
   .column .sub_controls {padding:0 40px;}
   .column .contents {min-height:50px;}
 
@@ -392,14 +393,14 @@ form .avatar {
       margin:0;}
     .contents li.collection ul .add {
       margin:0;
-      padding-left:2em;
+      padding-left:40px;
       border-top: 1px solid rgb(221, 221, 221); }
 
 #workspace #content.page_contents {
   padding:0; }
   .page_content {
     margin:0;
-    padding:20px 250px 20px 40px;
+    padding:20px 40px 20px 40px;
     border-top:1px solid #ddd;}
     .page_content:first-child {border-top:none;}
     .page_content h2.field_label {
@@ -423,7 +424,16 @@ form .avatar {
     .page_content.association ul {
       list-style:none; 
       margin:0; }
-    .page_content.association li {margin:0 0 .25em 0;}
+    .page_content.association li {
+      margin:0 0 .25em -40px;
+      padding:0 0 0 40px; }
+      .page_content.association li .drag_handle {
+        top:-3px;
+        left:15px; }
+      .page_content.association li .drag_handle,
+      .page_content.association li .delete { display:none; }
+      .page_content.association li:hover .drag_handle {display:block;}
+      .page_content.association li:hover .delete {display:inline;}
     .page_content.association li .page {
       font-size:1.142857143em; }
     .page_content.association li .delete {margin-left:1em;}
@@ -446,6 +456,8 @@ form .avatar {
     .page_content.asset .caption {
       font-size:.857142857em; }
     .page_content.asset .edit {margin-top:.5em;}
+  .page_content.asset.one_to_many {}
+    .page_content.asset.one_to_many .content {margin-bottom:.5em;}
 
 ul.nav,
 ul.tags,
@@ -479,17 +491,24 @@ ul.filter {}
   ul.filter li.current a {  
     padding:3px 6px 3px 6px; }
 
-ul.tags {    
-  color:#999; }
+ul.tags {}
   ul.tags li {
+    display:inline;
+    font-weight:normal;
+    font-size:12px; }
+
+ul.tags.alphabetical {    
+  color:#999; }
+  ul.tags.alphabetical li {
+    display:block;
     padding:0 0 1em 20px; }
-  ul.tags li .letter {
+  ul.tags.alphabetical li .letter {
     float:left;
     font-size:12px;
     margin-top:2px;
     color:rgba(0,0,0,.7);
     margin-left:-20px; }
-  ul.tags .tag {
+  ul.tags.alphabetical .tag {
     padding:2px;
     font-weight:normal;
     font-size:12px; }

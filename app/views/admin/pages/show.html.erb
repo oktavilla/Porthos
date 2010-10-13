@@ -4,19 +4,22 @@
 <% if not @page.active? -%>
   <h2 class="label">Publicering</h2>
   <p>Sida är inte publicerad och syns inte på webbplatsen än.</p>
-  <p class="add"><%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put, :class => 'new' %></p>
+  <div id="publish_now" class="add"><%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put, :class => 'new' %></div>
 <% end -%>
   <h2 class="label">Skapad och ändrad</h2>
   <p>Skapad av: <%= User.find(@page.created_by_id).name %>.</p>
-  <p>Ändrades senast den <%= @page.updated_at.strftime("%d %B %Y") %><%= " av #{User.find(@page.updated_by_id).name}" if @page.updated_by %>.</p>
+  <% if @page.active? -%>
+  <p>Publicerad: <%= @page.published_on.strftime("%d %B %Y") %>.</p>
+  <% end -%>
+  <p>Senast ändrad: <%= @page.updated_at.strftime("%d %B %Y") %><%= " av #{User.find(@page.updated_by_id).name}" if @page.updated_by %>.</p>
   <h2 class="label">Nyckelord</h2>
   <div id="page_tags">
     <div id="page_tags_list">
-      <ul>
+      <p class="tags">
       <% @page.tags.each do |tag| -%>
-        <li><%= tag.name %></li>
+        <%= link_to("#{tag.name.downcase}", admin_pages_path(:tags => (params[:tags] || []).dup.push(tag.name)), :class => 'tag') %>, 
       <% end -%>
-      </ul>
+      </p>
       <p><a href="#">Ändra</a></p>
     </div>
     <% form_for [:admin, @page], :html => { :id => 'page_tags_form', :style => 'display:none;' } do |f| -%>
@@ -116,6 +119,7 @@
             <ul class="pages sortable" id="page_<%= field.handle %>_list">
             <% custom_associations.each do |custom_association| -%>
               <li id="custom_association_<%= custom_association.id %>">
+                <span class="drag_handle"></span>
                 <%= link_to custom_association.target.title, admin_page_path(custom_association.target), :class => 'page' %>
                 <% unless custom_associations.size == 1 && field.required? -%>
                 <%= link_to("Ta bort", admin_page_custom_association_path(@page, custom_association), :class => 'delete', :method => :delete) %>
