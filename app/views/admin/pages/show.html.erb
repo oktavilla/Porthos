@@ -142,7 +142,7 @@
                 <%= image_tag(display_image_path(:id => image.file_name, :size => 'c100x100', :format => image.extname), :width => 100, :height => 100) %>
                 <div class="title"><%= image.title %></div>
                 <div class="caption"><%= image.description %></div>
-                <span class="edit"><%= link_to "Ändra", edit_admin_asset_path(image, :return_to => request.path) %></span>
+                <span class="edit"><%= link_to "Ändra", edit_admin_asset_path(image.id, :return_to => request.path) %></span>
                 <span class="delete"><%= link_to "Ta bort", admin_page_custom_association_path(@page.id, custom_association), :method => :delete %></span>
               </div>
               <% end -%>
