@@ -235,7 +235,7 @@ body.layout3 #workspace {
           -moz-border-radius: 3px;
           border-radius: 3px; }
           #workspace .header .inactive {background:#d00;}
-          #workspace .header .hidden {background:red;}
+          #workspace .header .hidden {background:#aaa;}
       #workspace .header form {
         width:70%; }
         #workspace .header label:first-child {

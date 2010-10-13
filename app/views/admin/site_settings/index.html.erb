@@ -1,3 +1,4 @@
+<% @page_title = "Inställningar" %>
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
   <div id="sub_nav">
@@ -13,7 +14,7 @@
       </div>
     </div>
     <div id="content">
-      <% if @site_settings %>  
+      <% if @site_settings.any? %>  
         <table>
           <thead>
             <tr>
@@ -22,13 +23,15 @@
               <th colspan="2"></th>
             </tr>
           </thead>
-          <tbody id="fields">
+          <tbody id="site_settings">
         <% @site_settings.each do |setting| %>  
           <tr class="<%= cycle 'odd', 'even' %>">
             <td><%= setting.name %></td>
-            <td><%= setting.value %></td>
-            <td class="controls general">
-              <%= link_to "Ändra", edit_admin_site_setting_path(setting), :class => 'edit' %>
+            <td><%= html_escape setting.value %></td>
+            <td>
+              <%= link_to "Ändra", edit_admin_site_setting_path(setting) %>
+            </td>
+            <td>
               <%= link_to "Radera", admin_site_setting_path(setting), :method => :delete, :class => 'delete', :confirm => 'Är du säker?' %>
             </td>
           </tr>
