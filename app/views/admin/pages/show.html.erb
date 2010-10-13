@@ -67,11 +67,6 @@
     <% elsif @page.index_node %>
       <div class="slug">
         <span class="key">Adress:</span>
-        <span class="value"><%= request.host %>/<%= @page.node.slug %></span>
-      </div>
-    <% elsif @page.index_node %>
-      <div class="slug">
-        <span class="key">Adress:</span>
         <span class="value"><%= request.host %>/<%= @page.index_node.slug %>/<%= @page.to_param %></span>
       </div>
     <% end %>
