@@ -85,8 +85,6 @@ Porthos.Assets.Asset.file_types = $A([
   'jpeg',
   'png',
   'gif',
-  'tif',
-  'tiff',
   'mov',
   'qt',
   'mp4',
@@ -121,7 +119,7 @@ Porthos.Assets.Uploader = Class.create({
       }, $h2({}, placeholder, this.browse_link, ' eller ', $a({
         'class' : 'cancel',
         'href' : Routing.admin_assets_path()
-      }, 'avbryt' )), $p({'class' : 'allowed_formats'}, "Du kan ladda upp: bilder (jpg, png, gif, tif), filmer (fla, swf, mov, mp4, mpg, avi), ljud (mp3, wav) samt andra dokument (doc, zip, pdf, eps)."))
+      }, 'avbryt' )), $p({'class' : 'allowed_formats'}, "Du kan ladda upp: bilder (jpg, png, gif), filmer (fla, swf, mov, mp4, mpg, avi), ljud (mp3, wav) samt andra dokument (doc, zip, pdf, eps)."))
     });
     
     this.options = Object.extend({

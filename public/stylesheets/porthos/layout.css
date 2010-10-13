@@ -495,6 +495,8 @@ table.sortable {
     padding:0;
     width:40px;
     background:transparent;  }
+  table.sortable tbody tr {
+    width:100%; }
   table.sortable tr:nth-child(odd) td.handle,
   table.sortable td.handle,
   table.sortable tr:hover td.handle {
@@ -503,12 +505,12 @@ table.sortable {
     width:40px;
     background:transparent;
     cursor:pointer;}
+  table.sortable tr .drag_handle {display:none;}
   table.sortable tr:hover .drag_handle {
-     display:block;
-     margin-left:10px;
-     height:25px; 
-     width:20px;
-     background:transparent url(/graphics/porthos/ui_new.png) 0 -790px no-repeat;  }
+    position:relative;
+    display:block;
+    margin-left:15px;
+    margin-top:1px; }
 
 #sessions_view {
   background:#f2f2f2; }
