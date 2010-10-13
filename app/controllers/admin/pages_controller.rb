@@ -107,9 +107,14 @@ class Admin::PagesController < ApplicationController
   def toggle
     @page = Page.find(params[:id])
     @page.update_attributes(:active => !@page.active?)
-    flash[:notice] = "”#{@page.title}” #{t(:active, :scope => [:app, :admin_pages])}" if @page.active?
     respond_to do |format|
-      format.html { redirect_back_or_default(admin_page_path(@page.id)) }
+      format.html do
+        if @page.index_node || @page.node
+          redirect_back_or_default(admin_page_path(@page.id))
+        else
+          redirect_to new_admin_node_path(:resource_id => @page.id)
+        end
+      end
     end
   end
   
