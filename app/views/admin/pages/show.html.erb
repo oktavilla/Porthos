@@ -81,15 +81,16 @@
   <div class="header" style="display:none;">
     <% form_for @page, :url => admin_page_path(@page.id) do |f| %>
       <% if @page.node -%>
-        <label for="page_title" class="first_label"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
+        <label for="page_main_title" class="first_label"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
         <div class="fullwidth">
-          <%= f.text_field :title, :class => 'title' %>
+          <%= f.text_field :title, :class => 'title', :id => 'page_main_title' %>
         </div>
         <% f.fields_for :node, @page.node do |node_form| %>
           <label for="page_node_attributes_name" class="notasimportant">Namn i navigationen</label>
-          <%= node_form.text_field :name, :size => 60 %>
+          <%= node_form.text_field :name, :size => 60, :id => 'page_title' %>
           <div class="slug_field">
-            <label for="page_slug">Adress:</label> <%= "#{request.host}/#{@page.node.parent.slug}" %><%= f.text_field :slug %>
+            <label for="page_slug">Adress:</label>
+            <%= "#{request.host}/#{@page.node.parent.slug}" %><%= f.text_field :slug %>
           </div>
           <ul class="multiple_choice">
             <li>
