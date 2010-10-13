@@ -16,9 +16,7 @@
   <div id="page_tags">
     <div id="page_tags_list">
       <p class="tags">
-      <% @page.tags.each do |tag| -%>
-        <%= link_to("#{tag.name.downcase}", admin_pages_path(:tags => (params[:tags] || []).dup.push(tag.name)), :class => 'tag') %>, 
-      <% end -%>
+      <%= @page.tags.collect { |tag| link_to("#{tag.name.downcase}", admin_pages_path(:tags => (params[:tags] || []).dup.push(tag.name)), :class => 'tag') }.join(', ') -%>
       </p>
       <p><a href="#">Ändra</a></p>
     </div>
