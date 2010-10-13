@@ -149,7 +149,7 @@ protected
   end
 
   def set_callback
-    @create_callback = session[:create_callback] = params[:create_callback]
+    @create_callback = session[:create_callback] ||= params[:create_callback]
   end
 
 end
