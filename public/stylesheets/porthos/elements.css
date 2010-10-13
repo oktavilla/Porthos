@@ -286,6 +286,7 @@ form .avatar {
     font-weight:bold;
     color:#000;}
 
+.column .contents {min-height:50px;}
 .contents li.content {
   position:relative;
   list-style:none;
