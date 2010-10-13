@@ -34,12 +34,16 @@
   <div class="header">
     <span class="away">
       <a href="#" class="edit_settings toggler action">Ändra</a>
+      <% if @page.active? -%>
+        <%= link_to "Visa på webbplatsen", '/'+@page.full_slug, :class => 'public_link action' %>
+      <% else -%>
       <%= link_to "Förhandsgranska", preview_page_path(@page.id), :class => 'public_link action' %>
+      <% end -%>
     </span>
     <div class="parents"><%= link_to @page.field_set.title, admin_pages_path(:filters => { :with_field_set => @page.field_set.id }) %></div>
     <div class="page_title">
       <h1><%= @page.title %></h1>
-      <% if @page.node %>
+      <% if @page.node -%>
         <span class="status <%= @page.node.access_status %>">
         <% case @page.node.access_status
            when 'active' -%>
@@ -50,7 +54,7 @@
           Avstängd
         <% end -%>
         </span>
-      <% elsif @page.index_node %>
+      <% elsif @page.index_node -%>
         <% if @page.active? -%>
         <span class="status active">Visas</span>
         <% else -%>
@@ -58,7 +62,7 @@
         <% end -%>
       <% end %>
     </div>
-    <% if @page.node %>
+    <% if @page.node -%>
       <div class="navigation">
         <span class="key">Namn i navigationen:</span>
         <span class="value"><%= @page.node.name %></span>
@@ -139,7 +143,8 @@
                 <%= image_tag(display_image_path(:id => image.file_name, :size => 'c100x100', :format => image.extname), :width => 100, :height => 100) %>
                 <div class="title"><%= image.title %></div>
                 <div class="caption"><%= image.description %></div>
-                <%= link_to "Ta bort", admin_page_custom_association_path(@page.id, custom_association), :method => :delete %>
+                <span class="edit"><%= link_to "Ändra", edit_admin_asset_path(image, :return_to => request.path) %></span>
+                <span class="delete"><%= link_to "Ta bort", admin_page_custom_association_path(@page.id, custom_association), :method => :delete %></span>
               </div>
               <% end -%>
             <% end -%>
@@ -284,7 +289,7 @@
               <%= field.label %>
             </label>
             <div>
-              <%= select_date(custom_attribute.value, :order => [:year, :month, :day], :prompt => true, :prefix => 'custom_attribute[value]') %>
+              <%= select_date((custom_attribute.value||Time.now), :order => [:year, :month, :day], :prompt => true, :prefix => 'custom_attribute[value]') %>
             </div>
             <div class="submit">
               <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
@@ -297,7 +302,7 @@
               <%= field.label %>
             </label>
             <div>
-              <%= select_date(custom_attribute.value, :order => [:year, :month, :day], :prompt => true, :prefix => 'custom_attribute[value]') %>
+              <%= select_date((custom_attribute.value||Time.now), :order => [:year, :month, :day], :prompt => true, :prefix => 'custom_attribute[value]') %>
             </div>
             <div class="submit">
               <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>

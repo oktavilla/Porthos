@@ -6,6 +6,9 @@
   <div id="content">
     <div id="c_1"><div class="inner">
       <% form_for :asset, @asset, :url => admin_asset_url(@asset), :html => { :method => :put } do |f| %>
+        <% if params[:return_to] %>
+        <%= hidden_field_tag :return_to, params[:return_to] %>
+        <% end %>
         <fieldset>
           <label for="asset_title">Titel</label>
           <div class="fullwidth">
