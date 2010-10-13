@@ -76,7 +76,7 @@ class Admin::PagesController < ApplicationController
     @page = Page.new(params[:page])
     respond_to do |format|
       if @page.save
-        format.html { redirect_to admin_page_path(@page) }
+        format.html { redirect_to admin_page_path(@page.id) }
       else
         format.html { render :action => :new }
       end
@@ -88,7 +88,7 @@ class Admin::PagesController < ApplicationController
     respond_to do |format|
       if @page.update_attributes(params[:page])
         flash[:notice] = t(:saved, :scope => [:app, :admin_pages])
-        format.html { redirect_to params[:return_to] || admin_page_path(@page) }
+        format.html { redirect_to params[:return_to] || admin_page_path(@page.id) }
       else
         format.html { render :action => 'show' }
       end
@@ -107,8 +107,9 @@ class Admin::PagesController < ApplicationController
   def toggle
     @page = Page.find(params[:id])
     @page.update_attributes(:active => !@page.active?)
+    flash[:notice] = "”#{@page.title}” #{t(:active, :scope => [:app, :admin_pages])}" if @page.active?
     respond_to do |format|
-      format.html { redirect_back_or_default(admin_page_path(@page)) }
+      format.html { redirect_back_or_default(admin_page_path(@page.id)) }
     end
   end
   

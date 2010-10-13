@@ -4,7 +4,7 @@
 <% if not @page.active? -%>
   <h2 class="label">Publicering</h2>
   <p>Sida är inte publicerad och syns inte på webbplatsen än.</p>
-  <p class="add"><%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put, :class => 'new' %></p>
+  <p class="add"><%= link_to "Publicera sidan", toggle_admin_page_path(@page.id), :method => :put, :class => 'new' %></p>
 <% end -%>
   <h2 class="label">Skapad och ändrad</h2>
   <p>Skapad av: <%= User.find(@page.created_by_id).name %>.</p>
@@ -31,7 +31,7 @@
   <div class="header">
     <span class="away">
       <a href="#" class="edit_settings toggler action">Ändra</a>
-      <%= link_to "Förhandsgranska", preview_page_path(@page), :class => 'public_link action' %>
+      <%= link_to "Förhandsgranska", preview_page_path(@page.id), :class => 'public_link action' %>
     </span>
     <div class="parents"><%= link_to @page.field_set.title, admin_pages_path(:filters => { :with_field_set => @page.field_set.id }) %></div>
     <div class="page_title">
@@ -72,7 +72,7 @@
     <% end %>
   </div>
   <div class="header" style="display:none;">
-    <% form_for @page, :url => admin_page_path(@page) do |f| %>
+    <% form_for @page, :url => admin_page_path(@page.id) do |f| %>
       <% if @page.node -%>
         <label for="page_title" class="first_label"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
         <div class="fullwidth">
@@ -167,7 +167,7 @@
         </div>
         <% if field.target_type == 'page' -%>
            <% if field.relationship == 'one_to_many' -%>
-              <% form_for :custom_association, :url => admin_page_custom_associations_path(@page), :html => { :style => 'display:none;', :class => 'select_page' } do |f| %>
+              <% form_for :custom_association, :url => admin_page_custom_associations_path(@page.id), :html => { :style => 'display:none;', :class => 'select_page' } do |f| %>
                 <%= f.hidden_field :target_type, :value => field.target_class.to_s %>
                 <%= f.hidden_field :field_id, :value => field.id %>
                 <%= f.hidden_field :handle, :value => field.handle %>
@@ -189,7 +189,7 @@
                   </div>
                 <% end -%>
               <% else -%>
-                <% form_for :custom_association, :url => admin_page_custom_associations_path(@page), :html => { :style => 'display:none;' } do |f| %>
+                <% form_for :custom_association, :url => admin_page_custom_associations_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
                   <%= f.hidden_field :target_type, :value => field.target_class.to_s %>
                   <%= f.hidden_field :field_id, :value => field.id %>
                   <%= f.hidden_field :handle, :value => field.handle %>
