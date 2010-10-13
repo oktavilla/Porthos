@@ -1,30 +1,310 @@
-<% @page_title = "Ändra #{@page.title}" -%>
+<% @page_title = "Sidor > #{@page.title}" -%>
+<% @page_class = "layout3" -%>
+<div id="sub_nav">
+<% if not @page.active? -%>
+  <h2 class="label">Publicering</h2>
+  <p>Sida är inte publicerad och syns inte på webbplatsen än.</p>
+  <p class="add"><%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put, :class => 'new' %></p>
+<% end -%>
+  <h2 class="label">Skapad och ändrad</h2>
+  <p>Skapad av: <%= User.find(@page.created_by_id).name %>.</p>
+  <p>Ändrades senast den <%= @page.updated_at.strftime("%d %B %Y") %><%= " av #{User.find(@page.updated_by_id).name}" if @page.updated_by %>.</p>
+  <h2 class="label">Nyckelord</h2>
+  <div id="page_tags">
+    <div id="page_tags_list">
+      <ul>
+      <% @page.tags.each do |tag| -%>
+        <li><%= tag.name %></li>
+      <% end -%>
+      </ul>
+      <p><a href="#">Ändra</a></p>
+    </div>
+    <% form_for [:admin, @page], :html => { :id => 'page_tags_form', :style => 'display:none;' } do |f| -%>
+      <div>
+        <%= f.text_field :tag_names %>
+        <input type="submit" value="Spara"> eller <a href="#">avbryt</a>
+      </div>
+    <% end -%>
+  </div>
+</div>
 <div id="workspace">
   <div class="header">
-    <h1><%= @page.title %></h1>
-    <%= link_to "Inställningar", edit_admin_page_path(:id => @page, :return_to => request.request_uri), :class => 'edit_settings' %>
     <span class="away">
-      <%= link_to("Alla #{@page.field_set.title.downcase}", admin_pages_path(:filters => { :with_field_set => @page.field_set_id })) %>
-      <%= link_to 'Förhandsgranska', preview_page_path(@page.id), :class => 'public_link' %>
-      <% if @page.comments.any? -%>
-        <%= link_to 'Kommentarer', comments_admin_page_path(:id => @page), :class => 'comments' %>
-      <% end -%>
+      <a href="#" class="edit_settings toggler action">Ändra</a>
+      <%= link_to "Förhandsgranska", preview_page_path(@page), :class => 'public_link action' %>
     </span>
-  </div>
-  <div class="tools">
-    <% if not @page.active? -%>
-    <div class="add">
-      Sida är inte publicerad och syns inte på webbplatsen än.
-      <%= link_to "Publicera sidan", toggle_admin_page_path(@page), :method => :put, :class => 'new' %>
+    <div class="parents"><%= link_to @page.field_set.title, admin_pages_path(:filters => { :with_field_set => @page.field_set.id }) %></div>
+    <div class="page_title">
+      <h1><%= @page.title %></h1>
+      <% if @page.node %>
+        <span class="status <%= @page.node.access_status %>">
+        <% case @page.node.access_status
+           when 'active' -%>
+          Visas
+        <% when 'hidden' -%>
+          Dold
+        <% when 'inactive' -%>
+          Avstängd
+        <% end -%>
+        </span>
+      <% elsif @page.index_node %>
+        <% if @page.active? -%>
+        <span class="status active">Visas</span>
+        <% else -%>
+        <span class="status inactive">Avstängd</span>
+        <% end -%>
+      <% end %>
     </div>
-    <% end -%>
-    <% if !@page.index_node && !@page.node -%>
-    <div class="add">
-      <%= link_to "Placera i navigationen", new_admin_node_path(:resource_id => @page.id), :class => 'new' %>
-    </div>
-    <% end -%>
+    <% if @page.node %>
+      <div class="navigation">
+        <span class="key">Namn i navigationen:</span>
+        <span class="value"><%= @page.node.name %></span>
+      </div>
+      <div class="slug">
+        <span class="key">Adress:</span>
+        <span class="value"><%= request.host %>/<%= @page.node.slug %></span>
+      </div>
+    <% elsif @page.index_node %>
+      <div class="slug">
+        <span class="key">Adress:</span>
+        <span class="value"><%= request.host %>/<%= @page.index_node.slug %>/<%= @page.to_param %></span>
+      </div>
+    <% end %>
   </div>
-  <div id="content">
+  <div class="header" style="display:none;">
+    <% form_for @page do |f| %>
+      <% if @page.node -%>
+        <label for="page_title" class="first_label"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
+        <div class="fullwidth">
+          <%= f.text_field :title, :class => 'title' %>
+        </div>
+      <% else -%>
+        <label for="page_title" class="first_label"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
+        <div class="fullwidth">
+          <%= f.text_field :title, :class => 'title' %>
+        </div>
+        <div class="slug_field">
+          <label for="page_slug">Adress:</label> <%= "#{request.host}/#{@page.index_node.slug}/#{@page.id}-" if @page.index_node %>
+          <%= f.text_field :slug %>
+        </div>
+      <% end %>
+      <div class="submit"> 
+        <input type="submit" value="Spara"> eller <a href="#" class="toggler">avbryt</a> 
+      </div> 
+    <% end %>
+  </div>
+  <div id="content" class="page_contents">
+  <% @page.field_set.fields.each do |field| -%>
+    <div class="page_content <%= field.data_type == CustomAssociation ? ['association', field.target_type, field.relationship].join(' ') : ['attribute', field.class.to_s.underscore].join(' ') %>">
+    <% if field.data_type == CustomAssociation %>
+      <% @page.custom_associations.find(:all, :conditions => ["field_id = ?", field.id], :order => 'custom_associations.position').tap do |custom_associations| %>
+        <div class="container">
+          <h2 class="field_label"><%= field.label %></h2>
+        <% if custom_associations.any? -%>
+          <% if field.target_type == 'asset' -%>
+            <% custom_associations.each do |custom_association| -%>
+              <% custom_association.target.tap do |image| -%>
+              <div class="content">
+                <%= image_tag(display_image_path(:id => image.file_name, :size => 'c100x100', :format => image.extname), :width => 100, :height => 100) %>
+                <div class="title"><%= image.title %></div>
+                <div class="caption"><%= image.description %></div>
+                <%= link_to "Ta bort", admin_page_custom_association_path(@page.id, custom_association), :method => :delete %>
+              </div>
+              <% end -%>
+            <% end -%>
+          <% elsif field.target_type == 'page' -%>
+            <ul class="pages sortable" id="page_<%= field.handle %>_list">
+            <% custom_associations.each do |custom_association| -%>
+              <li id="custom_association_<%= custom_association.id %>">
+                <%= link_to custom_association.target.title, admin_page_path(custom_association.target), :class => 'page' %>
+                <% unless custom_associations.size == 1 && field.required? -%>
+                <%= link_to("Ta bort", admin_page_custom_association_path(@page, custom_association), :class => 'delete', :method => :delete) %>
+                <% end -%>
+              </li>
+            <% end -%>
+            </ul>
+          <% end -%>
+        <% end -%>
+          <div class="edit">
+            <% if field.target_type == 'asset' && !(field.relationship == 'one_to_one' && custom_associations.any?)-%>
+              <%= link_to "Lägg till fil", admin_assets_path(:create_callback => {:controller => 'admin/custom_associations', :action => 'create', :method => 'post', :asset_field_name => 'custom_association[target_id]', :params => { :page_id => @page, 'custom_association[target_type]' => field.target_class.to_s, 'custom_association[context_id]' => @page.id, 'custom_association[context_type]' => 'Page', 'custom_association[handle]' => field.handle, 'custom_association[field_id]' => field.id, 'custom_association[relationship]' => field.relationship }}) %>
+            <% elsif field.target_type == 'page' -%>
+              <% if field.relationship == 'one_to_one' -%>
+                <a href="#" class="change">Ändra</a>
+              <% else -%>
+                <a href="#" class="add">Lägg till</a>
+              <% end -%>
+            <% end -%>
+          </div>
+        </div>
+        <% if field.target_type == 'page' -%>
+           <% if field.relationship == 'one_to_many' -%>
+              <% form_for :custom_association, :url => admin_page_custom_associations_path(@page), :html => { :style => 'display:none;', :class => 'select_page' } do |f| %>
+                <%= f.hidden_field :target_type, :value => field.target_class.to_s %>
+                <%= f.hidden_field :field_id, :value => field.id %>
+                <%= f.hidden_field :handle, :value => field.handle %>
+                <%= f.hidden_field :relationship, :value => field.relationship %>
+                <label for="page_<%= field.label %>"><%= field.label %></label>
+                <%= f.select :target_id, field.possible_targets.collect { |pt| [pt['title'], pt['id']] }, :selected => custom_associations.collect { |ca| ca.target_id } %>
+                <div class="submit_inline">
+                  <input type="submit" value="Lägg till">
+                  eller <a href="#" class="cancel">avbryt</a>
+                </div>
+              <% end -%>
+            <% elsif field.relationship == 'one_to_one' -%>
+              <% if custom_associations.any? -%>
+                <% form_for custom_associations.first, :url => admin_page_custom_association_path(@page.id, custom_associations.first), :html => { :method => :put, :style => 'display:none;' } do |f| %>
+                  <label for="page_<%= field.label %>"><%= field.label %></label>
+                  <%= f.select :target_id, field.possible_targets.collect { |pt| [pt['title'], pt['id']] } %>
+                  <div class="submit_inline">
+                    <input type="submit" value="<%= field.relationship == 'one_to_one' ? 'Ändra' : 'Lägg till' %>"> eller <a href="#" class="cancel">avbryt</a>
+                  </div>
+                <% end -%>
+              <% else -%>
+                <% form_for :custom_association, :url => admin_page_custom_associations_path(@page), :html => { :style => 'display:none;' } do |f| %>
+                  <%= f.hidden_field :target_type, :value => field.target_class.to_s %>
+                  <%= f.hidden_field :field_id, :value => field.id %>
+                  <%= f.hidden_field :handle, :value => field.handle %>
+                  <%= f.hidden_field :relationship, :value => field.relationship %>
+                  <label for="page_<%= field.label %>"><%= field.label %></label>
+                  <%= f.select :target_id, field.possible_targets.collect { |pt| [pt['title'], pt['id']] }, :include_blank => (field.required? ? false : '(ingen)') %>
+                  <div class="submit_inline">
+                    <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+                  </div>
+                <% end -%>
+              <% end -%>
+            <% end -%>
+        <% end -%>
+      <% end -%>
+    <% else -%>
+      <% (@page.custom_attribute_for_field(field.id) || @page.custom_attributes.build).tap do |custom_attribute| -%>
+      <% case field.class.to_s
+         when 'StringField' -%>
+          <div class="container">
+            <h2 class="field_label"><%= field.label %></h2>
+            <div class="content"><%= custom_attribute.value %></div>
+            <div class="edit"><a href="#" class="change">Ändra</a></div>
+          </div>
+          <% unless custom_attribute.new_record? -%>
+            <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
+              <label for="page_<%= field.handle %>"><%= field.label %></label>
+              <div class="fullwidth">
+                <%= f.text_field :value, :value => custom_attribute.value, :class => 'title', :id => "page_#{field.handle}" %>
+              </div>
+              <div class="submit">
+                <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              </div>
+            <% end %>
+          <% else %>
+            <% form_for :custom_attribute, :url => admin_page_custom_attributes_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
+              <%= hidden_field_tag :field_id, field.id %>
+              <label for="page_<%= field.handle %>"><%= field.label %></label>
+              <div class="fullwidth">
+                <%= f.text_field :value, :value => custom_attribute.value, :class => 'title', :id => "page_#{field.handle}" %>
+              </div>
+              <div class="submit">
+                <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+              </div>
+            <% end %>
+          <% end %>
+      <% when 'TextField' -%>
+        <div class="container">
+          <h2 class="field_label"><%= field.label %></h2>
+          <div class="content">
+            <%= !field.allow_rich_text? ? simple_format(custom_attribute.value) : custom_attribute.value %>
+          </div>
+          <div class="edit"><a href="#" class="change">Ändra</a></div>
+        </div>
+        <% unless custom_attribute.new_record? -%>
+          <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
+            <label for="page_<%= field.handle %>"><%= field.label %></label>
+            <div class="fullwidth">
+              <%= f.text_area :value, :value => custom_attribute.value, :class => (field.allow_rich_text? ? 'editor' : 'normal') %>
+            </div>
+            <div class="submit">
+              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+            </div>
+          <% end %>
+        <% else %>
+          <% form_for :custom_attribute, :url => admin_page_custom_attributes_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
+            <%= hidden_field_tag :field_id, field.id %>
+            <label for="page_<%= field.handle %>"><%= field.label %></label>
+            <div class="fullwidth">
+              <%= f.text_area :value, :value => custom_attribute.value, :class => (field.allow_rich_text? ? 'editor' : 'normal') %>
+            </div>
+            <div class="submit">
+              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+            </div>
+          <% end %>
+        <% end %>
+      <% when 'DateTimeField' -%>
+        <div class="container">
+          <h2 class="field_label"><%= field.label %></h2>
+          <div class="content">
+            <%= custom_attribute.value.strftime("%Y-%m-%d") if custom_attribute.value %>
+          </div>
+          <div class="edit"><a href="#" class="change">Ändra</a></div>
+        </div>
+        <% unless custom_attribute.new_record? %>
+          <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
+            <%= hidden_field_tag :field_id, field.id %>
+            <label for="page_<%= field.handle %>">
+              <%= field.label %>
+            </label>
+            <div>
+              <%= select_date((custom_attribute.value || Time.now), :prefix => 'custom_attribute[value]') %>
+            </div>
+            <div class="submit">
+              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+            </div>
+          <% end %>
+        <% else %>
+          <% form_for :custom_attribute, :url => admin_page_custom_attributes_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
+            <%= hidden_field_tag :field_id, field.id %>
+            <label for="page_<%= field.handle %>">
+              <%= field.label %>
+            </label>
+            <div>
+              <%= select_date((custom_attribute.value || Time.now), :prefix => 'custom_attribute[value]') %>
+            </div>
+            <div class="submit">
+              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+            </div>
+          <% end %>
+        <% end %>
+      <% when 'BooleanField' -%>
+        <div class="container">
+          <h2 class="field_label <%= custom_attribute.value == 1 ? 'checked' : 'unchecked' %>"><%= field.label %></h2>
+          <div class="edit"><a href="#" class="change">Ändra</a></div>
+        </div>
+        <% unless custom_attribute.new_record? -%>
+          <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
+            <%= hidden_field_tag :field_id, field.id %>
+            <label for="page_<%= field.handle %>" class="contains-input">
+              <%= f.check_box :value, :checked => custom_attribute.value == 1 %>
+              <%= field.label %>
+            </label>
+            <div class="submit">
+              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+            </div>
+          <% end %>
+        <% else -%>
+          <% form_for :custom_attribute, :url => admin_page_custom_attributes_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
+            <%= hidden_field_tag :field_id, field.id %>
+            <label for="page_<%= field.handle %>" class="contains-input">
+              <%= f.check_box :value, :checked => custom_attribute.value == 1 %>
+              <%= field.label %>
+            </label>
+            <div class="submit">
+              <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
+            </div>
+          <% end %>
+        <% end -%>
+      <% end -%>
+    <% end -%>
+    <% end -%>
+    </div>
+  <% end %>
     <div id="page_<%= @page.id %>" class="page_layout <%= @page.layout_class %>">
     <% (1..@page.template.columns).each do |column| -%>
       <div id="column_<%= column %>" class="column">
@@ -79,6 +359,10 @@
   </div>
 </div>
 <% content_for :javascripts do %>
+  <%= javascript_include_tag 'porthos/jquery/jquery' %>
+  <%= javascript_include_tag 'porthos/wymeditor/jquery.wymeditor.min', 'porthos/wymeditor/lang/sv', 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools', 'porthos/wymeditor/plugins/tidy/jquery.wymeditor.tidy' %>
+  <%= javascript_include_tag 'porthos/wymeditor/lang/sv' %>
+  <%= javascript_include_tag 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools' %>
+  <%= javascript_include_tag 'porthos/editor' %>
   <%= javascript_include_tag 'porthos/assets', 'porthos/asset_usages', 'porthos/pages', :cache => 'pages' %>
-  <%= javascript_include_extensions %>
 <% end %>

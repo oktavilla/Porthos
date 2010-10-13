@@ -1,55 +1,6 @@
 (function(){
   Porthos.namespace('Porthos.Pages');
   Porthos.Helpers.cloneAsUrl('page_title', 'page_slug');
-  Porthos.Pages.SetupForm = function() {
-    new Porthos.TagAutoCompletion($('page_tag_names'));
-    $$('textarea.editor').each(function(el){
-      Porthos.jQuery(el).wymeditor(Porthos.Editor.Options);
-    });
-
-    $$('#content div.edit a, #content a.cancel').invoke('observe', 'click', function(event) {
-      var element = $(event.element());
-      if (!(element.hasClassName('change')
-        || element.hasClassName('add')
-        || element.hasClassName('cancel'))) { return; }
-      event.stop();
-      var parent  = $(element.up('div.page_content'));
-          query   = 'form';
-      if (!parent.hasClassName('one_to_many')) {
-        query += ', div.container';
-      }
-      parent.select(query).invoke('toggle');
-    });
-    
-    $$('#page_tags a').invoke('observe', 'click', function(event) {
-      event.stop();
-      $$('#page_tags_list, #page_tags_form').invoke('toggle');
-    });
-    
-    $$('#workspace > div.header').invoke('observe', 'click', function(event) {
-      var element = $(event.element());
-      if (element.nodeName.toUpperCase() != 'A' || !element.hasClassName('toggler')) {
-        return;
-      }
-      event.stop()
-      $$('#workspace > div.header').invoke('toggle');
-    });
-    
-    $$('#content ul.sortable').each(function(element) {
-      var sortable = $(element);
-      Sortable.create(sortable, {
-        onUpdate    : function(event) {
-          new Ajax.Request(Routing.sort_admin_custom_associations_path(), {
-            method: 'put',
-            parameters: Sortable.serialize(sortable, {
-              name: 'custom_associations'
-            })
-          });
-        }
-      });
-    });
-    
-  };
 
   Porthos.Pages.Page = Class.create({
     initialize: function() {
@@ -134,9 +85,54 @@
     });
     
     if ($$("body#pages_view.show").size() > 0) {
+      new Porthos.TagAutoCompletion($('page_tag_names'));
+      $$('textarea.editor').each(function(el){
+        Porthos.jQuery(el).wymeditor(Porthos.Editor.Options);
+      });
+
+      $$('#content div.edit a, #content a.cancel').invoke('observe', 'click', function(event) {
+        var element = $(event.element());
+        if (!(element.hasClassName('change')
+          || element.hasClassName('add')
+          || element.hasClassName('cancel'))) { return; }
+        event.stop();
+        var parent  = $(element.up('div.page_content'));
+            query   = 'form';
+        if (!parent.hasClassName('one_to_many')) {
+          query += ', div.container';
+        }
+        parent.select(query).invoke('toggle');
+      });
+
+      $$('#page_tags a').invoke('observe', 'click', function(event) {
+        event.stop();
+        $$('#page_tags_list, #page_tags_form').invoke('toggle');
+      });
+
+      $$('#workspace > div.header').invoke('observe', 'click', function(event) {
+        var element = $(event.element());
+        if (element.nodeName.toUpperCase() != 'A' || !element.hasClassName('toggler')) {
+          return;
+        }
+        event.stop()
+        $$('#workspace > div.header').invoke('toggle');
+      });
+
+      $$('#content ul.sortable').each(function(element) {
+        var sortable = $(element);
+        Sortable.create(sortable, {
+          onUpdate    : function(event) {
+            new Ajax.Request(Routing.sort_admin_custom_associations_path(), {
+              method: 'put',
+              parameters: Sortable.serialize(sortable, {
+                name: 'custom_associations'
+              })
+            });
+          }
+        });
+      });
+
       var page = new Porthos.Pages.Page();
-    } else if ($$("body#pages_view.new, body#pages_view.edit, body#nodes_view.edit").size() > 0) {
-      var page = Porthos.Pages.SetupForm();
     }
     
   });

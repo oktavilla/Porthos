@@ -5,7 +5,7 @@ class Admin::CustomAssociationsController < ApplicationController
   def create
     @page.custom_associations.create(params[:custom_association])
     respond_to do |format|
-      format.html { redirect_to edit_admin_page_path(@page) }
+      format.html { redirect_to admin_page_path(@page.id) }
     end
   end
 
@@ -13,7 +13,7 @@ class Admin::CustomAssociationsController < ApplicationController
     @custom_association = @page.custom_associations.find(params[:id])
     @custom_association.update_attributes(params[:custom_association])
     respond_to do |format|
-      format.html { redirect_to edit_admin_page_path(@page) }
+      format.html { redirect_to admin_page_path(@page.id) }
     end
   end
 
@@ -21,7 +21,7 @@ class Admin::CustomAssociationsController < ApplicationController
     @custom_association = @page.custom_associations.find(params[:id])
     @custom_association.destroy
     respond_to do |format|
-      format.html { redirect_to edit_admin_page_path(@page) }
+      format.html { redirect_to admin_page_path(@page.id) }
     end
   end
 

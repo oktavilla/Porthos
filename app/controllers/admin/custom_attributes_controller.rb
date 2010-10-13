@@ -11,7 +11,7 @@ class Admin::CustomAttributesController < ApplicationController
     }))
     @page.custom_attributes << @custom_attribute
     respond_to do |format|
-      format.html { redirect_to edit_admin_page_path(@page) }
+      format.html { redirect_to admin_page_path(@page.id) }
     end
   end
 
@@ -19,7 +19,7 @@ class Admin::CustomAttributesController < ApplicationController
     @custom_attribute = @page.custom_attributes.find(params[:id])
     @custom_attribute.update_attributes(params[:custom_attribute])
     respond_to do |format|
-      format.html { redirect_to edit_admin_page_path(@page) }
+      format.html { redirect_to admin_page_path(@page.id) }
     end
   end
 
@@ -27,7 +27,7 @@ class Admin::CustomAttributesController < ApplicationController
     @custom_attribute = @page.custom_attributes.find(params[:id])
     @custom_attribute.destroy
     respond_to do |format|
-      format.html { redirect_to edit_admin_page_path(@page) }
+      format.html { redirect_to admin_page_path(@page.id) }
     end
   end
 

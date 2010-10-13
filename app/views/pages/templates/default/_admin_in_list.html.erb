@@ -1,4 +1,4 @@
-<span class="title"><%= link_to page.title, admin_page_path(page) %></span>
+<span class="title"><%= link_to page.title, admin_page_path(page.id) %></span>
 <% unless page.full_slug.blank? -%>
 <span class="slug">
   /<%= page.full_slug %>
@@ -14,7 +14,6 @@
   Publicerad <%= page.published_on.strftime("%d %b %Y %H:%M") %>.
 </span>
 <span class="edit">
-  <%= link_to "Ändra innehåll", admin_page_path(page) %>
-  <%= link_to "Inställningar", edit_admin_page_path(page)  %>
-  <%= link_to "Ta bort", admin_page_path(page), { :method => :delete, :confirm => "Är du säker, detta går inte att ångra." } %>
+  <%= link_to "Ändra", admin_page_path(page.id) %>
+  <%= link_to "Ta bort", admin_page_path(page.id), { :method => :delete, :confirm => "Är du säker, detta går inte att ångra." } %>
 </span>

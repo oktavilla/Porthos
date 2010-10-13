@@ -52,10 +52,8 @@ class Admin::PagesController < ApplicationController
     if @page.node and @page.node.parent
       cookies[:last_opened_node] = { :value => @page.node.parent.id.to_s, :expires => 1.week.from_now }
     end
-    @trail = if @node = @page.node
-      (@node and @node.ancestors.any?) ? @node.ancestors.reverse << @node : [@node]
-    else
-      []
+    respond_to do |format|
+      format.html
     end
   end
   
@@ -85,13 +83,6 @@ class Admin::PagesController < ApplicationController
     end
   end
 
-  def edit
-    @page = Page.find(params[:id])
-    respond_to do |format|
-      format.html
-    end
-  end
-
   def update
     @page = Page.find(params[:id])
     respond_to do |format|
@@ -99,7 +90,7 @@ class Admin::PagesController < ApplicationController
         flash[:notice] = t(:saved, :scope => [:app, :admin_pages])
         format.html { redirect_to params[:return_to] || admin_page_path(@page) }
       else
-        format.html { render :action => 'edit' }
+        format.html { render :action => 'show' }
       end
     end
   end
