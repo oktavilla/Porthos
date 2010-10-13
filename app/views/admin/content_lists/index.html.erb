@@ -1,3 +1,4 @@
+<% @page_title = "Delat innehåll" %>
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
 <div id="sub_nav">
@@ -5,18 +6,50 @@
 </div>
 <div id="workspace">
   <div class="header">
-    <h1>Innehållslistor</h1>
+    <h1>Delat innehåll</h1>
   </div>
-  <div id="content">
-    <% @content_lists.each do |content_list| %>
-    <div class="content_list" id="content_list_<%= content_list.id %>">
-      <h2>
-        <%= link_to content_list.name || "Inget namn angivet", admin_content_list_path(content_list) %>
-        <%= link_to("Ändra", edit_admin_content_list_path(content_list)) %>
-        <span class="handle"><%= content_list.handle %></span>          
-      </h2>
-      <!-- <%= link_to "Lägg till text", new_admin_content_path(:content => { :context_id => content_list.id, :context_type => content_list.class.to_s, :resource_type => 'ContentTextfield' }) %> -->
+  <% @content_lists.each do |content_list| %>
+  <div class="content_list">
+    <div class="title">
+      <%= content_list.name || "Inget namn angivet" %>
+      <%= link_to("Ändra", edit_admin_content_list_path(content_list)) %>
     </div>
-    <% end %>
+    <div class="add controls">
+      <a id="add_content" class="new" href="#">Lägg till innehåll</a>
+    </div>
+    <div class="sub_controls">
+      <ul>
+        <li>
+          <a class="text ContentTextfield new_content" href="<%= new_admin_content_path(:content => { :context_id => content_list.id, :context_type => 'ContentList', :context_id => content_list.id, :context_type => 'ContentList', :resource_type => 'ContentTextfield' }) %>">Text</a>
+        </li>
+        <li>
+          <a class="teasers ContentTeaser new_content" href="<%= new_admin_content_path(:collection => 1, :content => { :context_id => content_list.id, :context_type => 'ContentList', :resource_type => 'ContentTeaser' }) %>">Puff</a>
+        </li>
+      </ul>
+    </div>
+    <ul class="contents items sortable" id="contents">
+    <% content_list.contents.each do |content| -%>
+      <li class="<%= "#{content.resource_type} content " unless content.collection? %><%= ' collection' if content.collection? %> sortable <%= content.resource_type.underscore %>_wrapper<%= content.active? ? ' active' : ' inactive' %>" id="content_<%= content.id %>">
+      <span class="draghandle"></span>
+      <span class="inactive_proxy"></span>
+      <% unless content.collection? -%>
+        <%= render :partial => content.resource_template, :locals => { :resource => content.resource, :content => content } %>
+      <% else %>
+        <%= render :partial => content.collection_template, :locals => { :content => content } %>
+      <% end %>
+      <% unless content.collection? -%>
+        <div class="edit">
+          <% if content.module? and content.resource.has_settings? %>
+            <%= link_to("Inställningar", settings_admin_content_path(content), :class => (!content.collection? ? 'settings' : 'settings')) %>
+          <% end %>
+          <%= link_to("Ändra", edit_admin_content_path(content)) if not content.module? %>
+          <%= link_to content.active? ? 'Dölj' : 'Visa', toggle_admin_content_path(content), :method => :put, :class => 'visibility' %>
+          <%= link_to "Ta bort", admin_content_path(content), :method => :delete, :confirm => "Är du säker? Detta går inte att ångra.", :class => 'delete' %>
+        </div>
+      <% end %>
+      </li>
+    <% end -%>
+    </ul>
   </div>
+  <% end %>
 </div>

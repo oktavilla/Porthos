@@ -285,17 +285,25 @@ form .avatar {
 .column {
   margin-bottom:3em;
   padding-top:0; }
-  .column > .title {
+  .column > .title,
+  .content_list > .title {
     background:#f2f2f2;
     padding:10px 40px 10px 40px;
     font-weight:bold;
     color:#000;}
-  .column .controls {
+  .column .controls,
+  .content_list .controls {
     padding:1em 40px 1em 40px;
     line-height:1em; }
     .column .controls .add {margin-bottom:0;}
-  .column .sub_controls {padding:0 40px;}
   .column .contents {min-height:50px;}
+
+.sub_controls {padding:0 40px;}
+  .sub_controls ul {
+    list-style:none;
+    margin:0 0 1em 0; }
+    .sub_controls li {
+      margin:0 0 .25em 0; }
 
 .contents li.content {
   position:relative;
