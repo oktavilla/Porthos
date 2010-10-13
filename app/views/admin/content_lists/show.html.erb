@@ -1,3 +1,4 @@
+<% @page_title = "Delat innehåll > #{@content_list.name}" %>
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
 <div id="sub_nav">
@@ -9,7 +10,7 @@
   </div>
   <div class="tools">
      <div class="sort_contents add controls">
-        <a id="add_content" class="add new" href="#">Lägg till innehåll</a>
+        <a id="add_content" class="new" href="#">Lägg till innehåll</a>
       <% if @content_list.contents.any? and false -%>
         <%= link_to("Sortera innehåll", sort_admin_contents_path, :id => 'sort_contents', :class => 'sort fr') %>
         <%= display_indicator :id => 'page_contents_indicator' %>
@@ -27,7 +28,7 @@
     </ul>
   </div>
   <div id="contents_container" class="page_layout">
-    <ul class="contents sortable" id="contents">
+    <ul class="contents items sortable" id="contents">
     <% @content_list.contents.each do |content| -%>
       <li class="<%= "#{content.resource_type} content " unless content.collection? %><%= ' collection' if content.collection? %> sortable <%= content.resource_type.underscore %>_wrapper<%= content.active? ? ' active' : ' inactive' %>" id="content_<%= content.id %>">
       <span class="draghandle"></span>
@@ -38,15 +39,14 @@
         <%= render :partial => content.collection_template, :locals => { :content => content } %>
       <% end %>
       <% unless content.collection? -%>
-        <span class="type"></span>
-        <span class="controls">
+        <div class="edit">
           <% if content.module? and content.resource.has_settings? %>
             <%= link_to("Inställningar", settings_admin_content_path(content), :class => (!content.collection? ? 'settings' : 'settings')) %>
           <% end %>
-          <%= link_to("Ändra", edit_admin_content_path(content), :class => (!content.collection? ? 'edit' : 'edit')) if not content.module? %>
+          <%= link_to("Ändra", edit_admin_content_path(content)) if not content.module? %>
           <%= link_to content.active? ? 'Dölj' : 'Visa', toggle_admin_content_path(content), :method => :put, :class => 'visibility' %>
           <%= link_to "Ta bort", admin_content_path(content), :method => :delete, :confirm => "Är du säker? Detta går inte att ångra.", :class => 'delete' %>
-        </span>
+        </div>
       <% end %>
       </li>
     <% end -%>

@@ -2,7 +2,7 @@ module Admin::AssetsHelper
   def asset_filter_links(filters)
     asset_links = [
       { :name => 'Bilder',     :class => 'ImageAsset' },
-      { :name => 'Filmer',     :class => 'VideoAsset' },
+      { :name => 'Video',     :class => 'VideoAsset' },
       { :name => 'Ljud',       :class => 'SoundAsset' }
     ].collect do |link|
       content_tag('li', content_tag('a', link[:name], {

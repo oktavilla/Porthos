@@ -1,3 +1,4 @@
+<% @page_title = 'Vidarebefordringar' -%>
 <% @page_class = 'layout2' -%>
 <% @page_id = 'site-settings' -%>
   <div id="sub_nav">
@@ -14,17 +15,22 @@
     </div>
     <div id="content">
       <% if @redirects %>  
-        <ul class="gl">
+        <table>
+          <tr>
+            <th>Från</th>
+            <th>Till</th>
+            <th></th>
+            <th></th>
+          </tr>
         <% @redirects.each do |redirect| %>  
-          <li class="<%= cycle 'odd', 'even' %>">
-            <span class="path"><%= link_to redirect.path, redirect.path %></span> &rarr; <span class="target"><%= link_to redirect.target, redirect.target %></span>
-            <span class="controls general">
-              <%= link_to "Ändra", edit_admin_redirect_path(redirect), :class => 'edit' %>
-              <%= link_to "Radera", admin_redirect_path(redirect), :method => :delete, :class => 'delete', :confirm => 'Är du säker?' %>
-            </span>
-          </li>
+          <tr class="<%= cycle 'odd', 'even' %>">
+            <td><%= link_to redirect.path, redirect.path %></td>
+            <td>&rarr; <%= link_to redirect.target, redirect.target %></td>
+            <td><%= link_to "Ändra", edit_admin_redirect_path(redirect) %></td>
+            <td><%= link_to "Radera", admin_redirect_path(redirect), :method => :delete, :class => 'delete', :confirm => 'Är du säker?' %></td>
+          </tr>
         <% end %>
-        </ul>
+        </table>
       <% else %>
         <p class="blank-slate">Det finns inga vidarebefordringar inlagda än.</p>
       <% end %>
