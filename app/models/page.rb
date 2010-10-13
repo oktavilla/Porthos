@@ -33,9 +33,6 @@ class Page < ActiveRecord::Base
            :as => :context,
            :dependent => :destroy
 
-  has_many :association_targets,
-           :through => :custom_associations
-
   has_many :custom_association_contexts,
            :class_name => 'CustomAssociation',
            :as => :target

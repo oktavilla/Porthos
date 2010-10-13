@@ -159,7 +159,7 @@
             <% elsif field.target_type == 'page' -%>
               <% if field.relationship == 'one_to_one' -%>
                 <a href="#" class="change">Ändra</a>
-              <% else -%>
+              <% elsif custom_associations.size != field.possible_targets.size -%>
                 <a href="#" class="add">Lägg till</a>
               <% end -%>
             <% end -%>
@@ -173,7 +173,7 @@
                 <%= f.hidden_field :handle, :value => field.handle %>
                 <%= f.hidden_field :relationship, :value => field.relationship %>
                 <label for="page_<%= field.label %>"><%= field.label %></label>
-                <%= f.select :target_id, field.possible_targets.collect { |pt| [pt['title'], pt['id']] }, :selected => custom_associations.collect { |ca| ca.target_id } %>
+                <%= f.select :target_id, field.possible_targets.find_all { |pt| !custom_associations.collect { |ca| ca.target_id }.include?(pt['id'].to_i) }.collect { |pt| [pt['title'], pt['id']] }, :selected => custom_associations.collect { |ca| ca.target_id } %>
                 <div class="submit_inline">
                   <input type="submit" value="Lägg till">
                   eller <a href="#" class="cancel">avbryt</a>
@@ -195,7 +195,7 @@
                   <%= f.hidden_field :handle, :value => field.handle %>
                   <%= f.hidden_field :relationship, :value => field.relationship %>
                   <label for="page_<%= field.label %>"><%= field.label %></label>
-                  <%= f.select :target_id, field.possible_targets.collect { |pt| [pt['title'], pt['id']] }, :include_blank => (field.required? ? false : '(ingen)') %>
+                  <%= f.select :target_id, field.possible_targets.find_all { |pt| !custom_associations.collect { |ca| ca.target_id }.include?(pt['id'].to_i) }.collect { |pt| [pt['title'], pt['id']] } %>
                   <div class="submit_inline">
                     <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
                   </div>
