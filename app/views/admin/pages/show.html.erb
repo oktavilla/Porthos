@@ -72,12 +72,39 @@
     <% end %>
   </div>
   <div class="header" style="display:none;">
-    <% form_for @page do |f| %>
+    <% form_for @page, :url => admin_page_path(@page) do |f| %>
       <% if @page.node -%>
         <label for="page_title" class="first_label"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
         <div class="fullwidth">
           <%= f.text_field :title, :class => 'title' %>
         </div>
+        <% f.fields_for :node, @page.node do |node_form| %>
+          <label for="page_node_attributes_name" class="notasimportant">Namn i navigationen</label>
+          <%= node_form.text_field :name, :size => 60 %>
+          <div class="slug_field">
+            <label for="page_slug">Adress:</label> <%= "#{request.host}/#{@page.node.parent.slug}" %><%= f.text_field :slug %>
+          </div>
+          <ul class="multiple_choice">
+            <li>
+              <label for="shown_in_nav">
+                <%= node_form.radio_button :status, 1, :id => 'shown_in_nav' %>
+                Visas i navigationen <span class="form_help">Och är tillgänglig på internet.</span>
+              </label>
+            </li>
+            <li>
+              <label for="not_shown_in_nav">
+                <%= node_form.radio_button :status, 0, :id => 'not_shown_in_nav' %>
+                Visas inte i navigationen. <span class="form_help">Men är tillgänglig på internet.</span>
+              </label>
+            </li>
+            <li>
+              <label for="restricted">
+                <%= node_form.radio_button :status, -1, :id => 'restricted' %>
+                Avstängd <span class="form_help">Är ej tillgänglig på internet.</span>
+              </label>
+            </li>
+          </ul>
+        <% end %>
       <% else -%>
         <label for="page_title" class="first_label"><%= @page.field_set.page_label.present? ? @page.field_set.page_label : "Titel" %></label>
         <div class="fullwidth">
