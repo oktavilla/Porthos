@@ -7,11 +7,13 @@
   <div id="publish_now" class="add"><%= link_to "Publicera sidan", toggle_admin_page_path(@page.id), :method => :put, :class => 'new' %></div>
 <% end -%>
   <h2 class="label">Skapad och ändrad</h2>
-  <p>Skapad av: <%= User.find(@page.created_by_id).name %>.</p>
+  <% if @page.created_by -%>
+  <p>Skapad av: <%= @page.created_by.name %>.</p>
+  <% end -%>
   <% if @page.active? -%>
   <p>Publicerad: <%= @page.published_on.strftime("%d %B %Y") %>.</p>
   <% end -%>
-  <p>Senast ändrad: <%= @page.updated_at.strftime("%d %B %Y") %><%= " av #{User.find(@page.updated_by_id).name}" if @page.updated_by %>.</p>
+  <p>Senast ändrad: <%= @page.updated_at.strftime("%d %B %Y") %><%= " av #{@page.updated_by.name}" if @page.updated_by %>.</p>
   <h2 class="label">Nyckelord</h2>
   <div id="page_tags">
     <div id="page_tags_list">
