@@ -3,7 +3,7 @@ class Admin::RegistrationFormsController < ApplicationController
   before_filter :login_required
   
   def index
-    @registration_forms = RegistrationForm.find(:all, :order => 'name')
+    @registration_forms = RegistrationForm.find(:all, :order => 'type, name')
   end
   
   def show
