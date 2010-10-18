@@ -7,7 +7,7 @@ class Asset < ActiveRecord::Base
   has_one :child, :class_name => 'Asset', :foreign_key => 'parent_id', :dependent => :destroy
   
   has_many :custom_associations,
-           :as => :target
+           :as => :target,
            :dependent => :destroy
 
   named_scope :is_public,
