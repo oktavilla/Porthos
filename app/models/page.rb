@@ -140,7 +140,7 @@ class Page < ActiveRecord::Base
             elsif ca.boolean_value.present?
               ca.boolean_value.to_i
             end
-          }
+          }.join(' ')
         end
         custom_associations.each do |ca|
           attributes[ca.handle.to_sym] = "#{ca.target_type}-#{ca.target_id}"
