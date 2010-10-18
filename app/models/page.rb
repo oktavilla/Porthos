@@ -35,7 +35,8 @@ class Page < ActiveRecord::Base
 
   has_many :custom_association_contexts,
            :class_name => 'CustomAssociation',
-           :as => :target
+           :as => :target,
+           :dependent => :destroy
 
   belongs_to :created_by,
              :class_name => 'User'
