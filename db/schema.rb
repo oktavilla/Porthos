@@ -205,6 +205,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.integer  "children_count"
     t.boolean  "restricted",          :default => false
     t.string   "resource_class_name"
+    t.text     "settings"
   end
 
   add_index "nodes", ["parent_id"], :name => "index_nodes_on_parent_id"
