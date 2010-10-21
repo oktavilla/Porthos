@@ -319,6 +319,7 @@
       <% when 'BooleanField' -%>
         <div class="container">
           <h2 class="field_label <%= custom_attribute.value == true ? 'checked' : 'unchecked' %>"><%= field.label %></h2>
+          <div class="content"><%= custom_attribute.value == true ? 'Ja' : 'Nej' %></div>
           <div class="edit"><a href="#" class="change">Ändra</a></div>
         </div>
         <% unless custom_attribute.new_record? -%>
