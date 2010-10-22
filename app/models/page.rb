@@ -35,7 +35,8 @@ class Page < ActiveRecord::Base
 
   has_many :custom_association_contexts,
            :class_name => 'CustomAssociation',
-           :as => :target
+           :as => :target,
+           :dependent => :destroy
 
   belongs_to :created_by,
              :class_name => 'User'
@@ -140,7 +141,7 @@ class Page < ActiveRecord::Base
             elsif ca.boolean_value.present?
               ca.boolean_value.to_i
             end
-          }
+          }.join(' ')
         end
         custom_associations.each do |ca|
           attributes[ca.handle.to_sym] = "#{ca.target_type}-#{ca.target_id}"

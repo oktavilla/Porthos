@@ -318,14 +318,15 @@
         <% end %>
       <% when 'BooleanField' -%>
         <div class="container">
-          <h2 class="field_label <%= custom_attribute.value == 1 ? 'checked' : 'unchecked' %>"><%= field.label %></h2>
+          <h2 class="field_label <%= custom_attribute.value == true ? 'checked' : 'unchecked' %>"><%= field.label %></h2>
+          <div class="content"><%= custom_attribute.value == true ? 'Ja' : 'Nej' %></div>
           <div class="edit"><a href="#" class="change">Ändra</a></div>
         </div>
         <% unless custom_attribute.new_record? -%>
           <% form_for :custom_attribute, :url => admin_page_custom_attribute_path(@page.id, custom_attribute.id), :html => { :method => :put, :style => 'display:none;' } do |f| %>
             <%= hidden_field_tag :field_id, field.id %>
             <label for="page_<%= field.handle %>" class="contains-input">
-              <%= f.check_box :value, :checked => custom_attribute.value == 1 %>
+              <%= f.check_box :value, :checked => custom_attribute.value == true %>
               <%= field.label %>
             </label>
             <div class="submit">
@@ -336,7 +337,7 @@
           <% form_for :custom_attribute, :url => admin_page_custom_attributes_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
             <%= hidden_field_tag :field_id, field.id %>
             <label for="page_<%= field.handle %>" class="contains-input">
-              <%= f.check_box :value, :checked => custom_attribute.value == 1 %>
+              <%= f.check_box :value, :checked => custom_attribute.value == true %>
               <%= field.label %>
             </label>
             <div class="submit">
@@ -402,10 +403,11 @@
   </div>
 </div>
 <% content_for :javascripts do %>
-  <%= javascript_include_tag 'porthos/jquery/jquery' %>
-  <%= javascript_include_tag 'porthos/wymeditor/jquery.wymeditor.min', 'porthos/wymeditor/lang/sv', 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools', 'porthos/wymeditor/plugins/tidy/jquery.wymeditor.tidy' %>
+  <%= javascript_include_tag 'porthos/jquery/jquery', 'porthos/jquery.hotkeys-0.7.9.min' %>
+  <%= javascript_include_tag 'porthos/wymeditor/jquery.wymeditor', 'porthos/wymeditor/lang/sv', 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools', 'porthos/wymeditor/plugins/tidy/jquery.wymeditor.tidy' %>
   <%= javascript_include_tag 'porthos/wymeditor/lang/sv' %>
   <%= javascript_include_tag 'porthos/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools' %>
+  <%= javascript_include_tag 'porthos/wymeditor/plugins/catchpaste/jquery.wymeditor.catchpaste' %>
   <%= javascript_include_tag 'porthos/editor' %>
   <%= javascript_include_tag 'porthos/assets', 'porthos/asset_usages', 'porthos/pages', :cache => 'pages' %>
 <% end %>

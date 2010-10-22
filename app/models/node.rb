@@ -48,6 +48,14 @@ class Node < ActiveRecord::Base
     access_status == 'inactive'
   end
   
+  def settings
+    @settings ||= YAML::load(read_attribute(:settings)) if read_attribute(:settings).present?
+  end
+  
+  def settings=(in_settings)
+    write_attribute(:settings, in_settings.to_yaml)
+  end
+  
   class << self
     def for_page(page)
       returning(self.new) do |node|
