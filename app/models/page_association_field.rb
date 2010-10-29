@@ -5,6 +5,7 @@ class PageAssociationField < Field
   def possible_targets
     sql  = 'SELECT id, title FROM pages'
     sql += " WHERE field_set_id = #{association_source_id}" unless association_source_id.blank?
+    sql += " ORDER BY title"
     @possible_targets ||= connection.select_all(sql)
   end
 
