@@ -35,7 +35,7 @@
     <span class="away">
       <a href="#" class="edit_settings toggler action">Ändra</a>
       <% if @page.active? -%>
-        <%= link_to "Visa på webbplatsen", '/'+@page.full_slug, :class => 'public_link action' %>
+        <%= link_to "Visa på webbplatsen", "/#{@page.full_slug}", :class => 'public_link action' %>
       <% else -%>
       <%= link_to "Förhandsgranska", preview_page_path(@page.id), :class => 'public_link action' %>
       <% end -%>
@@ -90,7 +90,7 @@
           <%= node_form.text_field :name, :size => 60, :id => 'page_title' %>
           <div class="slug_field">
             <label for="page_slug">Adress:</label>
-            <%= "#{request.host}/#{@page.node.parent.slug}" %><%= f.text_field :slug %>
+            <%= "#{request.host}/#{@page.node.parent ? @page.node.parent.slug : ''}" %><%= f.text_field :slug %>
           </div>
           <ul class="multiple_choice">
             <li>
