@@ -1,3 +1,0 @@
-<% @export.registrations.each do |order| -%>
-"<%= order.created_at.to_s(:db) %>","<%= order.organization %>","<%= order.first_name %>","<%= order.last_name %>","<%= order.shipping_address %>","<%= order.shipping_post_code %>","<%= order.shipping_locality %>","<%= order.address %>","<%= order.post_code %>","<%= order.locality %>","<%= order.email %>","<%= order.contact_approval ? '1' : '0' %>","<%= order.public_id %>","<%= number_to_currency order.total_sum %>",   ,"<%= order.payment_transaction_id %>","<%= order.payment_type %>","<%= order.target_code %>","<%= (order.conversion and order.conversion.measure_point) ? order.conversion.measure_point.public_id : '' %>","<%= order.id %>",
-<% end -%>

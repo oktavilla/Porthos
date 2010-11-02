@@ -1,3 +1,0 @@
-<% @export.registrations.each do |donation| -%>
-"<%= donation.created_at.to_s(:db) %>","<%= donation.organization %>","<%= donation.organization_number %>","<%= donation.first_name %>","<%= donation.last_name %>","<%= donation.address %>","<%= donation.post_code %>","<%= donation.locality %>","<%= donation.email %>","<%= donation.contact_approval ? '1' : '0' %>","<%= number_to_currency donation.total_sum %>","<%= donation.payment_transaction_id %>","<%= donation.payment_type %>","<%= donation.target_code %>","<%= (donation.conversion and donation.conversion.measure_point) ? donation.conversion.measure_point.public_id : '' %>","<%= donation.id %>"
-<% end -%>
