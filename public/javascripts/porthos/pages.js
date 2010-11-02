@@ -63,58 +63,67 @@
     },
     
     sort: function(event) {
-      this.sortables.each(function(sortable) {
-        var params = '';
-        if (sortable.isColumn) {
-          params = '&column_position=' + encodeURIComponent(sortable.column.position);
-        } else if (sortable.isTeaserContainer) {
-          params = '&parent_id=' + encodeURIComponent(Porthos.extractId(sortable.id));
+      function _sort() {
+        this.sortables.each(function(sortable) {
+          var params = '';
+          if (sortable.isColumn) {
+            params = '&column_position=' + encodeURIComponent(sortable.column.position);
+          } else if (sortable.isTeaserContainer) {
+            params = '&parent_id=' + encodeURIComponent(Porthos.extractId(sortable.id));
+          }
+          new Ajax.Request(Routing.sort_admin_contents_path(), {
+            method: 'put',
+            parameters: Sortable.serialize(sortable, {
+              name: 'contents'
+            }) + params
+          });
+        }.bind(this));
+        if (!$('publish_changes')) {
+          var publish_link = $a({
+            'href' : Routing.publish_admin_page_path({ 'id' : this.id }),
+            'class' : 'new publish'
+          }, 'Publicera ändringar');
+          publish_link.observe('click', function(event) {
+            event.stop();
+            var link = event.element();
+            var f = $form({
+              'action' : link.href,
+              'method' : 'post',
+              'style'  : 'display:none;'
+            }, $input({
+              'type'  : 'hidden',
+              'name'  : '_method',
+              'value' : 'put'
+            }), $input({
+                'type'  : 'hidden',
+                'name'  : Porthos.authenticity().key,
+                'value' : Porthos.authenticity().token
+            }));
+            link.parentNode.appendChild(f);
+            f.submit();
+          });
+          var tools = $$('div.tools');
+          if (tools.size() == 0) {
+            var parent = $div({ 'class' : 'tools' });
+            $$('div.header').first().insert({ 'after' : parent });
+          } else {
+            var parent = tools.first();
+          }
+          parent.insert({
+            'bottom' : $div({
+              'class' : 'add',
+              'id' : 'publish_changes'
+            }, publish_link)
+          });
         }
-        new Ajax.Request(Routing.sort_admin_contents_path(), {
-          method: 'put',
-          parameters: Sortable.serialize(sortable, {
-            name: 'contents'
-          }) + params
-        });
-      }.bind(this));
-      var publish_link = $a({
-        'href' : Routing.publish_admin_page_path({ 'id' : this.id }),
-        'class' : 'new publish'
-      }, 'Publicera ändringar');
-      publish_link.observe('click', function(event) {
-        event.stop();
-        var link = event.element();
-        var f = $form({
-          'action' : link.href,
-          'method' : 'post',
-          'style'  : 'display:none;'
-        }, $input({
-          'type'  : 'hidden',
-          'name'  : '_method',
-          'value' : 'put'
-        }), $input({
-            'type'  : 'hidden',
-            'name'  : Porthos.authenticity().key,
-            'value' : Porthos.authenticity().token
-        }));
-        link.parentNode.appendChild(f);
-        f.submit();
-      });
-      if (!$('publish_changes')) {
-        var tools = $$('div.tools');
-        if (tools.size() == 0) {
-          var parent = $div({ 'class' : 'tools' });
-          $$('div.header').first().insert({ 'after' : parent });
-        } else {
-          var parent = tools.first();
-        }
-        parent.insert({
-          'bottom' : $div({
-            'class' : 'add',
-            'id' : 'publish_changes'
-          }, publish_link)
-        });
       }
+      if (typeof this.sortTimeout != 'undefined') {
+        window.clearTimeout(this.sortTimeout);
+      }
+      var self = this;
+      this.sortTimeout = window.setTimeout(function() {
+       _sort.call(self); 
+      }, 2500);
     }
   });
   
