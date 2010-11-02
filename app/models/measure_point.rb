@@ -18,7 +18,8 @@
 
 class MeasurePoint < ActiveRecord::Base
   belongs_to :campaign
-  has_many   :conversions, :order => 'created_at DESC'
+  has_many   :conversions,
+             :order => 'conversions.id DESC'
   belongs_to :user 
 
   # See config/languages/sv.yaml

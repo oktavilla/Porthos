@@ -20,7 +20,7 @@ class Admin::RegistrationsController < ApplicationController
     @registrations = klass.send(@filter).paginate({
       :page     => page,
       :per_page => per_page,
-      :order    => 'registrations.created_at DESC'
+      :order    => 'registrations.id DESC'
     }.merge(conditions || {}))
   end
 

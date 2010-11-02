@@ -4,7 +4,11 @@ class Admin::PaymentsController < ApplicationController
   
   def index
     per_page = params[:per_page] || 25
-    @payments = Payment.paginate(:page => params[:page], :per_page => per_page.to_i, :order => 'created_at')
+    @payments = Payment.paginate({
+      :page => params[:page],
+      :per_page => per_page.to_i,
+      :order => 'payments.id desc'
+    })
   end
   
   def show

@@ -17,7 +17,10 @@ class Admin::PagesController < ApplicationController
         :per_page => (params[:per_page] || 25)
       })
     else
-      Page.find_tagged_with({:tags => params[:tags], :order => 'created_at DESC'})
+      Page.find_tagged_with({
+        :tags => params[:tags],
+        :order => 'pages.id DESC'
+      })
     end
     respond_to do |format|
       format.html
