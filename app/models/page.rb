@@ -56,7 +56,7 @@ class Page < ActiveRecord::Base
   }}
   
   named_scope :created_latest, 
-              :order => 'created_at DESC'
+              :order => 'pages.id DESC'
               
   named_scope :updated_latest, 
               :conditions => 'changed_at > created_at', 

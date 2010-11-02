@@ -14,7 +14,7 @@ class Admin::AssetsController < ApplicationController
 
   def index
     @filters = {
-      :order_by => 'created_at desc'
+      :order_by => 'assets.id desc'
     }.merge((params[:filters] || {}).to_options)
     
     @assets = unless @current_tags.any?
@@ -24,7 +24,10 @@ class Admin::AssetsController < ApplicationController
         :per_page => (params[:per_page] || 20)
       })
     else
-      Asset.is_public.find_tagged_with({:tags => params[:tags], :order => 'created_at DESC'})
+      Asset.is_public.find_tagged_with({
+        :tags => params[:tags],
+        :order => 'assets.id DESC'
+      })
     end
     respond_to do |format|
       format.html

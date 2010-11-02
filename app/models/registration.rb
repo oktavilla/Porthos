@@ -259,7 +259,7 @@ class Registration < ActiveRecord::Base
     end
     
     def find_for_export(from, through)
-      find(:all, :conditions => "registrations.created_at > '#{from.to_s(:db)}' AND registrations.created_at <= '#{through.to_s(:db)}'", :order => 'registrations.created_at')
+      find(:all, :conditions => "registrations.created_at > '#{from.to_s(:db)}' AND registrations.created_at <= '#{through.to_s(:db)}'", :order => 'registrations.id')
     end
     
     # Default fields for cvs export, overwrite this in submodels if needed

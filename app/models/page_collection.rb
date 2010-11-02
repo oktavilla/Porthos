@@ -108,7 +108,7 @@ class PageCollection < Page
     def find_with_tags(tags, options)
       active.include_restricted(options[:include_restricted]).published.find_tagged_with({
         :tags => tags,
-        :order => 'created_at DESC, id DESC'
+        :order => 'pages.id DESC'
       }).paginate(:page => options[:page], :per_page => options[:per_page])
     end
 

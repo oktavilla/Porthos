@@ -7,7 +7,12 @@ class Admin::CommentsController < ApplicationController
     page = params[:page] || 1
     per_page = params[:per_page] || 50
     @show_spam = (params[:spam] and params[:spam] == '1') ? true : false
-    @comments = Comment.paginate :page => page, :per_page => per_page, :conditions => ['spam = ?', @show_spam], :order => 'created_at DESC'
+    @comments = Comment.paginate({
+      :page => page,
+      :per_page => per_page,
+      :conditions => ['spam = ?', @show_spam],
+      :order => 'comments.id DESC'
+    })
     respond_to do |format|
       format.html 
     end
