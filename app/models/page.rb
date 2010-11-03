@@ -126,7 +126,7 @@ class Page < ActiveRecord::Base
         elsif ca.date_time_value.present?
           ca.date_time_value.to_s(:db)
         elsif ca.boolean_value.present?
-          ca.boolean_value.to_i
+          ca.boolean_value
         end
       }
     end
@@ -139,7 +139,7 @@ class Page < ActiveRecord::Base
             elsif ca.date_time_value.present?
               ca.date_time_value.to_s(:db)
             elsif ca.boolean_value.present?
-              ca.boolean_value.to_i
+              ca.boolean_value
             end
           }.join(' ')
         end
