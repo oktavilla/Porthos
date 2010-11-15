@@ -13,18 +13,16 @@
     </div>
     <% form_for [:admin, @page], :html => { :id => 'page_published_on_form', :style => 'display:none;' } do |f| -%>
       <div>
-        <%= f.date_select :published_on, :order => [:day, :month, :year ] %>  
+        <%= f.date_select :published_on, :order => [:day, :month, :year ] %>
         <input type="submit" value="Spara"> eller <a href="#">avbryt</a>
       </div>
     <% end %>
   </div>
-
   <h2 class="label">Skapad och ändrad</h2>
   <% if @page.created_by -%>
   <p>Skapad av: <%= @page.created_by.name %>.</p>
   <% end -%>
   <p>Senast ändrad: <%= @page.updated_at.strftime("%d %B %Y") %><%= " av #{@page.updated_by.name}" if @page.updated_by %>.</p>
-
   <h2 class="label">Nyckelord</h2>
   <div id="page_tags">
     <div id="page_tags_list">
