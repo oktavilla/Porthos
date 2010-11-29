@@ -1,9 +1,13 @@
 class CustomAssociation < ActiveRecord::Base
   belongs_to :context,
-             :polymorphic => true
+             :polymorphic => true,
+             :touch => true
+
   belongs_to :target,
              :polymorphic => true
+
   belongs_to :field
+
   validates_presence_of :target_id,
                         :field_id,
                         :handle,
