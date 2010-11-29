@@ -57,7 +57,7 @@ class PagesController < ApplicationController
         if filters.any?
           dynamic :custom_attributes do
             filters.each do |key, value|
-              with(key.to_sym).starting_with(value) unless value.blank?
+              with(key.to_sym, value) unless value.blank?
             end
           end
         end
