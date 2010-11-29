@@ -1,19 +1,30 @@
 <% @page_title = "Sidor > #{@page.title}" -%>
 <% @page_class = "layout3" -%>
 <div id="sub_nav">
-<% if not @page.active? -%>
   <h2 class="label">Publicering</h2>
+<% if not @page.active? -%>  
   <p>Sida är inte publicerad och syns inte på webbplatsen än.</p>
   <div id="publish_now" class="add"><%= link_to "Publicera sidan", toggle_admin_page_path(@page.id), :method => :put, :class => 'new' %></div>
 <% end -%>
+  <div id="page_publish_on_date">
+    <div id="page_current_publish_on_date">
+      <p>Publiceringsdatum: <%= @page.published_on.strftime("%d %B %Y") %></p>
+      <p><a href="#">Ändra</a></p>
+    </div>
+    <% form_for [:admin, @page], :html => { :id => 'page_published_on_form', :style => 'display:none;' } do |f| -%>
+      <div>
+        <%= f.date_select :published_on, :order => [:day, :month, :year ] %>  
+        <input type="submit" value="Spara"> eller <a href="#">avbryt</a>
+      </div>
+    <% end %>
+  </div>
+
   <h2 class="label">Skapad och ändrad</h2>
   <% if @page.created_by -%>
   <p>Skapad av: <%= @page.created_by.name %>.</p>
   <% end -%>
-  <% if @page.active? -%>
-  <p>Publicerad: <%= @page.published_on.strftime("%d %B %Y") %>.</p>
-  <% end -%>
   <p>Senast ändrad: <%= @page.updated_at.strftime("%d %B %Y") %><%= " av #{@page.updated_by.name}" if @page.updated_by %>.</p>
+
   <h2 class="label">Nyckelord</h2>
   <div id="page_tags">
     <div id="page_tags_list">
@@ -35,7 +46,7 @@
     <span class="away">
       <a href="#" class="edit_settings toggler action">Ändra</a>
       <% if @page.active? -%>
-        <%= link_to "Visa på webbplatsen", '/'+@page.full_slug, :class => 'public_link action' %>
+        <%= link_to "Visa på webbplatsen", "/#{@page.full_slug}", :class => 'public_link action' %>
       <% else -%>
       <%= link_to "Förhandsgranska", preview_page_path(@page.id), :class => 'public_link action' %>
       <% end -%>
@@ -90,7 +101,7 @@
           <%= node_form.text_field :name, :size => 60, :id => 'page_title' %>
           <div class="slug_field">
             <label for="page_slug">Adress:</label>
-            <%= "#{request.host}/#{@page.node.parent.slug}" %><%= f.text_field :slug %>
+            <%= "#{request.host}/#{@page.node.parent ? @page.node.parent.slug : ''}" %><%= f.text_field :slug %>
           </div>
           <ul class="multiple_choice">
             <li>

@@ -11,6 +11,10 @@
   <div class="fullwidth">
     <%= resource.text_area :body, :id => "editor", :class => content.resource.filter, :rows => 5 %>
   </div>
+  <div class="fullwidth">
+    <label for="content_<%= content.id %>_resource_link">Länk</label>
+    <%= resource.text_field :link, :id => "content_#{content.id}_resource_link", :class => 'link' %>
+  </div>
   <% if @content.resource.asset_usages.any? %>
   <h2>Bildinställningar</h2>
   <label for="resource_images_display_type_0"><%= resource.radio_button :images_display_type, 0 %> Visa bara första bilden</label>
