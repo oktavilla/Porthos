@@ -38,7 +38,7 @@ namespace :porthos do
   desc "Install porthos"
   task :install do
     
-    printf "\n\033[1m\033[41mPorthos requires Rails 2.3.2\033[0m\nAre you sure this project is using Rails 2.3.2? [y/n] "
+    printf "\n\033[1m\033[41mPorthos requires Rails 2.3.10\033[0m\nAre you sure this project is using Rails 2.3.10? [y/n] "
     exit unless STDIN.gets.chomp == 'y'
     
     if File.exists?("#{app_path}/assets")
@@ -69,7 +69,7 @@ namespace :porthos do
   
   desc "Load default db"
   task :install_database do
-    printf "This will overwrite RAILS_ROOT/db/schema.rb and RAILS_ROOT/db/seeds.rb, ok? [y/n] "
+    printf "This will overwrite Rails.root/db/schema.rb and Rails.root/db/seeds.rb, ok? [y/n] "
     if STDIN.gets.chomp == 'y'      
       schema_template_file = 'db/schema.rb'
       seeds_template_file = 'db/seeds.rb'
@@ -101,7 +101,7 @@ private
   end
 
   def app_path
-    RAILS_ROOT
+    Rails.root
   end
 
   def find_and_copy_files(dir)

@@ -45,8 +45,8 @@ class ContentModule < ActiveRecord::Base
     end
     
     def template_paths
-      module_paths = if File.exists?(RAILS_ROOT + '/app/views/pages/contents/modules')
-        [RAILS_ROOT + '/app/views/pages/contents/modules', File.dirname(__FILE__) + '/../views/pages/contents/modules']
+      module_paths = if File.exists?(Rails.root + '/app/views/pages/contents/modules')
+        [Rails.root + '/app/views/pages/contents/modules', File.dirname(__FILE__) + '/../views/pages/contents/modules']
       else
         [File.dirname(__FILE__) + '/../views/pages/contents/modules']
       end

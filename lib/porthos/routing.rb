@@ -230,7 +230,7 @@ module Porthos
       end
       
       def path
-        "#{RAILS_ROOT}/tmp/cache/#{@options[:file_name]}.marshal"
+        "#{Rails.root}/tmp/cache/#{@options[:file_name]}.marshal"
       end
   
     end

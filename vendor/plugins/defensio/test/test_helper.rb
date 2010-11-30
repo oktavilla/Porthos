@@ -6,7 +6,7 @@ require 'active_support'
 require 'active_record'
 require 'mocha'
 
-RAILS_ROOT = ''
+Rails.root = ''
 RAILS_DEFAULT_LOGGER = Logger.new(nil)
 # RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)
 ENV['RAILS_ENV'] = 'test'

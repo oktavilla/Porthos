@@ -57,10 +57,10 @@ protected
   end
 
   def flv_path
-    File.join(RAILS_ROOT, 'public', 'videos', "#{file_name}.flv")
+    File.join(Rails.root, 'public', 'videos', "#{file_name}.flv")
   end
   
   def public_video_path
-    File.join(RAILS_ROOT, 'public', 'videos')
+    File.join(Rails.root, 'public', 'videos')
   end
 end
