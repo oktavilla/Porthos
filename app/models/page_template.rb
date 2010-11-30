@@ -43,7 +43,7 @@ class PageTemplate
     end
     
     def root_directory
-      File.join(RAILS_ROOT, 'app', 'views', root_path)
+      File.join(Rails.root, 'app', 'views', root_path)
     end
     
     def root_path

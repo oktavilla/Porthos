@@ -14,7 +14,7 @@ class ImageAsset < Asset
   }
   cattr_accessor :gravities
 
-  IMAGE_VERSIONS_DIR = "#{RAILS_ROOT}/public/images"
+  IMAGE_VERSIONS_DIR = "#{Rails.root}/public/images"
   RESIZE_SALT = '8i03d9ee7'
   
   def landscape?
@@ -165,7 +165,7 @@ protected
   # after destroy
   def cleanup
     super
-    Dir["#{RAILS_ROOT}/public/images/*/*"].each do |file| 
+    Dir["#{Rails.root}/public/images/*/*"].each do |file| 
       File.unlink(file) if File.basename(file) == full_name
     end
   end

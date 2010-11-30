@@ -26,12 +26,12 @@ protected
   end
 
   def symlink_to_public
-    movie_dir = File.join(RAILS_ROOT, 'public', 'swf')
+    movie_dir = File.join(Rails.root, 'public', 'swf')
     Dir.mkdir(movie_dir) unless File.exists?(movie_dir)
     system("ln -nfs #{path} #{symlink_path}")
   end
 
   def symlink_path
-    File.join(RAILS_ROOT, 'public', 'swf', full_name)
+    File.join(Rails.root, 'public', 'swf', full_name)
   end
 end

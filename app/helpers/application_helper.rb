@@ -81,7 +81,7 @@ module ApplicationHelper
     body_class << css_class   if css_class
     body_class << @page_class if @page_class
     body_class << controller.action_name.underscore
-    if RAILS_ENV == 'development'
+    if Rails.env.development?
       body_class << 'debug' if params[:debug]
       body_class << 'grid' if params[:grid]
     end
@@ -181,12 +181,12 @@ module ApplicationHelper
    
   def javascript_include_extensions
     js_file = "admin/#{controller.controller_name}"
-    path = File.join(RAILS_ROOT, 'public/javascripts', "#{js_file}.js")
+    path = File.join(Rails.root, 'public/javascripts', "#{js_file}.js")
     javascript_include_tag(js_file) if File.exists?(path)
   end
   
   def installation_specific_stylesheet_link_tag
-    path = File.join(RAILS_ROOT, 'public/stylesheets/porthos_extensions.css')
+    path = File.join(Rails.root, 'public/stylesheets/porthos_extensions.css')
     stylesheet_link_tag(js_file) if File.exists?(path)
   end
     

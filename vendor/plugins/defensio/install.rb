@@ -1,3 +1,3 @@
 require 'fileutils'
-FileUtils.cp "#{File.dirname(__FILE__)}/example/defensio.yml", "#{RAILS_ROOT}/config/defensio.yml"
+FileUtils.cp "#{File.dirname(__FILE__)}/example/defensio.yml", "#{Rails.root}/config/defensio.yml"
 puts File.read("#{File.dirname(__FILE__)}/README")

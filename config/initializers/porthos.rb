@@ -4,7 +4,7 @@ require 'will_paginate'
 
 Money.default_currency = "SEK"
 
-PORTHOS_ROOT = "#{RAILS_ROOT}/vendor/plugins/porthos"
+PORTHOS_ROOT = "#{Rails.root}/vendor/plugins/porthos"
 
 ActiveRecord::Base.send :include, Porthos::ActsAsFilterable
 

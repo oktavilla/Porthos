@@ -13,7 +13,7 @@ gem 'desert', '=0.5.3'
 require 'desert'
 
 Rails::Initializer.run do |config|
-  config.load_paths += %W( #{RAILS_ROOT}/vendor/plugins/porthos/app/middleware #{RAILS_ROOT}/vendor/plugins/porthos/app/metal )
+  config.load_paths += %W( #{Rails.root}/vendor/plugins/porthos/app/middleware #{Rails.root}/vendor/plugins/porthos/app/metal )
 
   config.active_record.observers = :node_observer
   
