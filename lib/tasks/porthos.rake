@@ -7,7 +7,8 @@ namespace :porthos do
       ['config/initializers', 
        'config/locales',
        'vendor/plugins',
-       'solr'].each { |dir| find_and_copy_files(dir) }
+       'solr',
+       'app/views/pages'].each { |dir| find_and_copy_files(dir) }
       system("cp -f #{File.join(plugin_path, 'config', 'sunspot.yml')} #{File.join(app_path, 'config', 'sunspot.yml')}")
     end
   end

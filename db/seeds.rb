@@ -9,8 +9,16 @@ UserRole.create(:role_id => site_admin_role.id, :user_id => admin_user.id)
 
 # Create default fieldset
 
-start_fieldset = FieldSet.create!(:title => 'Start', :handle => 'start')
-article_fieldset = FieldSet.create!(:title => 'Artikel', :handle => 'article')
+start_fieldset = FieldSet.create!({
+  :title => 'Start',
+  :handle => 'start',
+  :page_label => 'title'
+})
+article_fieldset = FieldSet.create!({
+  :title => 'Artikel',
+  :handle => 'article',
+  :page_label => 'title'
+})
 
 
 # Create pages
