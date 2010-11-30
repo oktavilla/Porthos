@@ -12,7 +12,7 @@ Rails::Initializer.run do |config|
 
   config.active_record.observers = :node_observer
   
-  config.time_zone = 'UTC +01:00'
+  config.time_zone = 'Stockholm'
   
   config.gem 'mime-types',
               :lib => 'mime/types'

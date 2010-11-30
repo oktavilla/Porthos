@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   end
   
   add_index "asset_usages", ["asset_id"], :name => "index_asset_usages_on_asset_id"
-  add_index "asset_id", ["parent_id", "parent_type"], :name => "index_asset_usages_on_parent_id_and_parent_type"
+  add_index "asset_usages", ["parent_id", "parent_type"], :name => "index_asset_usages_on_parent_id_and_parent_type"
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id"
