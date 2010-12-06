@@ -9,10 +9,10 @@ class FieldSet < ActiveRecord::Base
   has_many :fields,
            :order => 'fields.position',
            :dependent => :destroy
-           
+
   has_many :pages,
            :dependent => :destroy,
-           :order => 'published_on DESC, id DESC'
+           :include => [:custom_attributes, :custom_associations]
 
   has_one :node,
           :conditions => { :controller => 'pages', 'action' => 'index' }
@@ -32,6 +32,10 @@ class FieldSet < ActiveRecord::Base
 
   def template
     @template ||= template_name.present? ? PageTemplate.new(template_name) : PageTemplate.default
+  end
+
+  def renderer(action, *args)
+    "#{template.name.camelize}Renderer".constantize.send(action, self, *args)
   end
 
 protected

@@ -1,3 +1,4 @@
+# require "#{Rails.root}/app/views/pages/templates/default/default_renderer"
 class PagesController < ApplicationController
   include Porthos::Public
   before_filter :require_node
@@ -10,19 +11,10 @@ class PagesController < ApplicationController
   layout 'public'
 
   def index
-    if @field_set = @node.field_set
-      scope = @field_set.pages.
-                         active.
-                         published.
-                         include_restricted(logged_in?)
-      @pages = unless params[:tags]
-        scope = scope.published_within(*Time.delta(params[:year], params[:month], params[:day])) if params[:year]
-        scope.paginate(:page => (params[:page] || 1), :per_page => (params[:per_page] || 25))
-      else
-        scope.find_tagged_with(:tags => params[:tags])
-      end
-    end
+    @field_set = @node.field_set
     template = @field_set ? @field_set.template : PageTemplate.default
+    @renderer = @field_set.renderer(:index, params)
+
     respond_to do |format|
       format.html { render :template => template.views.index }
       format.rss  { render :template => template.views.index, :layout => false }
@@ -30,7 +22,8 @@ class PagesController < ApplicationController
   end
 
   def show
-    @page = Page.active.published.find(params[:id])
+    @page = Page.find(params[:id], :include => [:custom_attributes, :custom_associations, :fields])
+    @renderer = @page.field_set.renderer(:show, @page, params)
 
     login_required if @page.restricted?
 
@@ -38,14 +31,15 @@ class PagesController < ApplicationController
       format.html { render :template => @page.field_set.template.views.show }
     end
   end
-  
+
   def preview
     @page = Page.find(params[:id])
+    @renderer = @page.field_set.renderer(:show, @page, params)
     respond_to do |format|
       format.html { render :template => @page.field_set.template.views.show }
     end
   end
-  
+
   def search
     filters = params[:filters] || {}
     @field_set = @node.field_set
@@ -72,7 +66,7 @@ class PagesController < ApplicationController
       format.html { render :template => (@field_set ? @field_set.template.views.search : PageTemplate.default.views.search) }
     end
   end
-  
+
   # POST
   def comment
     @page    = Page.find(params[:id])
