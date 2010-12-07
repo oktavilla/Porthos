@@ -2,7 +2,8 @@ class CustomAttribute < ActiveRecord::Base
   class_inheritable_accessor :value_attribute
 
   belongs_to :context,
-             :polymorphic => true
+             :polymorphic => true,
+             :touch => true
 
   belongs_to :field
 
