@@ -11,13 +11,13 @@ module BlogRenderer
       if params[:year]
         scope = scope.published_within(*Time.delta(params[:year], params[:month], params[:day]))
       end
-      @pages = scope.find(:all)#.paginate({
- #       :page => (params[:page] || 1),
- #       :per_page => (params[:per_page] || 25),
- #       :order => 'pages.published_on DESC, pages.id DESC'
- #     }).tap do |pages|
- #       pages.each { |p| p.send :cache_custom_attributes }
- #     end
+      @pages = scope.paginate({
+        :page => (params[:page] || 1),
+        :per_page => (params[:per_page] || 25),
+        :order => 'pages.published_on DESC, pages.id DESC'
+      }).tap do |pages|
+        pages.each { |p| p.send :cache_custom_attributes }
+      end
     end
 
     def node
@@ -57,6 +57,7 @@ module BlogRenderer
 
     def initialize(field_set, page, params)
       @page = page
+      @page.send :cache_custom_attributes
       super(field_set, params)
     end
 

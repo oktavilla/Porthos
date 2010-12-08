@@ -97,6 +97,11 @@ class Page < ActiveRecord::Base
     :conditions => ["active = ?", active]
   }}
 
+  named_scope :with_custom_attributes_field, lambda { |ca_field| {
+    :joins => "left join custom_attributes as #{ca_field} on #{ca_field}.context_type = 'Page' and
+               #{ca_field}.context_id = pages.id and #{ca_field}.handle = '#{ca_field}'"
+  }}
+
   before_validation_on_create :set_inactive
 
   before_create :set_published_on
