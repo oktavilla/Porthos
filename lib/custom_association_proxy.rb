@@ -92,23 +92,23 @@ protected
       end
     end
   end
-  
+
   def load_target
     if !loaded?
       self.target = find_target
     end
   end
-  
+
   def find_target
     with_scope(construct_scope) do
       target_class.find(:all)
     end
   end
-  
+
   def construct_scope
     { :find => {
       :conditions => "id IN(#{target_ids.join(',')})"
     }}
   end
-    
+
 end
