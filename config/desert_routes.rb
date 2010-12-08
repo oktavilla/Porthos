@@ -19,17 +19,17 @@ ActionController::Routing::Routes.draw do |map|
                   :preview => :get,
                   :comment => :post
                 }
-  
+
   map.login  '/login',  :controller => 'user/sessions', :action => 'new'
   map.logout '/logout', :controller => 'user/sessions', :action => 'destroy'
   map.forgot_password '/forgot_password', :controller => 'user/sessions', :action => 'forgot_password'
   map.send_password '/send_password', :controller => 'user/sessions', :action => 'send_new_password'
-  
+
   map.new_user  '/skapa-konto',  :controller => 'user/users', :action => 'new'
   map.namespace(:user) do |user|
     user.resources :sessions, :collection => { :token => :get, :send_new_password => :get, :forgot_password => :get }
   end
-  
+
   map.namespace(:admin) do |admin|
     admin.login  '/login',  :controller => 'admin/sessions', :action => 'new'
     admin.logout '/logout', :controller => 'admin/sessions', :action => 'destroy'
@@ -38,7 +38,7 @@ ActionController::Routing::Routes.draw do |map|
 
     admin.resources :users, :collection => { :admins => :get, :public => :get, :new_public => :get, :search => :get }
 
-    admin.resources :nodes, 
+    admin.resources :nodes,
       :member => { :place => :get },
       :collection => { :sort => :put }
 
@@ -63,7 +63,7 @@ ActionController::Routing::Routes.draw do |map|
                     :collection => { :sort => :put }
     admin.resources :tags,
                     :collection => { :search => :get }
-        
+
     admin.resources :comments,
                     :member => {
                       :report_as_spam => :put,
@@ -72,14 +72,14 @@ ActionController::Routing::Routes.draw do |map|
                     :collection => {
                       :destroy_all_spam => :delete
                     }
-    
+
     admin.resources(:pages, {
       :collection => {
         :search => :get,
         :sort => :put
       },
       :member => {
-        :toggle   => :put,
+        :publish  => :put,
         :comments => :get
       }
     }) do |pages|

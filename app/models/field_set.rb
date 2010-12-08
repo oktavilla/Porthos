@@ -21,9 +21,9 @@ class FieldSet < ActiveRecord::Base
 
   def dates_with_children(options = {})
     options = { :year => Time.now.year }.merge(options.symbolize_keys)
-    years = connection.select_values("select distinct year(published_on) as year from pages where field_set_id = #{ self.id } and published_on <= now() and active = 1 order by year desc")
+    years = connection.select_values("select distinct year(published_on) as year from pages where field_set_id = #{ self.id } and published_on <= now() order by year desc")
     years.collect do |year|
-      months = connection.select_values("select distinct month(published_on) as month, year(published_on) as year from pages where year(published_on) = #{ year } and field_set_id = #{ self.id } and published_on <= now() and active = 1 order by month desc")
+      months = connection.select_values("select distinct month(published_on) as month, year(published_on) as year from pages where year(published_on) = #{ year } and field_set_id = #{ self.id } and published_on <= now() order by month desc")
       [year, months.collect { |month| "%02d" % month }.sort ]
     end
   end
