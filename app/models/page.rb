@@ -236,6 +236,12 @@ class Page < ActiveRecord::Base
 
 protected
 
+  def after_initialize
+    if field_set.present? && field_set.allow_categories?
+      self.class.create_namespaced_tagging_methods_for(field_set.handle)
+    end
+  end
+
   def cache_custom_attributes
     custom_attributes.each do |custom_attribute|
       self.class.send :attr_reader, custom_attribute.handle
