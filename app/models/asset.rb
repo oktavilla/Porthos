@@ -33,7 +33,7 @@ class Asset < ActiveRecord::Base
   acts_as_taggable
   acts_as_filterable
   
-  SAVE_DIR = "#{RAILS_ROOT}/assets"
+  SAVE_DIR = "#{Rails.root}/assets"
   IMAGE_FORMATS = [:jpg, :jpeg, :png, :gif]
   VIDEO_FORMATS = [:flv, :mov, :qt, :mpg, :avi, :mp4]
   SOUND_FORMATS = [:mp3, :wav, :aiff, :aif]

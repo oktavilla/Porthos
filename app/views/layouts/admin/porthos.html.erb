@@ -18,7 +18,7 @@
 <%= yield %>
 </div>
 <%= javascript_include_tag 'named_routes' %>
-<%= javascript_include_tag (Rails.env == 'production' ? 'http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js' : 'porthos/prototype') %>
+<%= javascript_include_tag (Rails.env.production? ? 'http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js' : 'porthos/prototype') %>
 <%= javascript_include_tag 'porthos/effects', 'porthos/controls', 'porthos/dragdrop', 'porthos/lowpro', 'porthos/lib', 'porthos/application', :cache => 'admin' %>
 <%= yield :javascripts %>
 </body>

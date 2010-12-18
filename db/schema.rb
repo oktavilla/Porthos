@@ -11,16 +11,6 @@
 
 ActiveRecord::Schema.define(:version => 20100914131159) do
 
-  create_table "asset_usages", :force => true do |t|
-    t.integer  "asset_id"
-    t.integer  "parent_id"
-    t.string   "parent_type"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "gravity"
-  end
-
   create_table "assets", :force => true do |t|
     t.string   "type"
     t.string   "title"
@@ -40,6 +30,19 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   end
 
   add_index "assets", ["file_name"], :name => "index_assets_on_file_name"
+
+  create_table "asset_usages", :force => true do |t|
+    t.integer  "asset_id"
+    t.integer  "parent_id"
+    t.string   "parent_type"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "gravity"
+  end
+  
+  add_index "asset_usages", ["asset_id"], :name => "index_asset_usages_on_asset_id"
+  add_index "asset_usages", ["parent_id", "parent_type"], :name => "index_asset_usages_on_parent_id_and_parent_type"
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id"
@@ -114,9 +117,8 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.integer  "restrictions_count"
   end
 
-  add_index "contents", ["context_id"], :name => "index_contents_on_page_id"
+  add_index "contents", ["context_id", "context_type", "position"], :name => "index_contents_on_context_id_and_context_type_and_position"
   add_index "contents", ["parent_id"], :name => "index_contents_on_parent_id"
-  add_index "contents", ["resource_id"], :name => "index_contents_on_resource_id"
 
   create_table "custom_associations", :force => true do |t|
     t.integer  "context_id"
@@ -209,7 +211,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   end
 
   add_index "nodes", ["parent_id"], :name => "index_nodes_on_parent_id"
-  add_index "nodes", ["resource_id"], :name => "index_nodes_on_resource_id"
+  add_index "nodes", ["resource_id", "resource_type"], :name => "index_nodes_on_resource_id_and_resource_type"
   add_index "nodes", ["field_set_id"], :name => "index_nodes_on_field_set_id"
   add_index "nodes", ["slug"], :name => "index_nodes_on_slug"
 
@@ -281,6 +283,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   end
 
   add_index "settings", ["name"], :name => "index_settings_on_name"
+  add_index "settings", ["name", "settingable_id", "settingable_type"], :name => "index_settings_on_name_and_settingable_id_and_settingable_type"
 
   create_table "taggings", :force => true do |t|
     t.integer "tag_id"
@@ -289,7 +292,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   end
 
   add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
-  add_index "taggings", ["taggable_id"], :name => "index_taggings_on_taggable_id"
+  add_index "taggings", ["taggable_id", "taggable_type"], :name => "index_taggings_on_taggable_id_and_taggable_type"
 
   create_table "tags", :force => true do |t|
     t.string "name"
@@ -362,16 +365,6 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     table.timestamps
   end
   add_index :delayed_jobs, [:priority, :run_at], :name => 'delayed_jobs_priority'
-  
-  create_table "asset_usages", :force => true do |t|
-    t.integer  "asset_id"
-    t.integer  "parent_id"
-    t.string   "parent_type"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "gravity"
-  end
   
   create_table 'site_settings', :force => true do |t|
     t.string 'name'

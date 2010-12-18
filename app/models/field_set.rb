@@ -9,10 +9,10 @@ class FieldSet < ActiveRecord::Base
   has_many :fields,
            :order => 'fields.position',
            :dependent => :destroy
-           
+
   has_many :pages,
            :dependent => :destroy,
-           :order => 'published_on DESC, id DESC'
+           :include => [:custom_attributes, :custom_associations]
 
   has_one :node,
           :conditions => { :controller => 'pages', 'action' => 'index' }
@@ -24,7 +24,7 @@ class FieldSet < ActiveRecord::Base
     years = connection.select_values("select distinct year(published_on) as year from pages where field_set_id = #{ self.id } and published_on <= now() and active = 1 order by year desc")
     years.collect do |year|
       months = connection.select_values("select distinct month(published_on) as month, year(published_on) as year from pages where year(published_on) = #{ year } and field_set_id = #{ self.id } and published_on <= now() and active = 1 order by month desc")
-      [year, months.collect { |month| Time.mktime(year, month) } ]
+      [year, months.collect { |month| "%02d" % month }.sort ]
     end
   end
 
@@ -32,6 +32,10 @@ class FieldSet < ActiveRecord::Base
 
   def template
     @template ||= template_name.present? ? PageTemplate.new(template_name) : PageTemplate.default
+  end
+
+  def renderer(action, *args)
+    "#{template.name.camelize}Renderer".constantize.send(action, self, *args)
   end
 
 protected

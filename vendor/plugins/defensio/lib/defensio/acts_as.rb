@@ -1,6 +1,6 @@
 module Defensio
   mattr_accessor :config_file
-  self.config_file = RAILS_ROOT + '/config/defensio.yml'
+  self.config_file = Rails.root + '/config/defensio.yml'
   
   module ActsAs
     module ClassMethods
@@ -56,7 +56,7 @@ module Defensio
       # You must specify the <tt>:api_key</tt> and <tt>:owner_url</tt> option.
       # Other options are optional.
       # All options can be specified in a YAML config file by default in
-      # RAILS_ROOT/config/defensio.yml.
+      # Rails.root/config/defensio.yml.
       def acts_as_defensio(type, options={})
         include InstanceMethods
         
