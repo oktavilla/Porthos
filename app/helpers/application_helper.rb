@@ -14,11 +14,11 @@ module ApplicationHelper
       :except         => [],
       :trailed_class  => 'trailed'
     }.merge(options)
-    
+
     html_options = {
       :id => collection.first.class.to_s.underscore.pluralize
     }.merge(html_options)
-    
+
     first_level = options.delete(:first_level)
     if first_level
       if options[:end_points]
@@ -27,9 +27,9 @@ module ApplicationHelper
       end
     end
     html_options.delete(:id) unless first_level
-    
+
     reset_cycle('nested_list_of_cycle') if first_level
-    
+
     ret = collection.collect do |item|
       next if (item.respond_to?(:access_status) and item.access_status == 'inactive') and not options[:allow_inactive] == true
       next if item == options[:except] || (options[:except].respond_to?(:include?) && options[:except].include?(item))
@@ -58,10 +58,10 @@ module ApplicationHelper
       elsif not options[:node_id].blank?
         node_container_options[:id] = "#{options[:node_id]}_#{item.id}"
       end
-      
+
       content_tag('li', rendered_item, node_container_options)
     end.join("\n")
-    
+
     list = content_tag('ul', ret, html_options)
     first_level ? concat(list) : list
   end
@@ -70,7 +70,7 @@ module ApplicationHelper
     @page_id ||= controller.class.to_s.underscore.gsub(/_controller$/, '').gsub(/admin\//, '')
     ' id="'+@page_id+'_view"'
   end
-  
+
   def public_page_id
     @page_id ||= controller.class.to_s.underscore.gsub(/_controller$/, '').gsub(/admin\//, '')+'-'+controller.action_name.underscore
     ' id="'+@page_id+'"'
@@ -87,11 +87,11 @@ module ApplicationHelper
     end
     ' class="'+body_class.join(" ")+'"' if body_class.size > 0
   end
-  
+
   def body_attributes
     page_id + page_class
   end
-  
+
   def public_body_attributes
     public_page_id + page_class
   end
@@ -118,19 +118,19 @@ module ApplicationHelper
     ret += "&nbsp;#{ options[:message] }" unless options[:message].nil?
     content_tag('span', ret, {:class => "indicator"}.merge(html_options))
   end
-  
+
   # Just like the regular button_to helper but accepts an :src as html_options making it an type=image
   def button_to(name, options = {}, html_options = {})
     html_options = html_options.stringify_keys
     convert_boolean_attributes!(html_options, %w( disabled ))
-  
+
     method_tag = ''
     if (method = html_options.delete('method')) && %w{put delete}.include?(method.to_s)
       method_tag = tag('input', :type => 'hidden', :name => '_method', :value => method.to_s)
     end
-  
+
     form_method = method.to_s == 'get' ? 'get' : 'post'
-  
+
     request_token_tag = ''
     if form_method == 'post' && protect_against_forgery?
       request_token_tag = tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token)
@@ -139,20 +139,20 @@ module ApplicationHelper
     if confirm = html_options.delete("confirm")
       html_options["onclick"] = "return #{confirm_javascript_function(confirm)};"
     end
-  
+
     url = options.is_a?(String) ? options : self.url_for(options)
     name ||= url
-  
+
     type = html_options["src"].nil? ? "submit" : "image"
     html_options.merge!("type" => type, "value" => name)
-    
-    "<form method=\"#{form_method}\" action=\"#{escape_once url}\" class=\"button_to\"><div>" + 
+
+    "<form method=\"#{form_method}\" action=\"#{escape_once url}\" class=\"button_to\"><div>" +
       method_tag + tag("input", html_options) + request_token_tag + "</div></form>"
   end
-  
+
   def flash_mediaplayer_tag(asset, options = {})
    options.merge!( {
-     :file => display_video_path(asset, asset.extname), 
+     :file => display_video_path(asset, asset.extname),
      :image => (display_image_path(:size => asset.thumbnail.width, :id => asset.thumbnail, :format => asset.thumbnail.extname) if asset.video?)
     })
     content = content_tag('a', t(:flash_is_needed, :scope => [:app, :general]), { :href => 'http://www.macromedia.com/go/getflashplayer'})
@@ -178,31 +178,31 @@ module ApplicationHelper
       "#{(minutes / 1440).round} dagar"
     end
   end
-   
+
   def javascript_include_extensions
     js_file = "admin/#{controller.controller_name}"
     path = File.join(Rails.root, 'public/javascripts', "#{js_file}.js")
     javascript_include_tag(js_file) if File.exists?(path)
   end
-  
+
   def installation_specific_stylesheet_link_tag
     path = File.join(Rails.root, 'public/stylesheets/porthos_extensions.css')
     stylesheet_link_tag(js_file) if File.exists?(path)
   end
-    
+
   def render_page_contents_for_rss(contents, &block)
     capture do
       contents.collect do |content|
-        render(:partial => "/pages/contents/#{content.resource_type.underscore}.html.erb", :locals => { :resource => content.resource, :page => @page, :content => content }) 
+        render(:partial => "/pages/contents/#{content.resource_type.underscore}.html.erb", :locals => { :resource => content.resource, :page => @page, :content => content })
       end.join
     end
   end
-  
+
   def admin_assets_path_with_session_key(arguments = {})
     session_key = ActionController::Base.session_options[:key]
     admin_assets_path({session_key => cookies[session_key], request_forgery_protection_token => form_authenticity_token}.merge(arguments))
   end
-  
+
   def render_page_content(page, content, options = {})
     if (!content.restricted? || content.viewable_by(current_user))
       render(:partial => content.public_template, :locals => {
@@ -212,7 +212,7 @@ module ApplicationHelper
       })
     end
   end
-  
+
   def form_field_for_custom_field(page, form_builder, field)
     string = ''
     string += "<label for=\"page_custom_field_#{field.id}\">#{field.label}</label>"
@@ -224,12 +224,20 @@ module ApplicationHelper
     end
     string
   end
-  
+
   def display_image_path(options = {})
     if options.delete(:add_token) or not logged_in? or (logged_in? and not current_user.admin?)
       asset = options[:id].is_a?(Numeric) ? Asset.find(options[:id]) : options[:id]
       options[:token] = asset.resize_token(options[:size]) if options[:size]
     end
     resized_image_path(options)
+  end
+
+  def permalink_page_path(page)
+    "/#{page.index_node.slug}/#{page.to_param}"
+  end
+
+  def permalink_by_date_page_path(page, date_attribute = 'published_on')
+    "/#{page.index_node.slug}/#{page.send(date_attribute.to_sym).strftime("%Y/%m/%d")}/#{page.to_param}"
   end
 end
