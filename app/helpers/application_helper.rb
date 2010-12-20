@@ -240,4 +240,17 @@ module ApplicationHelper
   def permalink_by_date_page_path(page, date_attribute = 'published_on')
     "/#{page.index_node.slug}/#{page.send(date_attribute.to_sym).strftime("%Y/%m/%d")}/#{page.to_param}"
   end
+
+  def field_set_categories_path(field_set)
+    "/#{field_set.node.slug}/categories"
+  end
+
+  def field_set_category_path(field_set, category)
+    "/#{field_set.node.slug}/categories/#{category.name}"
+  end
+
+  def permalink_by_category_page_path(category, page)
+    "/#{page.index_node.slug}/categories/#{category.name}/#{page.to_param}"
+  end
+
 end

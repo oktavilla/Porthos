@@ -3,19 +3,19 @@ module Porthos
   module Routing
     mattr_accessor :debug
     self.debug = false
-    
+
     class NodeSet
 
       attr_accessor :add_conditions, :remove_conditions
       attr_accessor :nodes
       attr_reader :changed_at
-      
+
       def initialize
         self.nodes = {}
         self.add_conditions, self.remove_conditions = [], []
         @routing   = ActionController::Routing::Routes
       end
-            
+
       def load!
         latest_caching = cache.saved_at
         if not nodes.any? or not @@last_change or not latest_caching
@@ -37,21 +37,21 @@ module Porthos
           Node.logger.warn("last_change: #{@@last_change}, cache.saved_at: #{cache.saved_at}") if Routing.debug
         end
       end
-      
+
       def reload!
         clear!
         load!
       end
-      
+
       def clear!
         nodes.each { |id, node| remove node }
       end
-      
+
       def load_from_cache
         clear!
         cached_nodes = cache.retrive
         cached_nodes.each { |id, node| add node }
-        @@last_change = cache.saved_at        
+        @@last_change = cache.saved_at
       end
 
       def update_cache
@@ -59,7 +59,7 @@ module Porthos
         @@last_change = cache.saved_at
         Node.logger.warn("Stored current nodes in the cache") if Routing.debug
       end
-      
+
       def add(node, store_change = false)
         route_mappings = {
           :controller => node["controller"],
@@ -67,11 +67,11 @@ module Porthos
           :id         => node["resource_id"],
           :slug       => node["slug"]
         }
-        
+
         if node['controller'] == 'pages'
           route_mappings[:field_set_id] = node["field_set_id"]
         end
-        
+
         unless node["parent_id"]
           @routing.add_named_route('root', '', route_mappings)
         else
@@ -85,7 +85,7 @@ module Porthos
               :year => /[0-9]{4}/
             }
           }))
-          
+
           @routing.add_named_route("node_#{node['id']}_month", "#{node["slug"]}/:year/:month", route_mappings.merge({
             :requirements => {
               :year  => /[0-9]{4}/,
@@ -107,9 +107,9 @@ module Porthos
               :action => 'show',
               :requirements => {
                 :id => /[0-9]+\-.+/
-              } 
+              }
             }))
-          
+
             @routing.add_named_route("node_#{node['id']}_dated_page", "#{node["slug"]}/:year/:month/:day/:id", mappings.merge({
               :action => 'show',
               :requirements => {
@@ -130,10 +130,23 @@ module Porthos
               }
             }))
           end
-          
+
           @routing.add_named_route("search_node_#{node['id']}", "#{node["slug"]}/search.:format", route_mappings.dup.merge({
             :action => 'search'
           }))
+
+          @routing.add_named_route("categories_node_#{node['id']}", "#{node['slug']}/categories.:format", route_mappings.dup.merge({
+            :action => 'categories'
+          }))
+
+          @routing.add_named_route("category_node_#{node['id']}", "#{node['slug']}/categories/:id.:format", route_mappings.dup.merge({
+            :action => 'category'
+          }))
+
+          @routing.add_named_route("categorized_page_node_#{node['id']}", "#{node['slug']}/categories/:category_id/:id.:format", route_mappings.dup.merge({
+            :action => 'show'
+          }))
+
         end
 
         add_conditions.each do |condition|
@@ -154,13 +167,13 @@ module Porthos
         Node.logger.warn("Added route for node #{node['id']}") if Routing.debug
         update_cache if store_change
       end
-      
+
       def update(node, store_change = false)
         Node.logger.warn("Updating route for node #{node['id']}") if Routing.debug
         remove node
         add node, store_change
       end
-      
+
       def remove(node, store_change = false)
         self.nodes.delete node["id"]
         @routing.named_routes.routes.delete "node_#{node['id']}"
@@ -171,27 +184,31 @@ module Porthos
           @routing.named_routes.routes.delete  "node_#{node['id']}_dated_page"
           @routing.named_routes.routes.delete  "formatted_node_#{node['id']}_dated_page"
           @routing.named_routes.routes.delete  "node_child_#{node['id']}_permalink"
+          @routing.named_routes.routing.delete "search_node_#{node['id']}"
+          @routing.named_routes.routing.delete "categories_node_#{node['id']}"
+          @routing.named_routes.routing.delete "category_node_#{node['id']}"
+          @routing.named_routes.routing.delete "categorized_page_node_#{node['id']}"
         end
-        
+
         remove_conditions.each do |condition|
           condition.call(node, @routing)
         end
-        
+
         Node.logger.warn("Removed route for node #{node['id']}") if Routing.debug
         update_cache if store_change
       end
-      
+
       def cache
         return @cache if @cache
         @cache = MemCacheStore.new
       rescue MemCache::MemCacheError => e
         @cache = CacheFileStore.new
       end
-      
+
     end
-    
+
     Nodes = NodeSet.new
-    
+
     ##
     # Example:
     #   c = Porthos::Routing::Cache.new(Porthos::Routing::Cache::FILE_ON_DISK)
@@ -199,44 +216,44 @@ module Porthos
     #   q = Porthos::Routing::Cache.new(Porthos::Routing::Cache::FILE_ON_DISK)
     #   puts q.last_save_date
     #   puts q.get.inspect
-        
+
     class CacheFileStore
-  
+
       def initialize(options = {})
         @options = { :file_name => "routes_cache" }.merge(options)
         store({}) unless exists?
       end
-      
+
       def saved_at
         File.stat(path).mtime
       end
-      
+
       def retrive
         Node.logger.warn("Fetching nodes file") if Routing.debug
         Marshal.load File.read(path)
       end
-      
+
       def store(object)
         Node.logger.warn("Called CacheFileStore#store") if Routing.debug
         File.open(path, 'w+') do |f|
           f << Marshal.dump(object)
         end
       end
-      
+
     protected
-      
+
       def exists?
         File.exists?(path)
       end
-      
+
       def path
         "#{Rails.root}/tmp/cache/#{@options[:file_name]}.marshal"
       end
-  
+
     end
-    
+
     class MemCacheStore
-  
+
       def initialize(options = {})
         namespace_key = ActionController::Base.session_options[:key]
         @options = {
@@ -249,30 +266,30 @@ module Porthos
         client.servers = "#{@options[:host]}:#{@options[:port]}"
         client.set 'test', 'active'
       end
-            
+
       def saved_at
         client.get @options[:timestamp_key]
       end
-      
+
       def retrive
         Node.logger.warn("Fetching nodes from memcache") if Routing.debug
         client.get @options[:storage_key]
       end
-      
+
       def store(object)
         Node.logger.warn("Called MemCacheStore#store") if Routing.debug
         client.set @options[:storage_key], object
         client.set @options[:timestamp_key], Time.now
       end
-      
+
     protected
-  
+
       def client
         @client ||= MemCache.new(:c_threshold => 10_000, :compression => true, :debug => false, :namespace => @options[:namespace], :readonly => false, :urlencode => false)
       end
-  
+
     end
-  
+
   end
 end
 

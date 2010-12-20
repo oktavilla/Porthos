@@ -51,13 +51,14 @@ module ActiveRecord
 
         def find_tagged_with(options = {})
           tags = options.delete(:tags)
+          namespace = options.delete(:namespace)
           tag_list = tags.is_a?(String) ? tag_list_from_string(tags) : tags
           find(:all, options.merge({
             :select => "#{table_name}.*, count(tags.id) AS count",
             :from   => "taggings",
             :joins  => "join #{table_name} on #{table_name}.#{primary_key} = taggings.taggable_id
                         #{"AND taggings.taggable_type = '#{self.name}'"}
-                        AND taggings.namespace #{options[:namespace].present? ? "= '#{options[:namespace]}'" : 'IS NULL' }
+                        AND taggings.namespace #{namespace.present? ? "= '#{namespace}'" : 'IS NULL' }
                         LEFT OUTER JOIN tags ON tags.id = taggings.tag_id
                         AND LOWER(tags.name) IN ('#{tag_list.join("','")}')",
             :group  => "#{table_name}.#{primary_key} HAVING count = #{tag_list.length}",
@@ -66,11 +67,12 @@ module ActiveRecord
         end
 
         def find_tags(options = {})
+          namespace = options.delete(:namespace)
           Tag.find(:all, options.merge({
             :select     => 'tags.*, count(taggings.tag_id) as count',
             :from       => 'tags',
             :joins      => 'LEFT JOIN taggings ON taggings.tag_id = tags.id',
-            :conditions => "taggings.taggable_type = '#{self.class_name}' and taggings.namespace #{options[:namespace].blank? ? 'IS NULL' : "= '#{options[:namespace]}'"}",
+            :conditions => "taggings.taggable_type = '#{self.class_name}' and taggings.namespace #{namespace.blank? ? 'IS NULL' : "= '#{namespace}'"}",
             :group      => 'tags.id',
             :order      => options[:order] || 'count desc'
           }))
