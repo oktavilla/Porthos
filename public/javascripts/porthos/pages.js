@@ -102,6 +102,7 @@
         }
         parent.select(query).invoke('toggle');
       });
+
       $$('#page_publish_on_date a.toggle_publish_date, #page_published_on_form a').invoke('observe', 'click', function(event) {
         event.stop();
         $$('#page_current_publish_on_date, #page_published_on_form').invoke('toggle');

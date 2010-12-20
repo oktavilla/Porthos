@@ -19,7 +19,6 @@
       </div>
     <% end %>
   </div>
-
   <h2 class="label">Skapad och ändrad</h2>
   <% if @page.created_by -%>
   <p>Skapad av: <%= @page.created_by.name %>.</p>
@@ -41,7 +40,6 @@
         <a href="#" id="new_category">Lägg till</a><br>
         <input type="submit" value="Välj"> eller <a href="#" class="cancel">avbryt</a>
       </div>
-
     <% end -%>
     <% form_for [:admin, @page], :html => { :id => 'page_categories_form', :style => 'display:none;' } do |f| -%>
       <div>

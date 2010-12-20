@@ -118,7 +118,7 @@ function setup_nodes(parent_id){
     var node_id = $(this).parent('li.node').attr('id').replace(/([A-z]|\_|\-)*/i, '');
     $.getJSON(Routing.admin_node_path({ 'id' : node_id, 'format' : 'js' }),
       function(data) {
-        $('input.wym_href:first').val('/'+data.slug); 
+        $('input.wym_href:first').val('/'+data.node.slug); 
       }
     );
     return false;

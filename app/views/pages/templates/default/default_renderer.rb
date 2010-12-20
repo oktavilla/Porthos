@@ -26,6 +26,39 @@ module DefaultRenderer
     DefaultRenderer::Index.new(field_set, params)
   end
 
+  class Categories < Porthos::PageRenderer
+    def categories
+      return @categories if @categories
+      @categories = Tag.on('Page').namespaced_to(@field_set.handle).all
+      @categories
+    end
+    register_methods :categories
+  end
+
+  def self.categories(field_set, params)
+    DefaultRenderer::Categories.new(field_set, params)
+  end
+
+  class Category < Porthos::PageRenderer
+    def category
+      return @category if @category
+      @category = Tag.find_by_name(params[:id]) or raise ActiveRecord::RecordNotfound
+    end
+    register_methods :category
+
+    def pages
+      return @pages if @pages
+      @pages = Page.find_tagged_with(:tags => category.name, :namespace => @field_set.handle).tap do |pages|
+        pages.each { |p| p.send :cache_custom_attributes }
+      end
+    end
+  end
+
+  def self.category(field_set, params)
+    DefaultRenderer::Category.new(field_set, params)
+  end
+
+
   class Show < Porthos::PageRenderer
     attr_accessor :page
 

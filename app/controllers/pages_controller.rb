@@ -67,6 +67,26 @@ class PagesController < ApplicationController
     end
   end
 
+  def categories
+    @field_set = @node.field_set
+    template = @field_set ? @field_set.template : PageTemplate.default
+    @renderer = @field_set.renderer(:categories, params)
+
+    respond_to do |format|
+      format.html { render :template => template.views.categories }
+    end
+  end
+
+  def category
+    @field_set = @node.field_set
+    template = @field_set ? @field_set.template : PageTemplate.default
+    @renderer = @field_set.renderer(:category, params)
+
+    respond_to do |format|
+      format.html { render :template => template.views.category }
+    end
+  end
+
   # POST
   def comment
     @page    = Page.find(params[:id])
