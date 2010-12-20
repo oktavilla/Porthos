@@ -234,6 +234,14 @@ class Page < ActiveRecord::Base
     !new_record? ? (super(method, include_private) || field_exists?(method.to_s.gsub(/\?/, ''))) : super(method, include_private)
   end
 
+  def category
+    @category ||= field_set.allow_categories? ? self.send(category_method_name.to_sym) : nil
+  end
+
+  def category_method_name
+    @category_method_name ||= "#{field_set.handle}_tag_names"
+  end
+
 protected
 
   def after_initialize

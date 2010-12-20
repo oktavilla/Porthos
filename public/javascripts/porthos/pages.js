@@ -28,7 +28,7 @@
       }.bind(this));
       this.setupSorting();
     },
-     
+
     setupSorting: function() {
       this.sortables = this.columns_container.select('ul.sortable');
       this.teaserCollections = this.columns_container.select('ul.teasers');
@@ -58,7 +58,7 @@
         });
       }.bind(this));
     },
-    
+
     sort: function(event) {
       this.sortables.each(function(sortable) {
         var params = '';
@@ -83,9 +83,8 @@
     $$('#filters_order_by').invoke('observe', 'change', function(event) {
       this.form.submit();
     });
-    
+
     if ($$("body#pages_view.show").size() > 0) {
-      new Porthos.TagAutoCompletion($('page_tag_names'));
       $$('textarea.editor').each(function(el){
         Porthos.jQuery(el).wymeditor(Porthos.Editor.Options);
       });
@@ -103,7 +102,7 @@
         }
         parent.select(query).invoke('toggle');
       });
-      
+
       $$('#page_publish_on_date a').invoke('observe', 'click', function(event) {
         event.stop();
         $$('#page_current_publish_on_date, #page_published_on_form').invoke('toggle');
@@ -112,6 +111,20 @@
       $$('#page_tags a').invoke('observe', 'click', function(event) {
         event.stop();
         $$('#page_tags_list, #page_tags_form').invoke('toggle');
+      });
+
+      $$('#page_category a.change, #page_category a.cancel').invoke('observe', 'click', function(event) {
+        event.stop();
+        $$('#category_view, #choose_page_category_form').invoke('toggle');
+      });
+
+      $$('#new_category, #page_categories_form a').invoke('observe', 'click', function(event) {
+        event.stop();
+        $$('#choose_page_category_form, #page_categories_form').invoke('toggle');
+      });
+
+      $$('#page_categories_form input, #page_tag_names').each(function(tag_input) {
+        new Porthos.TagAutoCompletion(tag_input);
       });
 
       $$('#workspace > div.header').invoke('observe', 'click', function(event) {
@@ -139,7 +152,7 @@
 
       var page = new Porthos.Pages.Page();
     }
-    
+
   });
-  
+
 })();
