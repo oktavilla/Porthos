@@ -5,7 +5,7 @@ class AddNamespaceToTaggings < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column, :taggings, :namespace
-    remove_column, :field_sets, :allow_categories
+    remove_column :taggings, :namespace
+    remove_column :field_sets, :allow_categories
   end
 end
