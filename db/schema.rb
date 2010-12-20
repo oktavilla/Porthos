@@ -1,4 +1,4 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file, 
+# This file is auto-generated from the current state of the database. Instead of editing this file,
 # please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.datetime "updated_at"
     t.string   "gravity"
   end
-  
+
   add_index "asset_usages", ["asset_id"], :name => "index_asset_usages_on_asset_id"
   add_index "asset_usages", ["parent_id", "parent_type"], :name => "index_asset_usages_on_parent_id_and_parent_type"
 
@@ -166,6 +166,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.string   "handle"
     t.string   "template_name"
     t.boolean  "pages_sortable"
+    t.boolean  "allow_categories", :default => false
   end
 
   add_index "field_sets", ["handle"], :name => "index_field_sets_on_handle"
@@ -289,6 +290,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.integer "tag_id"
     t.integer "taggable_id"
     t.string  "taggable_type"
+    t.string  "namespace"
   end
 
   add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
@@ -352,7 +354,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
   end
 
   add_index "users", ["avatar_id"], :name => "index_users_on_avatar_id"
-  
+
   create_table :delayed_jobs, :force => true do |table|
     table.integer  :priority, :default => 0      # Allows some jobs to jump to the front of the queue
     table.integer  :attempts, :default => 0      # Provides for retries, but still fail eventually.
@@ -365,7 +367,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     table.timestamps
   end
   add_index :delayed_jobs, [:priority, :run_at], :name => 'delayed_jobs_priority'
-  
+
   create_table 'site_settings', :force => true do |t|
     t.string 'name'
     t.string 'value'
