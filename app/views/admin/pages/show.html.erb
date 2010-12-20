@@ -26,6 +26,32 @@
   <% end -%>
   <p>Senast ändrad: <%= @page.updated_at.strftime("%d %B %Y") %><%= " av #{@page.updated_by.name}" if @page.updated_by %>.</p>
 
+  <% if @page.field_set.allow_categories? -%>
+  <h2 class="label">Kategori</h2>
+  <div id="page_category">
+    <div id="category_view">
+      <% if @page.category.present? -%>
+      <p><%= @page.category %></p>
+      <% end -%>
+      <p><a href="#" class="change"><%= @page.category.present? ? 'Ändra' : 'Välj' %> kategori</a></p>
+    </div>
+    <% form_for [:admin, @page], :html => { :id => 'choose_page_category_form', :style => 'display:none;' } do |f| -%>
+      <div>
+        <%= f.select @page.category_method_name, Tag.on('Page').namespaced_to(@page.field_set.handle).collect { |t| [t.name.titlecase, t.name] }, :include_blank => 'Ingen kategori' %>
+        <a href="#" id="new_category">Lägg till</a><br>
+        <input type="submit" value="Välj"> eller <a href="#" class="cancel">avbryt</a>
+      </div>
+
+    <% end -%>
+    <% form_for [:admin, @page], :html => { :id => 'page_categories_form', :style => 'display:none;' } do |f| -%>
+      <div>
+        <%= f.text_field @page.category_method_name, :value => '' %>
+        <input type="submit" value="Spara"> eller <a href="#">avbryt</a>
+      </div>
+    <% end -%>
+  </div>
+  <% end -%>
+
   <h2 class="label">Nyckelord</h2>
   <div id="page_tags">
     <div id="page_tags_list">

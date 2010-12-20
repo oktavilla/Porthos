@@ -231,7 +231,21 @@ class Page < ActiveRecord::Base
     !new_record? ? (super(method, include_private) || field_exists?(method.to_s.gsub(/\?/, ''))) : super(method, include_private)
   end
 
+  def category
+    @category ||= field_set.allow_categories? ? self.send(category_method_name.to_sym) : nil
+  end
+
+  def category_method_name
+    @category_method_name ||= "#{field_set.handle}_tag_names"
+  end
+
 protected
+
+  def after_initialize
+    if field_set.present? && field_set.allow_categories?
+      self.class.create_namespaced_tagging_methods_for(field_set.handle)
+    end
+  end
 
   def cache_custom_attributes
     custom_attributes.each do |custom_attribute|
