@@ -14,8 +14,10 @@
     <% if node.controller == 'pages' && node.action == 'index' -%>
       <%= link_to "Visa alla #{node.field_set.title.downcase}", admin_pages_path(:filters => { :with_field_set => node.field_set_id }), :class => 'edit' %>
       <%= link_to "Ändra", edit_admin_node_path(node), :class => 'settings' %>
-    <% else -%>
+    <% elsif node.controller == 'pages' && node.action == 'show' -%>
       <%= link_to "Ändra", node_path(node), :class => 'edit' %>
+    <% else -%>
+      <%= link_to "Ändra", edit_admin_node_path(node), :class => 'settings' %>
     <% end -%>
     <%= link_to "Flytta", place_admin_node_path(node) %>
     <%= link_to "Ta bort", admin_node_path(node), { :method => :delete, :class => "delete", :confirm => "Är du säker, detta går inte att ångra." } %>
