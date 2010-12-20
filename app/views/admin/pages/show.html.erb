@@ -29,7 +29,7 @@
   <div id="page_category">
     <div id="category_view">
       <% if @page.category.present? -%>
-      <p><%= @page.category %></p>
+      <p><%= @page.category.name %></p>
       <% end -%>
       <p><a href="#" class="change"><%= @page.category.present? ? 'Ändra' : 'Välj' %> kategori</a></p>
     </div>
