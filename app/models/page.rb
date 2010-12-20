@@ -235,7 +235,11 @@ class Page < ActiveRecord::Base
   end
 
   def category
-    @category ||= field_set.allow_categories? ? self.send(category_method_name.to_sym) : nil
+    @category ||= field_set.allow_categories? ? all_tags.with_namespace(field_set.handle).first : nil
+  end
+
+  def category_name
+    @category_name ||= category ? category.name : ''
   end
 
   def category_method_name
