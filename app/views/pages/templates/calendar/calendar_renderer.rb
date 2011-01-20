@@ -5,15 +5,15 @@ module CalendarRenderer
    years = ActiveRecord::Base.connection.select_values("select distinct year(calendar_date.date_time_value) as year from pages
                                      left join custom_attributes as calendar_date on calendar_date.context_type = 'Page' and
                                                calendar_date.context_id = pages.id and calendar_date.handle = 'calendar_date'
-                                      where field_set_id = #{ field_set.id } and published_on <= now() and
-                                            active = 1 order by year desc")
+                                      where field_set_id = #{ field_set.id } and published_on <= now()
+                                      order by year desc")
     years.collect do |year|
       months = ActiveRecord::Base.connection.select_values("select distinct month(calendar_date.date_time_value) as month, year(calendar_date.date_time_value) as year from pages
                                          left join custom_attributes as calendar_date on calendar_date.context_type = 'Page' and
                                                    calendar_date.context_id = pages.id and calendar_date.handle = 'calendar_date'
                                          where year(calendar_date.date_time_value) = #{ current_year } and
-                                               field_set_id = #{ field_set.id } and published_on <= now() and
-                                               active = 1 order by month desc")
+                                               field_set_id = #{ field_set.id } and published_on <= now()
+                                         order by month desc")
       [year, months.collect { |month| "%02d" % month }.sort ]
     end
   end
@@ -23,7 +23,6 @@ module CalendarRenderer
     def pages
       return @pages if @pages
       scope = @field_set.pages.
-                         active.
                          published.
                          with_custom_attributes_field(:calendar_date)
       if params[:year]

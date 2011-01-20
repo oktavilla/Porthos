@@ -2,19 +2,20 @@
 <% @page_class = "layout3" -%>
 <div id="sub_nav">
   <h2 class="label">Publicering</h2>
-<% if not @page.active? -%>
-  <p>Sida är inte publicerad och syns inte på webbplatsen än.</p>
-  <div id="publish_now" class="add"><%= link_to "Publicera sidan", toggle_admin_page_path(@page.id), :method => :put, :class => 'new' %></div>
-<% end -%>
   <div id="page_publish_on_date">
     <div id="page_current_publish_on_date">
+    <% if @page.published_on %>
       <p>Publiceringsdatum: <%= @page.published_on.strftime("%d %B %Y") %></p>
-      <p><a href="#">Ändra</a></p>
+      <p><a href="#" class="toggle_publish_date">Ändra</a></p>
+    <% else %>
+      <p><strong>Sidan är inte publicerad</strong></p>
+      <p><a href="#" class="toggle_publish_date">Välj ett publiceringsdatum</a> eller <%= link_to "publicera nu", publish_admin_page_path(@page.id), :method => :put, :class => 'new' %></p>
+    <% end %>
     </div>
     <% form_for [:admin, @page], :html => { :id => 'page_published_on_form', :style => 'display:none;' } do |f| -%>
       <div>
         <%= f.date_select :published_on, :order => [:day, :month, :year ] %>
-        <input type="submit" value="Spara"> eller <a href="#">avbryt</a>
+        <input type="submit" value="Spara publiceringsdatum"> eller <a href="#">avbryt</a>
       </div>
     <% end %>
   </div>
@@ -69,7 +70,7 @@
   <div class="header">
     <span class="away">
       <a href="#" class="edit_settings toggler action">Ändra</a>
-      <% if @page.active? -%>
+      <% if @page.published? -%>
         <%= link_to "Visa på webbplatsen", "/#{@page.full_slug}", :class => 'public_link action' %>
       <% else -%>
       <%= link_to "Förhandsgranska", preview_page_path(@page.id), :class => 'public_link action' %>
@@ -90,10 +91,10 @@
         <% end -%>
         </span>
       <% elsif @page.index_node -%>
-        <% if @page.active? -%>
+        <% if @page.published? -%>
         <span class="status active">Visas</span>
         <% else -%>
-        <span class="status inactive">Avstängd</span>
+        <span class="status inactive">Syns inte</span>
         <% end -%>
       <% end %>
     </div>
@@ -169,91 +170,7 @@
     <div class="page_content <%= field.data_type == CustomAssociation ? ['association', field.target_type, field.relationship].join(' ') : ['attribute', field.class.to_s.underscore].join(' ') %>">
     <% if field.data_type == CustomAssociation %>
       <% @page.custom_associations.find(:all, :conditions => ["field_id = ?", field.id], :order => 'custom_associations.position').tap do |custom_associations| %>
-        <div class="container">
-          <h2 class="field_label"><%= field.label %></h2>
-        <% if custom_associations.any? -%>
-          <% if field.target_type == 'asset' -%>
-            <% custom_associations.each do |custom_association| -%>
-              <% custom_association.target.tap do |asset| -%>
-              <div class="content">
-                <% if asset.image? %>
-                  <%= image_tag display_image_path(:size => 'c100x100', :id => asset, :format => asset.extname), :id => "asset_#{asset.id}", :width => 100, :height => 100 %>
-                <% elsif asset.respond_to?(:thumbnail) and not asset.thumbnail.blank? %>
-                  <%= image_tag display_image_path(:size => 'c100x100', :id => asset.thumbnail, :format => asset.thumbnail.extname), :id => "asset_#{asset.id}", :width => 100, :height => 100 %>
-                <% else %>
-                  <img src="/graphics/porthos/icons/filetypes/<%= asset.extname %>.png" alt="" width="100" height="100">
-                <% end %>
-                <div class="title"><%= asset.title %></div>
-                <div class="caption"><%= asset.description %></div>
-                <span class="edit"><%= link_to "Ändra", edit_admin_asset_path(asset.id, :return_to => request.path) %></span>
-                <span class="delete"><%= link_to "Ta bort", admin_page_custom_association_path(@page.id, custom_association), :method => :delete %></span>
-              </div>
-              <% end -%>
-            <% end -%>
-          <% elsif field.target_type == 'page' -%>
-            <ul class="pages sortable" id="page_<%= field.handle %>_list">
-            <% custom_associations.each do |custom_association| -%>
-              <li id="custom_association_<%= custom_association.id %>">
-                <span class="drag_handle"></span>
-                <%= link_to custom_association.target.title, admin_page_path(custom_association.target), :class => 'page' %>
-                <% unless custom_associations.size == 1 && field.required? -%>
-                <%= link_to("Ta bort", admin_page_custom_association_path(@page, custom_association), :class => 'delete', :method => :delete) %>
-                <% end -%>
-              </li>
-            <% end -%>
-            </ul>
-          <% end -%>
-        <% end -%>
-          <div class="edit">
-            <% if field.target_type == 'asset' && !(field.relationship == 'one_to_one' && custom_associations.any?)-%>
-              <%= link_to "Lägg till fil", admin_assets_path(:create_callback => {:controller => 'admin/custom_associations', :action => 'create', :method => 'post', :asset_field_name => 'custom_association[target_id]', :params => { :page_id => @page, 'custom_association[target_type]' => field.target_class.to_s, 'custom_association[context_id]' => @page.id, 'custom_association[context_type]' => 'Page', 'custom_association[handle]' => field.handle, 'custom_association[field_id]' => field.id, 'custom_association[relationship]' => field.relationship }}) %>
-            <% elsif field.target_type == 'page' -%>
-              <% if field.relationship == 'one_to_one' -%>
-                <a href="#" class="change">Ändra <%= field.label %></a>
-              <% elsif custom_associations.size != field.possible_targets.size -%>
-                <a href="#" class="add">Lägg till <%= field.label %></a>
-              <% end -%>
-            <% end -%>
-          </div>
-        </div>
-        <% if field.target_type == 'page' -%>
-           <% if field.relationship == 'one_to_many' -%>
-              <% form_for :custom_association, :url => admin_page_custom_associations_path(@page.id), :html => { :style => 'display:none;', :class => 'select_page' } do |f| %>
-                <%= f.hidden_field :target_type, :value => field.target_class.to_s %>
-                <%= f.hidden_field :field_id, :value => field.id %>
-                <%= f.hidden_field :handle, :value => field.handle %>
-                <%= f.hidden_field :relationship, :value => field.relationship %>
-                <label for="page_<%= field.label %>"><%= field.label %></label>
-                <%= f.select :target_id, field.possible_targets.find_all { |pt| !custom_associations.collect { |ca| ca.target_id }.include?(pt['id'].to_i) }.collect { |pt| [pt['title'], pt['id']] }, :selected => custom_associations.collect { |ca| ca.target_id } %>
-                <div class="submit_inline">
-                  <input type="submit" value="Lägg till">
-                  eller <a href="#" class="cancel">avbryt</a>
-                </div>
-              <% end -%>
-            <% elsif field.relationship == 'one_to_one' -%>
-              <% if custom_associations.any? -%>
-                <% form_for custom_associations.first, :url => admin_page_custom_association_path(@page.id, custom_associations.first), :html => { :method => :put, :style => 'display:none;' } do |f| %>
-                  <label for="page_<%= field.label %>"><%= field.label %></label>
-                  <%= f.select :target_id, field.possible_targets.collect { |pt| [pt['title'], pt['id']] } %>
-                  <div class="submit_inline">
-                    <input type="submit" value="<%= field.relationship == 'one_to_one' ? 'Ändra' : 'Lägg till' %>"> eller <a href="#" class="cancel">avbryt</a>
-                  </div>
-                <% end -%>
-              <% else -%>
-                <% form_for :custom_association, :url => admin_page_custom_associations_path(@page.id), :html => { :style => 'display:none;' } do |f| %>
-                  <%= f.hidden_field :target_type, :value => field.target_class.to_s %>
-                  <%= f.hidden_field :field_id, :value => field.id %>
-                  <%= f.hidden_field :handle, :value => field.handle %>
-                  <%= f.hidden_field :relationship, :value => field.relationship %>
-                  <label for="page_<%= field.label %>"><%= field.label %></label>
-                  <%= f.select :target_id, field.possible_targets.find_all { |pt| !custom_associations.collect { |ca| ca.target_id }.include?(pt['id'].to_i) }.collect { |pt| [pt['title'], pt['id']] } %>
-                  <div class="submit_inline">
-                    <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
-                  </div>
-                <% end -%>
-              <% end -%>
-            <% end -%>
-        <% end -%>
+        <%= render :partial => "admin/fields/#{field.target_type}_association_field_form", :locals => {:custom_associations => custom_associations, :field => field} %>
       <% end -%>
     <% else -%>
       <% (@page.custom_attribute_for_field(field.id) || @page.custom_attributes.build).tap do |custom_attribute| -%>
@@ -331,7 +248,7 @@
               <%= field.label %>
             </label>
             <div>
-              <%= select_date((custom_attribute.value||Time.now), :order => [:year, :month, :day], :prompt => true, :prefix => 'custom_attribute[value]') %>
+              <%= select_datetime((custom_attribute.value||Time.now), :datetime_separator => ' - ', :prefix => 'custom_attribute[value]') %>
             </div>
             <div class="submit">
               <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
@@ -344,7 +261,7 @@
               <%= field.label %>
             </label>
             <div>
-              <%= select_date((custom_attribute.value||Time.now), :order => [:year, :month, :day], :prompt => true, :prefix => 'custom_attribute[value]') %>
+              <%= select_datetime((custom_attribute.value||Time.now), :datetime_separator => ' - ', :prefix => 'custom_attribute[value]') %>
             </div>
             <div class="submit">
               <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
@@ -391,19 +308,7 @@
         <% if @page.column_count > 1 %>
         <div class="title">Kolumn #<%= column %></div>
         <% end %>
-        <div class="sort_contents add controls">
-          <a class="add new" href="#">Lägg till innehåll</a>
-        </div>
-        <div class="sub_controls" style="display:none;">
-          <ul>
-            <li><a href="<%= new_admin_content_path(:content => { :context_id => @page.id, :context_type => 'Page', :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentTextfield', :column_position => column }) %>">Text</a></li>
-            <li><a href="<%= new_admin_content_path(:collection => 1, :content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentTeaser', :column_position => column }) %>">Puffar</a></li>
-            <li><a href="<%= admin_assets_path(:filters => { :by_type => 'ImageAsset' }, :create_callback => {:controller => 'admin/contents', :action => 'new', :asset_field_name => 'resource[image_asset_id]', :params => {'content[context_id]' => @page.id, 'content[context_type]' => 'Page', 'content[resource_type]' => 'ContentImage', 'content[column_position]' => column }}) %>">Bild</a></li>
-            <li><a href="<%= admin_assets_path(:filters => { :by_type => 'VideoAsset' }, :create_callback => {:controller => 'admin/contents', :action => 'new', :asset_field_name => 'resource[video_asset_id]', :params => {'content[context_id]' => @page.id, 'content[context_type]' => 'Page', 'content[resource_type]' => 'ContentVideo', 'content[column_position]' => column }}) %>">Video</a></li>
-            <li><a href="<%= admin_assets_path(:filters => { :by_type => 'ImageAsset' }, :create_callback => {:controller => 'admin/contents', :action => 'new', :asset_field_name => 'resource[image_asset_id]', :params => {'content[context_id]' => @page.id, 'content[context_type]' => 'Page', 'content[resource_type]' => 'ContentImage', 'content[column_position]' => column, :collection => 1 }}) %>">Bildsamling</a></li>
-            <li><a href="<%= new_admin_content_path(:content => { :context_id => @page.id, :context_type => 'Page', :resource_type => 'ContentModule', :column_position => column }) %>">Modul</a></li>
-          </ul>
-        </div>
+        <%= render :partial => 'content_types', :locals => {:page => @page, :column => column} %>
         <ul class="contents items sortable" id="contents_in_column_<%= column %>">
         <% @page.contents.find_all { |content| content.column_position == column }.each do |content| -%>
           <li class="<%= "#{content.resource_type} content" unless content.collection? %><%= ' collection' if content.collection? %> sortable <%= content.active? ? '' : ' inactive' %>" id="content_<%= content.id %>">

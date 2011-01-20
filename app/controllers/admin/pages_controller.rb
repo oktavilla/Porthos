@@ -13,7 +13,7 @@ class Admin::PagesController < ApplicationController
     @tags = Tag.on('Page')
     @current_tags = params[:tags] || []
     @related_tags = @current_tags.any? ? Page.find_related_tags(@current_tags) : []
-    
+
     @pages = unless @current_tags.any?
       Page.filter(@filters).paginate({
         :page     => (params[:page] || 1),
@@ -31,8 +31,8 @@ class Admin::PagesController < ApplicationController
     @filters = {
       :order_by => 'updated_at desc'
     }.merge((params[:filters] || {}).to_options)
-    
-    query = params[:query] 
+
+    query = params[:query]
     page  = params[:page] || 1
     per_page = params[:per_page] ? params[:per_page].to_i : 45
     @search = Page.search do
@@ -56,7 +56,7 @@ class Admin::PagesController < ApplicationController
       format.html
     end
   end
-  
+
   def comments
     @page = Page.find(params[:id])
     respond_to do |format|
@@ -88,13 +88,17 @@ class Admin::PagesController < ApplicationController
     respond_to do |format|
       if @page.update_attributes(params[:page])
         flash[:notice] = t(:saved, :scope => [:app, :admin_pages])
-        format.html { redirect_to params[:return_to] || admin_page_path(@page.id) }
+        if @page.published_on && !(@page.index_node || @page.node)
+          format.html { redirect_to new_admin_node_path(:resource_id => @page.id) }
+        else
+          format.html { redirect_to params[:return_to] || admin_page_path(@page.id) }
+        end
       else
         format.html { render :action => 'show' }
       end
     end
   end
-  
+
   def destroy
     @page = Page.find(params[:id])
     @page.destroy
@@ -103,10 +107,10 @@ class Admin::PagesController < ApplicationController
       format.html { redirect_to admin_pages_path }
     end
   end
-  
-  def toggle
+
+  def publish
     @page = Page.find(params[:id])
-    @page.update_attributes(:active => !@page.active?)
+    @page.update_attributes(:published_on => Time.now)
     respond_to do |format|
       format.html do
         if @page.index_node || @page.node
@@ -117,7 +121,7 @@ class Admin::PagesController < ApplicationController
       end
     end
   end
-  
+
   def sort
     params[:pages].each_with_index do |id, idx|
       Page.update(id, :position => idx+1)

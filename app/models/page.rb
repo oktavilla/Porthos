@@ -48,6 +48,9 @@ class Page < ActiveRecord::Base
            :as => :commentable,
            :order => 'comments.created_at'
 
+  named_scope :unpublished,
+              :conditions => ["published_on IS NULL OR published_on > NOW()"]
+
   named_scope :published, lambda {{
     :conditions => ["published_on <= ?", Time.now]
   }}
@@ -59,12 +62,6 @@ class Page < ActiveRecord::Base
       to.to_s(:db)
     ]
   }}
-
-  named_scope :active,
-              :conditions => ["active = ?", true]
-
-  named_scope :inactive,
-              :conditions => ["active = ?", false]
 
   named_scope :include_restricted, lambda { |restricted| {
     :conditions => ['restricted = ? or restricted = ?', restricted, false]
@@ -93,18 +90,19 @@ class Page < ActiveRecord::Base
     :order => order
   }}
 
-  named_scope :filter_active, lambda { |active| {
-    :conditions => ["active = ?", active]
-  }}
+  named_scope :filter_published, lambda {|*is_published|
+    if is_published.flatten.first
+      { :conditions => 'published_on > NOW()' }
+    else
+      { :conditions => 'published_on IS NULL or published_on < NOW()' }
+    end
+  }
 
   named_scope :with_custom_attributes_field, lambda { |ca_field| {
     :joins => "left join custom_attributes as #{ca_field} on #{ca_field}.context_type = 'Page' and
                #{ca_field}.context_id = pages.id and #{ca_field}.handle = '#{ca_field}'"
   }}
 
-  before_validation_on_create :set_inactive
-
-  before_create :set_published_on
   before_create :set_created_by
   before_save   :set_layout_attributes,
                 :generate_slug
@@ -119,7 +117,6 @@ class Page < ActiveRecord::Base
     text :title, :boost => 2.0
     text :tag_names
     time :published_on
-    boolean :is_active, :using => :active?
     boolean :is_restricted, :using => :restricted?
     text :body do
        contents_as_text
@@ -167,7 +164,7 @@ class Page < ActiveRecord::Base
   end
 
   def published?
-    published_on <= Time.now
+    published_on.present? && published_on <= Time.now
   end
 
   def full_slug
@@ -308,17 +305,8 @@ private
     custom_association_contexts.find_all { |ca| ca.handle == handle }
   end
 
-  def set_inactive
-    self.active = false
-    true
-  end
-
   def generate_slug
     self.slug = title.parameterize unless slug.present?
-  end
-
-  def set_published_on
-    self.published_on = Time.now if published_on.blank?
   end
 
   def set_layout_attributes

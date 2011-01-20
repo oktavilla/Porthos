@@ -6,7 +6,6 @@ module BlogRenderer
     def pages
       return @pages if @pages
       scope = @field_set.pages.
-                         active.
                          published
       if params[:year]
         scope = scope.published_within(*Time.delta(params[:year], params[:month], params[:day]))
