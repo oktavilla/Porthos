@@ -42,7 +42,7 @@ module DefaultRenderer
   class Category < Porthos::PageRenderer
     def category
       return @category if @category
-      @category = Tag.find_by_name(params[:id]) or raise ActiveRecord::RecordNotfound
+      @category = Tag.find_by_name(params[:id]) or raise ActiveRecord::RecordNotFound
     end
     register_methods :category
 
