@@ -3,9 +3,9 @@ require 'mime/types'
 class Asset < ActiveRecord::Base
   belongs_to :created_by, :class_name => 'User'
   has_many   :usages, :class_name => 'AssetUsage', :dependent => :destroy
-  
+
   has_one :child, :class_name => 'Asset', :foreign_key => 'parent_id', :dependent => :destroy
-  
+
   has_many :custom_associations,
            :as => :target,
            :dependent => :destroy
@@ -21,18 +21,18 @@ class Asset < ActiveRecord::Base
   named_scope :filter_order_by, lambda { |order| {
     :order => order
   }}
-  
+
   searchable :auto_index => false do
     text :title, :boost => 2.0
     text :type, :file_name, :author, :description, :tag_names
     boolean :is_private, :using => :private?
   end
-  
+
   after_save :commit_to_sunspot
-  
+
   acts_as_taggable
   acts_as_filterable
-  
+
   SAVE_DIR = "#{Rails.root}/assets"
   IMAGE_FORMATS = [:jpg, :jpeg, :png, :gif]
   VIDEO_FORMATS = [:flv, :mov, :qt, :mpg, :avi, :mp4]
@@ -57,7 +57,7 @@ class Asset < ActiveRecord::Base
   def image?
     IMAGE_FORMATS.include?(extname.to_sym) rescue false
   end
-  
+
   def thumbnail?
     image? and file_name.include?("thumbnail") rescue false
   end
@@ -65,11 +65,11 @@ class Asset < ActiveRecord::Base
   def video?
     VIDEO_FORMATS.include?(extname.to_sym) rescue false
   end
-  
+
   def sound?
     SOUND_FORMATS.include?(extname.to_sym) rescue false
   end
-  
+
   def flash?
     FLASH_FORMATS.include?(extname.to_sym) rescue false
   end
@@ -77,7 +77,7 @@ class Asset < ActiveRecord::Base
   def require_thumbnail?
     require_thumbnail == true
   end
-  
+
   def attributes_for_js
     self.attributes
   end
@@ -90,9 +90,9 @@ class Asset < ActiveRecord::Base
     def from_upload(attrs)
       extname = File.extname(attrs[:file].original_filename.downcase).gsub(/\./,'')
       if IMAGE_FORMATS.include?(extname.to_sym)
-        klass = ImageAsset 
+        klass = ImageAsset
       elsif VIDEO_FORMATS.include?(extname.to_sym)
-        klass = VideoAsset 
+        klass = VideoAsset
       elsif SOUND_FORMATS.include?(extname.to_sym)
         klass = SoundAsset
       elsif FLASH_FORMATS.include?(extname.to_sym)
@@ -102,15 +102,15 @@ class Asset < ActiveRecord::Base
       end
       klass.new(attrs)
     end
-    
+
     def new_tempfile(content_path)
-      tempfile = ActionController::UploadedTempfile.new('temp')       
+      tempfile = ActionController::UploadedTempfile.new(File.basename(content_path))
       tempfile.write IO.readlines(content_path) if File.exists?(content_path)
       tempfile.original_path = content_path
       tempfile.flush
       tempfile
     end
-    
+
     def new_tempfile_from_url(url)
       data = open(url)
       if data.size > 0
@@ -157,12 +157,12 @@ protected
   def cleanup
     File.unlink(path) if File.exists?(path)
    end
-  
+
   def make_unique_filename(string)
-    chars = ("a".."z").to_a + ("1".."9").to_a 
+    chars = ("a".."z").to_a + ("1".."9").to_a
     self.file_name = string + '_' + Digest::SHA1.hexdigest(string + Array.new(8, '').collect{chars[rand(chars.size)]}.join + Time.now.to_s)[14..20]
   end
-  
+
   def commit_to_sunspot
     Delayed::Job.enqueue SunspotIndexJob.new('Asset', self.id)
   end
