@@ -167,6 +167,7 @@ ActiveRecord::Schema.define(:version => 20100914131159) do
     t.string   "template_name"
     t.boolean  "pages_sortable"
     t.boolean  "allow_categories", :default => false
+    t.boolean  "allow_node_placements", :default => false
   end
 
   add_index "field_sets", ["handle"], :name => "index_field_sets_on_handle"

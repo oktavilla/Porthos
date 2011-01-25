@@ -243,6 +243,10 @@ class Page < ActiveRecord::Base
     @category_method_name ||= "#{field_set.handle}_tag_names"
   end
 
+  def can_have_a_node?
+    @page.published_on.present? && field_set.allow_node_placements? && node.blank?
+  end
+
 protected
 
   def after_initialize

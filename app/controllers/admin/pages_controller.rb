@@ -88,7 +88,7 @@ class Admin::PagesController < ApplicationController
     respond_to do |format|
       if @page.update_attributes(params[:page])
         flash[:notice] = t(:saved, :scope => [:app, :admin_pages])
-        if @page.published_on && !(@page.index_node || @page.node)
+        if @page.can_have_a_node?
           format.html { redirect_to new_admin_node_path(:resource_id => @page.id) }
         else
           format.html { redirect_to params[:return_to] || admin_page_path(@page.id) }
