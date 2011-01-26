@@ -60,7 +60,7 @@ module ActiveRecord
                         #{"AND taggings.taggable_type = '#{self.name}'"}
                         AND taggings.namespace #{namespace.present? ? "= '#{namespace}'" : 'IS NULL' }
                         LEFT OUTER JOIN tags ON tags.id = taggings.tag_id
-                        AND LOWER(tags.name) IN ('#{tag_list.join("','")}')",
+                        AND LOWER(tags.name) IN ('#{tag_list.join("','")}')#{options[:joins].present? ? " #{options[:joins]}" : ''}",
             :group  => "#{table_name}.#{primary_key} HAVING count = #{tag_list.length}",
             :order  => options[:order] || "#{table_name}.#{primary_key}"
           }))
