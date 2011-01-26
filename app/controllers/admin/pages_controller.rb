@@ -113,10 +113,10 @@ class Admin::PagesController < ApplicationController
     @page.update_attributes(:published_on => Time.now)
     respond_to do |format|
       format.html do
-        if @page.index_node || @page.node
-          redirect_back_or_default(admin_page_path(@page.id))
-        else
+        if @page.can_have_a_node?
           redirect_to new_admin_node_path(:resource_id => @page.id)
+        else
+          redirect_back_or_default(admin_page_path(@page.id))
         end
       end
     end
