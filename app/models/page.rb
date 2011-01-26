@@ -244,7 +244,7 @@ class Page < ActiveRecord::Base
   end
 
   def can_have_a_node?
-    @page.published_on.present? && field_set.allow_node_placements? && node.blank?
+    published_on.present? && field_set.allow_node_placements? && node.blank?
   end
 
 protected
