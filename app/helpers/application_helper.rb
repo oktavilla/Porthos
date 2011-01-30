@@ -254,6 +254,10 @@ module ApplicationHelper
   end
 
   def field_set_tags_path(field_set, tags)
-    "/#{field_set.node.slug}/tagged-with?#{tags.collect{|t| "tags[]=#{t.name}"}.join('&')}"
+    if tags.is_a?(Array)
+      "/#{field_set.node.slug}/tagged-with?#{tags.collect{|t| "tags[]=#{t.name}"}.join('&')}"
+    else
+      "/#{field_set.node.slug}/tagged-with?tags[]=#{tags.name}"
+    end
   end
 end
