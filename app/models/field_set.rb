@@ -38,6 +38,10 @@ class FieldSet < ActiveRecord::Base
     "#{template.name.camelize}Renderer".constantize.send(action, self, *args)
   end
 
+  def tags_for_pages
+    @tags_for_pages ||= Tag.on('Page').all(:joins => 'LEFT OUTER JOIN pages ON taggings.taggable_id = pages.id', :conditions => ['pages.field_set_id = ?', self.id])
+  end
+
 protected
 
   def parameterize_handle

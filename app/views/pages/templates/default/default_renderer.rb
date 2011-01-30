@@ -77,4 +77,52 @@ module DefaultRenderer
     DefaultRenderer::Show.new(field_set, page, params)
   end
 
+  class TaggedWith < Porthos::PageRenderer
+
+    def categories
+      @categories ||= Tag.on('Page').namespaced_to(@field_set.handle).all
+    end
+
+    def category
+      nil
+    end
+
+    def pages
+      return @pages if @pages
+      @pages = Page.find_tagged_with(:tags => selected_tag_names, :conditions => ['pages.field_set_id = ?', @field_set.id]).tap do |pages|
+        pages.each { |p| p.send :cache_custom_attributes }
+      end
+    end
+
+    def tags
+      @tags ||= @field_set.tags_for_pages
+    end
+
+    def selected_tags
+      if @selected_tags
+        @selected_tags
+      else
+        @selected_tags = if params[:tags].present? && params[:tags].any?
+          params[:tags].collect{|t| Tag.find_by_name(t) }.compact
+        else
+          []
+        end
+      end
+    end
+
+    def selected_tag_names
+      @selected_tag_names if @selected_tag_names.present?
+      @selected_tag_names = if selected_tags && selected_tags.any?
+        selected_tags.collect{|t| t.name }
+      else
+        []
+      end
+    end
+
+    register_methods :categories, :category, :pages, :tags, :selected_tags, :selected_tag_names
+  end
+
+  def self.tagged_with(field_set, params)
+    DefaultRenderer::TaggedWith.new(field_set, params)
+  end
 end

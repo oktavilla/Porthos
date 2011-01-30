@@ -147,6 +147,10 @@ module Porthos
             :action => 'show'
           }))
 
+          @routing.add_named_route("tagged_with_node_#{node['id']}", "#{node['slug']}/tagged-with.:format", route_mappings.dup.merge({
+            :action => 'tagged_with'
+          }))
+
         end
 
         add_conditions.each do |condition|
@@ -188,6 +192,7 @@ module Porthos
           @routing.named_routes.routing.delete "categories_node_#{node['id']}"
           @routing.named_routes.routing.delete "category_node_#{node['id']}"
           @routing.named_routes.routing.delete "categorized_page_node_#{node['id']}"
+          @routing.named_routes.routing.delete "tagged_with_node_#{node['id']}"
         end
 
         remove_conditions.each do |condition|

@@ -87,6 +87,16 @@ class PagesController < ApplicationController
     end
   end
 
+  def tagged_with
+    @field_set = @node.field_set
+    template = @field_set ? @field_set.template : PageTemplate.default
+    @renderer = @field_set.renderer(:tagged_with, params)
+
+    respond_to do |format|
+      format.html { render :template => template.views.tagged_with }
+    end
+  end
+
   # POST
   def comment
     @page    = Page.find(params[:id])

@@ -253,4 +253,7 @@ module ApplicationHelper
     "/#{page.index_node.slug}/categories/#{category.name}/#{page.to_param}"
   end
 
+  def field_set_tags_path(field_set, tags)
+    "/#{field_set.node.slug}/tagged-with?#{tags.collect{|t| "tags[]=#{t.name}"}.join('&')}"
+  end
 end
