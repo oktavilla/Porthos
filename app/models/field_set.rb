@@ -34,8 +34,9 @@ class FieldSet < ActiveRecord::Base
     @template ||= template_name.present? ? PageTemplate.new(template_name) : PageTemplate.default
   end
 
-  def renderer(action, *args)
-    "#{template.name.camelize}Renderer".constantize.send(action, self, *args)
+  # Instantiates a new page renderer
+  def renderer(action, controller, objects = {})
+    "#{template.name.camelize}Renderer::#{action.to_s.camelize}".constantize.new(controller, objects.to_options.merge({ :field_set => self }))
   end
 
 protected
