@@ -26,6 +26,18 @@ module Porthos
       self
     end
 
+    def layout_class
+      @layout_class ||= @field_set.handle
+    end
+
+    def title
+      @title ||= @field_set.title
+    end
+
+    def page_id
+      'pages-index'
+    end
+
   protected
 
     def after_initialize
