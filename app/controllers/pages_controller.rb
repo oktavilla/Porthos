@@ -13,7 +13,9 @@ class PagesController < ApplicationController
   def index
     @field_set = @node.field_set
     template = @field_set ? @field_set.template : PageTemplate.default
-    @renderer = @field_set.renderer(:index, params)
+    @renderer = renderer(template, {
+      :field_set => @field_set
+    })
 
     respond_to do |format|
       format.html { render :template => template.views.index }
@@ -23,26 +25,31 @@ class PagesController < ApplicationController
 
   def show
     @page = Page.find(params[:id], :include => [:custom_attributes, :custom_associations, :fields])
-    @renderer = @page.field_set.renderer(:show, @page, params)
+    template = @page.field_set.template
+    @renderer = renderer(template, :field_set => @page.field_set, :page => @page)
 
     login_required if @page.restricted?
 
     respond_to do |format|
-      format.html { render :template => @page.field_set.template.views.show }
+      format.html { render :template => template.views.show }
     end
   end
 
   def preview
     @page = Page.find(params[:id])
-    @renderer = @page.field_set.renderer(:show, @page, params)
+    template = @page.field_set.template
+    @renderer = renderer(template, :field_set => @page.field_set, :page => @page)
     respond_to do |format|
-      format.html { render :template => @page.field_set.template.views.show }
+      format.html { render :template => template.views.show }
     end
   end
 
   def search
     filters = params[:filters] || {}
     @field_set = @node.field_set
+
+    template = @field_set ? @field_set.template : PageTemplate.default
+
     search_query = params[:query] if params[:query].present?
     if search_query.present? or filters.any?
       field_set = @field_set
@@ -63,14 +70,14 @@ class PagesController < ApplicationController
       @query, @filters = params[:query], filters
     end
     respond_to do |format|
-      format.html { render :template => (@field_set ? @field_set.template.views.search : PageTemplate.default.views.search) }
+      format.html { render :template => template.views.search }
     end
   end
 
   def categories
     @field_set = @node.field_set
     template = @field_set ? @field_set.template : PageTemplate.default
-    @renderer = @field_set.renderer(:categories, params)
+    @renderer = renderer(template, :field_set => @field_set)
 
     respond_to do |format|
       format.html { render :template => template.views.categories }
@@ -80,7 +87,7 @@ class PagesController < ApplicationController
   def category
     @field_set = @node.field_set
     template = @field_set ? @field_set.template : PageTemplate.default
-    @renderer = @field_set.renderer(:category, params)
+    @renderer = renderer(template, :field_set => @field_set)
 
     respond_to do |format|
       format.html { render :template => template.views.category }
@@ -88,6 +95,7 @@ class PagesController < ApplicationController
   end
 
   # POST
+  # TODO: Should this be used? In that case need to incorporate it with the new page rendrerer
   def comment
     @page    = Page.find(params[:id])
     @comment = @page.comments.new(params[:comment])
@@ -100,6 +108,12 @@ class PagesController < ApplicationController
         format.html { render :action => 'show' }
       end
     end
+  end
+
+protected
+
+  def renderer(template, objects = {})
+    "#{template.name.camelize}Renderer::#{self.action_name.camelize}".constantize.new(self, objects)
   end
 
 end
