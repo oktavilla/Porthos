@@ -47,18 +47,8 @@ module BlogRenderer
 
   end
 
-  def self.index(field_set, params)
-    BlogRenderer::Index.new(field_set, params)
-  end
-
   class Show < Porthos::PageRenderer
     attr_accessor :page
-
-    def initialize(field_set, page, params)
-      @page = page
-      @page.send :cache_custom_attributes
-      super(field_set, params)
-    end
 
     def layout_class
       @page.layout_class
@@ -77,10 +67,11 @@ module BlogRenderer
     end
 
     register_methods :selected_year, :selected_month, :archive
-  end
 
-  def self.show(field_set, page, params)
-    BlogRenderer::Show.new(field_set, page, params)
-  end
+  protected
 
+    def after_initialize
+      @page.send :cache_custom_attributes
+    end
+  end
 end

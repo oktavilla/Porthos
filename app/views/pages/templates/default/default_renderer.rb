@@ -3,6 +3,18 @@ module DefaultRenderer
 
   class Index < Porthos::PageRenderer
 
+    def layout_class
+      "#{@field_set.handle}-index"
+    end
+
+    def title
+      @field_set.title
+    end
+
+    def page_id
+      @field_set.handle
+    end
+
     def pages
       return @pages if @pages
       scope = @field_set.pages.
@@ -22,10 +34,6 @@ module DefaultRenderer
 
   end
 
-  def self.index(field_set, params)
-    DefaultRenderer::Index.new(field_set, params)
-  end
-
   class Categories < Porthos::PageRenderer
     def categories
       return @categories if @categories
@@ -33,10 +41,6 @@ module DefaultRenderer
       @categories
     end
     register_methods :categories
-  end
-
-  def self.categories(field_set, params)
-    DefaultRenderer::Categories.new(field_set, params)
   end
 
   class Category < Porthos::PageRenderer
@@ -54,27 +58,22 @@ module DefaultRenderer
     end
   end
 
-  def self.category(field_set, params)
-    DefaultRenderer::Category.new(field_set, params)
-  end
-
-
   class Show < Porthos::PageRenderer
-    attr_accessor :page
-
-    def initialize(field_set, page, params)
-      @page = page
-      super(field_set, params)
-    end
+    self.required_objects = [:field_set, :page]
 
     def layout_class
       @page.layout_class
     end
 
-  end
+    def title
+      @page.title
+    end
 
-  def self.show(field_set, page, params)
-    DefaultRenderer::Show.new(field_set, page, params)
+  protected
+
+    def after_initialize
+      @page.send :cache_custom_attributes
+    end
   end
 
   class TaggedWith < Porthos::PageRenderer
@@ -111,7 +110,7 @@ module DefaultRenderer
     end
 
     def selected_tag_names
-      @selected_tag_names if @selected_tag_names.present?
+      return @selected_tag_names if @selected_tag_names.present?
       @selected_tag_names = if selected_tags && selected_tags.any?
         selected_tags.collect{|t| t.name }
       else
@@ -120,9 +119,5 @@ module DefaultRenderer
     end
 
     register_methods :categories, :category, :pages, :tags, :selected_tags, :selected_tag_names
-  end
-
-  def self.tagged_with(field_set, params)
-    DefaultRenderer::TaggedWith.new(field_set, params)
   end
 end

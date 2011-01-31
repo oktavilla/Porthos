@@ -69,18 +69,8 @@ module CalendarRenderer
 
   end
 
-  def self.index(field_set, params)
-    CalendarRenderer::Index.new(field_set, params)
-  end
-
   class Show < Porthos::PageRenderer
     attr_accessor :page
-
-    def initialize(field_set, page, params)
-      @page = page
-      @page.send :cache_custom_attributes
-      super(field_set, params)
-    end
 
     def layout_class
       @page.layout_class
@@ -99,10 +89,11 @@ module CalendarRenderer
     end
 
     register_methods :selected_year, :selected_month, :archive
-  end
 
-  def self.show(field_set, page, params)
-    CalendarRenderer::Show.new(field_set, page, params)
-  end
+  protected
 
+    def after_initialize
+      @page.send :cache_custom_attributes
+    end
+  end
 end
