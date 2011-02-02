@@ -385,6 +385,12 @@ body#pages_view #pages_list {list-style:none;}
     color:#666; }
 #pages_view #category_view p:first-child {text-transform:capitalize;}
 
+
+/* change this to enable restricted content */
+body#pages_view form .restricted_field,
+body#nodes_view form .restricted_field {display:none;}
+
+
 ul#nodes, ul#nodes ul {
   list-style:none;
   margin:0; }
