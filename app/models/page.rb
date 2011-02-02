@@ -117,7 +117,7 @@ class Page < ActiveRecord::Base
     text :title, :boost => 2.0
     text :tag_names
     time :published_on
-    boolean :is_restricted, :using => :restricted?
+    boolean :is_restricted, :using => :in_restricted_context?
     text :body do
        contents_as_text
     end
@@ -247,7 +247,19 @@ class Page < ActiveRecord::Base
     published_on.present? && field_set.allow_node_placements? && node.blank?
   end
 
+  def in_restricted_context?
+    @in_restricted_context ||= restricted? || node_restricted? || index_node_restricted?
+  end
+
 protected
+
+  def node_restricted?
+    node && (node.restricted? || node.ancestors.detect { |n| n.restricted? })
+  end
+
+  def index_node_restricted?
+    index_node && (index_node.restricted? || index_node.ancestors.detect { |n| n.restricted? })
+  end
 
   def after_initialize
     if field_set.present? && field_set.allow_categories?
