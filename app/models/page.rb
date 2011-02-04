@@ -290,7 +290,7 @@ protected
                 :target_ids   => match.collect { |m| m.target_id }
               })
             else
-              match.relationship == 'one_to_one' ? match.first.context : CustomAssociationProxy.new({
+              field.relationship == 'one_to_one' ? match.first.context : CustomAssociationProxy.new({
                 :target_class => match.first.context_type.constantize,
                 :target_ids   => match.collect { |m| m.context_id }
               })
