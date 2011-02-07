@@ -38,6 +38,10 @@ module Porthos
       'pages-index'
     end
 
+    def logged_in?
+      controller.send(:logged_in?)
+    end
+
   protected
 
     def after_initialize
