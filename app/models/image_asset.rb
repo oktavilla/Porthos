@@ -16,15 +16,15 @@ class ImageAsset < Asset
 
   IMAGE_VERSIONS_DIR = "#{Rails.root}/public/images"
   RESIZE_SALT = '8i03d9ee7'
-  
+
   def landscape?
     width > height
   end
-  
+
   def portrait?
     not landscape?
   end
-  
+
   def resize(options = {})
     return false unless magick_image
     options = {
@@ -33,14 +33,14 @@ class ImageAsset < Asset
     }.merge!(options)
 
     options[:crop] ||= (options[:size] and options[:size].include?("c"))
-    
+
     size = options[:size].gsub(/[^0-9a-z\-]/,'')
 
     Dir.mkdir IMAGE_VERSIONS_DIR unless File.exists? IMAGE_VERSIONS_DIR
     Dir.mkdir version_dir(size) unless File.exists? version_dir(size)
-    
+
     magick_image.strip if options[:remove_profiles]
-    
+
     format = if format_string = size.match(/^([0-9]*)x([0-9]*)$/)
       box_width = ($1.to_i > self.width) ? self.width : $1.to_i
       box_height = ($2.to_i > self.height) ? self.height : $2.to_i
@@ -60,6 +60,7 @@ class ImageAsset < Asset
     end
 
     magick_image.format('jpg') unless browser_compatible_format?
+    magick_image.colorspace('RGB')
 
     format[:width]  = self.width  if format[:width].to_i >= self.width
     format[:height] = self.height if format[:height].to_i >= self.height
@@ -107,15 +108,15 @@ class ImageAsset < Asset
       width
     end
   end
-  
+
   def version_dir(size)
     File.join(IMAGE_VERSIONS_DIR, size)
   end
-  
+
   def version_path(size)
     File.join(version_dir(size), version_full_name)
   end
-  
+
   def version_full_name
     @version_full_name ||= browser_compatible_format? ? full_name : "#{file_name}.jpg"
   end
@@ -123,7 +124,7 @@ class ImageAsset < Asset
   def self.thumbnail_flag
     "-thumbnail"
   end
-  
+
   def thumbnail_flag
     self.class.thumbnail_flag
   end
@@ -131,24 +132,24 @@ class ImageAsset < Asset
   def resize_token(size)
     Digest::SHA1.hexdigest([RESIZE_SALT, self.full_name, size].join('-'))[1..6]
   end
-  
+
 protected
 
   def gravity_from_size(key)
     gravities.keys.include?(key.to_s) ? gravities[key] : gravities['c']
   end
-  
+
   def magick_image(file_path = nil)
     @magick_image ||= MiniMagick::Image.from_file(file_path || path)
     rescue Errno::ENOENT
-      return false 
+      return false
   end
-  
+
   def browser_compatible_format?
     %w(jpg jpeg png gif).include?(read_attribute(:extname))
   end
 
-  def validate_on_create  
+  def validate_on_create
     image = magick_image(path)
     return errors.add(:file, t(:unknown_format, :scope => [:app, :image_asset])) unless image
   end
@@ -161,13 +162,13 @@ protected
     magick_image.destroy
     @magick_image = nil
   end
-    
+
   # after destroy
   def cleanup
     super
-    Dir["#{Rails.root}/public/images/*/*"].each do |file| 
+    Dir["#{Rails.root}/public/images/*/*"].each do |file|
       File.unlink(file) if File.basename(file) == full_name
     end
   end
-  
+
 end
