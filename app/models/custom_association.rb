@@ -4,7 +4,8 @@ class CustomAssociation < ActiveRecord::Base
              :touch => true
 
   belongs_to :target,
-             :polymorphic => true
+             :polymorphic => true,
+             :touch => true
 
   belongs_to :field
 
@@ -26,5 +27,5 @@ protected
   def parameterize_handle
     self.handle = handle.parameterize
   end
-  
+
 end

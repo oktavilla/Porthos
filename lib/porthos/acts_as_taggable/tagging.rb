@@ -1,6 +1,6 @@
 class Tagging < ActiveRecord::Base
   belongs_to :tag
-  belongs_to :taggable, :polymorphic => true
+  belongs_to :taggable, :polymorphic => true, :touch => true
 
   named_scope :with_taggable_type, lambda { |type| {
    :conditions => ["taggings.taggable_type = ? ", type]
