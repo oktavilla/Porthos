@@ -28,10 +28,12 @@ class PagesController < ApplicationController
     template = @page.field_set.template
     @renderer = renderer(template, :field_set => @page.field_set, :page => @page)
 
-    login_required if @page.restricted?
-
-    respond_to do |format|
-      format.html { render :template => template.views.show }
+    if !@page.restricted? || logged_in?
+      respond_to do |format|
+        format.html { render :template => template.views.show }
+      end
+    else
+      return login_required
     end
   end
 
