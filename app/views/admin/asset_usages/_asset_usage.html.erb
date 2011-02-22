@@ -3,7 +3,8 @@
   <span class="drag_handle"></span>
   <%= image_tag display_image_path(:id => asset_usage.asset, :size => 'c100x100', :format => asset_usage.asset.extname) %>
   <span class="edit">
-    <%= link_to "Inställningar", edit_admin_asset_usage_path(:id => asset_usage, :return_to => request.request_uri), :class => 'asset_usage_settings' %>
+    <%= link_to "Ändra", edit_admin_asset_path(:id => asset_usage.asset.id, :return_to => request.request_uri), :class => 'asset_edit' %>
+    <%= link_to "Beskärning", edit_admin_asset_usage_path(:id => asset_usage, :return_to => request.request_uri), :class => 'asset_usage_settings' %>
     <%= link_to "Ta bort", admin_asset_usage_path(:id => asset_usage, :return_to => request.request_uri), :method => :delete, :confirm => "Ta bort?" %>
   </span>
 </div>
