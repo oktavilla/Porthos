@@ -1,6 +1,6 @@
 class Admin::AssetsController < ApplicationController
   include Porthos::Admin
-  
+
   before_filter :login_required
   before_filter :set_content_context,
                 :only => [:index, :search]
@@ -9,14 +9,14 @@ class Admin::AssetsController < ApplicationController
   skip_before_filter :clear_content_context
   skip_before_filter :remember_uri,
                      :only => [:index, :show, :create, :search]
-  
+
   protect_from_forgery :only => :create
 
   def index
     @filters = {
       :order_by => 'assets.id desc'
     }.merge((params[:filters] || {}).to_options)
-    
+
     @assets = unless @current_tags.any?
       @per_page = @filters[:per_page]
       Asset.is_public.filter(@filters).paginate({
@@ -38,7 +38,7 @@ class Admin::AssetsController < ApplicationController
     @type = params[:type] ? params[:type] : 'Asset'
     @tags = Tag.on('Asset').popular.find(:all, :limit => 30)
     unless params[:query].blank?
-      @query = params[:query] 
+      @query = params[:query]
       @page = params[:page] || 1
       per_page = params[:per_page] ? params[:per_page].to_i : 44
       @search = Ultrasphinx::Search.new(:query => "#{@query}", :class_names => ['Asset','ImageAsset','MovieAsset'], :page => @page, :per_page => per_page)
@@ -101,7 +101,7 @@ class Admin::AssetsController < ApplicationController
       end
     end
   end
-  
+
   def incomplete
     @assets = Asset.find(params[:assets])
   end
@@ -123,7 +123,7 @@ class Admin::AssetsController < ApplicationController
     respond_to do |format|
       if @asset.update_attributes(params[:asset])
         flash[:notice] = "#{@asset.full_name} #{t(:saved, :scope => [:app, :admin_general])}"
-        format.html { redirect_to previous_view_path(edit_admin_asset_url(@asset)) }
+        format.html { redirect_to (params[:return_to] || previous_view_path(edit_admin_asset_url(@asset))) }
       else
         format.html { render :action => "edit" }
       end
