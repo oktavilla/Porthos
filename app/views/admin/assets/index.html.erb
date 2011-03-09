@@ -4,7 +4,7 @@
   <div id="workspace">
     <% if @current_tags.any? -%>
     <div class="header">
-      <h1>Filer märkta med: <%= @current_tags.join(', ') %></h1>  
+      <h1>Filer märkta med: <%= @current_tags.join(', ') %></h1>
     </div>
     <% else -%>
     <div class="header">
@@ -30,7 +30,7 @@
       <% if @content || @asset_usage -%>
       <p>
         <span style="background:#ffb">Välj vilken bild/film du vill använda eller ladda upp en ny.</span>
-        <%= link_to "Avbryt", previous_view_path(@context_params[:return_to]) %> 
+        <%= link_to "Avbryt", previous_view_path(@context_params[:return_to]) %>
       </p>
       <% end -%>
       <% if @assets.any? -%>
@@ -59,7 +59,7 @@
             <% end -%>
           </div>
           <div class="edit">
-            <%= link_to "Ändra", edit_admin_asset_path(asset.id) %>
+            <%= link_to "Ändra", edit_admin_asset_path(asset.id, :return_to => request.path) %>
             <%= link_to "Ta bort", admin_asset_path(asset.id), :class => 'delete', :confirm => "Är du säker att du vill ta bort filen? Den kommer försvinna från alla sidor. Du kan INTE ångra dig.", :method => :delete %>
           </div>
           <% if @create_callback.present? %>
