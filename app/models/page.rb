@@ -254,11 +254,11 @@ class Page < ActiveRecord::Base
 protected
 
   def node_restricted?
-    node && (node.restricted? || node.ancestors.detect { |n| n.restricted? })
+    !node.blank? and (node.restricted? || node.ancestors.detect { |n| n.restricted? } != nil)
   end
 
   def index_node_restricted?
-    index_node && (index_node.restricted? || index_node.ancestors.detect { |n| n.restricted? })
+    !index_node.blank? and (index_node.restricted? || index_node.ancestors.detect { |n| n.restricted? } != nil)
   end
 
   def after_initialize
