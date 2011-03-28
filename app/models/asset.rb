@@ -159,8 +159,7 @@ protected
    end
 
   def make_unique_filename(string)
-    chars = ("a".."z").to_a + ("1".."9").to_a
-    self.file_name = string + '_' + Digest::SHA1.hexdigest(string + Array.new(8, '').collect{chars[rand(chars.size)]}.join + Time.now.to_s)[14..20]
+    string + '_' + Digest::SHA1.hexdigest("#{string}-#{Time.now.to_i}-#{rand()}")[14..20]
   end
 
   def commit_to_sunspot
