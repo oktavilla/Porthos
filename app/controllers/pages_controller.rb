@@ -39,8 +39,9 @@ class PagesController < ApplicationController
 
   def preview
     @page = Page.find(params[:id])
+    @page.published_on = Time.now
     template = @page.field_set.template
-    @renderer = renderer(template, :field_set => @page.field_set, :page => @page)
+    @renderer = renderer(template, {:field_set => @page.field_set, :page => @page}, 'Show')
     respond_to do |format|
       format.html { render :template => template.views.show }
     end
@@ -124,8 +125,8 @@ class PagesController < ApplicationController
 
 protected
 
-  def renderer(template, objects = {})
-    "#{template.name.camelize}Renderer::#{self.action_name.camelize}".constantize.new(self, objects)
+  def renderer(template, objects = {}, action = self.action_name.camelize)
+    "#{template.name.camelize}Renderer::#{action}".constantize.new(self, objects)
   end
 
 end
