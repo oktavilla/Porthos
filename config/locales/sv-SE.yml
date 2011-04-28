@@ -89,8 +89,8 @@
     errors:
       template:
         header:
-          one:   "Ett fel förhindrade denna {{model}} från att sparas"
-          other: "{{count}} fel förhindrade denna {{model}} från att sparas"
+          one:   "Ett fel förhindrade detta formulär från att sparas"
+          other: "Fel förhindrade detta formulär från att sparas"
         # The variable :count is also available
         body: "Det var problem med följande fält:"
  
@@ -98,8 +98,8 @@
     errors:
       template:
         header:
-          one:   "Ett fel förhindrade denna {{model}} från att sparas"
-          other: "{{count}} fel förhindrade denna {{model}} från att sparas"
+          one:   "Ett fel förhindrade detta formulär från att sparas"
+          other: "Fel förhindrade detta formulär från att sparas"
         # The variable :count is also available
         body: "Det var problem med följande fält:"
       # model.errors.full_messages format.
