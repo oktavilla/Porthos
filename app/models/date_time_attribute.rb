@@ -4,6 +4,7 @@ class DateTimeAttribute < CustomAttribute
   def value=(value)
     value = if value.is_a?(Hash)
       attrs = value.to_options
+      if attrs[:year].present? and attrs[:month].present? and attrs[:day].present?
       DateTime.new(*[
         attrs[:year],
         attrs[:month],
@@ -11,10 +12,12 @@ class DateTimeAttribute < CustomAttribute
         attrs[:hour],
         attrs[:minute]
       ].collect { |part| part.to_i })
+      else
+        ''
+      end
     else
       value
     end
     super value
   end
-
 end

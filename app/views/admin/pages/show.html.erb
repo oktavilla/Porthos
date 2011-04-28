@@ -255,7 +255,9 @@
         <div class="container">
           <h2 class="field_label"><%= field.label %></h2>
           <div class="content">
-            <%= custom_attribute.value.strftime("%Y-%m-%d") if custom_attribute.value %>
+            <% if custom_attribute.value %>
+            <%= (custom_attribute.value.hour > 0 || custom_attribute.value.min > 0) ? custom_attribute.value.strftime("%Y-%m-%d %H:%M") : custom_attribute.value.strftime("%Y-%m-%d") %>
+            <% end %>
           </div>
           <div class="edit"><a href="#" class="change">Ändra</a></div>
         </div>
@@ -266,7 +268,7 @@
               <%= field.label %>
             </label>
             <div>
-              <%= select_datetime((custom_attribute.value||Time.now), :datetime_separator => ' - ', :prefix => 'custom_attribute[value]') %>
+              <%= select_datetime((custom_attribute.value||Time.now), :datetime_separator => ' - ', :prefix => 'custom_attribute[value]', :include_blank => true) %>
             </div>
             <div class="submit">
               <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
@@ -279,7 +281,7 @@
               <%= field.label %>
             </label>
             <div>
-              <%= select_datetime((custom_attribute.value||Time.now), :datetime_separator => ' - ', :prefix => 'custom_attribute[value]') %>
+              <%= select_datetime((custom_attribute.value||Time.now), :datetime_separator => ' - ', :prefix => 'custom_attribute[value]', :include_blank => true) %>
             </div>
             <div class="submit">
               <input type="submit" value="Spara"> eller <a href="#" class="cancel">avbryt</a>
