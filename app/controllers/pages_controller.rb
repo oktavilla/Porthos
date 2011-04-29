@@ -19,12 +19,12 @@ class PagesController < ApplicationController
       (page and (not page.parent_type.blank? and page.parent.calendar?) or page.published?) ? page : (raise ActiveRecord::RecordNotFound)
     end
 
-    login_required if @page.restricted?
-    
+    return if @page.restricted? and !login_required # login_required returns false if we need to login
+
     if @page.respond_to?(:pages)
       @pages = @page.pages.find_by_params(params, :logged_in => logged_in?)
     end
-    
+
     respond_to do |format|
       unless @page.rendered_body.blank?
         format.html { render :inline => @page.rendered_body, :layout => true }
@@ -35,7 +35,7 @@ class PagesController < ApplicationController
       format.rss { render :layout => false } if @page.is_a?(PageCollection)
     end
   end
-  
+
   def preview
     @page = Page.find(params[:id])
     if @page.respond_to?(:pages)
@@ -46,7 +46,7 @@ class PagesController < ApplicationController
       format.html { render :action => 'show' }
     end
   end
-  
+
   # POST
   def comment
     @page    = Page.find(params[:id])
