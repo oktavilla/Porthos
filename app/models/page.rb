@@ -90,11 +90,11 @@ class Page < ActiveRecord::Base
     :order => order
   }}
 
-  named_scope :filter_published, lambda {|*is_published|
-    if is_published.flatten.first
-      { :conditions => 'published_on > NOW()' }
+  named_scope :filter_published, lambda { |show_published|
+    if Boolean(show_published)
+      { :conditions => ['published_on < ?', Time.now] }
     else
-      { :conditions => 'published_on IS NULL or published_on < NOW()' }
+      { :conditions => 'published_on IS NULL' }
     end
   }
 
