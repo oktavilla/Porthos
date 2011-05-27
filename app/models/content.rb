@@ -10,16 +10,16 @@ class Content < ActiveRecord::Base
               :conditions => ["contents.active = ?", true]
 
   acts_as_list :scope => 'context_id = \'#{context_id}\' AND context_type = \'#{context_type}\' AND column_position = \'#{column_position}\' AND parent_id #{(parent_id.blank? ? "IS NULL" : (" = " + parent_id.to_s))}'
-  
+
   acts_as_settingable
-  
+
   attr_accessor :multiple_restrictions
-  
+
   after_save :notify_context,
              :set_restrictions
-  
+
   before_destroy do |content|
-    content.resource.destroy if content.resource and not content.module?
+    content.resource.destroy if content.resource and !(content.module? || content.registration_form?)
   end
 
   # Should destroy content_collection if last child
@@ -36,9 +36,13 @@ class Content < ActiveRecord::Base
   def text?
     resource_type == 'ContentTextfield'
   end
-  
+
   def module?
     resource_type == 'ContentModule'
+  end
+
+  def registration_form?
+    resource_type == 'RegistrationForm'
   end
 
   def pre_renderable?
@@ -65,15 +69,15 @@ class Content < ActiveRecord::Base
 
   def collection?
     self.is_a?(ContentCollection)
-  end  
+  end
   def viewable_by(user)
     !self.restrictions.detect { |r| r.denies?(user) }
   end
-  
+
   def restricted?
     !restrictions_count.nil? && restrictions_count > 0
   end
-  
+
 protected
 
   def notify_context
