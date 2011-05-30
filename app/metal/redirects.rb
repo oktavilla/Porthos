@@ -1,9 +1,8 @@
 # Allow the metal piece to run in isolation
 require(File.dirname(__FILE__) + "/../../config/environment") unless defined?(Rails)
-
 class Redirects
   def self.call(env)
-    redirect = Redirect.connection.select_all("SELECT * FROM redirects WHERE path = '#{env['PATH_INFO']}'").first
+    redirect = Redirect.connection.select_all("SELECT * FROM redirects WHERE path = '#{env['PATH_INFO'].gsub(/[^a-zA-Z0-9\/\+\?\=]+/i, '')}'").first
     if redirect && (redirect_path = redirect['target'])
       if not env['QUERY_STRING'].blank?
         if redirect_path.include?('?')
