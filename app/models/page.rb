@@ -52,7 +52,7 @@ class Page < ActiveRecord::Base
               :conditions => ["published_on IS NULL OR published_on > NOW()"]
 
   named_scope :published, lambda {{
-    :conditions => ["published_on <= ?", Time.now]
+    :conditions => ["published_on IS NOT NULL AND published_on <= ?", Time.now]
   }}
 
   named_scope :published_within, lambda { |from, to| {

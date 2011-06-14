@@ -6,7 +6,11 @@
 <% end -%>
 <span class="meta">
   <% if taggable.updated_at && taggable.updated_at != taggable.published_on -%>
-  Senast ändrad <%= taggable.updated_at.strftime("%d %b %Y %H:%M") %>. 
+  Senast ändrad <%= taggable.updated_at.strftime("%d %b %Y %H:%M") %>.
   <% end -%>
+  <% if taggable.published_on.present? %>
   Publicerad <%= taggable.published_on.strftime("%d %b %Y %H:%M") %>.
+  <% else %>
+  Ej publicerad.
+  <% end %>
 </span>

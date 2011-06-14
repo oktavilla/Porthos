@@ -24,7 +24,7 @@ class PagesController < ApplicationController
   end
 
   def show
-    @page = Page.find(params[:id], :include => [:custom_attributes, :custom_associations, :fields])
+    @page = Page.published.find(params[:id], :include => [:custom_attributes, :custom_associations, :fields])
     template = @page.field_set.template
     @renderer = renderer(template, :field_set => @page.field_set, :page => @page)
 
